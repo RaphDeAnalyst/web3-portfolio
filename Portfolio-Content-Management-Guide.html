@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Content Management Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2563eb;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 30px;
+        }
+        .code-block {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .file-path {
+            background: #374151;
+            color: #f9fafb;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .step {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step-number {
+            background: #2563eb;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #f1f5f9;
+            font-weight: bold;
+        }
+        .toc {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Portfolio Content Management Guide</h1>
+        <p><strong>Complete Guide to Managing Blog Posts and Projects</strong></p>
+        <p><em>Last Updated: December 2024</em></p>
+
+        <div class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ol>
+                <li><a href="#overview">System Overview</a></li>
+                <li><a href="#blog-management">Blog Management</a></li>
+                <li><a href="#portfolio-management">Portfolio Management</a></li>
+                <li><a href="#file-structure">File Structure</a></li>
+                <li><a href="#templates">Templates & Examples</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+            </ol>
+        </div>
+
+        <h2 id="overview">🎯 System Overview</h2>
+        <p>Your portfolio website uses a centralized content management system where all blog posts and projects are stored in data files. This approach makes it easy to add, edit, or remove content without touching complex UI code.</p>
+
+        <div class="info">
+            <strong>Key Benefits:</strong>
+            <ul>
+                <li>✅ No need to edit complex React components</li>
+                <li>✅ Content is separated from presentation logic</li>
+                <li>✅ Easy to backup and version control content</li>
+                <li>✅ Consistent formatting and structure</li>
+                <li>✅ TypeScript ensures data integrity</li>
+            </ul>
+        </div>
+
+        <h3>Core Data Files</h3>
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Purpose</th>
+                <th>Contains</th>
+            </tr>
+            <tr>
+                <td><span class="file-path">src/data/blog-posts.ts</span></td>
+                <td>Blog metadata</td>
+                <td>Titles, summaries, dates, tags, categories</td>
+            </tr>
+            <tr>
+                <td><span class="file-path">src/data/blog-content.ts</span></td>
+                <td>Blog content</td>
+                <td>Full article content in Markdown format</td>
+            </tr>
+            <tr>
+                <td><span class="file-path">src/data/projects.ts</span></td>
+                <td>Project data</td>
+                <td>Project details, tech stacks, metrics, links</td>
+            </tr>
+        </table>
+
+        <h2 id="blog-management">📝 Blog Management</h2>
+
+        <h3>Adding a New Blog Post</h3>
+        <p>Follow these detailed steps to add a new blog post to your website:</p>
+
+        <div class="step">
+            <h4><span class="step-number">1</span>Plan Your Content</h4>
+            <p>Before writing, prepare:</p>
+            <ul>
+                <li><strong>Title:</strong> Clear, descriptive, SEO-friendly</li>
+                <li><strong>Category:</strong> Choose from Learning, Analytics, Web3, Tutorial, or AI</li>
+                <li><strong>Tags:</strong> 3-5 relevant keywords for searchability</li>
+                <li><strong>Slug:</strong> URL-friendly version (lowercase, hyphens)</li>
+                <li><strong>Summary:</strong> 1-2 compelling sentences</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h4><span class="step-number">2</span>Add Blog Metadata</h4>
+            <p>Open <span class="file-path">src/data/blog-posts.ts</span> and add your post to the <code>blogPosts</code> array:</p>
+            
+            <div class="code-block">
+export const blogPosts: BlogPost[] = [
+  // ... existing posts ...
+  
+  {
+    title: "Advanced SQL Techniques for Blockchain Analysis",
+    summary: "Learn advanced SQL patterns and techniques specifically designed for analyzing blockchain data. From window functions to complex joins, master the queries that power Web3 analytics.",
+    date: "Jan 15, 2025", // Format: "MMM DD, YYYY"
+    readTime: "12 min read", // Estimate: ~100-150 words per minute
+    tags: ["SQL", "Blockchain", "Analytics", "Advanced", "Tutorial"],
+    slug: "advanced-sql-blockchain-analysis", // Must be unique!
+    category: "Tutorial", // Must match blogCategories
+    featured: true, // Set to true for homepage feature
+    author: { name: "Data Analyst" }
+  }
+]
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Important Notes:</strong>
+                <ul>
+                    <li><strong>Slug must be unique</strong> - Check existing slugs first</li>
+                    <li><strong>Category must exist</strong> - Use only: "Learning", "Analytics", "Web3", "Tutorial", "AI"</li>
+                    <li><strong>Date format matters</strong> - Use "MMM DD, YYYY" (e.g., "Jan 15, 2025")</li>
+                    <li><strong>Comma placement</strong> - Don't forget commas between objects</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <h4><span class="step-number">3</span>Add Blog Content</h4>
+            <p>Open <span class="file-path">src/data/blog-content.ts</span> and add your full article content:</p>
+            
+            <div class="code-block">
+export const blogContent: { [key: string]: string } = {
+  // ... existing content ...
+  
+  "advanced-sql-blockchain-analysis": `# Advanced SQL Techniques for Blockchain Analysis
+
+Blockchain data analysis requires specialized SQL techniques that go beyond traditional database querying. In this comprehensive guide, we'll explore advanced patterns specifically designed for Web3 analytics.
+
+## Understanding Blockchain Data Structure
+
+Before diving into advanced queries, it's crucial to understand how blockchain data is structured:
+
+### Transaction Tables
+- **tx_hash**: Unique transaction identifier
+- **block_number**: Block containing the transaction  
+- **from_address**: Sender address
+- **to_address**: Recipient address
+- **value**: Transaction value in Wei
+- **gas_used**: Gas consumed by transaction
+
+### Block Tables
+- **block_number**: Sequential block identifier
+- **block_timestamp**: When block was mined
+- **block_hash**: Unique block identifier
+- **miner**: Address that mined the block
+
+## Advanced SQL Patterns for Blockchain
+
+### 1. Window Functions for Time Series Analysis
+
+Window functions are essential for analyzing trends over time:
+
+\`\`\`sql
+-- Calculate 7-day moving average of daily transaction volume
+SELECT 
+    DATE(block_timestamp) as date,
+    COUNT(*) as daily_transactions,
+    AVG(COUNT(*)) OVER (
+        ORDER BY DATE(block_timestamp) 
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) as seven_day_avg
+FROM ethereum.transactions
+WHERE block_timestamp >= '2024-01-01'
+GROUP BY DATE(block_timestamp)
+ORDER BY date;
+\`\`\`
+
+### 2. Recursive CTEs for Address Tracing
+
+Track fund flows through multiple addresses:
+
+\`\`\`sql
+WITH RECURSIVE address_trace AS (
+    -- Base case: starting address
+    SELECT 
+        from_address,
+        to_address,
+        value,
+        tx_hash,
+        1 as hop_count
+    FROM ethereum.transactions 
+    WHERE from_address = '0x...' -- Starting address
+    
+    UNION ALL
+    
+    -- Recursive case: follow the chain
+    SELECT 
+        t.from_address,
+        t.to_address,
+        t.value,
+        t.tx_hash,
+        at.hop_count + 1
+    FROM ethereum.transactions t
+    JOIN address_trace at ON t.from_address = at.to_address
+    WHERE at.hop_count < 10 -- Prevent infinite recursion
+)
+SELECT * FROM address_trace
+ORDER BY hop_count, value DESC;
+\`\`\`
+
+### 3. Advanced Aggregations for DeFi Analysis
+
+Analyze liquidity pool performance:
+
+\`\`\`sql
+-- Calculate impermanent loss for Uniswap V2 positions
+SELECT 
+    pool_address,
+    provider_address,
+    -- Calculate IL using price ratios
+    (sqrt(price_ratio) * 2 / (1 + price_ratio)) - 1 as impermanent_loss,
+    total_fees_earned,
+    net_result
+FROM (
+    SELECT 
+        pool_address,
+        provider_address,
+        (token1_price_end / token1_price_start) / 
+        (token0_price_end / token0_price_start) as price_ratio,
+        SUM(fees_token0 + fees_token1) as total_fees_earned,
+        -- Additional calculations here
+    FROM uniswap_v2.liquidity_positions lp
+    JOIN price_feeds p0 ON lp.token0 = p0.token_address
+    JOIN price_feeds p1 ON lp.token1 = p1.token_address
+    GROUP BY pool_address, provider_address
+) subquery;
+\`\`\`
+
+## Performance Optimization Tips
+
+### Indexing Strategies
+For blockchain queries, proper indexing is crucial:
+
+1. **Composite indexes** on (block_number, transaction_index)
+2. **Hash indexes** for address lookups  
+3. **Time-based partitioning** for historical data
+
+### Query Optimization
+- Use `LIMIT` with large result sets
+- Avoid `SELECT *` - specify needed columns
+- Use EXISTS instead of IN for subqueries
+- Consider materialized views for complex aggregations
+
+## Common Blockchain Analysis Queries
+
+### Daily Active Users
+\`\`\`sql
+SELECT 
+    DATE(block_timestamp) as date,
+    COUNT(DISTINCT from_address) as active_users
+FROM ethereum.transactions
+WHERE block_timestamp >= '2024-01-01'
+GROUP BY DATE(block_timestamp);
+\`\`\`
+
+### Top Token Holders
+\`\`\`sql
+SELECT 
+    holder_address,
+    SUM(token_balance) as total_balance,
+    RANK() OVER (ORDER BY SUM(token_balance) DESC) as rank
+FROM token_balances
+WHERE token_address = '0x...' -- Specific token
+GROUP BY holder_address
+HAVING SUM(token_balance) > 0
+ORDER BY total_balance DESC
+LIMIT 100;
+\`\`\`
+
+### MEV Detection
+\`\`\`sql
+-- Detect potential sandwich attacks
+WITH sandwich_candidates AS (
+    SELECT 
+        block_number,
+        transaction_index,
+        from_address,
+        to_address,
+        LEAD(from_address) OVER (PARTITION BY block_number ORDER BY transaction_index) as next_from,
+        LAG(from_address) OVER (PARTITION BY block_number ORDER BY transaction_index) as prev_from
+    FROM ethereum.transactions
+    WHERE to_address IN (SELECT pool_address FROM dex_pools)
+)
+SELECT *
+FROM sandwich_candidates
+WHERE from_address = next_from 
+   OR from_address = prev_from;
+\`\`\`
+
+## Tools and Resources
+
+### Essential Tools
+- **Dune Analytics**: Browser-based SQL editor with blockchain data
+- **BigQuery**: Google's data warehouse with crypto datasets  
+- **The Graph**: GraphQL APIs for blockchain data
+- **Flipside Crypto**: SQL platform with curated blockchain datasets
+
+### Learning Resources
+- Dune Analytics documentation and community queries
+- Ethereum data structure documentation
+- SQL performance tuning guides
+- Blockchain analytics case studies
+
+## Conclusion
+
+Mastering advanced SQL for blockchain analysis opens up powerful possibilities for Web3 insights. These techniques form the foundation for building sophisticated analytics dashboards and conducting deep protocol research.
+
+The key is to understand both the SQL capabilities and the unique structure of blockchain data. Practice with real datasets and gradually build complexity in your queries.
+
+*Ready to dive deeper? Try implementing these patterns with your favorite blockchain dataset and share your discoveries!*
+`
+}
+            </div>
+
+            <div class="info">
+                <strong>💡 Content Writing Tips:</strong>
+                <ul>
+                    <li>Use Markdown syntax for formatting</li>
+                    <li>Include code examples with syntax highlighting</li>
+                    <li>Add practical examples and real-world applications</li>
+                    <li>Use headings (##) to structure content</li>
+                    <li>Include blockquotes (>) for important callouts</li>
+                    <li>Add links to relevant resources</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <h4><span class="step-number">4</span>Test and Publish</h4>
+            <ol>
+                <li>Save both files</li>
+                <li>Run <code>npm run dev</code> to test locally</li>
+                <li>Check that your post appears in the blog list</li>
+                <li>Verify the post content loads correctly</li>
+                <li>Test search and filtering functionality</li>
+                <li>Commit and deploy your changes</li>
+            </ol>
+        </div>
+
+        <h3>Editing Existing Blog Posts</h3>
+        <div class="step">
+            <h4>To Update Metadata:</h4>
+            <ol>
+                <li>Find your post in <span class="file-path">src/data/blog-posts.ts</span></li>
+                <li>Update the relevant fields (title, summary, tags, etc.)</li>
+                <li>Save the file</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h4>To Update Content:</h4>
+            <ol>
+                <li>Find your post slug in <span class="file-path">src/data/blog-content.ts</span></li>
+                <li>Update the Markdown content</li>
+                <li>Save the file</li>
+            </ol>
+        </div>
+
+        <h3>Deleting Blog Posts</h3>
+        <div class="warning">
+            <strong>⚠️ Before Deleting:</strong>
+            <p>Consider the SEO impact of removing content. You might want to redirect old URLs or update content instead of deleting.</p>
+        </div>
+
+        <ol>
+            <li>Remove the post object from <span class="file-path">src/data/blog-posts.ts</span></li>
+            <li>Remove the corresponding entry from <span class="file-path">src/data/blog-content.ts</span></li>
+            <li>Test to ensure no broken links exist</li>
+        </ol>
+
+        <h2 id="portfolio-management">💼 Portfolio Management</h2>
+
+        <h3>Adding a New Project</h3>
+        <p>Projects showcase your work and skills. Here's how to add them:</p>
+
+        <div class="step">
+            <h4><span class="step-number">1</span>Gather Project Information</h4>
+            <p>Before adding a project, collect:</p>
+            <ul>
+                <li><strong>Project name and description</strong></li>
+                <li><strong>Technologies used</strong></li>
+                <li><strong>Category</strong> (Analytics, Smart Contracts, Infrastructure, etc.)</li>
+                <li><strong>Current status</strong> (Live, Development, Beta)</li>
+                <li><strong>Demo and GitHub URLs</strong></li>
+                <li><strong>Key metrics</strong> (users, performance, volume, etc.)</li>
+                <li><strong>Screenshots or mockups</strong></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h4><span class="step-number">2</span>Add Project Data</h4>
+            <p>Open <span class="file-path">src/data/projects.ts</span> and add your project:</p>
+
+            <div class="code-block">
+export const projects: Project[] = [
+  // ... existing projects ...
+  
+  {
+    title: "DeFi Portfolio Rebalancer",
+    description: "Automated portfolio rebalancing tool that monitors DeFi positions across multiple protocols and executes rebalancing trades when allocations drift beyond target thresholds. Features risk management, gas optimization, and integration with major DEXs.",
+    tech: ["Python", "Web3.py", "FastAPI", "PostgreSQL", "Redis", "React"],
+    category: "DeFi",
+    status: "Live" as const, // Must include "as const"
+    demoUrl: "https://defi-rebalancer.example.com",
+    githubUrl: "https://github.com/username/defi-rebalancer",
+    metrics: {
+      volume: "$500K+", // Total volume processed
+      users: "250+", // Active users
+      performance: "15.2%" // Average annual return
+    },
+    featured: true // Show prominently on homepage
+  }
+]
+            </div>
+        </div>
+
+        <h3>Project Categories</h3>
+        <p>Choose the most appropriate category for your project:</p>
+
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Example Projects</th>
+            </tr>
+            <tr>
+                <td><strong>Analytics</strong></td>
+                <td>Data analysis tools and dashboards</td>
+                <td>Transaction analyzers, market research tools</td>
+            </tr>
+            <tr>
+                <td><strong>Smart Contracts</strong></td>
+                <td>Solidity contracts and DApps</td>
+                <td>DeFi protocols, NFT contracts, DAOs</td>
+            </tr>
+            <tr>
+                <td><strong>Infrastructure</strong></td>
+                <td>Backend systems and APIs</td>
+                <td>Data pipelines, indexers, APIs</td>
+            </tr>
+            <tr>
+                <td><strong>AI x Web3</strong></td>
+                <td>Machine learning meets blockchain</td>
+                <td>Price prediction, fraud detection, AI trading</td>
+            </tr>
+            <tr>
+                <td><strong>DeFi</strong></td>
+                <td>Decentralized finance applications</td>
+                <td>DEXs, lending protocols, yield farming</td>
+            </tr>
+            <tr>
+                <td><strong>Dashboards</strong></td>
+                <td>Visualization and monitoring tools</td>
+                <td>Analytics dashboards, monitoring systems</td>
+            </tr>
+            <tr>
+                <td><strong>Learning</strong></td>
+                <td>Educational or practice projects</td>
+                <td>Tutorials, proof-of-concepts, experiments</td>
+            </tr>
+        </table>
+
+        <h3>Project Status Options</h3>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>When to Use</th>
+                <th>Display</th>
+            </tr>
+            <tr>
+                <td><code>"Live"</code></td>
+                <td>Production ready, users can access</td>
+                <td>Green badge</td>
+            </tr>
+            <tr>
+                <td><code>"Development"</code></td>
+                <td>Currently being built, not yet ready</td>
+                <td>Blue badge</td>
+            </tr>
+            <tr>
+                <td><code>"Beta"</code></td>
+                <td>Testing phase, limited access</td>
+                <td>Orange badge</td>
+            </tr>
+        </table>
+
+        <h3>Writing Effective Project Descriptions</h3>
+        <div class="success">
+            <strong>✅ Good Description Example:</strong>
+            <p>"Automated yield farming strategy optimizer that analyzes 50+ DeFi protocols to find optimal yield opportunities. Features real-time gas cost optimization, smart contract interaction, and risk assessment algorithms. Helped users achieve 18.5% average APY while minimizing impermanent loss exposure."</p>
+        </div>
+
+        <div class="warning">
+            <strong>❌ Poor Description Example:</strong>
+            <p>"A DeFi app I built using React and Solidity."</p>
+        </div>
+
+        <div class="info">
+            <strong>📝 Description Best Practices:</strong>
+            <ul>
+                <li>Start with what the project does</li>
+                <li>Mention key features and benefits</li>
+                <li>Include specific metrics when possible</li>
+                <li>Highlight technical challenges solved</li>
+                <li>Keep it between 50-150 words</li>
+                <li>Use active voice</li>
+                <li>Avoid too much technical jargon</li>
+            </ul>
+        </div>
+
+        <h3>Metrics Guidelines</h3>
+        <p>Choose 2-3 relevant metrics that showcase your project's impact:</p>
+
+        <table>
+            <tr>
+                <th>Metric Type</th>
+                <th>Examples</th>
+                <th>Use Cases</th>
+            </tr>
+            <tr>
+                <td><strong>User Metrics</strong></td>
+                <td>users: "1,500+", signups: "500+"</td>
+                <td>User-facing applications</td>
+            </tr>
+            <tr>
+                <td><strong>Volume Metrics</strong></td>
+                <td>volume: "$2.5M+", transactions: "50K+"</td>
+                <td>Financial applications, DEXs</td>
+            </tr>
+            <tr>
+                <td><strong>Performance Metrics</strong></td>
+                <td>performance: "99.9%", speed: "< 100ms"</td>
+                <td>Infrastructure, APIs, systems</td>
+            </tr>
+            <tr>
+                <td><strong>Accuracy Metrics</strong></td>
+                <td>accuracy: "87.3%", precision: "92.1%"</td>
+                <td>AI/ML projects, predictions</td>
+            </tr>
+            <tr>
+                <td><strong>Scale Metrics</strong></td>
+                <td>contracts: "200+", chains: "5+"</td>
+                <td>Multi-chain, enterprise projects</td>
+            </tr>
+        </table>
+
+        <h2 id="file-structure">📂 File Structure</h2>
+        <p>Understanding your project structure helps with navigation and troubleshooting:</p>
+
+        <div class="code-block">
+web3-portfolio/
+├── src/
+│   ├── app/
+│   │   ├── blog/
+│   │   │   ├── page.tsx              # Blog listing page
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx          # Individual blog posts
+│   │   ├── portfolio/
+│   │   │   └── page.tsx              # Portfolio listing page
+│   │   └── ...
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── blog-card.tsx         # Blog post cards
+│   │   │   ├── project-card.tsx      # Project cards
+│   │   │   └── markdown-renderer.tsx # Renders blog content
+│   │   └── ...
+│   ├── data/                         # 🎯 YOUR CONTENT FILES
+│   │   ├── blog-posts.ts             # Blog metadata
+│   │   ├── blog-content.ts           # Blog content (Markdown)
+│   │   └── projects.ts               # Project data
+│   └── ...
+├── public/                           # Static assets
+│   ├── images/                       # Project screenshots, etc.
+│   └── ...
+├── CONTENT.md                        # Content management guide
+├── Portfolio-Content-Management-Guide.html # This guide
+└── ...
+        </div>
+
+        <div class="info">
+            <strong>💡 Key Points:</strong>
+            <ul>
+                <li>Only edit files in <span class="file-path">src/data/</span> for content changes</li>
+                <li>UI components automatically update when data changes</li>
+                <li>Images go in <span class="file-path">public/images/</span></li>
+                <li>Blog content is written in Markdown format</li>
+            </ul>
+        </div>
+
+        <h2 id="templates">📋 Templates & Examples</h2>
+
+        <h3>Blog Post Template</h3>
+        <div class="code-block">
+// Add to blog-posts.ts
+{
+  title: "Your Blog Post Title Here",
+  summary: "A compelling 1-2 sentence summary that will make people want to read more. Make it descriptive and engaging.",
+  date: "Jan 20, 2025", // Today's date in MMM DD, YYYY format
+  readTime: "8 min read", // Estimate: ~150 words per minute
+  tags: ["Primary-Tag", "Secondary-Tag", "Tool-Used", "Concept", "Level"],
+  slug: "your-post-url-slug-here", // Lowercase, hyphens, no spaces
+  category: "Tutorial", // Learning, Analytics, Web3, Tutorial, AI
+  featured: false, // true for homepage feature
+  author: { name: "Data Analyst" }
+}
+
+// Add to blog-content.ts
+"your-post-url-slug-here": `# Your Blog Post Title Here
+
+Brief introduction paragraph that hooks the reader and explains what they'll learn.
+
+## Main Section Heading
+
+### Subsection
+
+Content goes here. You can include:
+
+- Bullet points
+- **Bold text** and *italic text*
+- [Links to resources](https://example.com)
+
+### Code Examples
+
+\`\`\`python
+# Python code with syntax highlighting
+def analyze_blockchain_data():
+    # Your code here
+    return results
+\`\`\`
+
+### Important Callouts
+
+> Use blockquotes for important information, tips, or warnings.
+
+## Conclusion
+
+Wrap up your post with key takeaways and next steps.
+
+*Questions or feedback? Let me know what topics you'd like to see next!*
+`
+        </div>
+
+        <h3>Project Template</h3>
+        <div class="code-block">
+{
+  title: "Your Project Name",
+  description: "Detailed description explaining what the project does, key features, technologies used, and impact achieved. Include specific benefits and technical challenges solved. Aim for 50-150 words that clearly communicate value.",
+  tech: [
+    "Primary-Language", // e.g., "Python", "TypeScript", "Solidity"
+    "Framework", // e.g., "React", "FastAPI", "Next.js"
+    "Database", // e.g., "PostgreSQL", "MongoDB", "Redis"
+    "Blockchain", // e.g., "Ethereum", "Polygon", "Arbitrum"
+    "Tools" // e.g., "Docker", "AWS", "The Graph"
+  ],
+  category: "Analytics", // See category table above
+  status: "Live" as const, // "Live", "Development", or "Beta"
+  demoUrl: "https://your-demo-url.com", // Use "#" if no demo
+  githubUrl: "https://github.com/username/repo", // Use "#" if private
+  metrics: {
+    // Choose 2-3 most relevant metrics
+    users: "1,200+", // For user-facing apps
+    volume: "$50K+", // For financial apps
+    performance: "99.5%" // For infrastructure
+  },
+  featured: false // true to highlight on homepage
+}
+        </div>
+
+        <h3>Content Ideas by Category</h3>
+
+        <h4>Learning Posts</h4>
+        <ul>
+            <li>"My First Week with [New Tool/Technology]"</li>
+            <li>"Mistakes I Made Learning [Technology]"</li>
+            <li>"From Zero to [Skill] in 30 Days"</li>
+            <li>"Resources That Helped Me Master [Concept]"</li>
+        </ul>
+
+        <h4>Tutorial Posts</h4>
+        <ul>
+            <li>"Step-by-Step Guide to [Process]"</li>
+            <li>"Building Your First [Type of Project]"</li>
+            <li>"How to [Solve Specific Problem]"</li>
+            <li>"Complete Beginner's Guide to [Topic]"</li>
+        </ul>
+
+        <h4>Analytics Posts</h4>
+        <ul>
+            <li>"Analyzing [Protocol/Market] Data"</li>
+            <li>"Key Metrics for [Industry/Sector]"</li>
+            <li>"Data Insights from [Recent Event]"</li>
+            <li>"Comparing [Technology A] vs [Technology B]"</li>
+        </ul>
+
+        <h2 id="troubleshooting">🔧 Troubleshooting</h2>
+
+        <h3>Common Issues and Solutions</h3>
+
+        <h4>Blog Post Not Showing Up</h4>
+        <div class="warning">
+            <strong>Possible Causes:</strong>
+            <ul>
+                <li>Slug is not unique (duplicate of existing post)</li>
+                <li>Category doesn't match available categories</li>
+                <li>Missing required fields in metadata</li>
+                <li>Syntax error in TypeScript files</li>
+                <li>Content not added to blog-content.ts</li>
+            </ul>
+        </div>
+
+        <div class="success">
+            <strong>Solutions:</strong>
+            <ol>
+                <li>Check browser console for errors</li>
+                <li>Verify all required fields are filled</li>
+                <li>Ensure slug is unique and matches between files</li>
+                <li>Validate category against available options</li>
+                <li>Check for missing commas or brackets</li>
+                <li>Run <code>npm run build</code> to check for TypeScript errors</li>
+            </ol>
+        </div>
+
+        <h4>Project Card Not Displaying Correctly</h4>
+        <div class="warning">
+            <strong>Possible Causes:</strong>
+            <ul>
+                <li>Status not typed as const (missing "as const")</li>
+                <li>Category doesn't exist</li>
+                <li>Malformed metrics object</li>
+                <li>Missing required fields</li>
+            </ul>
+        </div>
+
+        <h4>Build Errors</h4>
+        <div class="code-block">
+# Common build commands for troubleshooting
+npm run build          # Check for TypeScript errors
+npm run dev            # Start development server
+npm run lint           # Check for linting issues
+        </div>
+
+        <h3>Validation Checklist</h3>
+        <p>Before publishing, verify:</p>
+
+        <h4>For Blog Posts:</h4>
+        <ul>
+            <li>✅ Title is clear and descriptive</li>
+            <li>✅ Summary is compelling (1-2 sentences)</li>
+            <li>✅ Date follows "MMM DD, YYYY" format</li>
+            <li>✅ Slug is unique and URL-friendly</li>
+            <li>✅ Category exists in blogCategories</li>
+            <li>✅ Tags are relevant and searchable</li>
+            <li>✅ Content is added to blog-content.ts</li>
+            <li>✅ Markdown formatting is correct</li>
+            <li>✅ Links work and open correctly</li>
+        </ul>
+
+        <h4>For Projects:</h4>
+        <ul>
+            <li>✅ Title is professional and clear</li>
+            <li>✅ Description explains value and impact</li>
+            <li>✅ Tech stack is accurate and current</li>
+            <li>✅ Category matches project type</li>
+            <li>✅ Status includes "as const"</li>
+            <li>✅ URLs work (use "#" if none)</li>
+            <li>✅ Metrics are relevant and impressive</li>
+            <li>✅ All commas and brackets are correct</li>
+        </ul>
+
+        <h2 id="best-practices">⭐ Best Practices</h2>
+
+        <h3>Content Strategy</h3>
+        <div class="success">
+            <h4>📝 Writing Tips</h4>
+            <ul>
+                <li><strong>Start with value</strong> - What will readers gain?</li>
+                <li><strong>Use active voice</strong> - More engaging and direct</li>
+                <li><strong>Include examples</strong> - Code, screenshots, real data</li>
+                <li><strong>Structure clearly</strong> - Headers, bullets, short paragraphs</li>
+                <li><strong>End with action</strong> - Next steps, questions, calls to action</li>
+            </ul>
+        </div>
+
+        <h3>SEO Optimization</h3>
+        <ul>
+            <li><strong>Keywords in title</strong> - Include terms people search for</li>
+            <li><strong>Descriptive URLs</strong> - Slugs should be readable</li>
+            <li><strong>Meta descriptions</strong> - Summary serves as meta description</li>
+            <li><strong>Internal linking</strong> - Link between related posts</li>
+            <li><strong>Tag consistency</strong> - Use consistent tag naming</li>
+        </ul>
+
+        <h3>Technical Best Practices</h3>
+        <ul>
+            <li><strong>Version control</strong> - Commit content changes regularly</li>
+            <li><strong>Backup data</strong> - Keep copies of your content files</li>
+            <li><strong>Test locally</strong> - Always preview before publishing</li>
+            <li><strong>Monitor performance</strong> - Check loading times</li>
+            <li><strong>Mobile responsive</strong> - Test on different devices</li>
+        </ul>
+
+        <h3>Content Maintenance</h3>
+        <ul>
+            <li><strong>Regular updates</strong> - Keep project statuses current</li>
+            <li><strong>Link checking</strong> - Verify external links work</li>
+            <li><strong>Content freshness</strong> - Update outdated information</li>
+            <li><strong>Performance metrics</strong> - Update project metrics regularly</li>
+            <li><strong>Categorization</strong> - Review and refine categories as needed</li>
+        </ul>
+
+        <h3>Publishing Schedule</h3>
+        <div class="info">
+            <strong>💡 Recommended Cadence:</strong>
+            <ul>
+                <li><strong>Blog posts:</strong> 1-2 per month minimum</li>
+                <li><strong>Project updates:</strong> As completed or milestones reached</li>
+                <li><strong>Content review:</strong> Quarterly cleanup and updates</li>
+                <li><strong>Analytics review:</strong> Monthly performance check</li>
+            </ul>
+        </div>
+
+        <div class="success">
+            <h3>🎯 Quick Start Checklist</h3>
+            <p>Ready to add your first content? Follow this checklist:</p>
+            <ol>
+                <li>□ Read this guide completely</li>
+                <li>□ Plan your content (topic, category, tags)</li>
+                <li>□ Add metadata to appropriate data file</li>
+                <li>□ Add content (for blog posts)</li>
+                <li>□ Test locally with <code>npm run dev</code></li>
+                <li>□ Verify content displays correctly</li>
+                <li>□ Check all links and formatting</li>
+                <li>□ Commit and deploy changes</li>
+                <li>□ Share your new content!</li>
+            </ol>
+        </div>
+
+        <hr style="margin: 40px 0; border: 1px solid #e2e8f0;">
+        
+        <div style="text-align: center; color: #64748b; margin-top: 30px;">
+            <p><strong>Portfolio Content Management Guide</strong></p>
+            <p>Created for easy content management | Last updated: December 2024</p>
+            <p>Keep this guide handy for reference when updating your portfolio!</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+'use client'
+
+import { useState } from 'react'
+
+interface FormData {
+  name: string
+  email: string
+  company?: string
+  projectType: string
+  budget: string
+  timeline: string
+  message: string
+}
+
+export function ContactForm() {
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    company: '',
+    projectType: 'data-analysis',
+    budget: 'learning',
+    timeline: '1-3-months',
+    message: ''
+  })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errors, setErrors] = useState<Partial<FormData>>({})
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormData> = {}
+    
+    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.email.trim()) newErrors.email = 'Email is required'
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid'
+    if (!formData.message.trim()) newErrors.message = 'Message is required'
+    else if (formData.message.length < 20) newErrors.message = 'Message must be at least 20 characters'
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!validateForm()) return
+    
+    setIsSubmitting(true)
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+    
+    // Reset form after success
+    setTimeout(() => {
+      setIsSubmitted(false)
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        projectType: 'data-analysis',
+        budget: 'learning',
+        timeline: '1-3-months',
+        message: ''
+      })
+    }, 3000)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    // Clear error when user starts typing
+    if (errors[name as keyof FormData]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }))
+    }
+  }
+
+  const projectTypes = [
+    { value: 'data-analysis', label: 'Data Analysis', icon: '📊' },
+    { value: 'dune-dashboard', label: 'Dune Dashboard', icon: '📈' },
+    { value: 'learning-collab', label: 'Learning Collaboration', icon: '🎓' },
+    { value: 'research', label: 'Research Project', icon: '🔬' },
+    { value: 'defi-analysis', label: 'DeFi Analysis', icon: '💰' },
+    { value: 'statistical-study', label: 'Statistical Study', icon: '📋' },
+    { value: 'portfolio-tracking', label: 'Portfolio Tracking', icon: '📱' },
+    { value: 'other', label: 'Other', icon: '💭' }
+  ]
+
+  const budgetRanges = [
+    { value: 'learning', label: 'Learning/Free' },
+    { value: 'under-1k', label: 'Under $1k' },
+    { value: '1k-5k', label: '$1k - $5k' },
+    { value: '5k-10k', label: '$5k - $10k' },
+    { value: '10k-plus', label: '$10k+' },
+    { value: 'discuss', label: 'Let\'s discuss' }
+  ]
+
+  const timeframes = [
+    { value: 'urgent', label: 'ASAP (Rush job)' },
+    { value: '1-month', label: '1 month' },
+    { value: '1-3-months', label: '1-3 months' },
+    { value: '3-6-months', label: '3-6 months' },
+    { value: '6-plus-months', label: '6+ months' },
+    { value: 'flexible', label: 'Flexible' }
+  ]
+
+  if (isSubmitted) {
+    return (
+      <div className="text-center p-12 rounded-2xl bg-gradient-to-br from-green-500/10 to-cyber-500/10 border border-green-500/20">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center text-white text-2xl">
+          ✓
+        </div>
+        <h3 className="text-2xl font-bold text-foreground mb-4">Message Sent Successfully!</h3>
+        <p className="text-foreground/70 mb-6">
+          Thanks for reaching out! I'll get back to you within 24 hours to discuss your project.
+        </p>
+        <div className="text-sm text-foreground/60">
+          Expect a response from: hello@web3portfolio.dev
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Basic Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+            Name *
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border ${
+              errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+            } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+            placeholder="Your full name"
+            disabled={isSubmitting}
+          />
+          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+            Email *
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border ${
+              errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+            } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+            placeholder="your.email@example.com"
+            disabled={isSubmitting}
+          />
+          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+        </div>
+      </div>
+
+      {/* Company (Optional) */}
+      <div>
+        <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
+          Company / Organization
+        </label>
+        <input
+          type="text"
+          id="company"
+          name="company"
+          value={formData.company}
+          onChange={handleChange}
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+          placeholder="Your company or DAO name (optional)"
+          disabled={isSubmitting}
+        />
+      </div>
+
+      {/* Project Type */}
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-4">
+          Project Type *
+        </label>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {projectTypes.map((type) => (
+            <label
+              key={type.value}
+              className={`relative cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
+                formData.projectType === type.value
+                  ? 'border-cyber-500 bg-cyber-500/10 text-cyber-500'
+                  : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+              }`}
+            >
+              <input
+                type="radio"
+                name="projectType"
+                value={type.value}
+                checked={formData.projectType === type.value}
+                onChange={handleChange}
+                className="sr-only"
+                disabled={isSubmitting}
+              />
+              <div className="text-center space-y-2">
+                <div className="text-2xl">{type.icon}</div>
+                <div className="text-xs font-medium">{type.label}</div>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Budget and Timeline */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">
+            Budget Range
+          </label>
+          <select
+            id="budget"
+            name="budget"
+            value={formData.budget}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            disabled={isSubmitting}
+          >
+            {budgetRanges.map((range) => (
+              <option key={range.value} value={range.value}>
+                {range.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="timeline" className="block text-sm font-medium text-foreground mb-2">
+            Timeline
+          </label>
+          <select
+            id="timeline"
+            name="timeline"
+            value={formData.timeline}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            disabled={isSubmitting}
+          >
+            {timeframes.map((time) => (
+              <option key={time.value} value={time.value}>
+                {time.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Message */}
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+          Project Details *
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          rows={6}
+          className={`w-full px-4 py-3 rounded-lg border ${
+            errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+          } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200 resize-none`}
+          placeholder="Tell me about your project, goals, and any specific requirements..."
+          disabled={isSubmitting}
+        />
+        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
+        <p className="mt-2 text-xs text-foreground/60">
+          Minimum 20 characters. The more details you provide, the better I can help!
+        </p>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className={`w-full px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
+          isSubmitting
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-gradient-to-r from-primary-500 to-cyber-500 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
+        }`}
+      >
+        {isSubmitting && (
+          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin inline-block mr-3"></div>
+        )}
+        {isSubmitting ? 'Sending Message...' : 'Send Message 🚀'}
+      </button>
+
+      {/* Privacy Note */}
+      <p className="text-xs text-foreground/50 text-center">
+        Your information is secure and will never be shared. I typically respond within 24 hours.
+      </p>
+    </form>
+  )
+}
