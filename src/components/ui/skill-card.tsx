@@ -9,10 +9,24 @@ interface SkillCardProps {
   color: string
   gradient: string
   description: string
+  level?: 'Learning' | 'Proficient' | 'Advanced'
+  progress?: number
 }
 
-export function SkillCard({ title, skills, icon, color, gradient, description }: SkillCardProps) {
+export function SkillCard({ title, skills, icon, color, gradient, description, level = 'Advanced', progress = 90 }: SkillCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  
+  const getWidthClass = (progress: number) => {
+    if (progress >= 90) return 'w-[90%]'
+    if (progress >= 85) return 'w-[85%]'
+    if (progress >= 80) return 'w-[80%]'
+    if (progress >= 70) return 'w-[70%]'
+    if (progress >= 60) return 'w-[60%]'
+    if (progress >= 50) return 'w-[50%]'
+    if (progress >= 40) return 'w-[40%]'
+    if (progress >= 30) return 'w-[30%]'
+    return 'w-[20%]'
+  }
 
   return (
     <div 
@@ -80,12 +94,12 @@ export function SkillCard({ title, skills, icon, color, gradient, description }:
               color === 'cyber-500' ? 'text-cyber-500' :
               color === 'primary-500' ? 'text-primary-500' :
               'text-purple-500'
-            }`}>Expert</span>
+            }`}>{level}</span>
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
             <div 
               className={`h-full rounded-full transition-all duration-1000 ${
-                isHovered ? 'w-[90%]' : 'w-0'
+                isHovered ? getWidthClass(progress) : 'w-0'
               } ${
                 color === 'cyber-500' ? 'bg-gradient-to-r from-cyber-500 to-cyber-500/70' :
                 color === 'primary-500' ? 'bg-gradient-to-r from-primary-500 to-primary-500/70' :

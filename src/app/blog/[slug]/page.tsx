@@ -3,28 +3,10 @@
 import { notFound } from 'next/navigation'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import Link from 'next/link'
-import { blogPosts } from '@/data/blog-posts'
-import { blogContent } from '@/data/blog-content'
-
-// Get blog post data from imported files
-const getBlogPost = (slug: string) => {
-  // Find the blog post metadata
-  const postMeta = blogPosts.find(post => post.slug === slug)
-  if (!postMeta) return null
-  
-  // Get the full content for this post
-  const postContent = blogContent[slug]
-  if (!postContent) return null
-  
-  // Combine metadata with content
-  return {
-    ...postMeta,
-    content: postContent
-  }
-}
+import { blogService } from '@/lib/blog-service'
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
-  const post = getBlogPost(params.slug)
+  const post = blogService.getPostBySlug(params.slug)
 
   if (!post) {
     return notFound()
@@ -60,6 +42,17 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               {post.title}
             </h1>
+
+            {/* Featured Image */}
+            {post.featuredImage && (
+              <div className="w-full h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                <img 
+                  src={post.featuredImage} 
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
 
             {/* Summary */}
             <p className="text-xl text-foreground/70 leading-relaxed max-w-3xl">
@@ -119,12 +112,26 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             </Link>
             
             <div className="flex items-center space-x-4">
-              <button className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+              <button 
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: post.title,
+                      url: window.location.href
+                    })
+                  } else {
+                    navigator.clipboard.writeText(window.location.href)
+                  }
+                }}
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200"
+              >
                 Share Article
               </button>
-              <button className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 transition-colors duration-200">
-                Subscribe
-              </button>
+              <Link href="/contact">
+                <button className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 transition-colors duration-200">
+                  Subscribe
+                </button>
+              </Link>
             </div>
           </div>
         </div>

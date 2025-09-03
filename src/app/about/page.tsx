@@ -1,87 +1,95 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
+
+export const metadata: Metadata = {
+  title: "About | Web3 Data Analyst Journey from Traditional to Blockchain Analytics",
+  description: "Learn about my transition from traditional data analytics (Python, SQL, Excel) to Web3 blockchain analytics (Dune Analytics, DeFi protocols). 3+ years experience in statistical modeling, now building expertise in on-chain data analysis and smart contract analysis.",
+  keywords: ["About Web3 Data Analyst", "Career Transition", "Traditional Analytics to Web3", "Python SQL Experience", "Dune Analytics Learning", "DeFi Protocol Analysis", "Statistical Modeling", "Blockchain Data Analysis"],
+}
 
 export default function About() {
   const skills = [
     {
       title: 'Core Data Analytics',
-      description: 'Python & SQL Foundation',
+      description: 'Advanced • 3+ Years Experience',
       icon: '📊',
       color: 'primary-500',
       gradient: 'from-primary-500/20 to-primary-500/5',
+      level: 'Advanced' as const,
+      progress: 85,
       skills: [
-        'Python for Data Analysis',
-        'SQL Database Querying',
-        'Data Visualization (Matplotlib, Seaborn)',
-        'Pandas & NumPy Libraries',
-        'Excel & Statistical Analysis'
+        'Python for Data Analysis (Advanced)',
+        'SQL Database Querying (Advanced)',
+        'Data Visualization (Proficient)',
+        'Pandas & NumPy Libraries (Advanced)',
+        'Excel & Statistical Analysis (Advanced)'
       ]
     },
     {
-      title: 'Web3 Analytics (Learning)',
-      description: 'Blockchain Data Exploration',
-      icon: '⚡',
+      title: 'Web3 Analytics',
+      description: 'Learning • Active Projects',
+      icon: '📊',
       color: 'cyber-500',
       gradient: 'from-cyber-500/20 to-cyber-500/5',
+      level: 'Learning' as const,
+      progress: 40,
       skills: [
-        'Dune Analytics Dashboards',
-        'On-chain Data Queries',
-        'Solidity Basics',
-        'Blockchain Data Structures',
-        'DeFi Protocol Analysis'
+        'Dune Analytics Dashboards (Proficient)',
+        'On-chain Data Queries (Learning)',
+        'Solidity Basics (Learning)',
+        'Blockchain Data Structures (Learning)',
+        'DeFi Protocol Analysis (Learning)'
       ]
     },
     {
-      title: 'Statistical Analysis & AI',
-      description: 'Statistical Modeling',
+      title: 'Statistical Analysis & ML',
+      description: 'Proficient • Applied Experience',
       icon: '🔬',
       color: 'purple-500',
       gradient: 'from-purple-500/20 to-purple-500/5',
+      level: 'Proficient' as const,
+      progress: 70,
       skills: [
-        'Statistical Modeling',
-        'Predictive Analytics',
-        'Regression Analysis',
-        'A/B Testing & Hypothesis Testing',
-        'Basic Machine Learning (Scikit-learn)'
+        'Statistical Modeling (Proficient)',
+        'Predictive Analytics (Proficient)',
+        'Regression Analysis (Advanced)',
+        'A/B Testing & Hypothesis Testing (Proficient)',
+        'Machine Learning (Learning)'
       ]
     }
   ]
 
   const journey = [
     {
-      year: '2020',
-      title: 'Started Data Analysis Career',
-      description: 'Began working as a data analyst in traditional finance, mastering Python and SQL',
+      year: '2022',
+      title: 'Entered Data Analytics',
+      description: 'Began learning Python, SQL, and Excel; built first projects in traditional analytics',
       icon: '📊'
     },
     {
-      year: '2021',
+      year: '2023',
       title: 'Advanced Analytics Skills',
-      description: 'Developed expertise in statistical modeling and predictive analytics',
+      description: 'Expanded into predictive modeling, regression, A/B testing, and visualization (Matplotlib, Seaborn, PowerBI)',
       icon: '📈'
     },
     {
-      year: '2022',
-      title: 'Discovered Blockchain',
-      description: 'First exposure to blockchain technology and cryptocurrency markets',
+      year: '2024',
+      title: 'Exploring Blockchain Concepts',
+      description: 'Studied DeFi mechanics, tokenomics, and blockchain fundamentals; prepared for transition into on-chain data analytics',
       icon: '🔍'
     },
     {
-      year: '2023',
-      title: 'Web3 Learning Journey',
-      description: 'Started learning Dune Analytics and exploring on-chain data analysis',
-      icon: '🌱'
-    },
-    {
-      year: '2024',
-      title: 'Solidity & DeFi Study',
-      description: 'Currently learning Solidity basics and studying DeFi protocol mechanics',
-      icon: '⚡'
-    },
-    {
       year: '2025',
-      title: 'Career Transition Goal',
-      description: 'Actively seeking opportunities in Web3 data analytics and blockchain research',
+      title: 'Active Web3 Analytics Projects',
+      description: 'Building Dune dashboards and Flipside queries to analyze wallet behaviors, DeFi protocols, and NFT markets. Created portfolio of case studies and dashboards',
+      icon: '📈'
+    },
+    {
+      year: 'Future',
+      title: 'Web3 Data & AI Specialist Goal',
+      description: 'Secure Web3 Data Analytics role or freelance projects. Build advanced dashboards and publish insights in DeFi analytics',
       icon: '🎯'
     }
   ]
@@ -127,52 +135,23 @@ export default function About() {
                   <h2 className="text-3xl font-bold text-foreground mb-6">My Story</h2>
                   <div className="space-y-6 text-lg text-foreground/80 leading-relaxed">
                     <p>
-                      I'm a <span className="text-cyber-500 font-medium">data analyst transitioning from Web2 to Web3</span>, 
-                      bringing strong foundations in Python, SQL, and statistical analysis to the blockchain space. 
-                      My journey started with traditional data analytics in finance, where I developed expertise 
-                      in data visualization, statistical modeling, and predictive analytics.
+                      I'm a data analyst transitioning from Web2 to Web3, with strong foundations in Python, SQL, and statistical modeling. 
+                      I began my analytics journey in 2022, building skills in data querying, visualization, and predictive analytics. 
+                      By 2023, I had advanced into statistical modeling, regression analysis, and machine learning applications, 
+                      applying analytics to solve real-world problems in traditional finance.
                     </p>
                     <p>
-                      Currently, I'm expanding my skills into <span className="text-primary-500 font-medium">blockchain 
-                      data analysis</span> through platforms like Dune Analytics, while learning Solidity basics 
-                      and exploring DeFi protocols. I'm particularly interested in how traditional statistical 
-                      methods can be applied to on-chain data and tokenomics analysis.
+                      In 2024, I became fascinated by blockchain's open datasets and began studying DeFi protocols, smart contracts, and tokenomics. 
+                      This curiosity led me to start hands-on Web3 analytics projects in 2025. For example, I built an 
+                      <span className="text-primary-500 font-medium"> Ethereum gas price dashboard</span> that identified 20% cost savings opportunities, 
+                      and created <span className="text-cyber-500 font-medium">8 Dune Analytics dashboards</span> tracking over $100M in DeFi volumes.
                     </p>
                     <p>
-                      My goal is to become proficient in <span className="text-purple-500 font-medium">Web3 analytics</span> 
-                      by combining my existing data science skills with blockchain-specific knowledge. I'm eager 
-                      to contribute to projects that need both traditional analytical rigor and Web3 innovation.
+                      Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior, DeFi activity, and NFT markets, 
+                      while also learning Solidity basics to deepen my understanding of blockchain data structures. 
+                      My goal is to establish myself as a <span className="text-purple-500 font-medium">Web3 Data & AI Specialist</span>, 
+                      bridging the rigor of traditional analytics with the transparency and innovation of blockchain data.
                     </p>
-                  </div>
-                </div>
-
-                {/* Values */}
-                <div className="p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-cyber-500/5 backdrop-blur-sm">
-                  <h3 className="text-2xl font-bold text-foreground mb-6">Core Values</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    {[
-                      { 
-                        icon: '🔍', 
-                        title: 'Transparency', 
-                        description: 'Open-source mindset with verifiable results' 
-                      },
-                      { 
-                        icon: '🌐', 
-                        title: 'Decentralization', 
-                        description: 'Empowering distributed systems and communities' 
-                      },
-                      { 
-                        icon: '⚡', 
-                        title: 'Innovation', 
-                        description: 'Pushing boundaries with cutting-edge solutions' 
-                      }
-                    ].map((value, index) => (
-                      <div key={index} className="text-center space-y-3">
-                        <div className="text-3xl">{value.icon}</div>
-                        <h4 className="text-lg font-semibold text-foreground">{value.title}</h4>
-                        <p className="text-sm text-foreground/70">{value.description}</p>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -253,12 +232,16 @@ export default function About() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
-                Start a Project
-              </button>
-              <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
-                Download Resume
-              </button>
+              <Link href="/contact">
+                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+                  Start a Project
+                </button>
+              </Link>
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
+                  Download Resume
+                </button>
+              </a>
             </div>
           </div>
         </div>

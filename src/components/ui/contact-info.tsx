@@ -21,7 +21,11 @@ export function ContactInfo() {
       title: 'Email',
       value: 'hello@web3portfolio.dev',
       description: 'Preferred for business inquiries',
-      icon: '📧',
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
       color: 'cyber-500',
       action: 'mailto:hello@web3portfolio.dev'
     },
@@ -30,7 +34,11 @@ export function ContactInfo() {
       title: 'Telegram',
       value: '@web3_developer',
       description: 'Quick responses, available 9AM-6PM UTC',
-      icon: '✈️',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+      ),
       color: 'sky-500',
       action: 'https://t.me/web3_developer'
     },
@@ -39,7 +47,11 @@ export function ContactInfo() {
       title: 'Schedule Call',
       value: 'calendly.com/web3dev',
       description: '30-min strategy sessions available',
-      icon: '📅',
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ),
       color: 'purple-500',
       action: 'https://calendly.com/web3dev'
     }
@@ -67,9 +79,33 @@ export function ContactInfo() {
   ]
 
   const responseTime = [
-    { type: 'Email', time: '< 24 hours', icon: '📧' },
-    { type: 'Telegram', time: '< 2 hours', icon: '✈️' },
-    { type: 'Emergency', time: '< 30 mins', icon: '🚨' }
+    { 
+      type: 'Email', 
+      time: '< 24 hours', 
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      )
+    },
+    { 
+      type: 'Telegram', 
+      time: '< 2 hours', 
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+      )
+    },
+    { 
+      type: 'Emergency', 
+      time: '< 30 mins', 
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        </svg>
+      )
+    }
   ]
 
   return (
@@ -91,7 +127,13 @@ export function ContactInfo() {
               }`}
             >
               <div className="flex items-start space-x-4">
-                <div className="text-3xl">{method.icon}</div>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-200 ${
+                  method.color === 'cyber-500' ? 'bg-cyber-500/10 text-cyber-500 group-hover:bg-cyber-500/20' :
+                  method.color === 'sky-500' ? 'bg-sky-500/10 text-sky-500 group-hover:bg-sky-500/20' :
+                  'bg-purple-500/10 text-purple-500 group-hover:bg-purple-500/20'
+                }`}>
+                  {method.icon}
+                </div>
                 
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
@@ -149,7 +191,11 @@ export function ContactInfo() {
       {/* Location & Availability */}
       <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-cyber-500/5 backdrop-blur-sm">
         <div className="flex items-center space-x-2 mb-6">
-          <span className="text-2xl">🌍</span>
+          <div className="w-6 h-6 text-primary-500">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
           <h4 className="text-lg font-bold text-foreground">Location & Availability</h4>
         </div>
         
@@ -196,7 +242,11 @@ export function ContactInfo() {
       {/* Response Time */}
       <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/30 backdrop-blur-sm">
         <div className="flex items-center space-x-2 mb-6">
-          <span className="text-2xl">⚡</span>
+          <div className="w-6 h-6 text-cyber-500">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
           <h4 className="text-lg font-bold text-foreground">Response Times</h4>
         </div>
         
@@ -213,8 +263,10 @@ export function ContactInfo() {
 
       {/* Consultation Offer */}
       <div className="p-8 rounded-2xl bg-gradient-to-br from-cyber-500/10 to-primary-500/10 border border-gray-200/50 dark:border-gray-800/50 text-center">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-2xl">
-          🎯
+        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white">
+          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+          </svg>
         </div>
         
         <h4 className="text-xl font-bold text-foreground mb-4">
@@ -227,7 +279,10 @@ export function ContactInfo() {
         </p>
         
         <div className="space-y-4">
-          <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+          <button 
+            onClick={() => window.open('https://calendly.com/web3dev', '_blank')}
+            className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30"
+          >
             Schedule Free Call
           </button>
           

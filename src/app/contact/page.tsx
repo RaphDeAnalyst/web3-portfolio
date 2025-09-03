@@ -3,6 +3,7 @@
 import { ContactForm } from '@/components/ui/contact-form'
 import { ContactInfo } from '@/components/ui/contact-info'
 import { SocialLinks } from '@/components/ui/social-links'
+import { AvailabilityCalendar } from '@/components/ui/availability-calendar'
 
 export default function Contact() {
   return (
@@ -48,6 +49,21 @@ export default function Contact() {
                 </div>
                 <ContactForm />
               </div>
+
+              {/* Availability Calendar Section */}
+              <div className="p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-foreground mb-4">
+                    Check My <span className="text-gradient">Availability</span>
+                  </h2>
+                  <p className="text-foreground/70 leading-relaxed">
+                    See my real-time availability and book a consultation call. 
+                    <span className="text-cyber-500 font-medium"> Hover over any date</span> to see available time slots, 
+                    or <span className="text-primary-500 font-medium"> click to book</span> directly.
+                  </p>
+                </div>
+                <AvailabilityCalendar />
+              </div>
             </div>
 
             {/* Contact Info - Takes 1 column */}
@@ -65,73 +81,68 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Success Stories */}
+      {/* Learning & Growth Focus */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-              What Clients <span className="text-gradient">Say</span>
+              My <span className="text-gradient">Approach</span>
             </h2>
             <p className="text-xl text-foreground/70">
-              Success stories from Web3 projects I've helped build
+              How I approach projects and collaborations in Web3 analytics
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: "Sarah Chen",
-                role: "DeFi Protocol Founder",
-                company: "LiquidityDAO",
-                testimonial: "The analytics dashboard completely transformed how we understand our users. ROI was visible within the first month.",
-                project: "DeFi Analytics Platform",
-                result: "300% increase in user insights"
+                icon: null,
+                title: "Data-Driven Analysis",
+                description: "I bring rigorous statistical methods from traditional analytics to Web3 data, ensuring insights are backed by solid methodology.",
+                approach: "Statistical rigor meets blockchain transparency",
+                example: "Gas price analysis with 50K+ data points"
               },
               {
-                name: "Marcus Rodriguez",
-                role: "CTO",
-                company: "BlockVentures",
-                testimonial: "Smart contract security audit caught 3 critical vulnerabilities that could have cost us millions. Exceptional attention to detail.",
-                project: "Smart Contract Audit",
-                result: "Prevented $2M+ in potential losses"
+                icon: null,
+                title: "Visual Storytelling",
+                description: "Complex blockchain data becomes accessible through clear visualizations and interactive dashboards that stakeholders can understand.",
+                approach: "Transform complexity into clarity",
+                example: "Dune dashboards with 500+ community views"
               },
               {
-                name: "Elena Kowalski",
-                role: "Head of Data",
-                company: "CryptoAnalytica",
-                testimonial: "AI prediction models achieved 78% accuracy on price movements. The technical implementation was flawless.",
-                project: "AI Price Prediction System", 
-                result: "78% prediction accuracy"
+                icon: null,
+                title: "Continuous Learning",
+                description: "I'm actively expanding my Web3 knowledge while leveraging existing analytics expertise, documenting the learning journey transparently.",
+                approach: "Traditional skills + Web3 innovation",
+                example: "Building portfolio while mastering Solidity"
               }
-            ].map((testimonial, index) => (
-              <div key={index} className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
-                <div className="mb-4">
-                  <div className="flex items-center space-x-1 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-sm">⭐</span>
-                    ))}
+            ].map((item, index) => (
+              <div key={index} className="group p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm hover:bg-background/70 transition-all duration-300">
+                <div className="text-center mb-4">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
+                    {item.icon}
                   </div>
-                  <p className="text-foreground/80 italic leading-relaxed text-sm">
-                    "{testimonial.testimonial}"
+                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary-500 transition-colors duration-200">
+                    {item.title}
+                  </h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm mb-4">
+                    {item.description}
                   </p>
                 </div>
                 
-                <div className="border-t border-gray-200/30 dark:border-gray-800/30 pt-4">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold text-sm">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground text-sm">{testimonial.name}</div>
-                      <div className="text-xs text-foreground/60">{testimonial.role}, {testimonial.company}</div>
-                    </div>
+                <div className="border-t border-gray-200/30 dark:border-gray-800/30 pt-4 space-y-3">
+                  <div>
+                    <div className="text-xs text-primary-500 font-medium uppercase tracking-wide">Approach</div>
+                    <div className="text-sm text-foreground/90 font-medium">{item.approach}</div>
                   </div>
-                  
-                  <div className="space-y-1">
-                    <div className="text-xs text-primary-500 font-medium">{testimonial.project}</div>
-                    <div className="text-xs text-cyber-500 font-bold">{testimonial.result}</div>
+                  <div>
+                    <div className="text-xs text-cyber-500 font-medium uppercase tracking-wide">Example</div>
+                    <div className="text-sm text-foreground/80">{item.example}</div>
                   </div>
                 </div>
+
+                {/* Hover Effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
@@ -143,7 +154,9 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
             <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-3xl">
-              🚀
+              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
             </div>
             
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">

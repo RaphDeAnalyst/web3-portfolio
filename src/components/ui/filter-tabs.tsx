@@ -15,7 +15,7 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
   const categoryIcons = {
     'All': '🌟',
     'Analytics': '📊',
-    'Smart Contracts': '⚡',
+    'Smart Contracts': '📜',
     'Dashboards': '📈',
     'AI x Web3': '🤖',
     'DeFi': '💎',
@@ -49,7 +49,7 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
             className={`relative group px-6 py-3 rounded-full font-medium transition-all duration-300 ${
               isActive
                 ? `bg-${color}/20 text-${color} border-2 border-${color}/40 shadow-lg shadow-${color}/20`
-                : 'bg-background/50 text-foreground/70 border-2 border-gray-200/50 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-700'
+                : 'bg-background/50 text-foreground/70 border-2 border-border hover:border-border-hover'
             } backdrop-blur-sm`}
           >
             {/* Background glow effect */}
@@ -68,7 +68,7 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
               <div className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${
                 isActive 
                   ? `bg-${color}/30 text-${color}`
-                  : 'bg-gray-200/80 dark:bg-gray-700/80 text-foreground/60'
+                  : 'bg-muted text-foreground/60'
               } transition-colors duration-300`}>
                 {count}
               </div>

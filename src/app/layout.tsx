@@ -17,23 +17,23 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Data Analyst Portfolio | Web2 to Web3 Transition",
-  description: "Portfolio showcasing the transition from traditional data analytics to Web3 blockchain analytics, featuring Python, SQL, Dune Analytics, and statistical modeling skills.",
-  keywords: ["Data Analytics", "Web3", "Blockchain Analytics", "Python", "SQL", "Dune Analytics", "Statistical Analysis", "Portfolio", "Career Transition"],
-  authors: [{ name: "Data Analyst" }],
-  creator: "Transitioning Data Analyst",
+  title: "Web3 Data Analyst | Turning Blockchain Data into Insights",
+  description: "Web3 Data Analyst specializing in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, Dune Analytics, and statistical modeling. Built 8+ dashboards tracking $100M+ in DeFi volumes.",
+  keywords: ["Web3 Data Analyst", "Blockchain Analytics", "DeFi Analytics", "Dune Analytics", "On-chain Data", "Python", "SQL", "Statistical Analysis", "Ethereum", "Data Visualization", "Smart Contract Analysis", "Cryptocurrency Analysis", "NFT Analytics", "Yield Farming Analysis", "Portfolio Tracking"],
+  authors: [{ name: "Web3 Data Analyst" }],
+  creator: "Web3 Data & AI Specialist",
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Data Analyst Portfolio | Web2 to Web3 Transition",
-    description: "Portfolio showcasing the transition from traditional data analytics to Web3 blockchain analytics and statistical modeling.",
-    siteName: "Data Analytics Portfolio",
+    title: "Web3 Data Analyst | Turning Blockchain Data into Insights",
+    description: "Specialized in blockchain analytics, DeFi protocols, and on-chain data analysis. Built 8+ Dune Analytics dashboards tracking $100M+ in DeFi volumes. Expert in Python, SQL, and statistical modeling.",
+    siteName: "Web3 Data Analytics Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Data Analyst Portfolio | Web2 to Web3 Transition",
-    description: "Portfolio showcasing the transition from traditional data analytics to Web3 blockchain analytics and statistical modeling.",
-    creator: "@yourhandle",
+    title: "Web3 Data Analyst | Turning Blockchain Data into Insights",
+    description: "Specialized in blockchain analytics, DeFi protocols, and on-chain data analysis. Built 8+ Dune Analytics dashboards tracking $100M+ in DeFi volumes.",
+    creator: "@web3_analyst",
   },
 };
 

@@ -1,0 +1,257 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { projects } from '@/data/projects'
+import { ActivityService } from '@/lib/activity-service'
+
+export default function ProjectsManagement() {
+  const [projectList, setProjectList] = useState(projects)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterCategory, setFilterCategory] = useState('all')
+
+  const categories = Array.from(new Set(projects.map(project => project.category)))
+
+  const filteredProjects = projectList.filter(project => {
+    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         project.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = filterCategory === 'all' || project.category === filterCategory
+    return matchesSearch && matchesCategory
+  })
+
+  const handleDeleteProject = (index: number) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      setProjectList(projectList.filter((_, i) => i !== index))
+      // In a real app, you'd make an API call here
+      console.log('Project deleted:', index)
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Live': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+      case 'Complete': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+      case 'Development': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+      case 'Learning': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+      case 'Beta': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
+    }
+  }
+
+
+  const statsData = {
+    total: projectList.length,
+    completed: projectList.filter(p => p.status === 'Complete' || p.status === 'Live').length,
+    inProgress: projectList.filter(p => p.status === 'Development').length,
+    planning: projectList.filter(p => p.status === 'Learning').length
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Projects</h1>
+          <p className="text-foreground/70 mt-1">Manage your portfolio projects</p>
+        </div>
+        <Link
+          href="/admin/projects/new"
+          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
+        >
+          <span>💼</span>
+          <span>New Project</span>
+        </Link>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">Total Projects</p>
+              <p className="text-2xl font-bold text-foreground">{statsData.total}</p>
+            </div>
+            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-blue-500 text-xl">💼</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">Completed</p>
+              <p className="text-2xl font-bold text-foreground">{statsData.completed}</p>
+            </div>
+            <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-green-500 text-xl">✅</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">In Progress</p>
+              <p className="text-2xl font-bold text-foreground">{statsData.inProgress}</p>
+            </div>
+            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-blue-500 text-xl">🔄</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">Categories</p>
+              <p className="text-2xl font-bold text-foreground">{categories.length}</p>
+            </div>
+            <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-purple-500 text-xl">🏷️</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row gap-4 bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="flex-1">
+          <input
+            type="text"
+            placeholder="Search projects..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+          />
+        </div>
+        <div>
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+          >
+            <option value="all">All Categories</option>
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Projects Grid */}
+      {filteredProjects.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project, index) => (
+            <div key={index} className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition-shadow">
+              {/* Project Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h3 className="font-bold text-foreground text-lg mb-2">{project.title}</h3>
+                  <p className="text-foreground/70 text-sm line-clamp-3 mb-3">{project.description}</p>
+                </div>
+              </div>
+
+              {/* Project Details */}
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-foreground/60">Status</span>
+                  <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(project.status)}`}>
+                    {project.status}
+                  </span>
+                </div>
+                
+
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-foreground/60">Category</span>
+                  <span className="text-xs text-foreground">{project.category}</span>
+                </div>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="mb-4">
+                <div className="text-xs text-foreground/60 mb-2">Tech Stack</div>
+                <div className="flex flex-wrap gap-1">
+                  {project.tech?.slice(0, 3).map((tech, index) => (
+                    <span key={index} className="px-2 py-1 bg-cyber-500/10 text-cyber-500 text-xs rounded">
+                      {tech}
+                    </span>
+                  ))}
+                  {project.tech && project.tech.length > 3 && (
+                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-foreground/60 text-xs rounded">
+                      +{project.tech.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+
+              {/* Actions */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
+                <div className="flex space-x-2">
+                  {project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors"
+                      title="View demo"
+                    >
+                      🔗
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                      title="View code"
+                    >
+                      📋
+                    </a>
+                  )}
+                </div>
+                
+                <div className="flex space-x-2">
+                  <Link
+                    href={`/admin/projects/edit/${index}`}
+                    className="p-2 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors"
+                    title="Edit project"
+                  >
+                    ✏️
+                  </Link>
+                  <button
+                    onClick={() => handleDeleteProject(index)}
+                    className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="Delete project"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 bg-background rounded-lg border border-gray-200 dark:border-gray-800">
+          <div className="text-6xl mb-4">💼</div>
+          <h3 className="text-lg font-medium text-foreground mb-2">No projects found</h3>
+          <p className="text-foreground/60 mb-6">
+            {searchTerm || filterCategory !== 'all' 
+              ? 'Try adjusting your search or filters'
+              : 'Get started by adding your first project'
+            }
+          </p>
+          <Link
+            href="/admin/projects/new"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
+          >
+            <span>💼</span>
+            <span>Add First Project</span>
+          </Link>
+        </div>
+      )}
+    </div>
+  )
+}

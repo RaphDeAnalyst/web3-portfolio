@@ -78,14 +78,14 @@ export function ContactForm() {
   }
 
   const projectTypes = [
-    { value: 'data-analysis', label: 'Data Analysis', icon: '📊' },
-    { value: 'dune-dashboard', label: 'Dune Dashboard', icon: '📈' },
-    { value: 'learning-collab', label: 'Learning Collaboration', icon: '🎓' },
-    { value: 'research', label: 'Research Project', icon: '🔬' },
-    { value: 'defi-analysis', label: 'DeFi Analysis', icon: '💰' },
-    { value: 'statistical-study', label: 'Statistical Study', icon: '📋' },
-    { value: 'portfolio-tracking', label: 'Portfolio Tracking', icon: '📱' },
-    { value: 'other', label: 'Other', icon: '💭' }
+    { value: 'data-analysis', label: 'Data Analysis' },
+    { value: 'dune-dashboard', label: 'Dune Dashboard' },
+    { value: 'learning-collab', label: 'Learning Collaboration' },
+    { value: 'research', label: 'Research Project' },
+    { value: 'defi-analysis', label: 'DeFi Analysis' },
+    { value: 'statistical-study', label: 'Statistical Study' },
+    { value: 'portfolio-tracking', label: 'Portfolio Tracking' },
+    { value: 'other', label: 'Other' }
   ]
 
   const budgetRanges = [
@@ -138,8 +138,8 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-            } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+              errors.name ? 'border-red-500' : 'border-border'
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
             placeholder="Your full name"
             disabled={isSubmitting}
           />
@@ -157,8 +157,8 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-            } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+              errors.email ? 'border-red-500' : 'border-border'
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
             placeholder="your.email@example.com"
             disabled={isSubmitting}
           />
@@ -177,7 +177,7 @@ export function ContactForm() {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
           placeholder="Your company or DAO name (optional)"
           disabled={isSubmitting}
         />
@@ -195,7 +195,7 @@ export function ContactForm() {
               className={`relative cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
                 formData.projectType === type.value
                   ? 'border-cyber-500 bg-cyber-500/10 text-cyber-500'
-                  : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+                  : 'border-border hover:border-border-hover'
               }`}
             >
               <input
@@ -227,7 +227,7 @@ export function ContactForm() {
             name="budget"
             value={formData.budget}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
             disabled={isSubmitting}
           >
             {budgetRanges.map((range) => (
@@ -247,7 +247,7 @@ export function ContactForm() {
             name="timeline"
             value={formData.timeline}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
             disabled={isSubmitting}
           >
             {timeframes.map((time) => (
@@ -271,8 +271,8 @@ export function ContactForm() {
           onChange={handleChange}
           rows={6}
           className={`w-full px-4 py-3 rounded-lg border ${
-            errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-          } bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200 resize-none`}
+            errors.message ? 'border-red-500' : 'border-border'
+          } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200 resize-none`}
           placeholder="Tell me about your project, goals, and any specific requirements..."
           disabled={isSubmitting}
         />
@@ -295,7 +295,7 @@ export function ContactForm() {
         {isSubmitting && (
           <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin inline-block mr-3"></div>
         )}
-        {isSubmitting ? 'Sending Message...' : 'Send Message 🚀'}
+        {isSubmitting ? 'Sending Message...' : 'Send Message'}
       </button>
 
       {/* Privacy Note */}

@@ -3,45 +3,122 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light theme colors - HSL format for Tailwind */
+  --background: 0 0% 100%;
+  --background-secondary: 210 40% 98%;
+  --background-tertiary: 210 40% 96%;
+  --foreground: 222 84% 5%;
+  --foreground-secondary: 215 25% 27%;
+  --foreground-tertiary: 215 14% 34%;
+  
+  /* Semantic colors */
+  --border: 214 32% 91%;
+  --border-hover: 214 20% 69%;
+  --card: 0 0% 100%;
+  --card-hover: 210 40% 98%;
+  --muted: 210 40% 96%;
+  --accent: 199 89% 48%;
+  
+  /* Brand colors - keeping hex for compatibility */
   --primary: #0ea5e9;
+  --primary-hover: #0284c7;
   --cyber: #22c55e;
+  --cyber-hover: #16a34a;
   --purple: #a855f7;
+  --purple-hover: #9333ea;
+  
+  /* Theme transition properties */
+  --theme-transition-duration: 200ms;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .light {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 0 0% 100%;
+  --background-secondary: 210 40% 98%;
+  --background-tertiary: 210 40% 96%;
+  --foreground: 222 84% 5%;
+  --foreground-secondary: 215 25% 27%;
+  --foreground-tertiary: 215 14% 34%;
+  --border: 214 32% 91%;
+  --border-hover: 214 20% 69%;
+  --card: 0 0% 100%;
+  --card-hover: 210 40% 98%;
+  --muted: 210 40% 96%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary-500: var(--primary);
-  --color-cyber-500: var(--cyber);
-  --color-purple-500: var(--purple);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark theme - Material Design inspired - HSL format */
+    --background: 0 0% 7%;
+    --background-secondary: 0 0% 12%;
+    --background-tertiary: 0 0% 18%;
+    --foreground: 240 5% 84%;
+    --foreground-secondary: 240 4% 46%;
+    --foreground-tertiary: 240 5% 26%;
+    --border: 240 6% 25%;
+    --border-hover: 240 4% 36%;
+    --card: 0 0% 12%;
+    --card-hover: 0 0% 18%;
+    --muted: 240 4% 16%;
   }
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  /* Dark theme - Material Design inspired with proper contrast ratios - HSL format */
+  --background: 0 0% 7%;
+  --background-secondary: 0 0% 12%;
+  --background-tertiary: 0 0% 18%;
+  --foreground: 240 5% 84%;
+  --foreground-secondary: 240 4% 46%;
+  --foreground-tertiary: 240 5% 26%;
+  --border: 240 6% 25%;
+  --border-hover: 240 4% 36%;
+  --card: 0 0% 12%;
+  --card-hover: 0 0% 18%;
+  --muted: 240 4% 16%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   min-height: 100vh;
+  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
+              color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Smooth transitions for all theme-aware elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: var(--theme-transition-timing);
+  transition-duration: var(--theme-transition-duration);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+
+  .reduce-motion * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* Web3 themed utilities */

@@ -1,18 +1,35 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { BlogCard } from '@/components/ui/blog-card'
 import { NewsletterSignup } from '@/components/ui/newsletter-signup'
-import { blogPosts, blogCategories } from '@/data/blog-posts'
+import { blogService, BlogPostData } from '@/lib/blog-service'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [posts, setPosts] = useState<BlogPostData[]>([])
+  const [categories, setCategories] = useState<string[]>(['All'])
 
-  // Posts are now imported from /src/data/blog-posts.ts
-  const posts = blogPosts
+  useEffect(() => {
+    const loadPosts = () => {
+      const publishedPosts = blogService.getPublishedPosts()
+      setPosts(publishedPosts)
+      
+      const allCategories = ['All', ...blogService.getCategories()]
+      setCategories(allCategories)
+    }
 
-  const categories = blogCategories
+    loadPosts()
+    
+    // Listen for storage changes
+    const handleStorageChange = () => {
+      loadPosts()
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
 
   // Filter posts based on category and search
   const filteredPosts = useMemo(() => {
@@ -29,7 +46,7 @@ export default function Blog() {
     }
 
     return filtered
-  }, [selectedCategory, searchQuery])
+  }, [posts, selectedCategory, searchQuery])
 
   // Calculate category counts
   const categoryCounts = useMemo(() => {
@@ -40,7 +57,7 @@ export default function Blog() {
       }
     })
     return counts
-  }, [])
+  }, [posts, categories])
 
   return (
     <div className="min-h-screen py-20">
@@ -77,10 +94,12 @@ export default function Blog() {
                 placeholder="Search articles, topics, or tags..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200"
+                className="w-full px-6 py-4 pl-12 rounded-2xl border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
-                🔍
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </div>
               {searchQuery && (
                 <button
@@ -102,7 +121,7 @@ export default function Blog() {
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
                   selectedCategory === category
                     ? 'bg-purple-500/20 text-purple-500 border-2 border-purple-500/40'
-                    : 'bg-background/50 text-foreground/70 border-2 border-gray-200/50 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-700'
+                    : 'bg-background/50 text-foreground/70 border-2 border-border hover:border-border-hover'
                 } backdrop-blur-sm`}
               >
                 <span className="flex items-center space-x-2">
@@ -110,7 +129,7 @@ export default function Blog() {
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
                     selectedCategory === category 
                       ? 'bg-purple-500/30 text-purple-500'
-                      : 'bg-gray-200/80 dark:bg-gray-700/80 text-foreground/60'
+                      : 'bg-muted text-foreground/60'
                   }`}>
                     {categoryCounts[category] || 0}
                   </span>
@@ -126,8 +145,8 @@ export default function Blog() {
         <div className="max-w-7xl mx-auto">
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post, index) => (
-                <BlogCard key={index} {...post} />
+              {filteredPosts.map((post) => (
+                <BlogCard key={post.id || post.slug} {...post} />
               ))}
             </div>
           ) : (

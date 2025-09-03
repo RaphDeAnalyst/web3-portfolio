@@ -92,6 +92,29 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Inline code
         formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-cyber-500">$1</code>')
         
+        // Images - check if the line starts with ![
+        if (line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/)) {
+          const imageMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
+          if (imageMatch) {
+            const altText = imageMatch[1]
+            const imageUrl = imageMatch[2]
+            elements.push(
+              <div key={i} className="my-6 text-center">
+                <img 
+                  src={imageUrl} 
+                  alt={altText}
+                  className="max-w-full h-auto rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg mx-auto"
+                  loading="lazy"
+                />
+                {altText && (
+                  <p className="text-sm text-foreground/60 mt-2 italic">{altText}</p>
+                )}
+              </div>
+            )
+            continue
+          }
+        }
+        
         // Links
         formattedLine = formattedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-cyber-500 hover:text-primary-500 underline transition-colors duration-200" target="_blank" rel="noopener noreferrer">$1</a>')
         

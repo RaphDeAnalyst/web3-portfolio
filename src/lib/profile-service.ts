@@ -1,0 +1,162 @@
+export interface ProfileData {
+  name: string
+  title: string
+  bio: string
+  avatar: string
+  email: string
+  location: string
+  website: string
+  github: string
+  twitter: string
+  linkedin: string
+  skills: string[]
+  resume: string
+}
+
+export class ProfileService {
+  private static readonly STORAGE_KEY = 'portfolio-profile'
+
+  // Default profile data
+  private static defaultProfile: ProfileData = {
+    name: 'Data Analyst',
+    title: 'Web3 Data & AI Specialist',
+    bio: 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Passionate about decentralized data and AI-powered blockchain analysis.',
+    avatar: '/avatar.jpg',
+    email: 'your.email@example.com',
+    location: 'Remote',
+    website: '',
+    github: '',
+    twitter: '',
+    linkedin: '',
+    skills: ['Python', 'SQL', 'Dune Analytics', 'Web3', 'Data Analysis', 'Machine Learning'],
+    resume: ''
+  }
+
+  // Get profile data
+  static getProfile(): ProfileData {
+    if (typeof window === 'undefined') {
+      return this.defaultProfile
+    }
+    
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY)
+      if (stored) {
+        return { ...this.defaultProfile, ...JSON.parse(stored) }
+      }
+      return this.defaultProfile
+    } catch {
+      return this.defaultProfile
+    }
+  }
+
+  // Save profile data
+  static saveProfile(profileData: ProfileData): void {
+    if (typeof window === 'undefined') return
+    
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(profileData))
+    } catch (error) {
+      console.error('Failed to save profile:', error)
+      throw new Error('Failed to save profile data')
+    }
+  }
+
+  // Update specific profile field
+  static updateProfileField<K extends keyof ProfileData>(
+    field: K, 
+    value: ProfileData[K]
+  ): void {
+    const profile = this.getProfile()
+    profile[field] = value
+    this.saveProfile(profile)
+  }
+
+  // Get social links with full URLs
+  static getSocialLinks(): Array<{
+    name: string
+    url: string
+    icon: string
+    username: string
+  }> {
+    const profile = this.getProfile()
+    const links = []
+
+    if (profile.github) {
+      links.push({
+        name: 'GitHub',
+        url: `https://github.com/${profile.github}`,
+        icon: '🐙',
+        username: profile.github
+      })
+    }
+
+    if (profile.twitter) {
+      links.push({
+        name: 'Twitter',
+        url: `https://twitter.com/${profile.twitter}`,
+        icon: '𝕏',
+        username: `@${profile.twitter}`
+      })
+    }
+
+    if (profile.linkedin) {
+      links.push({
+        name: 'LinkedIn',
+        url: `https://linkedin.com/in/${profile.linkedin}`,
+        icon: '💼',
+        username: profile.linkedin
+      })
+    }
+
+    if (profile.website) {
+      links.push({
+        name: 'Website',
+        url: profile.website,
+        icon: '🌐',
+        username: profile.website.replace(/^https?:\/\//, '')
+      })
+    }
+
+    return links
+  }
+
+  // Get author info for blog posts
+  static getAuthorInfo(): {
+    name: string
+    avatar: string
+  } {
+    const profile = this.getProfile()
+    return {
+      name: profile.name,
+      avatar: profile.avatar
+    }
+  }
+
+  // Initialize profile with default data if empty
+  static initializeProfile(): void {
+    const existing = this.getProfile()
+    if (JSON.stringify(existing) === JSON.stringify(this.defaultProfile)) {
+      // Profile hasn't been customized yet, just ensure it's saved
+      this.saveProfile(existing)
+    }
+  }
+
+  // Export profile data
+  static exportProfile(): string {
+    return JSON.stringify(this.getProfile(), null, 2)
+  }
+
+  // Import profile data
+  static importProfile(profileJson: string): void {
+    try {
+      const profileData = JSON.parse(profileJson) as ProfileData
+      // Validate the data has required fields
+      if (!profileData.name || !profileData.title) {
+        throw new Error('Invalid profile data')
+      }
+      this.saveProfile({ ...this.defaultProfile, ...profileData })
+    } catch (error) {
+      throw new Error('Failed to import profile data')
+    }
+  }
+}

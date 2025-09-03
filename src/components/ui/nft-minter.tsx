@@ -113,7 +113,10 @@ export function NFTMinter() {
           Your {nftDesigns[selectedDesign].name} has been minted and sent to your wallet.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button className="px-6 py-3 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-colors duration-200">
+          <button 
+            onClick={() => window.open('https://opensea.io', '_blank')}
+            className="px-6 py-3 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-colors duration-200"
+          >
             View on OpenSea
           </button>
           <button 

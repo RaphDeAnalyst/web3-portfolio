@@ -12,8 +12,8 @@ export function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
     { name: 'Portfolio', href: '/portfolio' },
+    { name: 'About', href: '/about' },
     { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ]
@@ -38,13 +38,13 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-primary-500/30">
-                <span className="text-white font-bold text-lg">⚡</span>
+                <span className="text-white font-bold text-lg">W3</span>
               </div>
               <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-cyber-500 rounded-xl blur opacity-25 group-hover:opacity-75 transition-opacity duration-200"></div>
             </div>
             <div className="hidden sm:block">
               <div className="text-xl font-bold text-gradient">Data Analytics</div>
-              <div className="text-xs text-foreground/60 -mt-1">Web2 → Web3 Transition</div>
+              <div className="text-xs text-foreground/60 -mt-1">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
             </div>
           </Link>
 

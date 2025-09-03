@@ -111,7 +111,11 @@ export default function Portfolio() {
           
           {filteredProjects.length === 0 && (
             <div className="text-center py-20">
-              <div className="text-6xl mb-4">🔍</div>
+              <div className="w-16 h-16 mx-auto mb-4 text-foreground/40">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">No projects found</h3>
               <p className="text-foreground/60 mb-8">Try selecting a different category or adjusting your search.</p>
               <button 

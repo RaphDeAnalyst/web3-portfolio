@@ -10,7 +10,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Web3 themed colors
+        // CSS Custom Property based colors for theme switching
+        background: {
+          DEFAULT: 'hsl(var(--background))',
+          secondary: 'hsl(var(--background-secondary))',
+          tertiary: 'hsl(var(--background-tertiary))'
+        },
+        foreground: {
+          DEFAULT: 'hsl(var(--foreground))',
+          secondary: 'hsl(var(--foreground-secondary))',
+          tertiary: 'hsl(var(--foreground-tertiary))'
+        },
+        border: {
+          DEFAULT: 'hsl(var(--border))',
+          hover: 'hsl(var(--border-hover))'
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          hover: 'hsl(var(--card-hover))'
+        },
+        muted: 'hsl(var(--muted))',
+        accent: 'hsl(var(--accent))',
+        
+        // Web3 themed colors - keeping existing structure
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',

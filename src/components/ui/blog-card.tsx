@@ -15,6 +15,7 @@ interface BlogCardProps {
     name: string
     avatar?: string
   }
+  featuredImage?: string
   image?: string
   category: string
 }
@@ -28,6 +29,7 @@ export function BlogCard({
   slug, 
   featured = false,
   author,
+  featuredImage,
   image,
   category
 }: BlogCardProps) {
@@ -66,12 +68,12 @@ export function BlogCard({
         )}
 
         {/* Article Image */}
-        {(image || featured) && (
+        {(featuredImage || image || featured) && (
           <div className={`relative ${featured ? 'h-64 mb-6' : 'h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
-            {image ? (
+            {(featuredImage || image) ? (
               <>
                 <img 
-                  src={image} 
+                  src={featuredImage || image} 
                   alt={title}
                   className={`w-full h-full object-cover transition-all duration-300 ${
                     imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
@@ -88,7 +90,7 @@ export function BlogCard({
               <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center space-y-4">
                   <div className={`w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} to-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/70 flex items-center justify-center text-white text-2xl`}>
-                    {category === 'Web3' && '⚡'}
+                    {category === 'Web3' && '🌐'}
                     {category === 'AI' && '🤖'}
                     {category === 'Analytics' && '📊'}
                     {category === 'DeFi' && '💎'}
