@@ -192,6 +192,16 @@ export default function AdminDashboard() {
             </button>
           </Link>
           
+          <Link href="/admin/availability">
+            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-500/5 transition-colors group">
+              <span className="text-2xl group-hover:scale-110 transition-transform">📅</span>
+              <div className="text-left">
+                <div className="font-medium text-foreground">Manage Availability</div>
+                <div className="text-sm text-foreground/60">Set consultation times and schedule</div>
+              </div>
+            </button>
+          </Link>
+          
           <Link href="/admin/profile">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-green-500 hover:bg-green-500/5 transition-colors group">
               <span className="text-2xl group-hover:scale-110 transition-transform">👤</span>

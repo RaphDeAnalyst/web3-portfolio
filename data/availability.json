@@ -1,0 +1,36 @@
+[
+  {
+    "date": "2025-09-04",
+    "status": "available",
+    "slots": [
+      {
+        "start": "09:00",
+        "end": "12:00",
+        "timezone": "UTC"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00",
+        "timezone": "UTC"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael/consultation"
+  },
+  {
+    "date": "2025-09-02",
+    "status": "unavailable",
+    "slots": [
+      {
+        "start": "09:00",
+        "end": "12:00",
+        "timezone": "UTC"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00",
+        "timezone": "UTC"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael/consultation"
+  }
+]

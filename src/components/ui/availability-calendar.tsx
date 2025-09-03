@@ -1,20 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-
-interface TimeSlot {
-  start: string // "09:00"
-  end: string   // "17:00"
-  timezone: string // "UTC"
-}
-
-interface DayAvailability {
-  date: string // "2025-01-15"
-  status: 'available' | 'limited' | 'busy' | 'unavailable'
-  slots: TimeSlot[]
-  bookingUrl?: string
-  notes?: string
-}
+import { AvailabilityService, TimeSlot, DayAvailability } from '@/lib/availability-service'
 
 interface TooltipData {
   day: DayAvailability
@@ -26,83 +13,44 @@ export function AvailabilityCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [hoveredDate, setHoveredDate] = useState<TooltipData | null>(null)
   const [showTooltip, setShowTooltip] = useState(false)
-  
-  // Sample availability data - in a real app, this would come from an API
-  const sampleAvailability: DayAvailability[] = [
-    // January 2025 sample data
-    {
-      date: '2025-01-06',
-      status: 'available',
-      slots: [
-        { start: '09:00', end: '12:00', timezone: 'UTC' },
-        { start: '14:00', end: '17:00', timezone: 'UTC' }
-      ],
-      bookingUrl: 'https://calendly.com/web3dev/consultation'
-    },
-    {
-      date: '2025-01-07',
-      status: 'limited',
-      slots: [
-        { start: '10:00', end: '11:30', timezone: 'UTC' }
-      ],
-      bookingUrl: 'https://calendly.com/web3dev/consultation'
-    },
-    {
-      date: '2025-01-08',
-      status: 'busy',
-      slots: [],
-      notes: 'Client project deadline'
-    },
-    {
-      date: '2025-01-09',
-      status: 'available',
-      slots: [
-        { start: '09:00', end: '12:00', timezone: 'UTC' },
-        { start: '13:00', end: '16:00', timezone: 'UTC' }
-      ],
-      bookingUrl: 'https://calendly.com/web3dev/consultation'
-    },
-    {
-      date: '2025-01-10',
-      status: 'available',
-      slots: [
-        { start: '08:00', end: '11:00', timezone: 'UTC' },
-        { start: '15:00', end: '18:00', timezone: 'UTC' }
-      ],
-      bookingUrl: 'https://calendly.com/web3dev/consultation'
+  const [availabilityData, setAvailabilityData] = useState<DayAvailability[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch availability data from API
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      try {
+        const response = await fetch('/api/availability')
+        if (response.ok) {
+          const data = await response.json()
+          setAvailabilityData(data)
+        }
+      } catch (error) {
+        console.error('Error fetching availability:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
-  ]
+
+    fetchAvailability()
+  }, [])
 
   // Get availability for a specific date
   const getAvailabilityForDate = (date: Date): DayAvailability => {
-    const dateStr = date.toISOString().split('T')[0]
-    const availability = sampleAvailability.find(a => a.date === dateStr)
+    // Use local date to avoid timezone issues
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const dateStr = `${year}-${month}-${day}`
     
-    if (availability) return availability
+    const savedAvailability = availabilityData.find(a => a.date === dateStr)
     
-    // Default availability for dates not specified
-    const dayOfWeek = date.getDay()
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-    const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-    
-    if (isPast) {
-      return { date: dateStr, status: 'unavailable', slots: [] }
+    if (savedAvailability) {
+      return savedAvailability
     }
     
-    if (isWeekend) {
-      return { date: dateStr, status: 'limited', slots: [{ start: '14:00', end: '16:00', timezone: 'UTC' }] }
-    }
-    
-    // Default weekday availability
-    return {
-      date: dateStr,
-      status: 'available',
-      slots: [
-        { start: '09:00', end: '12:00', timezone: 'UTC' },
-        { start: '14:00', end: '17:00', timezone: 'UTC' }
-      ],
-      bookingUrl: 'https://calendly.com/web3dev/consultation'
-    }
+    // Fallback to service default logic for dates not explicitly set
+    return AvailabilityService.getDefaultAvailability(date)
   }
 
   // Get calendar grid for current month
@@ -237,6 +185,18 @@ export function AvailabilityCalendar() {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="relative max-w-sm mx-auto">
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+          <span className="ml-2 text-foreground/60">Loading availability...</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="relative max-w-sm mx-auto">
       {/* Calendar Header */}
@@ -346,11 +306,15 @@ export function AvailabilityCalendar() {
           {/* Tooltip Content */}
           <div className="bg-card border border-border rounded-lg shadow-xl p-4 min-w-[280px] max-w-[320px]">
             <div className="text-base font-semibold text-foreground mb-3">
-              {new Date(hoveredDate.day.date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-              })}
+              {(() => {
+                const [year, month, day] = hoveredDate.day.date.split('-').map(Number)
+                const date = new Date(year, month - 1, day) // month is 0-indexed
+                return date.toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric'
+                })
+              })()}
             </div>
             
             {hoveredDate.day.slots.length > 0 ? (
