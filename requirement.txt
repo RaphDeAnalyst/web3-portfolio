@@ -1,0 +1,28 @@
+
+  Personal/Professional Details
+
+  1. Your actual name: Matthew Raphael
+  2. Professional email: matthewraphael@matthewraphael.xyz
+  3. Your actual social media handles:
+    - GitHub username: RaphDeAnalayst
+    - Twitter/X handle: @matthew_nnamani
+    - LinkedIn profile URL: https://www.linkedin.com/in/matthew_matthew-nnamani
+    - Dune Analytics: https://dune.com/raphdeanalyst
+    Remove Telegram for now
+  4. Your actual location: Working Globally
+  5. Your actual Calendly URL: I will open Calendly with this email (matthewraphael@matthewraphael.xyz) and give you later, just remind me
+
+ 
+  Contact Form Service
+
+  For your contact form to work, choose one:
+  - Formspree (easiest) - formspree.io
+  - EmailJS (client-side) - emailjs.com
+
+  Analytics
+
+  - Google Analytics 4 for website tracking
+
+  Deployment
+
+  - Vercel for hosting (free, perfect for Next.js)
