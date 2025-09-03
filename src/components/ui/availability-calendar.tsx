@@ -145,9 +145,24 @@ export function AvailabilityCalendar() {
   const handleDateMouseEnter = (day: Date, event: React.MouseEvent) => {
     const availability = getAvailabilityForDate(day)
     const rect = event.currentTarget.getBoundingClientRect()
+    const tooltipWidth = 280
+    const tooltipHeight = 180
     
-    const x = rect.right + 10
-    const y = rect.top + (rect.height / 2)
+    let x = rect.right + 10
+    let y = rect.top + (rect.height / 2)
+    
+    // Keep tooltip within viewport bounds
+    if (x + tooltipWidth > window.innerWidth) {
+      x = rect.left - tooltipWidth - 10
+    }
+    
+    if (y + tooltipHeight / 2 > window.innerHeight) {
+      y = window.innerHeight - tooltipHeight - 10
+    }
+    
+    if (y - tooltipHeight / 2 < 0) {
+      y = tooltipHeight / 2 + 10
+    }
     
     setHoveredDate({
       day: availability,
@@ -187,7 +202,7 @@ export function AvailabilityCalendar() {
     const isToday = day.toDateString() === new Date().toDateString()
     const isPast = day < new Date(new Date().setHours(0, 0, 0, 0))
     
-    let classes = 'relative w-full h-12 flex items-center justify-center text-sm font-medium rounded-lg transition-all duration-200 '
+    let classes = 'relative w-full h-10 flex items-center justify-center text-sm font-medium rounded transition-all duration-200 '
     
     if (!isCurrentMonth) {
       classes += 'text-foreground/30 '
@@ -223,37 +238,37 @@ export function AvailabilityCalendar() {
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   return (
-    <div className="relative">
+    <div className="relative max-w-sm mx-auto">
       {/* Calendar Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-foreground">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-bold text-foreground">
           {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h3>
         
         <div className="flex items-center space-x-2">
           <button
             onClick={() => navigateMonth('prev')}
-            className="p-2 rounded-lg border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
+            className="p-1.5 rounded border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
             aria-label="Previous month"
           >
-            <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-2 text-sm font-medium rounded-lg border border-border hover:border-primary-500 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
+            className="px-3 py-1.5 text-sm font-medium rounded border border-border hover:border-primary-500 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
           >
             Today
           </button>
           
           <button
             onClick={() => navigateMonth('next')}
-            className="p-2 rounded-lg border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
+            className="p-1.5 rounded border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
             aria-label="Next month"
           >
-            <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -261,26 +276,26 @@ export function AvailabilityCalendar() {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-center space-x-6 mb-6 p-4 rounded-lg bg-muted">
-        <div className="flex items-center space-x-2 text-sm">
-          <div className="w-3 h-3 rounded-full bg-cyber-500"></div>
-          <span className="text-foreground/80">Available</span>
+      <div className="flex items-center justify-center space-x-4 mb-3 p-2 rounded bg-muted">
+        <div className="flex items-center space-x-1">
+          <div className="w-2 h-2 rounded-full bg-cyber-500"></div>
+          <span className="text-sm text-foreground/80">Available</span>
         </div>
-        <div className="flex items-center space-x-2 text-sm">
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <span className="text-foreground/80">Limited</span>
+        <div className="flex items-center space-x-1">
+          <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+          <span className="text-sm text-foreground/80">Limited</span>
         </div>
-        <div className="flex items-center space-x-2 text-sm">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <span className="text-foreground/80">Busy</span>
+        <div className="flex items-center space-x-1">
+          <div className="w-2 h-2 rounded-full bg-red-500"></div>
+          <span className="text-sm text-foreground/80">Busy</span>
         </div>
       </div>
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
-          <div key={day} className="h-8 flex items-center justify-center text-sm font-medium text-foreground/60">
-            {day}
+          <div key={day} className="h-6 flex items-center justify-center text-sm font-medium text-foreground/60">
+            {day.substring(0, 3)}
           </div>
         ))}
       </div>
@@ -329,7 +344,7 @@ export function AvailabilityCalendar() {
           />
           
           {/* Tooltip Content */}
-          <div className="bg-card border border-border rounded-lg shadow-xl p-5 min-w-[280px] max-w-[320px]">
+          <div className="bg-card border border-border rounded-lg shadow-xl p-4 min-w-[280px] max-w-[320px]">
             <div className="text-base font-semibold text-foreground mb-3">
               {new Date(hoveredDate.day.date).toLocaleDateString('en-US', {
                 weekday: 'long',
@@ -343,7 +358,7 @@ export function AvailabilityCalendar() {
                 <div className="text-sm text-foreground/70 font-medium">Available Times:</div>
                 <div className="space-y-2">
                   {hoveredDate.day.slots.map((slot, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-cyber-500/5 border border-cyber-500/20">
+                    <div key={index} className="flex items-center justify-between p-2 rounded bg-cyber-500/5 border border-cyber-500/20">
                       <span className="text-cyber-500 font-semibold text-sm">
                         {formatTime(slot.start)} - {formatTime(slot.end)}
                       </span>
@@ -368,12 +383,12 @@ export function AvailabilityCalendar() {
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-red-500 font-medium">
+                  <span className="text-red-500 font-medium text-sm">
                     {hoveredDate.day.status === 'busy' ? 'No availability' : 'Fully booked'}
                   </span>
                 </div>
                 {hoveredDate.day.notes && (
-                  <div className="text-sm text-foreground/60 bg-muted p-2 rounded-md">
+                  <div className="text-sm text-foreground/60 bg-muted p-2 rounded">
                     {hoveredDate.day.notes}
                   </div>
                 )}
@@ -384,7 +399,7 @@ export function AvailabilityCalendar() {
       )}
 
       {/* Mobile Instructions */}
-      <div className="mt-6 p-4 rounded-lg bg-primary-500/5 border border-primary-500/20 md:hidden">
+      <div className="mt-4 p-3 rounded bg-primary-500/5 border border-primary-500/20 md:hidden">
         <div className="text-sm text-foreground/70 text-center">
           <span className="text-primary-500 font-medium">Tap</span> any available date to schedule a consultation
         </div>
