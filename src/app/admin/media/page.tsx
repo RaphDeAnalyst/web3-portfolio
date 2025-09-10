@@ -5,6 +5,10 @@ import { ActivityService } from '@/lib/activity-service'
 
 export default function MediaManagement() {
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([])
+  const [mediaType, setMediaType] = useState<'image' | 'video' | 'document'>('image')
+  const [youtubeUrl, setYoutubeUrl] = useState('')
+  const [googleDriveUrl, setGoogleDriveUrl] = useState('')
+  const [showUrlInput, setShowUrlInput] = useState(false)
 
   // Load files from localStorage on component mount
   useEffect(() => {
@@ -148,6 +152,101 @@ export default function MediaManagement() {
     return data.data.url
   }
 
+  const handleYouTubeAdd = () => {
+    if (!youtubeUrl.trim()) return
+    
+    // Extract video ID from YouTube URL
+    const videoId = extractYouTubeVideoId(youtubeUrl)
+    if (!videoId) {
+      alert('Please enter a valid YouTube URL')
+      return
+    }
+
+    const newVideo = {
+      id: Date.now() + Math.random(),
+      name: `YouTube Video - ${videoId}`,
+      type: 'video/youtube',
+      size: 'N/A',
+      uploadDate: new Date().toISOString().split('T')[0],
+      url: youtubeUrl,
+      videoId: videoId,
+      thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      used: false,
+      service: 'youtube'
+    }
+
+    setUploadedFiles(prev => {
+      const updated = [newVideo, ...prev]
+      console.log('Added YouTube video:', newVideo.name, newVideo.url)
+      return updated
+    })
+
+    ActivityService.trackMedia(`YouTube: ${videoId}`)
+    setYoutubeUrl('')
+    setShowUrlInput(false)
+  }
+
+  const handleGoogleDriveAdd = () => {
+    if (!googleDriveUrl.trim()) return
+
+    // Extract file ID from Google Drive URL
+    const fileId = extractGoogleDriveFileId(googleDriveUrl)
+    if (!fileId) {
+      alert('Invalid Google Drive URL. Please use a share link format: https://drive.google.com/file/d/FILE_ID/view')
+      return
+    }
+
+    const fileName = extractGoogleDriveFileName(googleDriveUrl) || 'Google Drive Document'
+    
+    const newDocument = {
+      id: Date.now() + Math.random(),
+      name: fileName,
+      type: 'application/pdf',
+      size: 'Unknown',
+      uploadDate: new Date().toISOString().split('T')[0],
+      url: googleDriveUrl,
+      used: false,
+      service: 'googledrive',
+      fileId: fileId
+    }
+
+    setUploadedFiles(prev => {
+      const updated = [newDocument, ...prev]
+      console.log('Added Google Drive document:', newDocument.name, newDocument.url)
+      return updated
+    })
+
+    ActivityService.trackMedia(`Google Drive: ${fileName}`)
+    setGoogleDriveUrl('')
+    setShowUrlInput(false)
+  }
+
+  const extractYouTubeVideoId = (url: string): string | null => {
+    const patterns = [
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/
+    ]
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern)
+      if (match) return match[1]
+    }
+    return null
+  }
+
+  const extractGoogleDriveFileId = (url: string): string | null => {
+    // Extract file ID from Google Drive URL
+    const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)\//)
+    return match ? match[1] : null
+  }
+
+  const extractGoogleDriveFileName = (url: string): string | null => {
+    // Try to extract filename from URL parameters or return default
+    // Google Drive URLs don't typically contain filename, so we'll use a generic name
+    return 'Google Drive Document'
+  }
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
@@ -156,7 +255,9 @@ export default function MediaManagement() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  const getFileIcon = (type: string) => {
+  const getFileIcon = (type: string, service?: string) => {
+    if (service === 'youtube' || type === 'video/youtube') return '📺'
+    if (service === 'googledrive' || service === 'mediafire' || type === 'application/pdf') return '📄'
     if (type.startsWith('image/')) return '🖼️'
     if (type.startsWith('video/')) return '🎥'
     if (type.startsWith('audio/')) return '🎵'
@@ -212,8 +313,13 @@ export default function MediaManagement() {
 
   const stats = {
     total: uploadedFiles.length,
-    totalSize: uploadedFiles.reduce((acc, file) => acc + parseFloat(file.size), 0),
+    totalSize: uploadedFiles.reduce((acc, file) => {
+      const size = file.size === 'N/A' || file.size === 'Unknown' ? 0 : parseFloat(file.size) || 0
+      return acc + size
+    }, 0),
     images: uploadedFiles.filter(f => f.type.startsWith('image/')).length,
+    videos: uploadedFiles.filter(f => f.service === 'youtube' || f.type.startsWith('video/')).length,
+    documents: uploadedFiles.filter(f => f.service === 'googledrive' || f.service === 'mediafire' || f.type === 'application/pdf').length,
     used: uploadedFiles.filter(f => f.used).length
   }
 
@@ -236,7 +342,7 @@ export default function MediaManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -257,6 +363,30 @@ export default function MediaManagement() {
             </div>
             <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
               <span className="text-green-500 text-xl">🖼️</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">Videos</p>
+              <p className="text-2xl font-bold text-foreground">{stats.videos}</p>
+            </div>
+            <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-red-500 text-xl">📺</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-foreground/60">Documents</p>
+              <p className="text-2xl font-bold text-foreground">{stats.documents}</p>
+            </div>
+            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-blue-500 text-xl">📄</span>
             </div>
           </div>
         </div>
@@ -286,45 +416,149 @@ export default function MediaManagement() {
         </div>
       </div>
 
-      {/* Upload Area */}
-      <div
-        className={`border-2 border-dashed rounded-xl p-12 transition-colors ${
-          dragOver 
-            ? 'border-cyber-500 bg-cyber-500/5' 
-            : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-        }`}
-        onDragOver={(e) => {
-          e.preventDefault()
-          setDragOver(true)
-        }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={(e) => {
-          e.preventDefault()
-          setDragOver(false)
-          handleFileUpload(e.dataTransfer.files)
-        }}
-      >
-        <div className="text-center">
-          <div className="text-4xl mb-4">📤</div>
-          <h3 className="text-lg font-medium text-foreground mb-2">
-            Drop files here or click to upload
-          </h3>
-          <p className="text-foreground/60 mb-6">
-            Support for JPG, PNG, GIF, WebP, BMP, SVG images up to 32MB each
-          </p>
-          <label className="cursor-pointer">
-            <input
-              type="file"
-              multiple
-              className="hidden"
-              onChange={(e) => handleFileUpload(e.target.files)}
-              accept="image/*"
-            />
-            <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200">
-              Choose Files
-            </span>
-          </label>
+      {/* Media Type Selection */}
+      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+        <h2 className="text-xl font-bold text-foreground mb-6">Add Media</h2>
+        
+        {/* Media Type Tabs */}
+        <div className="flex space-x-2 mb-6">
+          {[
+            { type: 'image', icon: '🖼️', label: 'Images' },
+            { type: 'video', icon: '📺', label: 'Videos' },
+            { type: 'document', icon: '📄', label: 'Documents' }
+          ].map((tab) => (
+            <button
+              key={tab.type}
+              onClick={() => {
+                setMediaType(tab.type as any)
+                setShowUrlInput(false)
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                mediaType === tab.type
+                  ? 'bg-cyber-500 text-white shadow-lg shadow-cyber-500/20'
+                  : 'bg-gray-100 dark:bg-gray-800 text-foreground hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              <span className="mr-2">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
         </div>
+
+        {/* Upload Area for Images */}
+        {mediaType === 'image' && (
+          <div
+            className={`border-2 border-dashed rounded-xl p-8 transition-colors ${
+              dragOver 
+                ? 'border-cyber-500 bg-cyber-500/5' 
+                : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+            }`}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setDragOver(true)
+            }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={(e) => {
+              e.preventDefault()
+              setDragOver(false)
+              handleFileUpload(e.dataTransfer.files)
+            }}
+          >
+            <div className="text-center">
+              <div className="text-4xl mb-4">🖼️</div>
+              <h3 className="text-lg font-medium text-foreground mb-2">
+                Upload Images
+              </h3>
+              <p className="text-foreground/60 mb-6">
+                JPG, PNG, GIF, WebP, BMP, SVG • Up to 32MB each • Unlimited storage
+              </p>
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleFileUpload(e.target.files)}
+                  accept="image/*"
+                />
+                <span className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200">
+                  Choose Images
+                </span>
+              </label>
+            </div>
+          </div>
+        )}
+
+        {/* YouTube Video Input */}
+        {mediaType === 'video' && (
+          <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8">
+            <div className="text-center">
+              <div className="text-4xl mb-4">📺</div>
+              <h3 className="text-lg font-medium text-foreground mb-2">
+                Add YouTube Videos
+              </h3>
+              <p className="text-foreground/60 mb-6">
+                Paste YouTube video URL • Unlimited uploads • 15min max per video
+              </p>
+              <div className="max-w-md mx-auto">
+                <div className="flex space-x-2">
+                  <input
+                    type="url"
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                    placeholder="https://youtube.com/watch?v=..."
+                    className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-foreground focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                  />
+                  <button
+                    onClick={handleYouTubeAdd}
+                    disabled={!youtubeUrl.trim()}
+                    className="px-6 py-3 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none"
+                  >
+                    Add Video
+                  </button>
+                </div>
+                <p className="text-xs text-foreground/50 mt-2">
+                  Supports youtube.com/watch, youtu.be, and embed URLs
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Google Drive Document Input */}
+        {mediaType === 'document' && (
+          <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8">
+            <div className="text-center">
+              <div className="text-4xl mb-4">📄</div>
+              <h3 className="text-lg font-medium text-foreground mb-2">
+                Add Documents
+              </h3>
+              <p className="text-foreground/60 mb-6">
+                Paste Google Drive share URL • 15GB free storage • Ad-free viewing
+              </p>
+              <div className="max-w-md mx-auto">
+                <div className="flex space-x-2">
+                  <input
+                    type="url"
+                    value={googleDriveUrl}
+                    onChange={(e) => setGoogleDriveUrl(e.target.value)}
+                    placeholder="https://drive.google.com/file/d/..."
+                    className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-foreground focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                  />
+                  <button
+                    onClick={handleGoogleDriveAdd}
+                    disabled={!googleDriveUrl.trim()}
+                    className="px-6 py-3 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none"
+                  >
+                    Add Document
+                  </button>
+                </div>
+                <p className="text-xs text-foreground/50 mt-2">
+                  Upload files to Google Drive, set sharing to "Anyone with link", then paste the share link here
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Files Grid */}
@@ -335,8 +569,33 @@ export default function MediaManagement() {
             {uploadedFiles.map((file) => (
               <div key={file.id} className="border border-gray-200 dark:border-gray-800 rounded-lg p-4 hover:shadow-md transition-shadow">
                 {/* File Preview */}
-                <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
-                  {file.type.startsWith('image/') ? (
+                <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-3 flex items-center justify-center overflow-hidden relative">
+                  {file.service === 'youtube' ? (
+                    <div className="w-full h-full relative">
+                      <img 
+                        src={file.thumbnail} 
+                        alt={file.name} 
+                        className="w-full h-full object-cover" 
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          const parent = target.parentElement
+                          if (parent) {
+                            parent.innerHTML = `<span class="text-4xl">📺</span><div class="text-xs text-center text-foreground/60 mt-2">YouTube Video</div>`
+                          }
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl">
+                          ▶️
+                        </div>
+                      </div>
+                    </div>
+                  ) : file.service === 'googledrive' ? (
+                    <div className="text-center">
+                      <span className="text-4xl">📄</span>
+                      <div className="text-xs text-center text-foreground/60 mt-2">Google Drive Document</div>
+                    </div>
+                  ) : file.type.startsWith('image/') ? (
                     <img 
                       src={file.url} 
                       alt={file.name} 
@@ -351,7 +610,10 @@ export default function MediaManagement() {
                       }}
                     />
                   ) : (
-                    <span className="text-4xl">{getFileIcon(file.type)}</span>
+                    <div className="text-center">
+                      <span className="text-4xl">{getFileIcon(file.type, file.service)}</span>
+                      <div className="text-xs text-center text-foreground/60 mt-2">{file.service || 'File'}</div>
+                    </div>
                   )}
                 </div>
 

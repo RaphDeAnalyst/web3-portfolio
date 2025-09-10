@@ -213,10 +213,32 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                   rows={20}
                   className="w-full px-4 py-3 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 font-mono text-sm resize-none"
                 />
-                <div className="text-xs text-foreground/60 space-y-1">
-                  <p>Supports Markdown formatting. Use **bold**, *italic*, `code`, ## headers, etc.</p>
-                  <p>For images: ![alt text](image-url) or drag & drop images below</p>
-                  <p>For videos: Use HTML: &lt;video src="video-url" controls&gt;&lt;/video&gt;</p>
+                <div className="text-xs text-foreground/60 space-y-2">
+                  <div>
+                    <p className="font-medium text-foreground/80 mb-1">📝 Markdown Formatting:</p>
+                    <p>**bold**, *italic*, `code`, ## headers, > quotes, - lists</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground/80 mb-1">🖼️ Images:</p>
+                    <p>1. Upload via <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">Admin → Media</span> page</p>
+                    <p>2. Copy URL and use: <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">![alt text](image-url)</span></p>
+                    <p>3. Or drag & drop images below to auto-add to content</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground/80 mb-1">🎥 Videos (YouTube):</p>
+                    <p>Paste YouTube URL on its own line: <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://youtube.com/watch?v=VIDEO_ID</span></p>
+                    <p>Auto-embeds with responsive 16:9 player</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground/80 mb-1">📄 Documents (PDFs):</p>
+                    <p>1. Upload to Google Drive, set sharing to "Anyone with link"</p>
+                    <p>2. Paste share link on its own line:</p>
+                    <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://drive.google.com/file/d/FILE_ID/view</span></p>
+                    <p>Creates ad-free download/view buttons + optional preview</p>
+                  </div>
+                  <div className="pt-1 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-foreground/50">💡 Tip: Manage all media via <span className="font-mono">Admin → Media</span> for organized workflow</p>
+                  </div>
                 </div>
                 
                 {/* Media Upload for Content */}
