@@ -230,11 +230,13 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                     <p>Auto-embeds with responsive 16:9 player</p>
                   </div>
                   <div>
-                    <p className="font-medium text-foreground/80 mb-1">📄 Documents (PDFs):</p>
-                    <p>1. Upload to Google Drive, set sharing to "Anyone with link"</p>
-                    <p>2. Paste share link on its own line:</p>
+                    <p className="font-medium text-foreground/80 mb-1">📄 Documents (Google Drive):</p>
+                    <p><strong>With custom title (recommended):</strong></p>
+                    <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">[My Document Title](https://drive.google.com/file/d/FILE_ID/view)</span></p>
+                    <p><strong>Or paste URL only:</strong></p>
                     <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://drive.google.com/file/d/FILE_ID/view</span></p>
-                    <p>Creates ad-free download/view buttons + optional preview</p>
+                    <p>📋 Setup: Upload to Google Drive → Set sharing to "Anyone with link" → Copy share URL</p>
+                    <p className="text-xs text-foreground/50">💡 Custom titles provide better SEO and faster loading</p>
                   </div>
                   <div className="pt-1 border-t border-gray-200 dark:border-gray-700">
                     <p className="text-foreground/50">💡 Tip: Manage all media via <span className="font-mono">Admin → Media</span> for organized workflow</p>
