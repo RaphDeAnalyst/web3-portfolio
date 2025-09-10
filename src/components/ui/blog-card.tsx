@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { ProfileService } from '@/lib/profile-service'
 
 interface BlogCardProps {
   title: string
@@ -35,6 +36,28 @@ export function BlogCard({
 }: BlogCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [profileData, setProfileData] = useState(ProfileService.getProfile())
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  useEffect(() => {
+    // Set hydrated state and update profile data when component mounts
+    setIsHydrated(true)
+    
+    // Refresh profile to clear any old cached data
+    ProfileService.refreshProfile()
+    
+    const updateProfile = () => {
+      setProfileData(ProfileService.getProfile())
+    }
+    
+    updateProfile()
+    
+    // Listen for storage changes to update profile in real-time
+    const handleStorageChange = () => updateProfile()
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
 
   const categoryColors = {
     'Web3': 'cyber-500',
@@ -142,12 +165,23 @@ export function BlogCard({
           {/* Author */}
           {author && (
             <div className="flex items-center space-x-3 pt-4 border-t border-gray-200/30 dark:border-gray-800/30">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold text-sm">
-                {author.name.charAt(0)}
-              </div>
+              {isHydrated && profileData.avatar && profileData.avatar !== '/avatar.jpg' ? (
+                <img
+                  src={profileData.avatar}
+                  alt={author.name}
+                  className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold text-sm">
+                  {author.name.charAt(0)}
+                </div>
+              )}
               <div>
                 <div className="text-sm font-medium text-foreground">{author.name}</div>
-                <div className="text-xs text-foreground/60">Web3 Data & AI Specialist</div>
+                <div className="text-xs text-foreground/60">
+                  {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI Specialist' : 
+                   (isHydrated ? profileData.title : 'Web3 Data & AI Specialist')}
+                </div>
               </div>
             </div>
           )}

@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ProfileService, ProfileData } from '@/lib/profile-service'
+import { ContactAvatar } from '@/components/ui/profile-avatar'
 
 export function ContactInfo() {
   const [copiedItem, setCopiedItem] = useState<string | null>(null)
+  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  useEffect(() => {
+    setIsHydrated(true)
+    setProfile(ProfileService.getProfile())
+  }, [])
 
   const handleCopy = async (text: string, item: string) => {
     try {
@@ -32,7 +41,7 @@ export function ContactInfo() {
     {
       id: 'cal',
       title: 'Schedule Call',
-      value: 'calendly.com/matthewraphael',
+      value: 'calendly.com/matthewraphael-matthewraphael/30min',
       description: '30-min strategy sessions available',
       icon: (
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,28 +49,28 @@ export function ContactInfo() {
         </svg>
       ),
       color: 'purple-500',
-      action: 'https://calendly.com/web3dev'
+      action: 'https://calendly.com/matthewraphael-matthewraphael/30min'
     }
   ]
 
   const availability = [
     {
-      timezone: 'UTC',
-      hours: '9:00 AM - 6:00 PM',
+      timezone: 'WAT (West Africa)',
+      hours: 'Mon-Fri: 9:00 AM - 5:00 PM',
       status: 'Primary',
       color: 'green-500'
     },
     {
-      timezone: 'EST',
-      hours: '4:00 AM - 1:00 PM',
-      status: 'Available',
+      timezone: 'Saturday',
+      hours: '10:00 AM - 1:00 PM',
+      status: 'Limited',
       color: 'blue-500'
     },
     {
-      timezone: 'PST',
-      hours: '1:00 AM - 10:00 AM',
-      status: 'Limited',
-      color: 'yellow-500'
+      timezone: 'Sunday',
+      hours: 'Unavailable',
+      status: 'Closed',
+      color: 'gray-500'
     }
   ]
 
@@ -88,6 +97,25 @@ export function ContactInfo() {
 
   return (
     <div className="space-y-8">
+      {/* Profile Introduction */}
+      <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
+        <div className="flex items-center space-x-4 mb-6">
+          {/* Professional Profile Avatar */}
+          <ContactAvatar />
+          
+          {/* Additional Status */}
+          <div className="flex flex-col items-center">
+            <span className="text-xs text-foreground/60">Ready to help bring</span>
+            <span className="text-xs text-primary-500 font-medium">your Web3 vision to life</span>
+          </div>
+        </div>
+        
+        {/* Quick Bio */}
+        <p className="text-sm text-foreground/70 leading-relaxed border-t border-gray-200/30 dark:border-gray-800/30 pt-4">
+          {profile.bio || 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.'}
+        </p>
+      </div>
+
       {/* Direct Contact Methods */}
       <div className="space-y-6">
         <h3 className="text-xl font-bold text-foreground">
@@ -180,10 +208,10 @@ export function ContactInfo() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Location */}
           <div>
-            <h5 className="font-semibold text-foreground mb-3">Based in Nigeria</h5>
+            <h5 className="font-semibold text-foreground mb-3">Working Globally</h5>
             <p className="text-sm text-foreground/70 mb-4">
-              Working with clients globally across all time zones. Fluent in English with 
-              experience in remote collaboration.
+              Collaborating with clients worldwide across all time zones. Fluent in English with 
+              extensive experience in remote Web3 project delivery.
             </p>
             <div className="flex items-center space-x-2 text-sm">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
@@ -201,6 +229,7 @@ export function ContactInfo() {
                     <div className={`w-2 h-2 rounded-full ${
                       zone.color === 'green-500' ? 'bg-green-500' :
                       zone.color === 'blue-500' ? 'bg-blue-500' :
+                      zone.color === 'gray-500' ? 'bg-gray-500' :
                       'bg-yellow-500'
                     }`}></div>
                     <span className="text-foreground/80">{zone.timezone}: {zone.hours}</span>
@@ -208,6 +237,7 @@ export function ContactInfo() {
                   <span className={`text-xs font-medium ${
                     zone.color === 'green-500' ? 'text-green-500' :
                     zone.color === 'blue-500' ? 'text-blue-500' :
+                    zone.color === 'gray-500' ? 'text-gray-500' :
                     'text-yellow-500'
                   }`}>{zone.status}</span>
                 </div>
@@ -258,7 +288,7 @@ export function ContactInfo() {
         
         <div className="space-y-4">
           <button 
-            onClick={() => window.open('https://calendly.com/web3dev', '_blank')}
+            onClick={() => window.open('https://calendly.com/matthewraphael-matthewraphael/30min', '_blank')}
             className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30"
           >
             Schedule Free Call

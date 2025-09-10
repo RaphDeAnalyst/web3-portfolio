@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { ActivityGraph } from '@/components/admin/activity-graph'
 import { ActivityService, Activity } from '@/lib/activity-service'
 
@@ -53,7 +54,7 @@ export default function ActivityManagement() {
 
   const recentActivities = activities
     .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 20)
+    .slice(0, 3)
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -138,10 +139,79 @@ export default function ActivityManagement() {
         </div>
       </div>
 
-      {/* Activity Graph */}
-      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-        <h2 className="text-xl font-bold text-foreground mb-6">Activity Graph</h2>
-        <ActivityGraph year={selectedYear} />
+      {/* Activity Graph & Recent Activities */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Activity Graph */}
+        <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <h2 className="text-xl font-bold text-foreground mb-6">Activity Graph</h2>
+          <ActivityGraph year={selectedYear} />
+        </div>
+
+        {/* Recent Activities */}
+        <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-foreground">Recent Activities</h2>
+            <Link 
+              href="/admin/activity/all"
+              className="text-sm text-primary-500 hover:text-primary-400 font-medium flex items-center space-x-1 transition-colors"
+            >
+              <span>See All</span>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+          
+          {recentActivities.length > 0 ? (
+            <div className="space-y-3">
+              {recentActivities.map((activity) => (
+                <div key={activity.id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border border-gray-100 dark:border-gray-800">
+                  <span className="text-2xl flex-shrink-0">{getTypeIcon(activity.type)}</span>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-3 mb-1">
+                      <h4 className="font-medium text-foreground">{activity.title}</h4>
+                      <span className={`px-2 py-1 text-xs rounded-full ${getIntensityColor(activity.intensity)}`}>
+                        {intensityLabels[activity.intensity]}
+                      </span>
+                    </div>
+                    
+                    {activity.description && (
+                      <p className="text-sm text-foreground/70 mb-2">{activity.description}</p>
+                    )}
+                    
+                    <div className="flex items-center space-x-4 text-xs text-foreground/60">
+                      <span>{new Date(activity.date).toLocaleDateString()}</span>
+                      <span>•</span>
+                      <span className="capitalize">{activity.type}</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleDeleteActivity(activity.id)}
+                    className="text-foreground/40 hover:text-red-500 transition-colors flex-shrink-0"
+                    title="Delete activity"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-4xl mb-4">📊</div>
+              <h3 className="text-lg font-medium text-foreground mb-2">No activities yet</h3>
+              <p className="text-foreground/60 mb-6">Start tracking your work to see your progress</p>
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
+              >
+                <span>➕</span>
+                <span>Add First Activity</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Add Activity Modal */}
@@ -243,61 +313,6 @@ export default function ActivityManagement() {
           </div>
         </div>
       )}
-
-      {/* Recent Activities */}
-      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-        <h2 className="text-xl font-bold text-foreground mb-6">Recent Activities</h2>
-        
-        {recentActivities.length > 0 ? (
-          <div className="space-y-3">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border border-gray-100 dark:border-gray-800">
-                <span className="text-2xl flex-shrink-0">{getTypeIcon(activity.type)}</span>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-3 mb-1">
-                    <h4 className="font-medium text-foreground">{activity.title}</h4>
-                    <span className={`px-2 py-1 text-xs rounded-full ${getIntensityColor(activity.intensity)}`}>
-                      {intensityLabels[activity.intensity]}
-                    </span>
-                  </div>
-                  
-                  {activity.description && (
-                    <p className="text-sm text-foreground/70 mb-2">{activity.description}</p>
-                  )}
-                  
-                  <div className="flex items-center space-x-4 text-xs text-foreground/60">
-                    <span>{new Date(activity.date).toLocaleDateString()}</span>
-                    <span>•</span>
-                    <span className="capitalize">{activity.type}</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleDeleteActivity(activity.id)}
-                  className="text-foreground/40 hover:text-red-500 transition-colors flex-shrink-0"
-                  title="Delete activity"
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-lg font-medium text-foreground mb-2">No activities yet</h3>
-            <p className="text-foreground/60 mb-6">Start tracking your work to see your progress</p>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
-            >
-              <span>➕</span>
-              <span>Add First Activity</span>
-            </button>
-          </div>
-        )}
-      </div>
     </div>
   )
 }

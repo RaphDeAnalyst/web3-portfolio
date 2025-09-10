@@ -92,27 +92,45 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Inline code
         formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-cyber-500">$1</code>')
         
-        // Images - check if the line starts with ![
-        if (line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/)) {
-          const imageMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
-          if (imageMatch) {
-            const altText = imageMatch[1]
-            const imageUrl = imageMatch[2]
-            elements.push(
-              <div key={i} className="my-6 text-center">
+        // Images - check if the line contains image markdown
+        const imageMatch = line.trim().match(/!\[([^\]]*)\]\(([^)]+)\)/)
+        if (imageMatch) {
+          const altText = imageMatch[1] || 'Image'
+          const imageUrl = imageMatch[2]
+          
+          elements.push(
+            <div key={i} className="my-8 text-center">
+              <div className="relative inline-block">
                 <img 
                   src={imageUrl} 
                   alt={altText}
-                  className="max-w-full h-auto rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg mx-auto"
+                  className="max-w-full h-auto rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg mx-auto transition-opacity duration-300"
                   loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    const container = target.parentElement
+                    if (container) {
+                      container.innerHTML = `
+                        <div class="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-800">
+                          <div class="text-4xl mb-3">🖼️</div>
+                          <div class="text-sm text-foreground/60">Image failed to load</div>
+                          <div class="text-xs text-foreground/40 mt-1 font-mono break-all">${imageUrl}</div>
+                        </div>
+                      `
+                    }
+                  }}
+                  onLoad={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.opacity = '1'
+                  }}
                 />
-                {altText && (
-                  <p className="text-sm text-foreground/60 mt-2 italic">{altText}</p>
-                )}
               </div>
-            )
-            continue
-          }
+              {altText && altText !== 'Image' && (
+                <p className="text-sm text-foreground/60 mt-3 italic">{altText}</p>
+              )}
+            </div>
+          )
+          continue
         }
         
         // Links

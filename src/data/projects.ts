@@ -32,7 +32,7 @@ export const projects: Project[] = [
       datapoints: "50K+",
       savings: "20% avg"
     },
-    featured: true,
+    featured: false,
     timeline: '2025',
     phase: 'Web3 Analytics',
     image: '/images/projects/gas-price-dashboard.png',

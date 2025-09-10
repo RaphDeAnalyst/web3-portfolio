@@ -1,7 +1,7 @@
 [
   {
     "date": "2025-09-04",
-    "status": "available",
+    "status": "limited",
     "slots": [
       {
         "start": "09:00",
@@ -32,5 +32,73 @@
       }
     ],
     "bookingUrl": "https://calendly.com/matthewraphael/consultation"
+  },
+  {
+    "date": "2025-09-03",
+    "status": "busy",
+    "slots": [
+      {
+        "start": "10:09",
+        "end": "12:00",
+        "timezone": "UTC"
+      },
+      {
+        "start": "14:00",
+        "end": "17:00",
+        "timezone": "UTC"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael/consultation"
+  },
+  {
+    "date": "2025-09-06",
+    "status": "limited",
+    "slots": [
+      {
+        "start": "22:00",
+        "end": "01:00",
+        "timezone": "WAT"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael/consultation"
+  },
+  {
+    "date": "2025-09-07",
+    "status": "available",
+    "slots": [
+      {
+        "start": "09:00",
+        "end": "17:00",
+        "timezone": "WAT"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael-matthewraphael/30min",
+    "notes": "Test Saturday bulk update"
+  },
+  {
+    "date": "2025-09-14",
+    "status": "limited",
+    "slots": [
+      {
+        "start": "10:00",
+        "end": "15:00",
+        "timezone": "WAT"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael-matthewraphael/30min",
+    "notes": "Bulk updated Saturday"
+  },
+  {
+    "date": "2025-09-21",
+    "status": "limited",
+    "slots": [
+      {
+        "start": "10:00",
+        "end": "15:00",
+        "timezone": "WAT"
+      }
+    ],
+    "bookingUrl": "https://calendly.com/matthewraphael-matthewraphael/30min",
+    "notes": "Bulk updated Saturday"
   }
 ]

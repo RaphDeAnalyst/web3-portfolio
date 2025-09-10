@@ -47,11 +47,36 @@ export function ContactForm() {
     
     setIsSubmitting(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    try {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mkgvpjra', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || 'Not specified',
+          projectType: formData.projectType,
+          budget: formData.budget,
+          timeline: formData.timeline,
+          message: formData.message,
+          _subject: `New contact from ${formData.name} - ${formData.projectType}`,
+        }),
+      })
+      
+      if (response.ok) {
+        setIsSubmitted(true)
+      } else {
+        throw new Error('Failed to send message')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('Failed to send message. Please try again or contact me directly at matthewraphael@matthewraphael.xyz')
+    } finally {
+      setIsSubmitting(false)
+    }
     
     // Reset form after success
     setTimeout(() => {

@@ -1,28 +1,56 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ProjectCard } from '@/components/ui/project-card'
 import { FilterTabs } from '@/components/ui/filter-tabs'
-import { projects, projectCategories } from '@/data/projects'
+import { projectCategories, Project } from '@/data/projects'
+import { ProjectService } from '@/lib/project-service'
 import Link from 'next/link'
 
 export default function Portfolio() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
   const [activeCategory, setActiveCategory] = useState('All')
   const [sortBy, setSortBy] = useState('newest')
 
-  // Filter projects based on active category
-  const filteredProjects = useMemo(() => {
+  // Load projects on component mount
+  useEffect(() => {
+    const loadProjects = () => {
+      try {
+        const allProjects = ProjectService.getAllProjects()
+        setProjects(allProjects)
+      } catch (error) {
+        console.error('Error loading projects:', error)
+      } finally {
+        setIsLoaded(true)
+      }
+    }
+
+    loadProjects()
+  }, [])
+
+  // Filter and separate featured and regular projects
+  const { featuredProjects, regularProjects } = useMemo(() => {
     let filtered = activeCategory === 'All' 
       ? projects 
       : projects.filter(project => project.category === activeCategory)
     
     // Sort projects
-    return filtered.sort((a, b) => {
+    const sorted = filtered.sort((a, b) => {
       if (sortBy === 'newest') return 0 // Keep original order
       if (sortBy === 'featured') return (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
       return a.title.localeCompare(b.title)
     })
-  }, [activeCategory, sortBy])
+
+    // Separate featured and regular projects
+    const featured = sorted.filter(project => project.featured).slice(0, 2) // Max 2 featured
+    const regular = sorted.filter(project => !project.featured)
+
+    return {
+      featuredProjects: featured,
+      regularProjects: regular
+    }
+  }, [activeCategory, sortBy, projects])
 
   // Calculate project counts for each category
   const projectCounts = useMemo(() => {
@@ -37,7 +65,34 @@ export default function Portfolio() {
     })
     
     return counts
-  }, [])
+  }, [projects])
+
+  // Total filtered projects for display
+  const totalFilteredProjects = featuredProjects.length + regularProjects.length
+
+  // Show loading state
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen py-20">
+        <section className="px-4 sm:px-6 lg:px-8 mb-20">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-24 mx-auto mb-8 animate-pulse"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mx-auto mb-8 animate-pulse"></div>
+            <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-2/3 mx-auto animate-pulse"></div>
+          </div>
+        </section>
+        <section className="px-4 sm:px-6 lg:px-8 mb-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="h-96 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen py-20">
@@ -100,16 +155,45 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Grid */}
+      {/* Featured Projects Section */}
+      {featuredProjects.length > 0 && (
+        <section className="px-4 sm:px-6 lg:px-8 mb-16">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl font-bold text-foreground mb-8 text-center">Featured Projects</h2>
+            <div className={`grid gap-8 ${
+              featuredProjects.length === 1 
+                ? 'grid-cols-1 lg:grid-cols-6' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+            }`}>
+              {featuredProjects.map((project, index) => (
+                <ProjectCard 
+                  key={index} 
+                  {...project} 
+                  featuredCount={featuredProjects.length}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Regular Projects Grid */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
-          </div>
+          {regularProjects.length > 0 && (
+            <>
+              <h2 className="text-2xl font-bold text-foreground mb-8 text-center">
+                {featuredProjects.length > 0 ? 'All Projects' : 'Projects'}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {regularProjects.map((project, index) => (
+                  <ProjectCard key={index} {...project} />
+                ))}
+              </div>
+            </>
+          )}
           
-          {filteredProjects.length === 0 && (
+          {totalFilteredProjects === 0 && (
             <div className="text-center py-20">
               <div className="w-16 h-16 mx-auto mb-4 text-foreground/40">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">

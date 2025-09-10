@@ -40,7 +40,7 @@ class BlogService {
         category: "Learning",
         featured: true,
         status: 'published',
-        author: { name: "Data Analyst", avatar: "/avatar.jpg" },
+        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
         content: "# My First Week Learning Dune Analytics\n\nThis week marked an exciting milestone in my Web3 journey as I dove deep into Dune Analytics...",
         createdAt: "2024-12-20T00:00:00.000Z",
         updatedAt: "2024-12-20T00:00:00.000Z"
@@ -55,7 +55,7 @@ class BlogService {
         slug: "python-blockchain-data-learning-path",
         category: "Learning",
         status: 'published',
-        author: { name: "Data Analyst", avatar: "/avatar.jpg" },
+        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
         content: "# Python for Blockchain Data: My Learning Path\n\nTransitioning from traditional data analysis to blockchain data has been an exciting challenge...",
         createdAt: "2024-12-15T00:00:00.000Z",
         updatedAt: "2024-12-15T00:00:00.000Z"
@@ -71,7 +71,7 @@ class BlogService {
         category: "Analytics",
         featured: true,
         status: 'published',
-        author: { name: "Data Analyst", avatar: "/avatar.jpg" },
+        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
         content: "# Traditional Data Analytics vs Web3: What's Different?\n\nHaving worked in traditional finance data analytics for several years...",
         createdAt: "2024-12-10T00:00:00.000Z",
         updatedAt: "2024-12-10T00:00:00.000Z"
@@ -86,7 +86,28 @@ class BlogService {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY)
       if (stored) {
-        return JSON.parse(stored)
+        const posts = JSON.parse(stored)
+        // Update any old "Data Analyst" author names to "Matthew Raphael"
+        const updatedPosts = posts.map((post: BlogPostData) => {
+          if (post.author.name === 'Data Analyst') {
+            return {
+              ...post,
+              author: {
+                ...post.author,
+                name: 'Matthew Raphael'
+              }
+            }
+          }
+          return post
+        })
+        
+        // Save updated posts back to localStorage if changes were made
+        const hasChanges = posts.some((post: BlogPostData) => post.author.name === 'Data Analyst')
+        if (hasChanges) {
+          this.savePosts(updatedPosts)
+        }
+        
+        return updatedPosts
       }
     } catch (error) {
       console.error('Error loading blog posts from localStorage:', error)

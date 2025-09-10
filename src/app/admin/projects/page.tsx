@@ -1,29 +1,56 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { projects } from '@/data/projects'
-import { ActivityService } from '@/lib/activity-service'
+import { ProjectService } from '@/lib/project-service'
+import { Project } from '@/data/projects'
 
 export default function ProjectsManagement() {
-  const [projectList, setProjectList] = useState(projects)
+  const [projectList, setProjectList] = useState<Project[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
+  const [filterFeatured, setFilterFeatured] = useState('all')
 
-  const categories = Array.from(new Set(projects.map(project => project.category)))
+  // Load projects on component mount
+  useEffect(() => {
+    const loadProjects = () => {
+      try {
+        const projects = ProjectService.getAllProjects()
+        setProjectList(projects)
+      } catch (error) {
+        console.error('Error loading projects:', error)
+      } finally {
+        setIsLoaded(true)
+      }
+    }
+
+    loadProjects()
+  }, [])
+
+  const categories = Array.from(new Set(projectList.map(project => project.category)))
 
   const filteredProjects = projectList.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = filterCategory === 'all' || project.category === filterCategory
-    return matchesSearch && matchesCategory
+    const matchesFeatured = filterFeatured === 'all' || 
+                           (filterFeatured === 'featured' && project.featured) ||
+                           (filterFeatured === 'regular' && !project.featured)
+    return matchesSearch && matchesCategory && matchesFeatured
   })
 
   const handleDeleteProject = (index: number) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
-      setProjectList(projectList.filter((_, i) => i !== index))
-      // In a real app, you'd make an API call here
-      console.log('Project deleted:', index)
+      try {
+        ProjectService.deleteProject(index)
+        // Reload projects after deletion
+        const updatedProjects = ProjectService.getAllProjects()
+        setProjectList(updatedProjects)
+      } catch (error) {
+        console.error('Error deleting project:', error)
+        alert('Error deleting project. Please try again.')
+      }
     }
   }
 
@@ -43,7 +70,27 @@ export default function ProjectsManagement() {
     total: projectList.length,
     completed: projectList.filter(p => p.status === 'Complete' || p.status === 'Live').length,
     inProgress: projectList.filter(p => p.status === 'Development').length,
-    planning: projectList.filter(p => p.status === 'Learning').length
+    featured: projectList.filter(p => p.featured).length
+  }
+
+  // Show loading state
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded w-32 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-48 mt-2 animate-pulse"></div>
+          </div>
+          <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded w-32 animate-pulse"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="h-24 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -104,11 +151,11 @@ export default function ProjectsManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-foreground/60">Categories</p>
-              <p className="text-2xl font-bold text-foreground">{categories.length}</p>
+              <p className="text-sm text-foreground/60">Featured</p>
+              <p className="text-2xl font-bold text-foreground">{statsData.featured}</p>
             </div>
-            <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-purple-500 text-xl">🏷️</span>
+            <div className="w-10 h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-primary-500 text-xl">⭐</span>
             </div>
           </div>
         </div>
@@ -125,7 +172,7 @@ export default function ProjectsManagement() {
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
           />
         </div>
-        <div>
+        <div className="flex space-x-3">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -135,6 +182,16 @@ export default function ProjectsManagement() {
             {categories.map(category => (
               <option key={category} value={category}>{category}</option>
             ))}
+          </select>
+          
+          <select
+            value={filterFeatured}
+            onChange={(e) => setFilterFeatured(e.target.value)}
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+          >
+            <option value="all">All Projects</option>
+            <option value="featured">Featured Only</option>
+            <option value="regular">Regular Only</option>
           </select>
         </div>
       </div>
@@ -166,6 +223,13 @@ export default function ProjectsManagement() {
                   <span className="text-xs text-foreground/60">Category</span>
                   <span className="text-xs text-foreground">{project.category}</span>
                 </div>
+                
+                {project.featured && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-foreground/60">Featured</span>
+                    <span className="text-xs text-primary-500 font-medium">Yes</span>
+                  </div>
+                )}
               </div>
 
               {/* Tech Stack */}

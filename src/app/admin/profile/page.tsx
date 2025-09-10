@@ -2,54 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ImageUpload } from '@/components/ui/image-upload'
-
-interface ProfileData {
-  name: string
-  title: string
-  bio: string
-  avatar: string
-  email: string
-  location: string
-  website: string
-  github: string
-  twitter: string
-  linkedin: string
-  skills: string[]
-  resume: string
-}
+import { ProfilePictureUpload } from '@/components/ui/profile-picture-upload'
+import { ProfileService, ProfileData } from '@/lib/profile-service'
 
 export default function ProfileManagement() {
-  const [profile, setProfile] = useState<ProfileData>({
-    name: 'Data Analyst',
-    title: 'Web3 Data & AI Specialist',
-    bio: 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Passionate about decentralized data and AI-powered blockchain analysis.',
-    avatar: '/avatar.jpg',
-    email: 'your.email@example.com',
-    location: 'Remote',
-    website: '',
-    github: '',
-    twitter: '',
-    linkedin: '',
-    skills: ['Python', 'SQL', 'Dune Analytics', 'Web3', 'Data Analysis', 'Machine Learning'],
-    resume: ''
-  })
+  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
 
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
   useEffect(() => {
-    // Load existing profile data from localStorage
-    const savedProfile = localStorage.getItem('portfolio-profile')
-    if (savedProfile) {
-      setProfile(JSON.parse(savedProfile))
-    }
+    // Load existing profile data from ProfileService
+    setProfile(ProfileService.getProfile())
   }, [])
 
   const handleSave = () => {
     setIsLoading(true)
     try {
-      localStorage.setItem('portfolio-profile', JSON.stringify(profile))
+      ProfileService.saveProfile(profile)
       setMessage({ type: 'success', text: 'Profile updated successfully!' })
       setTimeout(() => setMessage(null), 3000)
     } catch (error) {
@@ -127,25 +97,13 @@ export default function ProfileManagement() {
             <h2 className="text-xl font-bold text-foreground mb-6">Profile Picture</h2>
             
             <div className="space-y-4">
-              {/* Current Avatar */}
-              <div className="flex justify-center">
-                <img
-                  src={profile.avatar}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
-                />
-              </div>
-
-              {/* Image Upload */}
-              <ImageUpload
+              {/* Professional Profile Picture Upload */}
+              <ProfilePictureUpload
                 onImageSelect={handleImageUpload}
                 currentImage={profile.avatar}
+                size="xl"
                 className="w-full"
               />
-
-              <p className="text-sm text-foreground/60 text-center">
-                Upload a new profile picture. Recommended: 400x400px, under 5MB.
-              </p>
             </div>
           </div>
         </div>
@@ -246,7 +204,7 @@ export default function ProfileManagement() {
                   type="text"
                   value={profile.github}
                   onChange={(e) => setProfile(prev => ({ ...prev, github: e.target.value }))}
-                  placeholder="username"
+                  placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -259,7 +217,7 @@ export default function ProfileManagement() {
                   type="text"
                   value={profile.twitter}
                   onChange={(e) => setProfile(prev => ({ ...prev, twitter: e.target.value }))}
-                  placeholder="username"
+                  placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -272,7 +230,7 @@ export default function ProfileManagement() {
                   type="text"
                   value={profile.linkedin}
                   onChange={(e) => setProfile(prev => ({ ...prev, linkedin: e.target.value }))}
-                  placeholder="username"
+                  placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>

@@ -41,7 +41,12 @@ const writeAvailabilityData = (data: DayAvailability[]) => {
 
 // Get default availability for a date
 const getDefaultAvailability = (date: Date): DayAvailability => {
-  const dateStr = date.toISOString().split('T')[0]
+  // Use local date to avoid timezone issues
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const dateStr = `${year}-${month}-${day}`
+  
   const dayOfWeek = date.getDay()
   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
   const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))

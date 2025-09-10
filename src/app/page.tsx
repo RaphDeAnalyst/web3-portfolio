@@ -1,5 +1,6 @@
 import { ParticleBackground } from '@/components/ui/particle-background'
 import { ActivityGraph } from '@/components/admin/activity-graph'
+import TiltedCard from '@/components/ui/TiltedCard'
 import Link from 'next/link'
 
 export default function Home() {
@@ -25,7 +26,7 @@ export default function Home() {
             {/* Main Heading with Enhanced Typography */}
             <div className="space-y-6">
               <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight">
-                <span className="block text-gradient mb-2">Data Analyst</span>
+                <span className="block text-gradient mb-2">Matthew Raphael</span>
                 <span className="block text-foreground">Web2 → Web3</span>
               </h1>
               <div className="max-w-3xl mx-auto">
@@ -124,8 +125,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Enhanced Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Enhanced Cards Grid with TiltedCard */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
             {[
               { 
                 title: 'About', 
@@ -161,66 +162,63 @@ export default function Home() {
               },
             ].map((item, index) => (
               <Link key={item.title} href={item.href}>
-                <div className={`group relative p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br ${item.gradient} card-hover backdrop-blur-sm`}>
-                  {/* Hover glow effect */}
-                  <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    item.color === 'cyber-500' ? 'bg-cyber-500/10' :
-                    item.color === 'primary-500' ? 'bg-primary-500/10' :
-                    item.color === 'purple-500' ? 'bg-purple-500/10' :
-                    'bg-yellow-500/10'
-                  }`}></div>
-                  
-                  {/* Content */}
-                  <div className="relative z-10 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="text-4xl">{item.icon}</div>
-                      <div className={`w-3 h-3 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-200 ${
-                        item.color === 'cyber-500' ? 'bg-cyber-500' :
-                        item.color === 'primary-500' ? 'bg-primary-500' :
-                        item.color === 'purple-500' ? 'bg-purple-500' :
-                        'bg-yellow-500'
-                      }`}></div>
-                    </div>
-                    
-                    <div>
-                      <h3 className={`text-2xl font-bold text-foreground mb-3 transition-colors duration-200 ${
-                        'group-hover:' + (
-                          item.color === 'cyber-500' ? 'text-cyber-500' :
-                          item.color === 'primary-500' ? 'text-primary-500' :
-                          item.color === 'purple-500' ? 'text-purple-500' :
-                          'text-yellow-500'
-                        )
-                      }`}>
-                        {item.title}
-                      </h3>
-                      <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    {/* Arrow icon */}
-                    <div className="flex justify-end">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${
-                        item.color === 'cyber-500' ? 'bg-cyber-500/10 group-hover:bg-cyber-500/20' :
-                        item.color === 'primary-500' ? 'bg-primary-500/10 group-hover:bg-primary-500/20' :
-                        item.color === 'purple-500' ? 'bg-purple-500/10 group-hover:bg-purple-500/20' :
-                        'bg-yellow-500/10 group-hover:bg-yellow-500/20'
-                      }`}>
-                        <span className={`text-lg group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200 ${
+                <TiltedCard
+                  containerHeight="300px"
+                  containerWidth="250px"
+                  rotateAmplitude={8}
+                  scaleOnHover={1.05}
+                  showTooltip={false}
+                  displayOverlayContent={false}
+                  className="transition-all duration-300"
+                >
+                  <div className={`w-full h-full bg-gradient-to-br ${item.gradient} backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center space-y-4`}>
+                    {/* Content */}
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="text-6xl">{item.icon}</div>
+                        <div className={`w-3 h-3 rounded-full opacity-60 ${
+                          item.color === 'cyber-500' ? 'bg-cyber-500' :
+                          item.color === 'primary-500' ? 'bg-primary-500' :
+                          item.color === 'purple-500' ? 'bg-purple-500' :
+                          'bg-yellow-500'
+                        }`}></div>
+                      </div>
+                      
+                      <div>
+                        <h3 className={`text-2xl font-bold text-foreground mb-3 transition-colors duration-200 ${
                           item.color === 'cyber-500' ? 'text-cyber-500' :
                           item.color === 'primary-500' ? 'text-primary-500' :
                           item.color === 'purple-500' ? 'text-purple-500' :
                           'text-yellow-500'
                         }`}>
-                          ↗
-                        </span>
+                          {item.title}
+                        </h3>
+                        <p className="text-foreground/70 leading-relaxed text-sm">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* Arrow icon */}
+                      <div className="flex justify-end">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${
+                          item.color === 'cyber-500' ? 'bg-cyber-500/10' :
+                          item.color === 'primary-500' ? 'bg-primary-500/10' :
+                          item.color === 'purple-500' ? 'bg-purple-500/10' :
+                          'bg-yellow-500/10'
+                        }`}>
+                          <span className={`text-lg transition-transform duration-200 ${
+                            item.color === 'cyber-500' ? 'text-cyber-500' :
+                            item.color === 'primary-500' ? 'text-primary-500' :
+                            item.color === 'purple-500' ? 'text-purple-500' :
+                            'text-yellow-500'
+                          }`}>
+                            ↗
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Animated border */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-gradient-to-r group-hover:from-transparent group-hover:via-current group-hover:to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                </div>
+                </TiltedCard>
               </Link>
             ))}
           </div>

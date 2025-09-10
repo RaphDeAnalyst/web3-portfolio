@@ -10,14 +10,13 @@
     - Dune Analytics: https://dune.com/raphdeanalyst
     Remove Telegram for now
   4. Your actual location: Working Globally
-  5. Your actual Calendly URL: I will open Calendly with this email (matthewraphael@matthewraphael.xyz) and give you later, just remind me
+  5. Your actual Calendly URL: https://calendly.com/matthewraphael-matthewraphael/30min
 
  
   Contact Form Service
 
   For your contact form to work, choose one:
-  - Formspree (easiest) - formspree.io
-  - EmailJS (client-side) - emailjs.com
+  - Formspree (easiest) - https://formspree.io/f/mkgvpjra
 
   Analytics
 

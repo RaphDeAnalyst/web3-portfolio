@@ -1,7 +1,7 @@
 export interface TimeSlot {
   start: string // "09:00"
   end: string   // "17:00" 
-  timezone: string // "UTC"
+  timezone: string // "WAT"
 }
 
 export interface DayAvailability {
@@ -106,7 +106,7 @@ export class AvailabilityService {
       return { 
         date: dateStr, 
         status: 'limited', 
-        slots: [{ start: '14:00', end: '16:00', timezone: 'UTC' }],
+        slots: [{ start: '14:00', end: '16:00', timezone: 'WAT' }],
         bookingUrl: 'https://calendly.com/matthewraphael/consultation'
       }
     }
@@ -116,8 +116,8 @@ export class AvailabilityService {
       date: dateStr,
       status: 'available',
       slots: [
-        { start: '09:00', end: '12:00', timezone: 'UTC' },
-        { start: '14:00', end: '17:00', timezone: 'UTC' }
+        { start: '09:00', end: '12:00', timezone: 'WAT' },
+        { start: '13:00', end: '17:00', timezone: 'WAT' }
       ],
       bookingUrl: 'https://calendly.com/matthewraphael/consultation'
     }
@@ -252,42 +252,42 @@ export class AvailabilityService {
           monday: {
             status: 'available',
             slots: [
-              { start: '09:00', end: '12:00', timezone: 'UTC' },
-              { start: '14:00', end: '17:00', timezone: 'UTC' }
+              { start: '09:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '17:00', timezone: 'WAT' }
             ]
           },
           tuesday: {
             status: 'available',
             slots: [
-              { start: '09:00', end: '12:00', timezone: 'UTC' },
-              { start: '14:00', end: '17:00', timezone: 'UTC' }
+              { start: '09:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '17:00', timezone: 'WAT' }
             ]
           },
           wednesday: {
             status: 'available',
             slots: [
-              { start: '09:00', end: '12:00', timezone: 'UTC' },
-              { start: '14:00', end: '17:00', timezone: 'UTC' }
+              { start: '09:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '17:00', timezone: 'WAT' }
             ]
           },
           thursday: {
             status: 'available',
             slots: [
-              { start: '09:00', end: '12:00', timezone: 'UTC' },
-              { start: '14:00', end: '17:00', timezone: 'UTC' }
+              { start: '09:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '17:00', timezone: 'WAT' }
             ]
           },
           friday: {
             status: 'available',
             slots: [
-              { start: '09:00', end: '12:00', timezone: 'UTC' },
-              { start: '14:00', end: '17:00', timezone: 'UTC' }
+              { start: '09:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '17:00', timezone: 'WAT' }
             ]
           },
           saturday: {
             status: 'limited',
             slots: [
-              { start: '10:00', end: '14:00', timezone: 'UTC' }
+              { start: '10:00', end: '13:00', timezone: 'WAT' }
             ]
           },
           sunday: {
@@ -302,42 +302,42 @@ export class AvailabilityService {
           monday: {
             status: 'available',
             slots: [
-              { start: '08:00', end: '12:00', timezone: 'UTC' },
-              { start: '13:00', end: '18:00', timezone: 'UTC' }
+              { start: '08:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '18:00', timezone: 'WAT' }
             ]
           },
           tuesday: {
             status: 'available',
             slots: [
-              { start: '08:00', end: '12:00', timezone: 'UTC' },
-              { start: '13:00', end: '18:00', timezone: 'UTC' }
+              { start: '08:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '18:00', timezone: 'WAT' }
             ]
           },
           wednesday: {
             status: 'available',
             slots: [
-              { start: '08:00', end: '12:00', timezone: 'UTC' },
-              { start: '13:00', end: '18:00', timezone: 'UTC' }
+              { start: '08:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '18:00', timezone: 'WAT' }
             ]
           },
           thursday: {
             status: 'available',
             slots: [
-              { start: '08:00', end: '12:00', timezone: 'UTC' },
-              { start: '13:00', end: '18:00', timezone: 'UTC' }
+              { start: '08:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '18:00', timezone: 'WAT' }
             ]
           },
           friday: {
             status: 'available',
             slots: [
-              { start: '08:00', end: '12:00', timezone: 'UTC' },
-              { start: '13:00', end: '16:00', timezone: 'UTC' }
+              { start: '08:00', end: '12:00', timezone: 'WAT' },
+              { start: '13:00', end: '16:00', timezone: 'WAT' }
             ]
           },
           saturday: {
             status: 'limited',
             slots: [
-              { start: '09:00', end: '13:00', timezone: 'UTC' }
+              { start: '10:00', end: '13:00', timezone: 'WAT' }
             ]
           },
           sunday: {

@@ -76,7 +76,6 @@ export function NFTMinter() {
       await new Promise(resolve => setTimeout(resolve, 3000))
 
       const metadata = generateNFTMetadata()
-      console.log('Minting NFT with metadata:', metadata)
 
       // Simulate successful mint
       setMintSuccess(true)

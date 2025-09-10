@@ -15,24 +15,47 @@ export function AvailabilityCalendar() {
   const [showTooltip, setShowTooltip] = useState(false)
   const [availabilityData, setAvailabilityData] = useState<DayAvailability[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [lastFetch, setLastFetch] = useState<number>(Date.now())
 
   // Fetch availability data from API
-  useEffect(() => {
-    const fetchAvailability = async () => {
-      try {
-        const response = await fetch('/api/availability')
-        if (response.ok) {
-          const data = await response.json()
-          setAvailabilityData(data)
+  const fetchAvailability = async (forceRefresh = false) => {
+    try {
+      setIsLoading(true)
+      
+      // Use cache busting parameter to ensure fresh data
+      const cacheParam = forceRefresh ? `&_force=${Date.now()}` : `?_t=${Date.now()}`
+      const response = await fetch(`/api/availability${cacheParam}`, {
+        // Prevent caching at browser level for real-time updates
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         }
-      } catch (error) {
-        console.error('Error fetching availability:', error)
-      } finally {
-        setIsLoading(false)
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setAvailabilityData(data)
+        setLastFetch(Date.now())
+      } else {
+        console.error('Failed to fetch availability:', response.statusText)
       }
+    } catch (error) {
+      console.error('Error fetching availability:', error)
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    fetchAvailability()
+  // Initial fetch and periodic refresh
+  useEffect(() => {
+    fetchAvailability(true) // Force refresh on mount
+    
+    // Auto-refresh every 30 seconds to catch admin changes
+    const intervalId = setInterval(() => fetchAvailability(true), 30000)
+    
+    return () => clearInterval(intervalId)
   }, [])
 
   // Get availability for a specific date
@@ -206,6 +229,17 @@ export function AvailabilityCalendar() {
         </h3>
         
         <div className="flex items-center space-x-2">
+          {/* Refresh button */}
+          <button
+            onClick={() => fetchAvailability(true)}
+            disabled={isLoading}
+            className="p-1.5 rounded border border-border hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh availability"
+          >
+            <svg className={`w-4 h-4 text-foreground ${isLoading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
           <button
             onClick={() => navigateMonth('prev')}
             className="p-1.5 rounded border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
@@ -248,6 +282,10 @@ export function AvailabilityCalendar() {
         <div className="flex items-center space-x-1">
           <div className="w-2 h-2 rounded-full bg-red-500"></div>
           <span className="text-sm text-foreground/80">Busy</span>
+        </div>
+        <div className="flex items-center space-x-1">
+          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+          <span className="text-sm text-foreground/80">Unavailable</span>
         </div>
       </div>
 
@@ -317,47 +355,89 @@ export function AvailabilityCalendar() {
               })()}
             </div>
             
-            {hoveredDate.day.slots.length > 0 ? (
-              <div className="space-y-3">
-                <div className="text-sm text-foreground/70 font-medium">Available Times:</div>
-                <div className="space-y-2">
-                  {hoveredDate.day.slots.map((slot, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 rounded bg-cyber-500/5 border border-cyber-500/20">
-                      <span className="text-cyber-500 font-semibold text-sm">
-                        {formatTime(slot.start)} - {formatTime(slot.end)}
-                      </span>
-                      <span className="text-xs text-foreground/60 bg-muted px-2 py-1 rounded-full">
-                        {slot.timezone}
+            {(() => {
+              const status = hoveredDate.day.status
+              const hasSlots = hoveredDate.day.slots.length > 0
+              
+              if (status === 'unavailable') {
+                return (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-gray-500"></div>
+                      <span className="text-gray-500 font-medium text-sm">Unavailable</span>
+                    </div>
+                    {hoveredDate.day.notes && (
+                      <div className="text-sm text-foreground/60 bg-muted p-2 rounded">
+                        {hoveredDate.day.notes}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+              
+              if (status === 'busy' || !hasSlots) {
+                return (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <span className="text-red-500 font-medium text-sm">
+                        {status === 'busy' ? 'No availability' : 'Fully booked'}
                       </span>
                     </div>
-                  ))}
-                </div>
-                
-                {/* Click to book note */}
-                <div className="mt-3 pt-3 border-t border-border">
-                  <div className="flex items-center justify-center space-x-2 text-primary-500 bg-primary-500/5 p-3 rounded-lg">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                    </svg>
-                    <span className="text-sm font-medium">Click this date to book consultation</span>
+                    {hoveredDate.day.notes && (
+                      <div className="text-sm text-foreground/60 bg-muted p-2 rounded">
+                        {hoveredDate.day.notes}
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-red-500 font-medium text-sm">
-                    {hoveredDate.day.status === 'busy' ? 'No availability' : 'Fully booked'}
-                  </span>
-                </div>
-                {hoveredDate.day.notes && (
-                  <div className="text-sm text-foreground/60 bg-muted p-2 rounded">
-                    {hoveredDate.day.notes}
+                )
+              }
+              
+              // Available or Limited with slots
+              return (
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/70 font-medium">
+                    {status === 'limited' ? 'Limited Availability:' : 'Available Times:'}
                   </div>
-                )}
-              </div>
-            )}
+                  <div className="space-y-2">
+                    {hoveredDate.day.slots.map((slot, index) => {
+                      const slotBgColor = status === 'limited' ? 'bg-yellow-500/5' : 'bg-cyber-500/5'
+                      const slotBorderColor = status === 'limited' ? 'border-yellow-500/20' : 'border-cyber-500/20'
+                      const slotTextColor = status === 'limited' ? 'text-yellow-500' : 'text-cyber-500'
+                      
+                      return (
+                        <div key={index} className={`flex items-center justify-between p-2 rounded ${slotBgColor} border ${slotBorderColor}`}>
+                          <span className={`${slotTextColor} font-semibold text-sm`}>
+                            {formatTime(slot.start)} - {formatTime(slot.end)}
+                          </span>
+                          <span className="text-xs text-foreground/60 bg-muted px-2 py-1 rounded-full">
+                            {slot.timezone}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  
+                  {hoveredDate.day.notes && (
+                    <div className="text-sm text-foreground/60 bg-muted p-2 rounded">
+                      {hoveredDate.day.notes}
+                    </div>
+                  )}
+                  
+                  {/* Click to book note - only show for available/limited with booking URL */}
+                  {hoveredDate.day.bookingUrl && (
+                    <div className="mt-3 pt-3 border-t border-border">
+                      <div className="flex items-center justify-center space-x-2 text-primary-500 bg-primary-500/5 p-3 rounded-lg">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                        </svg>
+                        <span className="text-sm font-medium">Click this date to book consultation</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
           </div>
         </div>
       )}

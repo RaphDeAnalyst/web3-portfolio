@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     slug: "first-week-learning-dune-analytics",
     category: "Learning",
     featured: true,
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   },
   {
     title: "Python for Blockchain Data: My Learning Path",
@@ -35,7 +35,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["Python", "Web3", "Learning", "Data-Analysis", "Blockchain"],
     slug: "python-blockchain-data-learning-path",
     category: "Learning",
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   },
   {
     title: "Traditional Data Analytics vs Web3: What's Different?",
@@ -46,7 +46,7 @@ export const blogPosts: BlogPost[] = [
     slug: "traditional-vs-web3-data-analytics",
     category: "Analytics",
     featured: true,
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   },
   {
     title: "Solidity Basics: A Data Analyst's Perspective",
@@ -56,7 +56,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["Solidity", "Smart-Contracts", "Learning", "Data-Analysis", "Web3"],
     slug: "solidity-basics-data-analyst-perspective",
     category: "Web3",
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   },
   {
     title: "Building My First Crypto Portfolio Tracker",
@@ -66,7 +66,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["Python", "Portfolio", "Crypto", "Excel", "Tutorial"],
     slug: "building-first-crypto-portfolio-tracker",
     category: "Tutorial",
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   },
   {
     title: "Statistical Analysis in DeFi: APY vs Reality",
@@ -76,7 +76,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["DeFi", "Statistics", "APY", "Risk-Analysis", "Yield-Farming"],
     slug: "statistical-analysis-defi-apy-reality",
     category: "Analytics",
-    author: { name: "Data Analyst" }
+    author: { name: "Matthew Raphael" }
   }
 ]
 
@@ -100,5 +100,5 @@ export const newBlogPostTemplate: BlogPost = {
   slug: "your-post-url-slug", // Must be unique, lowercase, use hyphens
   category: "Learning", // Must be one of the categories above
   featured: false, // Set to true to feature prominently
-  author: { name: "Your Name" }
+  author: { name: "Matthew Raphael" }
 }

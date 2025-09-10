@@ -4,18 +4,25 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
+import { ProjectService } from '@/lib/project-service'
 
 export default function NewProject() {
   const router = useRouter()
   
-  const handleSave = (projectData: any, isDraft: boolean) => {
-    // In a real app, you'd save to database/API
-    console.log('Saving project:', projectData, 'isDraft:', isDraft)
-    
-    // Simulate save and redirect
-    setTimeout(() => {
+  const handleSave = async (projectData: any, isDraft: boolean) => {
+    try {
+      // Add the project using ProjectService
+      ProjectService.addProject({
+        ...projectData,
+        status: isDraft ? 'Learning' : projectData.status
+      })
+      
+      // Redirect to projects list
       router.push('/admin/projects')
-    }, 1000)
+    } catch (error) {
+      console.error('Error saving project:', error)
+      alert('Error saving project. Please try again.')
+    }
   }
 
   return (

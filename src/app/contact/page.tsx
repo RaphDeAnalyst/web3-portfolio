@@ -176,7 +176,7 @@ export default function Contact() {
                 Start Your Project
               </button>
               <button 
-                onClick={() => window.open('https://calendly.com/web3dev', '_blank')}
+                onClick={() => window.open('https://calendly.com/matthewraphael-matthewraphael/30min', '_blank')}
                 className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
               >
                 Schedule Call

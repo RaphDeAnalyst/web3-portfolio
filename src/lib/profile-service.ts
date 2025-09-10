@@ -18,17 +18,17 @@ export class ProfileService {
 
   // Default profile data
   private static defaultProfile: ProfileData = {
-    name: 'Data Analyst',
+    name: 'Matthew Raphael',
     title: 'Web3 Data & AI Specialist',
-    bio: 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Passionate about decentralized data and AI-powered blockchain analysis.',
+    bio: 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.',
     avatar: '/avatar.jpg',
-    email: 'your.email@example.com',
+    email: 'matthewraphael@matthewraphael.xyz',
     location: 'Remote',
     website: '',
     github: '',
     twitter: '',
     linkedin: '',
-    skills: ['Python', 'SQL', 'Dune Analytics', 'Web3', 'Data Analysis', 'Machine Learning'],
+    skills: ['Python', 'SQL', 'Dune Analytics', 'Web3', 'Data Analysis', 'Machine Learning', 'Blockchain Analysis', 'DeFi', 'Smart Contracts'],
     resume: ''
   }
 
@@ -138,6 +138,31 @@ export class ProfileService {
     if (JSON.stringify(existing) === JSON.stringify(this.defaultProfile)) {
       // Profile hasn't been customized yet, just ensure it's saved
       this.saveProfile(existing)
+    }
+  }
+
+  // Force refresh profile data (useful for clearing old cached data)
+  static refreshProfile(): void {
+    if (typeof window === 'undefined') return
+    
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY)
+      if (stored) {
+        const parsedStored = JSON.parse(stored)
+        // If stored profile has old "Data Analyst" name, update it
+        if (parsedStored.name === 'Data Analyst') {
+          parsedStored.name = 'Matthew Raphael'
+          parsedStored.bio = this.defaultProfile.bio
+          parsedStored.email = this.defaultProfile.email
+          parsedStored.skills = this.defaultProfile.skills
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(parsedStored))
+          
+          // Trigger a profile update event
+          window.dispatchEvent(new CustomEvent('profileUpdated'))
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing profile:', error)
     }
   }
 

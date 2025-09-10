@@ -1,60 +1,151 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ActivityService } from '@/lib/activity-service'
 
 export default function MediaManagement() {
-  const [uploadedFiles, setUploadedFiles] = useState([
-    {
-      id: 1,
-      name: 'hero-background.jpg',
-      type: 'image/jpeg',
-      size: '2.5 MB',
-      uploadDate: '2024-01-15',
-      url: '/images/hero-background.jpg',
-      used: true
-    },
-    {
-      id: 2,
-      name: 'project-screenshot.png',
-      type: 'image/png',
-      size: '1.8 MB',
-      uploadDate: '2024-01-14',
-      url: '/images/project-screenshot.png',
-      used: false
-    },
-    {
-      id: 3,
-      name: 'data-analysis-chart.svg',
-      type: 'image/svg+xml',
-      size: '156 KB',
-      uploadDate: '2024-01-13',
-      url: '/images/data-analysis-chart.svg',
-      used: true
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([])
+
+  // Load files from localStorage on component mount
+  useEffect(() => {
+    const savedFiles = localStorage.getItem('media-library')
+    if (savedFiles) {
+      try {
+        const files = JSON.parse(savedFiles)
+        // Only filter out obviously broken sample URLs, keep real uploaded files
+        const validFiles = files.filter((file: any) => {
+          // Keep files with ImgBB URLs (real uploads)
+          if (file.url.includes('i.ibb.co') || file.url.includes('imgbb.com')) {
+            return true
+          }
+          // Remove old sample data with local paths
+          if (file.url.startsWith('/images/') && 
+              (file.name === 'hero-background.jpg' || 
+               file.name === 'project-screenshot.png' || 
+               file.name === 'data-analysis-chart.svg')) {
+            return false
+          }
+          // Remove temporary blob URLs
+          if (file.url.startsWith('blob:')) {
+            return false
+          }
+          // Keep everything else (including any other valid URLs)
+          return true
+        })
+        console.log('Loaded', validFiles.length, 'valid files from localStorage')
+        setUploadedFiles(validFiles)
+      } catch (error) {
+        console.error('Error loading saved media files:', error)
+        setUploadedFiles([])
+      }
+    } else {
+      console.log('No saved media files found in localStorage')
     }
-  ])
+  }, [])
+
+  // Save files to localStorage whenever files change
+  useEffect(() => {
+    if (uploadedFiles.length > 0) {
+      console.log('Saving', uploadedFiles.length, 'files to localStorage')
+      localStorage.setItem('media-library', JSON.stringify(uploadedFiles))
+    }
+  }, [uploadedFiles])
 
   const [dragOver, setDragOver] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({})
 
-  const handleFileUpload = (files: FileList | null) => {
+  const handleFileUpload = async (files: FileList | null) => {
     if (!files) return
 
-    Array.from(files).forEach(file => {
-      const newFile = {
-        id: Date.now() + Math.random(),
-        name: file.name,
-        type: file.type,
-        size: formatFileSize(file.size),
-        uploadDate: new Date().toISOString().split('T')[0],
-        url: URL.createObjectURL(file),
-        used: false
+    setUploading(true)
+    const fileArray = Array.from(files)
+    
+    for (let i = 0; i < fileArray.length; i++) {
+      const file = fileArray[i]
+      const fileKey = `${file.name}-${Date.now()}`
+      
+      try {
+        // Validate file size (32MB limit for ImgBB)
+        if (file.size > 32 * 1024 * 1024) {
+          throw new Error(`File "${file.name}" exceeds 32MB limit`)
+        }
+        
+        // Validate file type (ImgBB only accepts images)
+        if (!file.type.startsWith('image/')) {
+          throw new Error(`File "${file.name}" is not a supported image format`)
+        }
+        
+        // Show progress
+        setUploadProgress(prev => ({ ...prev, [fileKey]: 0 }))
+        
+        // Upload to ImgBB (same service as profile pictures)
+        setUploadProgress(prev => ({ ...prev, [fileKey]: 50 }))
+        const uploadedUrl = await uploadToImgBB(file)
+        setUploadProgress(prev => ({ ...prev, [fileKey]: 100 }))
+        
+        const newFile = {
+          id: Date.now() + Math.random(),
+          name: file.name,
+          type: file.type,
+          size: formatFileSize(file.size),
+          uploadDate: new Date().toISOString().split('T')[0],
+          url: uploadedUrl,
+          used: false
+        }
+        
+        setUploadedFiles(prev => {
+          const updated = [newFile, ...prev]
+          console.log('Added new file to media library:', newFile.name, newFile.url)
+          console.log('Total files now:', updated.length)
+          return updated
+        })
+        
+        // Track media upload activity
+        ActivityService.trackMedia(file.name)
+        
+        // Clean up progress
+        setTimeout(() => {
+          setUploadProgress(prev => {
+            const { [fileKey]: removed, ...rest } = prev
+            return rest
+          })
+        }, 1000)
+        
+      } catch (error) {
+        console.error(`Failed to upload ${file.name}:`, error)
+        setUploadProgress(prev => {
+          const { [fileKey]: removed, ...rest } = prev
+          return rest
+        })
       }
-      
-      setUploadedFiles(prev => [newFile, ...prev])
-      
-      // Track media upload activity
-      ActivityService.trackMedia(file.name)
+    }
+    
+    setUploading(false)
+  }
+
+  const uploadToImgBB = async (file: File): Promise<string> => {
+    const API_KEY = '3feb82a2e6ad9cc020876716282b7321'
+    
+    const formData = new FormData()
+    formData.append('image', file)
+    formData.append('key', API_KEY)
+
+    const response = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData,
     })
+
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.status}`)
+    }
+
+    const data = await response.json()
+    if (!data.success) {
+      throw new Error(data.error?.message || 'Upload failed')
+    }
+
+    return data.data.url
   }
 
   const formatFileSize = (bytes: number): string => {
@@ -75,13 +166,48 @@ export default function MediaManagement() {
 
   const handleDeleteFile = (id: number) => {
     if (window.confirm('Are you sure you want to delete this file?')) {
-      setUploadedFiles(files => files.filter(file => file.id !== id))
+      const fileToDelete = uploadedFiles.find(f => f.id === id)
+      console.log('User manually deleting file:', fileToDelete?.name)
+      setUploadedFiles(files => {
+        const filtered = files.filter(file => file.id !== id)
+        console.log('Files after deletion:', filtered.length)
+        return filtered
+      })
     }
   }
 
-  const copyToClipboard = (url: string) => {
-    navigator.clipboard.writeText(url)
-    // You could add a toast notification here
+  const copyToClipboard = async (url: string, fileName: string) => {
+    try {
+      await navigator.clipboard.writeText(url)
+      // Show success feedback (you could enhance this with a toast)
+      const button = document.activeElement as HTMLButtonElement
+      const originalText = button.textContent
+      button.textContent = '✓ Copied!'
+      button.style.color = '#10B981'
+      
+      setTimeout(() => {
+        button.textContent = originalText
+        button.style.color = ''
+      }, 2000)
+    } catch (error) {
+      console.error('Failed to copy URL:', error)
+      // Fallback: select and copy
+      const textArea = document.createElement('textarea')
+      textArea.value = url
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+    }
+  }
+
+  const clearMediaLibrary = () => {
+    if (window.confirm('Are you sure you want to clear all media files? This action cannot be undone.')) {
+      console.log('User manually clearing all media files')
+      setUploadedFiles([])
+      localStorage.removeItem('media-library')
+      console.log('Media library cleared')
+    }
   }
 
   const stats = {
@@ -94,9 +220,19 @@ export default function MediaManagement() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Media Library</h1>
-        <p className="text-foreground/70 mt-1">Manage your images, videos, and other assets</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Media Library</h1>
+          <p className="text-foreground/70 mt-1">Manage your images, videos, and other assets</p>
+        </div>
+        <div className="flex space-x-3">
+          <button
+            onClick={clearMediaLibrary}
+            className="px-4 py-2 text-sm border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
+            🗑️ Clear All
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -174,7 +310,7 @@ export default function MediaManagement() {
             Drop files here or click to upload
           </h3>
           <p className="text-foreground/60 mb-6">
-            Support for images, videos, documents, and other media files
+            Support for JPG, PNG, GIF, WebP, BMP, SVG images up to 32MB each
           </p>
           <label className="cursor-pointer">
             <input
@@ -182,7 +318,7 @@ export default function MediaManagement() {
               multiple
               className="hidden"
               onChange={(e) => handleFileUpload(e.target.files)}
-              accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
+              accept="image/*"
             />
             <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200">
               Choose Files
@@ -201,7 +337,19 @@ export default function MediaManagement() {
                 {/* File Preview */}
                 <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
                   {file.type.startsWith('image/') ? (
-                    <img src={file.url} alt={file.name} className="w-full h-full object-cover" />
+                    <img 
+                      src={file.url} 
+                      alt={file.name} 
+                      className="w-full h-full object-cover" 
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        const parent = target.parentElement
+                        if (parent) {
+                          parent.innerHTML = `<span class="text-4xl">🖼️</span><div class="text-xs text-center text-foreground/60 mt-2">Image failed to load</div>`
+                        }
+                      }}
+                    />
                   ) : (
                     <span className="text-4xl">{getFileIcon(file.type)}</span>
                   )}
@@ -226,7 +374,7 @@ export default function MediaManagement() {
                 {/* Actions */}
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-800">
                   <button
-                    onClick={() => copyToClipboard(file.url)}
+                    onClick={() => copyToClipboard(file.url, file.name)}
                     className="text-xs text-foreground/60 hover:text-cyber-500 transition-colors"
                   >
                     📋 Copy URL

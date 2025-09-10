@@ -20,7 +20,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
     category: 'Web3 Learning',
     tags: [],
     author: {
-      name: 'Data Analyst',
+      name: 'Matthew Raphael',
       avatar: '/avatar.jpg'
     },
     date: new Date().toISOString().split('T')[0],
@@ -350,13 +350,25 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
           {/* Author */}
           <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
             <h3 className="font-medium text-foreground mb-3">Author</h3>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold">
-                {formData.author.name.charAt(0)}
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Author Name</label>
+                <input
+                  type="text"
+                  value={formData.author.name}
+                  onChange={(e) => handleInputChange('author', { ...formData.author, name: e.target.value })}
+                  placeholder="Matthew Raphael"
+                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                />
               </div>
-              <div>
-                <div className="font-medium text-foreground">{formData.author.name}</div>
-                <div className="text-sm text-foreground/60">Web3 Data & AI Specialist</div>
+              <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold">
+                  {formData.author.name.charAt(0) || 'M'}
+                </div>
+                <div>
+                  <div className="font-medium text-foreground">{formData.author.name || 'Matthew Raphael'}</div>
+                  <div className="text-sm text-foreground/60">RaphdeAnalyst • Web3 Data & AI Specialist</div>
+                </div>
               </div>
             </div>
           </div>

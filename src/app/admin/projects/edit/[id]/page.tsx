@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
-import { projects } from '@/data/projects'
+import { ProjectService } from '@/lib/project-service'
 
 export default function EditProject() {
   const router = useRouter()
@@ -16,22 +16,33 @@ export default function EditProject() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Find the project by index (since we don't have actual IDs in the data)
-    const project = projects[id]
-    if (project) {
-      setProjectData(project)
+    // Find the project by index using ProjectService
+    try {
+      const project = ProjectService.getProjectByIndex(id)
+      if (project) {
+        setProjectData(project)
+      }
+    } catch (error) {
+      console.error('Error loading project:', error)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [id])
 
-  const handleSave = (updatedProjectData: any, isDraft: boolean) => {
-    // In a real app, you'd update the database/API
-    console.log('Updating project:', updatedProjectData, 'isDraft:', isDraft)
-    
-    // Simulate save and redirect
-    setTimeout(() => {
+  const handleSave = async (updatedProjectData: any, isDraft: boolean) => {
+    try {
+      // Update the project using ProjectService
+      ProjectService.updateProject(id, {
+        ...updatedProjectData,
+        status: isDraft ? 'Learning' : updatedProjectData.status
+      })
+      
+      // Redirect to projects list
       router.push('/admin/projects')
-    }, 1000)
+    } catch (error) {
+      console.error('Error updating project:', error)
+      alert('Error updating project. Please try again.')
+    }
   }
 
   if (loading) {
