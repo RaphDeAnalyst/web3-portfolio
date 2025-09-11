@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
-import { ProjectService } from '@/lib/project-service'
+import { projectService } from '@/lib/service-switcher'
 
 export default function EditProject() {
   const router = useRouter()
@@ -16,23 +16,26 @@ export default function EditProject() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Find the project by index using ProjectService
-    try {
-      const project = ProjectService.getProjectByIndex(id)
-      if (project) {
-        setProjectData(project)
+    // Find the project by index using service switcher
+    const loadProject = async () => {
+      try {
+        const project = await projectService.getProjectByIndex(id)
+        if (project) {
+          setProjectData(project)
+        }
+      } catch (error) {
+        console.error('Error loading project:', error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error loading project:', error)
-    } finally {
-      setLoading(false)
     }
+    loadProject()
   }, [id])
 
   const handleSave = async (updatedProjectData: any, isDraft: boolean) => {
     try {
-      // Update the project using ProjectService
-      ProjectService.updateProject(id, {
+      // Update the project using service switcher
+      await projectService.updateProject(id, {
         ...updatedProjectData,
         status: isDraft ? 'Learning' : updatedProjectData.status
       })

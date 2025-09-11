@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ActivityService } from '@/lib/activity-service'
+import { activityService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
 
 interface ProjectData extends Omit<Project, 'id'> {
@@ -104,7 +104,7 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
 
     // Track activity
     if (!isDraft) {
-      ActivityService.trackProject(formData.title, !!initialData?.id)
+      await activityService.trackProject(formData.title, !!initialData?.id)
     }
 
     try {

@@ -4,15 +4,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
-import { ProjectService } from '@/lib/project-service'
+import { projectService } from '@/lib/service-switcher'
 
 export default function NewProject() {
   const router = useRouter()
   
   const handleSave = async (projectData: any, isDraft: boolean) => {
     try {
-      // Add the project using ProjectService
-      ProjectService.addProject({
+      // Add the project using service switcher
+      await projectService.addProject({
         ...projectData,
         status: isDraft ? 'Learning' : projectData.status
       })

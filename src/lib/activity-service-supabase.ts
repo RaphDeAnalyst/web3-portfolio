@@ -417,4 +417,4 @@ export class ActivityServiceSupabase {
   }
 }
 
-export const activityServiceSupabase = new ActivityServiceSupabase()
+export const activityServiceSupabase = ActivityServiceSupabase

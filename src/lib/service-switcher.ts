@@ -3,7 +3,7 @@
 
 import { blogService as legacyBlogService } from './blog-service'
 import { blogServiceSupabase } from './blog-service-supabase'
-import { ProjectService as legacyProjectService } from './project-service'
+import { projectService as legacyProjectService } from './project-service'
 import { projectServiceSupabase } from './project-service-supabase'
 import { ProfileService as legacyProfileService } from './profile-service'
 import { profileServiceSupabase } from './profile-service-supabase'

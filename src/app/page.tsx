@@ -31,8 +31,10 @@ export default function Home() {
     
     loadFeaturedContent()
   }, [])
+  
   return (
-    <div className="min-h-screen">
+    <>
+      <div className="min-h-screen">
       {/* Enhanced Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Layers */}
@@ -455,7 +457,6 @@ export default function Home() {
               </Link>
             </div>
           )}
-          </div>
 
           {/* View All Posts CTA */}
           <div className="text-center mt-16">
@@ -551,6 +552,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

@@ -2,10 +2,10 @@ import { projects as staticProjects, Project } from '@/data/projects'
 import { ActivityService } from './activity-service'
 
 export class ProjectService {
-  private static STORAGE_KEY = 'portfolio_projects'
+  private STORAGE_KEY = 'portfolio_projects'
   
   // Get all projects (from localStorage or static data as fallback)
-  static getAllProjects(): Project[] {
+  getAllProjects(): Project[] {
     if (typeof window === 'undefined') {
       return staticProjects // Server-side fallback
     }
@@ -26,7 +26,7 @@ export class ProjectService {
   }
   
   // Merge static projects with stored projects, preferring stored versions
-  private static mergeProjects(staticProjects: Project[], storedProjects: Project[]): Project[] {
+  private mergeProjects(staticProjects: Project[], storedProjects: Project[]): Project[] {
     const merged = [...staticProjects]
     const newProjects: Project[] = []
     
@@ -46,7 +46,7 @@ export class ProjectService {
   }
   
   // Save all projects to localStorage
-  static saveAllProjects(projects: Project[]): void {
+  saveAllProjects(projects: Project[]): void {
     if (typeof window === 'undefined') return
     
     try {
@@ -58,13 +58,13 @@ export class ProjectService {
   }
   
   // Get project by index
-  static getProjectByIndex(index: number): Project | null {
+  getProjectByIndex(index: number): Project | null {
     const projects = this.getAllProjects()
     return projects[index] || null
   }
   
   // Update a specific project
-  static updateProject(index: number, updatedProject: Partial<Project>): void {
+  updateProject(index: number, updatedProject: Partial<Project>): void {
     const projects = this.getAllProjects()
     
     if (index < 0 || index >= projects.length) {
@@ -82,7 +82,7 @@ export class ProjectService {
   }
   
   // Add new project
-  static addProject(newProject: Omit<Project, 'id'>): void {
+  addProject(newProject: Omit<Project, 'id'>): void {
     const projects = this.getAllProjects()
     const projectWithId = {
       ...newProject,
@@ -97,7 +97,7 @@ export class ProjectService {
   }
   
   // Delete project
-  static deleteProject(index: number): void {
+  deleteProject(index: number): void {
     const projects = this.getAllProjects()
     
     if (index < 0 || index >= projects.length) {
@@ -118,12 +118,12 @@ export class ProjectService {
   }
   
   // Get featured projects (max 2)
-  static getFeaturedProjects(): Project[] {
+  getFeaturedProjects(): Project[] {
     return this.getAllProjects().filter(p => p.featured).slice(0, 2)
   }
   
   // Set featured status
-  static setFeaturedStatus(index: number, featured: boolean): void {
+  setFeaturedStatus(index: number, featured: boolean): void {
     const projects = this.getAllProjects()
     
     if (index < 0 || index >= projects.length) {
@@ -142,7 +142,7 @@ export class ProjectService {
   }
   
   // Reset to static data (for development/testing)
-  static resetToStaticData(): void {
+  resetToStaticData(): void {
     if (typeof window === 'undefined') return
     
     localStorage.removeItem(this.STORAGE_KEY)
@@ -155,7 +155,7 @@ export class ProjectService {
   }
   
   // Get projects statistics
-  static getProjectStats() {
+  getProjectStats() {
     const projects = this.getAllProjects()
     
     return {
@@ -175,3 +175,5 @@ export class ProjectService {
     }
   }
 }
+
+export const projectService = new ProjectService()

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ProjectService } from '@/lib/project-service'
+import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
 
 export default function ProjectsManagement() {
@@ -14,9 +14,9 @@ export default function ProjectsManagement() {
 
   // Load projects on component mount
   useEffect(() => {
-    const loadProjects = () => {
+    const loadProjects = async () => {
       try {
-        const projects = ProjectService.getAllProjects()
+        const projects = await projectService.getAllProjects()
         setProjectList(projects)
       } catch (error) {
         console.error('Error loading projects:', error)
@@ -40,12 +40,12 @@ export default function ProjectsManagement() {
     return matchesSearch && matchesCategory && matchesFeatured
   })
 
-  const handleDeleteProject = (index: number) => {
+  const handleDeleteProject = async (index: number) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        ProjectService.deleteProject(index)
+        await projectService.deleteProject(index)
         // Reload projects after deletion
-        const updatedProjects = ProjectService.getAllProjects()
+        const updatedProjects = await projectService.getAllProjects()
         setProjectList(updatedProjects)
       } catch (error) {
         console.error('Error deleting project:', error)
