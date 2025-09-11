@@ -148,10 +148,44 @@ export function AvailabilityCalendar() {
     setHoveredDate(null)
   }
 
+  // Build Calendly URL with date pre-selection
+  const buildCalendlyUrl = (baseUrl: string, selectedDate: Date, timeSlot?: TimeSlot): string => {
+    if (!baseUrl) return ''
+    
+    // Format date as YYYY-MM-DD for Calendly
+    const year = selectedDate.getFullYear()
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
+    const day = String(selectedDate.getDate()).padStart(2, '0')
+    const dateStr = `${year}-${month}-${day}`
+    
+    // Build URL with date parameter
+    const separator = baseUrl.includes('?') ? '&' : '?'
+    let url = `${baseUrl}${separator}date=${dateStr}`
+    
+    // Optionally add time parameter if specific slot provided
+    if (timeSlot) {
+      url += `&time=${timeSlot.start}`
+    }
+    
+    return url
+  }
+
   const handleDateClick = (day: Date) => {
     const availability = getAvailabilityForDate(day)
     if (availability.bookingUrl && availability.status !== 'busy' && availability.status !== 'unavailable') {
-      window.open(availability.bookingUrl, '_blank')
+      const calendlyUrl = buildCalendlyUrl(availability.bookingUrl, day)
+      window.open(calendlyUrl, '_blank')
+    }
+  }
+
+  // Handle time slot click for enhanced booking experience
+  const handleTimeSlotClick = (day: Date, timeSlot: TimeSlot, event: React.MouseEvent) => {
+    event.stopPropagation() // Prevent date click from firing
+    const availability = getAvailabilityForDate(day)
+    if (availability.bookingUrl && availability.status !== 'busy' && availability.status !== 'unavailable') {
+      const calendlyUrl = buildCalendlyUrl(availability.bookingUrl, day, timeSlot)
+      window.open(calendlyUrl, '_blank')
+      setShowTooltip(false) // Close tooltip after click
     }
   }
 
@@ -404,15 +438,30 @@ export function AvailabilityCalendar() {
                       const slotBgColor = status === 'limited' ? 'bg-yellow-500/5' : 'bg-cyber-500/5'
                       const slotBorderColor = status === 'limited' ? 'border-yellow-500/20' : 'border-cyber-500/20'
                       const slotTextColor = status === 'limited' ? 'text-yellow-500' : 'text-cyber-500'
+                      const hoverBgColor = status === 'limited' ? 'hover:bg-yellow-500/10' : 'hover:bg-cyber-500/10'
+                      
+                      // Create date object for this slot
+                      const [year, month, day] = hoveredDate.day.date.split('-').map(Number)
+                      const slotDate = new Date(year, month - 1, day)
                       
                       return (
-                        <div key={index} className={`flex items-center justify-between p-2 rounded ${slotBgColor} border ${slotBorderColor}`}>
+                        <div 
+                          key={index} 
+                          className={`flex items-center justify-between p-2 rounded border cursor-pointer transition-all duration-200 ${slotBgColor} ${slotBorderColor} ${hoverBgColor} hover:scale-[1.02] hover:shadow-sm`}
+                          onClick={(e) => handleTimeSlotClick(slotDate, slot, e)}
+                          title="Click to book this specific time"
+                        >
                           <span className={`${slotTextColor} font-semibold text-sm`}>
                             {formatTime(slot.start)} - {formatTime(slot.end)}
                           </span>
-                          <span className="text-xs text-foreground/60 bg-muted px-2 py-1 rounded-full">
-                            {slot.timezone}
-                          </span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-xs text-foreground/60 bg-muted px-2 py-1 rounded-full">
+                              {slot.timezone}
+                            </span>
+                            <svg className={`w-3 h-3 ${slotTextColor} opacity-60`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
                         </div>
                       )
                     })}
@@ -426,12 +475,16 @@ export function AvailabilityCalendar() {
                   
                   {/* Click to book note - only show for available/limited with booking URL */}
                   {hoveredDate.day.bookingUrl && (
-                    <div className="mt-3 pt-3 border-t border-border">
+                    <div className="mt-3 pt-3 border-t border-border space-y-2">
                       <div className="flex items-center justify-center space-x-2 text-primary-500 bg-primary-500/5 p-3 rounded-lg">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                         </svg>
-                        <span className="text-sm font-medium">Click this date to book consultation</span>
+                        <span className="text-sm font-medium">Click to book consultation</span>
+                      </div>
+                      <div className="text-xs text-center text-foreground/60 space-y-1">
+                        <div>• Click on any time slot above to book that specific time</div>
+                        <div>• Or click this date to select the day and choose your time</div>
                       </div>
                     </div>
                   )}
@@ -444,8 +497,13 @@ export function AvailabilityCalendar() {
 
       {/* Mobile Instructions */}
       <div className="mt-4 p-3 rounded bg-primary-500/5 border border-primary-500/20 md:hidden">
-        <div className="text-sm text-foreground/70 text-center">
-          <span className="text-primary-500 font-medium">Tap</span> any available date to schedule a consultation
+        <div className="text-sm text-foreground/70 text-center space-y-1">
+          <div>
+            <span className="text-primary-500 font-medium">Tap</span> any available date to schedule a consultation
+          </div>
+          <div className="text-xs text-foreground/60">
+            Date will be pre-selected in Calendly for faster booking
+          </div>
         </div>
       </div>
     </div>

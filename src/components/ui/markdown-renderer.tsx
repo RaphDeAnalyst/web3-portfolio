@@ -188,8 +188,8 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Inline code
         formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-cyber-500">$1</code>')
         
-        // YouTube videos - check for YouTube URLs
-        const youtubeMatch = line.trim().match(/^https?:\/\/(?:www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+        // YouTube videos - check for YouTube URLs (including Shorts)
+        const youtubeMatch = line.trim().match(/^https?:\/\/(?:www\.)?(youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&].*)?/)
         if (youtubeMatch) {
           const videoId = youtubeMatch[2]
           elements.push(

@@ -88,9 +88,11 @@ export function BlogCard({
   const cardSize = getCardSize()
 
   return (
-    <Link href={`/blog/${slug}`}>
-      <article 
-        className={`group cursor-pointer ${cardSize} ${featured ? 'p-8' : 'p-6'} rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover overflow-hidden`}
+    <Link href={`/blog/${slug}`} className={`${cardSize}`}>
+      <div 
+        className={`group relative rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover overflow-hidden ${
+          featured ? 'p-8 min-h-[600px]' : 'p-6 min-h-[500px]'
+        } flex flex-col cursor-pointer`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -149,7 +151,7 @@ export function BlogCard({
         )}
 
         {/* Content */}
-        <div className="relative z-10 space-y-4">
+        <div className="relative z-10 space-y-4 flex-grow flex flex-col">
           {/* Meta Info */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -176,7 +178,7 @@ export function BlogCard({
 
           {/* Author */}
           {author && (
-            <div className="flex items-center space-x-3 pt-4 border-t border-gray-200/30 dark:border-gray-800/30">
+            <div className="flex items-center space-x-3 pt-4 border-t border-gray-200/30 dark:border-gray-800/30 mt-auto">
               {isHydrated && profileData.avatar && profileData.avatar !== '/avatar.jpg' ? (
                 <img
                   src={profileData.avatar}
@@ -240,7 +242,7 @@ export function BlogCard({
 
         {/* Corner Accent */}
         <div className={`absolute top-4 left-4 w-2 h-2 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} opacity-60 group-hover:opacity-100 transition-opacity duration-200`}></div>
-      </article>
+      </div>
     </Link>
   )
 }
