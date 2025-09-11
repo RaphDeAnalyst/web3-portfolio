@@ -3,47 +3,70 @@
 @tailwind utilities;
 
 :root {
-  /* Light theme colors - HSL format for Tailwind */
-  --background: 0 0% 100%;
-  --background-secondary: 210 40% 98%;
-  --background-tertiary: 210 40% 96%;
-  --foreground: 222 84% 5%;
-  --foreground-secondary: 215 25% 27%;
-  --foreground-tertiary: 215 14% 34%;
+  /* Light theme colors - Clean and minimal */
+  --background: 0 0% 98%;
+  --background-secondary: 0 0% 95%;
+  --background-tertiary: 0 0% 92%;
+  --foreground: 0 0% 9%;
+  --foreground-secondary: 0 0% 15%;
+  --foreground-tertiary: 0 0% 25%;
   
   /* Semantic colors */
-  --border: 214 32% 91%;
-  --border-hover: 214 20% 69%;
+  --border: 0 0% 88%;
+  --border-hover: 0 0% 75%;
   --card: 0 0% 100%;
-  --card-hover: 210 40% 98%;
-  --muted: 210 40% 96%;
-  --accent: 199 89% 48%;
+  --card-hover: 0 0% 96%;
+  --muted: 0 0% 93%;
+  --accent: 262 83% 58%;
   
-  /* Brand colors - keeping hex for compatibility */
-  --primary: #0ea5e9;
-  --primary-hover: #0284c7;
-  --cyber: #22c55e;
-  --cyber-hover: #16a34a;
-  --purple: #a855f7;
-  --purple-hover: #9333ea;
+  /* Purple-accent brand system - Light mode */
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-light: #a855f7;
+  --primary-lighter: #c4b5fd;
+  --primary-dark: #5b21b6;
   
-  /* Theme transition properties */
-  --theme-transition-duration: 200ms;
+  /* Neutral accent colors for variety */
+  --secondary: #374151;
+  --secondary-hover: #1f2937;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  
+  /* Consolidated Gray System - 4 main grays for clarity */
+  --text-primary: 222 84% 5%;
+  --text-secondary: 215 25% 27%;
+  --text-muted: 215 14% 34%;
+  --border-primary: 214 32% 91%;
+  
+  /* Theme transition properties - Enhanced for smoother switching */
+  --theme-transition-duration: 300ms;
   --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-delay: 0ms;
 }
 
 .light {
-  --background: 0 0% 100%;
-  --background-secondary: 210 40% 98%;
-  --background-tertiary: 210 40% 96%;
-  --foreground: 222 84% 5%;
-  --foreground-secondary: 215 25% 27%;
-  --foreground-tertiary: 215 14% 34%;
-  --border: 214 32% 91%;
-  --border-hover: 214 20% 69%;
+  --background: 0 0% 98%;
+  --background-secondary: 0 0% 95%;
+  --background-tertiary: 0 0% 92%;
+  --foreground: 0 0% 9%;
+  --foreground-secondary: 0 0% 15%;
+  --foreground-tertiary: 0 0% 25%;
+  --border: 0 0% 88%;
+  --border-hover: 0 0% 75%;
   --card: 0 0% 100%;
-  --card-hover: 210 40% 98%;
-  --muted: 210 40% 96%;
+  --card-hover: 0 0% 96%;
+  --muted: 0 0% 93%;
+  
+  /* Light mode text hierarchy */
+  --text-primary: 0 0% 9%;
+  --text-secondary: 0 0% 15%;
+  --text-muted: 0 0% 25%;
+  --border-primary: 0 0% 88%;
+  
+  /* Light mode purple accent */
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
 }
 
 @layer base {
@@ -57,48 +80,76 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark theme - Material Design inspired - HSL format */
-    --background: 0 0% 7%;
-    --background-secondary: 0 0% 12%;
-    --background-tertiary: 0 0% 18%;
-    --foreground: 240 5% 84%;
-    --foreground-secondary: 240 4% 46%;
-    --foreground-tertiary: 240 5% 26%;
-    --border: 240 6% 25%;
-    --border-hover: 240 4% 36%;
-    --card: 0 0% 12%;
-    --card-hover: 0 0% 18%;
-    --muted: 240 4% 16%;
+    /* Dark theme - Inspired by reference design */
+    --background: 0 0% 3%;
+    --background-secondary: 0 0% 6%;
+    --background-tertiary: 0 0% 9%;
+    --foreground: 0 0% 98%;
+    --foreground-secondary: 0 0% 85%;
+    --foreground-tertiary: 0 0% 70%;
+    --border: 0 0% 12%;
+    --border-hover: 0 0% 20%;
+    --card: 0 0% 5%;
+    --card-hover: 0 0% 8%;
+    --muted: 0 0% 7%;
   }
 }
 
 .dark {
-  /* Dark theme - Material Design inspired with proper contrast ratios - HSL format */
-  --background: 0 0% 7%;
-  --background-secondary: 0 0% 12%;
-  --background-tertiary: 0 0% 18%;
-  --foreground: 240 5% 84%;
-  --foreground-secondary: 240 4% 46%;
-  --foreground-tertiary: 240 5% 26%;
-  --border: 240 6% 25%;
-  --border-hover: 240 4% 36%;
-  --card: 0 0% 12%;
-  --card-hover: 0 0% 18%;
-  --muted: 240 4% 16%;
+  /* Dark theme - Matching reference design aesthetic */
+  --background: 0 0% 3%;
+  --background-secondary: 0 0% 6%;
+  --background-tertiary: 0 0% 9%;
+  --foreground: 0 0% 98%;
+  --foreground-secondary: 0 0% 85%;
+  --foreground-tertiary: 0 0% 70%;
+  --border: 0 0% 12%;
+  --border-hover: 0 0% 20%;
+  --card: 0 0% 5%;
+  --card-hover: 0 0% 8%;
+  --muted: 0 0% 7%;
+  
+  /* Dark mode text hierarchy - Clean and minimal */
+  --text-primary: 0 0% 98%;
+  --text-secondary: 0 0% 85%;
+  --text-muted: 0 0% 70%;
+  --border-primary: 0 0% 12%;
+  
+  /* Dark mode purple accent - Bright and prominent */
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
 }
 
 body {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   min-height: 100vh;
-  transition: background-color var(--theme-transition-duration) var(--theme-transition-timing),
-              color var(--theme-transition-duration) var(--theme-transition-timing);
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing) var(--theme-transition-delay),
+    color var(--theme-transition-duration) var(--theme-transition-timing) var(--theme-transition-delay);
 }
 
-/* Smooth transitions for all theme-aware elements */
-* {
+/* Enhanced smooth transitions for premium theme switching */
+*,
+*::before,
+*::after {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: var(--theme-transition-timing);
   transition-duration: var(--theme-transition-duration);
+  transition-delay: var(--theme-transition-delay);
+}
+
+/* Specific smooth transitions for interactive elements */
+button,
+a,
+input,
+textarea,
+select {
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+    transform 200ms var(--theme-transition-timing);
 }
 
 /* Respect user's motion preferences */
@@ -121,6 +172,64 @@ body {
   }
 }
 
+/* Clean Purple-Accent Button System */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(124, 58, 237, 0.4);
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: white;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.text-hierarchy-primary {
+  @apply text-foreground;
+  color: hsl(var(--text-primary));
+}
+
+.text-hierarchy-secondary {
+  @apply text-foreground/70;
+  color: hsl(var(--text-secondary));
+}
+
+.text-hierarchy-muted {
+  @apply text-foreground/50;
+  color: hsl(var(--text-muted));
+}
+
+.border-hierarchy {
+  border-color: hsl(var(--border-primary));
+}
+
 /* Web3 themed utilities */
 .cyber-grid {
   background-image: 
@@ -131,16 +240,38 @@ body {
 }
 
 .glow-effect {
-  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.3));
+  filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+}
+
+.glow-effect-primary {
+  filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+}
+
+.glow-effect-subtle {
+  filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.2));
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #0ea5e9, #22c55e, #a855f7);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--primary-lighter));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient-shift 4s ease-in-out infinite;
+}
+
+/* Clean gradients with purple accent */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+}
+
+.gradient-subtle {
+  background: linear-gradient(135deg, var(--primary-lighter), var(--primary-light));
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, var(--card), var(--card-hover));
+  border: 1px solid hsl(var(--border));
 }
 
 /* Enhanced animations */
@@ -160,6 +291,24 @@ body {
   }
   50% { 
     box-shadow: 0 0 20px rgba(34, 197, 94, 0.4), 0 0 30px rgba(34, 197, 94, 0.2);
+  }
+}
+
+@keyframes pulse-glow-primary {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(14, 165, 233, 0.2), 0 0 10px rgba(14, 165, 233, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.4), 0 0 30px rgba(14, 165, 233, 0.2);
+  }
+}
+
+@keyframes pulse-glow-purple {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(168, 85, 247, 0.2), 0 0 10px rgba(168, 85, 247, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 30px rgba(168, 85, 247, 0.2);
   }
 }
 
@@ -217,6 +366,31 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow-primary {
+  animation: pulse-glow-primary 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow-purple {
+  animation: pulse-glow-purple 2s ease-in-out infinite;
+}
+
+/* System feedback colors - Following ChatGPT's hierarchy */
+.feedback-success {
+  @apply bg-green-500 dark:bg-green-400 text-white;
+}
+
+.feedback-error {
+  @apply bg-red-500 dark:bg-red-400 text-white;
+}
+
+.feedback-warning {
+  @apply bg-amber-500 dark:bg-amber-400 text-white;
+}
+
+.feedback-info {
+  @apply bg-blue-500 dark:bg-blue-400 text-white;
 }
 
 /* Web3 specific effects */

@@ -28,6 +28,7 @@ export class ProjectService {
   // Merge static projects with stored projects, preferring stored versions
   private static mergeProjects(staticProjects: Project[], storedProjects: Project[]): Project[] {
     const merged = [...staticProjects]
+    const newProjects: Project[] = []
     
     storedProjects.forEach(storedProject => {
       const index = merged.findIndex(p => p.title === storedProject.title)
@@ -35,12 +36,13 @@ export class ProjectService {
         // Update existing project with stored data
         merged[index] = { ...merged[index], ...storedProject }
       } else {
-        // Add new project that doesn't exist in static data
-        merged.push(storedProject)
+        // Collect new projects that don't exist in static data
+        newProjects.push(storedProject)
       }
     })
     
-    return merged
+    // Add new projects at the beginning, maintaining their order
+    return [...newProjects, ...merged]
   }
   
   // Save all projects to localStorage
@@ -87,7 +89,7 @@ export class ProjectService {
       id: `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     }
     
-    projects.push(projectWithId)
+    projects.unshift(projectWithId) // Add to beginning of array
     this.saveAllProjects(projects)
     
     // Track activity

@@ -27,7 +27,6 @@ export default function Home() {
             <div className="space-y-6">
               <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight">
                 <span className="block text-gradient mb-2">Matthew Raphael</span>
-                <span className="block text-foreground">Web2 → Web3</span>
               </h1>
               <div className="max-w-3xl mx-auto">
                 <p className="text-xl sm:text-2xl lg:text-3xl text-foreground/70 leading-relaxed font-light">
@@ -63,13 +62,12 @@ export default function Home() {
             <div className="pt-16">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-16">
                 {[
-                  { value: '15+', label: 'Analysis Projects', color: 'cyber-500', icon: '📊' },
-                  { value: '500K+', label: 'Records Analyzed', color: 'primary-500', icon: '📈' },
-                  { value: '5+', label: 'Statistical Models', color: 'purple-500', icon: '🔬' }
+                  { value: '15+', label: 'Analysis Projects', color: 'cyber-500' },
+                  { value: '500K+', label: 'Records Analyzed', color: 'primary-500' },
+                  { value: '5+', label: 'Statistical Models', color: 'purple-500' }
                 ].map((stat, index) => (
                   <div key={index} className="group relative p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/30 backdrop-blur-sm hover:bg-background/50 transition-all duration-300">
                     <div className="text-center space-y-3">
-                      <div className="text-3xl">{stat.icon}</div>
                       <div className={`text-4xl lg:text-5xl font-bold ${
                         stat.color === 'cyber-500' ? 'text-cyber-500' :
                         stat.color === 'primary-500' ? 'text-primary-500' :
@@ -131,7 +129,6 @@ export default function Home() {
               { 
                 title: 'About', 
                 description: 'Learn about my Web2 to Web3 transition journey', 
-                icon: '👤', 
                 href: '/about',
                 color: 'cyber-500',
                 gradient: 'from-cyber-500/20 to-cyber-500/5'
@@ -139,7 +136,6 @@ export default function Home() {
               { 
                 title: 'Portfolio', 
                 description: 'Explore my learning projects and case studies', 
-                icon: '📁', 
                 href: '/portfolio',
                 color: 'primary-500',
                 gradient: 'from-primary-500/20 to-primary-500/5'
@@ -147,7 +143,6 @@ export default function Home() {
               { 
                 title: 'Blog', 
                 description: 'Read about my learning journey and insights', 
-                icon: '📝', 
                 href: '/blog',
                 color: 'purple-500',
                 gradient: 'from-purple-500/20 to-purple-500/5'
@@ -155,7 +150,6 @@ export default function Home() {
               { 
                 title: 'Contact', 
                 description: 'Let\'s connect and explore opportunities together', 
-                icon: '🤝', 
                 href: '/contact',
                 color: 'yellow-500',
                 gradient: 'from-yellow-500/20 to-yellow-500/5'
@@ -174,8 +168,7 @@ export default function Home() {
                   <div className={`w-full h-full bg-gradient-to-br ${item.gradient} backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center space-y-4`}>
                     {/* Content */}
                     <div className="space-y-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="text-6xl">{item.icon}</div>
+                      <div className="flex items-center justify-end mb-4">
                         <div className={`w-3 h-3 rounded-full opacity-60 ${
                           item.color === 'cyber-500' ? 'bg-cyber-500' :
                           item.color === 'primary-500' ? 'bg-primary-500' :
@@ -265,7 +258,6 @@ export default function Home() {
                 title: "Ethereum DeFi Wallet Analysis",
                 description: "Dashboard analyzing top DeFi wallets, token movements, and whale activity using Dune Analytics. Tracked 10K+ wallets across major protocols.",
                 tech: ["Dune Analytics", "SQL", "Ethereum", "DeFi"],
-                image: "📊",
                 link: "/portfolio",
                 category: "Web3 Analytics"
               },
@@ -273,7 +265,6 @@ export default function Home() {
                 title: "NFT Marketplace Trends",
                 description: "Analyzed 200K+ marketplace transactions to reveal top collections, buyer behavior patterns, and wash trading detection.",
                 tech: ["Python", "Pandas", "Web3.py", "OpenSea API"],
-                image: "🖼️",
                 link: "/portfolio",
                 category: "Market Analysis"
               },
@@ -281,7 +272,6 @@ export default function Home() {
                 title: "Stablecoin Flow Tracker",
                 description: "Real-time visualization of USDT/USDC flows across exchanges during high-volatility periods. Built interactive Sankey diagrams.",
                 tech: ["SQL", "D3.js", "Flipside", "React"],
-                image: "💰",
                 link: "/portfolio",
                 category: "DeFi Analytics"
               },
@@ -289,18 +279,14 @@ export default function Home() {
                 title: "Web2 → Web3 Transition Study",
                 description: "Comprehensive case study documenting my analytical approach evolution from traditional Excel/SQL to blockchain analytics tools.",
                 tech: ["Documentation", "Excel", "Dune", "Python"],
-                image: "🔄",
                 link: "/portfolio",
                 category: "Case Study"
               }
             ].map((project, index) => (
               <Link key={index} href={project.link}>
                 <div className="group relative h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
-                  {/* Project Image/Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="text-6xl opacity-80 group-hover:opacity-100 transition-opacity duration-200">
-                      {project.image}
-                    </div>
+                  {/* Project Category */}
+                  <div className="flex justify-end mb-6">
                     <div className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium">
                       {project.category}
                     </div>
@@ -484,29 +470,23 @@ export default function Home() {
                 title: "Core Data Analytics",
                 description: "Foundation skills from traditional analytics",
                 skills: ["Python", "SQL", "Pandas", "Excel", "PowerBI", "Statistical Analysis"],
-                icon: "📊",
                 color: "primary-500"
               },
               {
                 title: "Web3 Analytics",
                 description: "Specialized blockchain and DeFi analysis tools",
                 skills: ["Dune Analytics", "Flipside Crypto", "Web3.py", "Etherscan API", "DeFi Protocols"],
-                icon: "⛓️",
                 color: "cyber-500"
               },
               {
                 title: "Visualization & Tools",
                 description: "Creating compelling data stories and dashboards",
                 skills: ["D3.js", "React", "Tableau", "Matplotlib", "Seaborn", "Git"],
-                icon: "📈",
                 color: "purple-500"
               }
             ].map((category, index) => (
               <div key={index} className="group p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300">
                 <div className="text-center mb-6">
-                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-200">
-                    {category.icon}
-                  </div>
                   <h3 className={`text-2xl font-bold mb-2 transition-colors duration-200 ${
                     category.color === 'primary-500' ? 'text-foreground group-hover:text-primary-500' :
                     category.color === 'cyber-500' ? 'text-foreground group-hover:text-cyber-500' :

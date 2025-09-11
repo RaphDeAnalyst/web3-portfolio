@@ -64,7 +64,7 @@ const getDefaultAvailability = (date: Date): DayAvailability => {
       date: dateStr, 
       status: 'limited', 
       slots: [{ start: '14:00', end: '16:00', timezone: 'UTC' }],
-      bookingUrl: 'https://calendly.com/matthewraphael/consultation'
+      bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min'
     }
   }
   
@@ -76,7 +76,7 @@ const getDefaultAvailability = (date: Date): DayAvailability => {
       { start: '09:00', end: '12:00', timezone: 'UTC' },
       { start: '14:00', end: '17:00', timezone: 'UTC' }
     ],
-    bookingUrl: 'https://calendly.com/matthewraphael/consultation'
+    bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min'
   }
 }
 

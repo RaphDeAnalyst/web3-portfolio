@@ -2,25 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { ActivityService } from '@/lib/activity-service'
+import { Project } from '@/data/projects'
 
-interface ProjectData {
-  id?: number
-  title: string
-  description: string
-  category: string
-  status: 'planning' | 'in-progress' | 'completed' | 'archived'
-  priority: 'low' | 'medium' | 'high'
-  progress?: number
-  tech: string[]
-  demoUrl?: string
-  githubUrl?: string
-  image?: string
-  startDate?: string
-  endDate?: string
-  features?: string[]
-  challenges?: string
-  learnings?: string
-  featured?: boolean
+interface ProjectData extends Omit<Project, 'id'> {
+  id?: string
 }
 
 interface ProjectEditorProps {
@@ -32,25 +17,24 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
   const [formData, setFormData] = useState<ProjectData>({
     title: '',
     description: '',
-    category: 'Web3 Analytics',
-    status: 'planning',
-    priority: 'medium',
-    progress: 0,
+    category: 'Analytics',
+    status: 'Development',
     tech: [],
-    demoUrl: '',
-    githubUrl: '',
-    image: '',
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: '',
-    features: [],
-    challenges: '',
-    learnings: '',
+    demoUrl: '#',
+    githubUrl: '#',
+    metrics: {},
     featured: false,
+    timeline: '2025',
+    phase: 'Web3 Analytics',
+    image: '',
+    imageAlt: '',
     ...initialData
   })
 
   const [techInput, setTechInput] = useState('')
   const [featureInput, setFeatureInput] = useState('')
+  const [metricKey, setMetricKey] = useState('')
+  const [metricValue, setMetricValue] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
   const handleInputChange = (field: keyof ProjectData, value: any) => {
@@ -91,12 +75,31 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
     }))
   }
 
+  const handleAddMetric = () => {
+    if (metricKey.trim() && metricValue.trim() && !formData.metrics[metricKey.trim()]) {
+      setFormData(prev => ({
+        ...prev,
+        metrics: { ...prev.metrics, [metricKey.trim()]: metricValue.trim() }
+      }))
+      setMetricKey('')
+      setMetricValue('')
+    }
+  }
+
+  const handleRemoveMetric = (keyToRemove: string) => {
+    setFormData(prev => {
+      const newMetrics = { ...prev.metrics }
+      delete newMetrics[keyToRemove]
+      return { ...prev, metrics: newMetrics }
+    })
+  }
+
   const handleSave = async (isDraft: boolean) => {
     setIsSaving(true)
     
     const dataToSave = {
       ...formData,
-      status: isDraft ? 'planning' : formData.status as any
+      status: isDraft ? 'Development' : formData.status
     }
 
     // Track activity
@@ -114,26 +117,28 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
   }
 
   const categories = [
-    'Web3 Analytics',
-    'Blockchain Analysis',
-    'Data Visualization',
+    'Analytics',
     'Smart Contracts',
-    'DeFi Projects',
-    'Learning Projects',
-    'Tools & Utilities'
+    'Dashboards',
+    'AI x Web3',
+    'DeFi',
+    'Learning'
   ]
 
   const statusOptions = [
-    { value: 'planning', label: 'Planning', color: 'yellow' },
-    { value: 'in-progress', label: 'In Progress', color: 'blue' },
-    { value: 'completed', label: 'Completed', color: 'green' },
-    { value: 'archived', label: 'Archived', color: 'gray' }
+    { value: 'Live', label: 'Live', color: 'green' },
+    { value: 'Development', label: 'Development', color: 'blue' },
+    { value: 'Beta', label: 'Beta', color: 'yellow' },
+    { value: 'Complete', label: 'Complete', color: 'purple' },
+    { value: 'Learning', label: 'Learning', color: 'orange' }
   ]
 
-  const priorityOptions = [
-    { value: 'low', label: 'Low Priority', color: 'blue' },
-    { value: 'medium', label: 'Medium Priority', color: 'orange' },
-    { value: 'high', label: 'High Priority', color: 'red' }
+  const timelineOptions = ['2022-2023', '2024', '2025']
+  
+  const phaseOptions = [
+    'Traditional Analytics',
+    'Exploratory Phase', 
+    'Web3 Analytics'
   ]
 
   return (
@@ -253,6 +258,60 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
             )}
           </div>
 
+          {/* Project Metrics */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-foreground">Project Metrics</label>
+            <p className="text-xs text-foreground/60">Add key metrics that highlight your project's impact and results</p>
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                value={metricKey}
+                onChange={(e) => setMetricKey(e.target.value)}
+                placeholder="Metric name (e.g., 'accuracy')"
+                className="px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+              />
+              <div className="flex">
+                <input
+                  type="text"
+                  value={metricValue}
+                  onChange={(e) => setMetricValue(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddMetric())}
+                  placeholder="Value (e.g., '85%')"
+                  className="flex-1 px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-l-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                />
+                <button
+                  onClick={handleAddMetric}
+                  className="px-3 py-2 bg-green-500 text-white rounded-r-lg hover:bg-green-600 transition-colors"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            
+            {Object.keys(formData.metrics).length > 0 && (
+              <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                {Object.entries(formData.metrics).map(([key, value]) => (
+                  <div key={key} className="text-center space-y-1 relative">
+                    <button
+                      onClick={() => handleRemoveMetric(key)}
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      ×
+                    </button>
+                    <div className="text-green-500 font-bold text-lg">{value}</div>
+                    <div className="text-xs text-foreground/60 capitalize">{key}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="text-xs text-foreground/50 space-y-1">
+              <p><strong>Examples:</strong></p>
+              <p>• accuracy: "85%" • datapoints: "10K+" • users: "500+"</p>
+              <p>• timeframe: "6 months" • savings: "20%" • protocols: "12"</p>
+            </div>
+          </div>
+
           {/* Features */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-foreground">Key Features</label>
@@ -338,32 +397,6 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
             </div>
           </div>
 
-          {/* Progress */}
-          {formData.status === 'in-progress' && (
-            <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
-              <h3 className="font-medium text-foreground mb-3">Progress</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground/70">Completion:</span>
-                  <span className="text-sm font-medium text-foreground">{formData.progress}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={formData.progress || 0}
-                  onChange={(e) => handleInputChange('progress', parseInt(e.target.value))}
-                  className="w-full"
-                />
-                <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2">
-                  <div 
-                    className="bg-gradient-to-r from-primary-500 to-cyber-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${formData.progress || 0}%` }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Category & Priority */}
           <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
@@ -383,14 +416,27 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Priority</label>
+                <label className="block text-sm font-medium text-foreground mb-2">Timeline</label>
                 <select
-                  value={formData.priority}
-                  onChange={(e) => handleInputChange('priority', e.target.value)}
+                  value={formData.timeline || '2025'}
+                  onChange={(e) => handleInputChange('timeline', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
                 >
-                  {priorityOptions.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
+                  {timelineOptions.map(timeline => (
+                    <option key={timeline} value={timeline}>{timeline}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Phase</label>
+                <select
+                  value={formData.phase || 'Web3 Analytics'}
+                  onChange={(e) => handleInputChange('phase', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                >
+                  {phaseOptions.map(phase => (
+                    <option key={phase} value={phase}>{phase}</option>
                   ))}
                 </select>
               </div>

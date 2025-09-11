@@ -329,6 +329,35 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
             </select>
           </div>
 
+          {/* Featured */}
+          <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+            <h3 className="font-medium text-foreground mb-3">Featured Post</h3>
+            <div className="space-y-3">
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.featured || false}
+                  onChange={(e) => handleInputChange('featured', e.target.checked)}
+                  className="w-4 h-4 text-primary-500 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded focus:ring-primary-500 focus:ring-2"
+                />
+                <span className="text-sm text-foreground">Mark as featured post</span>
+              </label>
+              
+              {formData.featured && (
+                <div className="p-3 bg-gradient-to-r from-primary-500/10 to-cyber-500/10 rounded-lg border border-primary-500/20">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></span>
+                    <span className="text-sm font-medium text-primary-500">Featured Post</span>
+                  </div>
+                  <p className="text-xs text-foreground/70">
+                    This post will appear in the "Featured Articles" section and get prominent display on the blog page. 
+                    Max 2 posts can be featured at once.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Tags */}
           <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
             <h3 className="font-medium text-foreground mb-3">Tags</h3>

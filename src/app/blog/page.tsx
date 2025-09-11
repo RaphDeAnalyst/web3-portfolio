@@ -8,6 +8,7 @@ import { blogService, BlogPostData } from '@/lib/blog-service'
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
   const [posts, setPosts] = useState<BlogPostData[]>([])
   const [categories, setCategories] = useState<string[]>(['All'])
 
@@ -31,8 +32,8 @@ export default function Blog() {
     return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
-  // Filter posts based on category and search
-  const filteredPosts = useMemo(() => {
+  // Filter and separate featured and regular posts
+  const { featuredPosts, regularPosts } = useMemo(() => {
     let filtered = selectedCategory === 'All' 
       ? posts 
       : posts.filter(post => post.category === selectedCategory)
@@ -45,8 +46,23 @@ export default function Blog() {
       )
     }
 
-    return filtered
-  }, [posts, selectedCategory, searchQuery])
+    // Sort posts
+    const sorted = filtered.sort((a, b) => {
+      if (sortBy === 'newest') return 0 // Keep original order
+      if (sortBy === 'featured') return (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
+      if (sortBy === 'title') return a.title.localeCompare(b.title)
+      return 0
+    })
+
+    // Separate featured and regular posts
+    const featured = sorted.filter(post => post.featured).slice(0, 2) // Max 2 featured
+    const regular = sorted.filter(post => !post.featured)
+
+    return {
+      featuredPosts: featured,
+      regularPosts: regular
+    }
+  }, [selectedCategory, searchQuery, sortBy, posts])
 
   // Calculate category counts
   const categoryCounts = useMemo(() => {
@@ -58,6 +74,9 @@ export default function Blog() {
     })
     return counts
   }, [posts, categories])
+
+  // Total filtered posts for display
+  const totalFilteredPosts = featuredPosts.length + regularPosts.length
 
   return (
     <div className="min-h-screen py-20">
@@ -113,7 +132,7 @@ export default function Blog() {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
             {categories.map((category) => (
               <button
                 key={category}
@@ -137,19 +156,72 @@ export default function Blog() {
               </button>
             ))}
           </div>
+
+          {/* Sort Controls */}
+          <div className="flex justify-center">
+            <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+              <span className="text-sm text-foreground/60 px-3">Sort by:</span>
+              {[
+                { label: 'Newest', value: 'newest' },
+                { label: 'Featured', value: 'featured' },
+                { label: 'Title', value: 'title' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setSortBy(option.value)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    sortBy === option.value
+                      ? 'bg-purple-500/20 text-purple-500'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Blog Posts */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-20">
-        <div className="max-w-7xl mx-auto">
-          {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <BlogCard key={post.id || post.slug} {...post} />
+      {/* Featured Posts Section */}
+      {featuredPosts.length > 0 && (
+        <section className="px-4 sm:px-6 lg:px-8 mb-16">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl font-bold text-foreground mb-8 text-center">Featured Articles</h2>
+            <div className={`grid gap-8 ${
+              featuredPosts.length === 1 
+                ? 'grid-cols-1 lg:grid-cols-6' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+            }`}>
+              {featuredPosts.map((post) => (
+                <BlogCard 
+                  key={post.id || post.slug} 
+                  {...post} 
+                  featuredCount={featuredPosts.length}
+                />
               ))}
             </div>
-          ) : (
+          </div>
+        </section>
+      )}
+
+      {/* Regular Posts Grid */}
+      <section className="px-4 sm:px-6 lg:px-8 mb-20">
+        <div className="max-w-7xl mx-auto">
+          {regularPosts.length > 0 && (
+            <>
+              <h2 className="text-2xl font-bold text-foreground mb-8 text-center">
+                {featuredPosts.length > 0 ? 'All Articles' : 'Articles'}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {regularPosts.map((post) => (
+                  <BlogCard key={post.id || post.slug} {...post} />
+                ))}
+              </div>
+            </>
+          )}
+          
+          {totalFilteredPosts === 0 && (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📝</div>
               <h3 className="text-2xl font-bold text-foreground mb-4">No articles found</h3>

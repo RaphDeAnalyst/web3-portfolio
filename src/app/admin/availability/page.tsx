@@ -725,7 +725,7 @@ function DayEditor({
   const [status, setStatus] = useState(day.status)
   const [slots, setSlots] = useState<TimeSlot[]>(day.slots)
   const [notes, setNotes] = useState(day.notes || '')
-  const [bookingUrl, setBookingUrl] = useState(day.bookingUrl || 'https://calendly.com/matthewraphael/consultation')
+  const [bookingUrl, setBookingUrl] = useState(day.bookingUrl || 'https://calendly.com/matthewraphael-matthewraphael/30min')
 
   const addTimeSlot = () => {
     setSlots([...slots, { start: '09:00', end: '17:00', timezone: 'WAT' }])
@@ -878,7 +878,7 @@ function DayEditor({
                 type="url"
                 value={bookingUrl}
                 onChange={(e) => setBookingUrl(e.target.value)}
-                placeholder="https://calendly.com/matthewraphael/consultation"
+                placeholder="https://calendly.com/matthewraphael-matthewraphael/30min"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
               />
             </div>

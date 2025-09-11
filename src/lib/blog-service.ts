@@ -29,53 +29,8 @@ class BlogService {
   // Initialize with default posts from data files
   private getDefaultPosts(): BlogPostData[] {
     return [
-      {
-        id: '1',
-        title: "My First Week Learning Dune Analytics",
-        summary: "Documenting my journey learning blockchain data analysis through Dune Analytics. From basic SQL queries to creating my first dashboard, here's what I discovered about on-chain data.",
-        date: "Dec 20, 2024",
-        readTime: "6 min read",
-        tags: ["Learning", "Dune-Analytics", "SQL", "Web3", "Beginner"],
-        slug: "first-week-learning-dune-analytics",
-        category: "Learning",
-        featured: true,
-        status: 'published',
-        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
-        content: "# My First Week Learning Dune Analytics\n\nThis week marked an exciting milestone in my Web3 journey as I dove deep into Dune Analytics...",
-        createdAt: "2024-12-20T00:00:00.000Z",
-        updatedAt: "2024-12-20T00:00:00.000Z"
-      },
-      {
-        id: '2',
-        title: "Python for Blockchain Data: My Learning Path",
-        summary: "How I'm applying my existing Python skills to blockchain data analysis. From Web3.py to pandas manipulation of on-chain data, here's my structured approach to learning.",
-        date: "Dec 15, 2024",
-        readTime: "8 min read",
-        tags: ["Python", "Web3", "Learning", "Data-Analysis", "Blockchain"],
-        slug: "python-blockchain-data-learning-path",
-        category: "Learning",
-        status: 'published',
-        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
-        content: "# Python for Blockchain Data: My Learning Path\n\nTransitioning from traditional data analysis to blockchain data has been an exciting challenge...",
-        createdAt: "2024-12-15T00:00:00.000Z",
-        updatedAt: "2024-12-15T00:00:00.000Z"
-      },
-      {
-        id: '3',
-        title: "Traditional Data Analytics vs Web3: What's Different?",
-        summary: "A comparison of traditional data analytics and Web3 analytics from someone transitioning between them. Key differences in data sources, tools, and analytical approaches.",
-        date: "Dec 10, 2024",
-        readTime: "10 min read",
-        tags: ["Web3", "Analytics", "Comparison", "Traditional-Finance", "Career-Transition"],
-        slug: "traditional-vs-web3-data-analytics",
-        category: "Analytics",
-        featured: true,
-        status: 'published',
-        author: { name: "Matthew Raphael", avatar: "/avatar.jpg" },
-        content: "# Traditional Data Analytics vs Web3: What's Different?\n\nHaving worked in traditional finance data analytics for several years...",
-        createdAt: "2024-12-10T00:00:00.000Z",
-        updatedAt: "2024-12-10T00:00:00.000Z"
-      }
+      // No demo posts - start with a clean slate
+      // Add posts through the admin panel or import from blog-posts.ts
     ]
   }
 
@@ -259,6 +214,19 @@ class BlogService {
     const posts = this.getAllPosts()
     const categories = [...new Set(posts.map(p => p.category))]
     return categories.sort()
+  }
+
+  // Reset to clean state (for clearing demo data)
+  resetToCleanState(): void {
+    if (typeof window === 'undefined') return
+    
+    try {
+      localStorage.removeItem(this.STORAGE_KEY)
+      localStorage.removeItem(this.CONTENT_KEY)
+      console.log('Blog data reset to clean state')
+    } catch (error) {
+      console.error('Error resetting blog data:', error)
+    }
   }
 }
 

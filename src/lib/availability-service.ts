@@ -107,7 +107,7 @@ export class AvailabilityService {
         date: dateStr, 
         status: 'limited', 
         slots: [{ start: '14:00', end: '16:00', timezone: 'WAT' }],
-        bookingUrl: 'https://calendly.com/matthewraphael/consultation'
+        bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min'
       }
     }
     
@@ -119,7 +119,7 @@ export class AvailabilityService {
         { start: '09:00', end: '12:00', timezone: 'WAT' },
         { start: '13:00', end: '17:00', timezone: 'WAT' }
       ],
-      bookingUrl: 'https://calendly.com/matthewraphael/consultation'
+      bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min'
     }
   }
 
@@ -226,7 +226,7 @@ export class AvailabilityService {
             date: dateStr,
             status: templateDay.status,
             slots: [...templateDay.slots],
-            bookingUrl: 'https://calendly.com/matthewraphael/consultation'
+            bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min'
           }
           
           if (existingIndex >= 0) {

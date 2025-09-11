@@ -23,28 +23,24 @@ export function NFTMinter() {
     {
       name: 'Web3 Developer Badge',
       description: 'Digital business card showcasing Web3 expertise',
-      image: '🏷️',
       rarity: 'Common',
       color: 'cyber-500'
     },
     {
       name: 'Analytics Expert Certificate',
       description: 'Proof of blockchain data analysis mastery',
-      image: '📊',
       rarity: 'Rare',
       color: 'primary-500'
     },
     {
       name: 'AI Pioneer Token',
       description: 'Recognition for AI + Web3 innovation',
-      image: '🤖',
       rarity: 'Epic',
       color: 'purple-500'
     },
     {
       name: 'Early Supporter NFT',
       description: 'Exclusive badge for portfolio visitors',
-      image: '⚡',
       rarity: 'Legendary',
       color: 'yellow-500'
     }
@@ -90,8 +86,8 @@ export function NFTMinter() {
   if (!isConnected) {
     return (
       <div className="text-center p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/30 backdrop-blur-sm">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center text-white text-2xl">
-          🔗
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center text-white text-sm font-bold">
+          LINK
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">Connect Wallet Required</h3>
         <p className="text-foreground/60 mb-4">
@@ -104,7 +100,7 @@ export function NFTMinter() {
   if (mintSuccess) {
     return (
       <div className="text-center p-8 rounded-2xl border border-green-500/20 bg-gradient-to-br from-green-500/10 to-cyber-500/10 backdrop-blur-sm">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center text-white text-2xl">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center text-white text-lg font-bold">
           ✓
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">NFT Minted Successfully!</h3>
@@ -159,7 +155,9 @@ export function NFTMinter() {
             } backdrop-blur-sm`}
           >
             <div className="text-center space-y-4">
-              <div className="text-4xl">{design.image}</div>
+              <div className={`w-12 h-12 mx-auto rounded-lg bg-gradient-to-r from-${design.color} to-${design.color}/70 flex items-center justify-center text-white text-xs font-bold`}>
+                NFT
+              </div>
               <div>
                 <h4 className={`font-bold text-foreground mb-1 ${
                   selectedDesign === index ? (

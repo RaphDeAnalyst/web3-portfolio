@@ -225,7 +225,8 @@ export default function MediaManagement() {
     const patterns = [
       /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
       /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
     ]
     
     for (const pattern of patterns) {
@@ -517,7 +518,7 @@ export default function MediaManagement() {
                   </button>
                 </div>
                 <p className="text-xs text-foreground/50 mt-2">
-                  Supports youtube.com/watch, youtu.be, and embed URLs
+                  Supports youtube.com/watch, youtu.be, shorts, and embed URLs
                 </p>
               </div>
             </div>

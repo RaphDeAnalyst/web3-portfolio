@@ -31,10 +31,8 @@ export function GoogleDriveDocumentGroup({ documents }: GoogleDriveDocumentGroup
     <div className="my-6">
       <div className="space-y-3">
         <div className="flex items-center space-x-2 mb-4">
-          <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-green-500 rounded-md flex items-center justify-center text-white">
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-            </svg>
+          <div className="w-6 h-6 bg-gradient-to-r from-purple-600 to-purple-500 rounded-md flex items-center justify-center text-white">
+            <span className="text-xs font-bold">{documents.length}</span>
           </div>
           <h3 className="font-medium text-foreground">
             Documents ({documents.length})

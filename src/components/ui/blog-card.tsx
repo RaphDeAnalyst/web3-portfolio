@@ -19,6 +19,7 @@ interface BlogCardProps {
   featuredImage?: string
   image?: string
   category: string
+  featuredCount?: number
 }
 
 export function BlogCard({ 
@@ -32,7 +33,8 @@ export function BlogCard({
   author,
   featuredImage,
   image,
-  category
+  category,
+  featuredCount = 0
 }: BlogCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -68,7 +70,22 @@ export function BlogCard({
     'Research': 'blue-500'
   }
 
-  const cardSize = featured ? 'md:col-span-2 lg:col-span-2' : ''
+  // Dynamic sizing based on featured status and count
+  const getCardSize = () => {
+    if (!featured) return ''
+    
+    if (featuredCount === 1) {
+      // Single featured post: spans 4 of 6 columns (2x width), centered
+      return 'lg:col-span-4 lg:col-start-2'
+    } else if (featuredCount === 2) {
+      // Two featured posts: each gets 1.5x width (achieved through container max-width and equal columns)
+      return 'col-span-1'
+    }
+    
+    return ''
+  }
+  
+  const cardSize = getCardSize()
 
   return (
     <Link href={`/blog/${slug}`}>
@@ -112,13 +129,8 @@ export function BlogCard({
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className={`w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} to-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/70 flex items-center justify-center text-white text-2xl`}>
-                    {category === 'Web3' && '🌐'}
-                    {category === 'AI' && '🤖'}
-                    {category === 'Analytics' && '📊'}
-                    {category === 'DeFi' && '💎'}
-                    {category === 'Tutorial' && '📚'}
-                    {category === 'Research' && '🔬'}
+                  <div className={`w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} to-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/70 flex items-center justify-center text-white text-sm font-bold`}>
+                    {category.slice(0, 3).toUpperCase()}
                   </div>
                   <div className="text-sm text-foreground/60">Blog Post</div>
                 </div>
@@ -215,11 +227,11 @@ export function BlogCard({
             {/* Engagement metrics placeholder */}
             <div className="flex items-center space-x-4 text-xs text-foreground/50">
               <div className="flex items-center space-x-1">
-                <span>👁</span>
+                <span className="text-sm">Views</span>
                 <span>{Math.floor(Math.random() * 1000 + 500)}</span>
               </div>
               <div className="flex items-center space-x-1">
-                <span>💬</span>
+                <span className="text-sm">Comments</span>
                 <span>{Math.floor(Math.random() * 50 + 10)}</span>
               </div>
             </div>

@@ -14,7 +14,6 @@ export default function About() {
     {
       title: 'Core Data Analytics',
       description: 'Advanced • 3+ Years Experience',
-      icon: '📊',
       color: 'primary-500',
       gradient: 'from-primary-500/20 to-primary-500/5',
       level: 'Advanced' as const,
@@ -30,7 +29,6 @@ export default function About() {
     {
       title: 'Web3 Analytics',
       description: 'Learning • Active Projects',
-      icon: '📊',
       color: 'cyber-500',
       gradient: 'from-cyber-500/20 to-cyber-500/5',
       level: 'Learning' as const,
@@ -46,7 +44,6 @@ export default function About() {
     {
       title: 'Statistical Analysis & ML',
       description: 'Proficient • Applied Experience',
-      icon: '🔬',
       color: 'purple-500',
       gradient: 'from-purple-500/20 to-purple-500/5',
       level: 'Proficient' as const,
@@ -65,32 +62,27 @@ export default function About() {
     {
       year: '2022',
       title: 'Entered Data Analytics',
-      description: 'Began learning Python, SQL, and Excel; built first projects in traditional analytics',
-      icon: '📊'
+      description: 'Began learning Python, SQL, and Excel; built first projects in traditional analytics'
     },
     {
       year: '2023',
       title: 'Advanced Analytics Skills',
-      description: 'Expanded into predictive modeling, regression, A/B testing, and visualization (Matplotlib, Seaborn, PowerBI)',
-      icon: '📈'
+      description: 'Expanded into predictive modeling, regression, A/B testing, and visualization (Matplotlib, Seaborn, PowerBI)'
     },
     {
       year: '2024',
       title: 'Exploring Blockchain Concepts',
-      description: 'Studied DeFi mechanics, tokenomics, and blockchain fundamentals; prepared for transition into on-chain data analytics',
-      icon: '🔍'
+      description: 'Studied DeFi mechanics, tokenomics, and blockchain fundamentals; prepared for transition into on-chain data analytics'
     },
     {
       year: '2025',
       title: 'Active Web3 Analytics Projects',
-      description: 'Building Dune dashboards and Flipside queries to analyze wallet behaviors, DeFi protocols, and NFT markets. Created portfolio of case studies and dashboards',
-      icon: '📈'
+      description: 'Building Dune dashboards and Flipside queries to analyze wallet behaviors, DeFi protocols, and NFT markets. Created portfolio of case studies and dashboards'
     },
     {
       year: 'Future',
       title: 'Web3 Data & AI Specialist Goal',
-      description: 'Secure Web3 Data Analytics role or freelance projects. Build advanced dashboards and publish insights in DeFi analytics',
-      icon: '🎯'
+      description: 'Secure Web3 Data Analytics role or freelance projects. Build advanced dashboards and publish insights in DeFi analytics'
     }
   ]
 
@@ -198,8 +190,7 @@ export default function About() {
             <div className="space-y-12">
               {journey.map((item, index) => (
                 <div key={index} className="relative flex items-start space-x-8">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-2xl border-4 border-background shadow-lg">
-                    {item.icon}
+                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 border-4 border-background shadow-lg">
                   </div>
                   
                   <div className="flex-1 pb-8">
