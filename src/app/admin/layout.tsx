@@ -42,12 +42,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: '📊' },
-    { name: 'Blog Posts', href: '/admin/posts', icon: '📝' },
-    { name: 'Projects', href: '/admin/projects', icon: '💼' },
-    { name: 'Availability', href: '/admin/availability', icon: '📅' },
-    { name: 'Activity', href: '/admin/activity', icon: '📈' },
-    { name: 'Media', href: '/admin/media', icon: '🖼️' },
+    { name: 'Dashboard', href: '/admin' },
+    { name: 'Blog Posts', href: '/admin/posts' },
+    { name: 'Projects', href: '/admin/projects' },
+    { name: 'Profile', href: '/admin/profile' },
+    { name: 'Availability', href: '/admin/availability' },
+    { name: 'Activity', href: '/admin/activity' },
+    { name: 'Media', href: '/admin/media' },
   ]
 
   if (!isAuthenticated) {
@@ -57,7 +58,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="bg-background/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-800/50 p-8 shadow-2xl">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-2xl">
-                🔐
               </div>
               <h1 className="text-2xl font-bold text-foreground mb-2">Admin Panel</h1>
               <p className="text-foreground/60">Enter password to access dashboard</p>
@@ -125,7 +125,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       : 'text-foreground/70 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground'
                   }`}
                 >
-                  <span className="text-lg">{item.icon}</span>
                   <span>{item.name}</span>
                 </Link>
               ))}
@@ -138,7 +137,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               onClick={handleLogout}
               className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-sm text-foreground/70 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-colors duration-200"
             >
-              <span>🚪</span>
               <span>Logout</span>
             </button>
           </div>

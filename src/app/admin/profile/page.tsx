@@ -3,26 +3,40 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ProfilePictureUpload } from '@/components/ui/profile-picture-upload'
-import { ProfileService, ProfileData } from '@/lib/profile-service'
+import { profileService } from '@/lib/service-switcher'
+import type { ProfileData } from '@/lib/profile-service-supabase'
 
 export default function ProfileManagement() {
-  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
-
+  const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
   useEffect(() => {
-    // Load existing profile data from ProfileService
-    setProfile(ProfileService.getProfile())
+    const loadProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+        setMessage({ type: 'error', text: 'Failed to load profile data.' })
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadProfile()
   }, [])
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!profile) return
+    
     setIsLoading(true)
     try {
-      ProfileService.saveProfile(profile)
+      await profileService.saveProfile(profile)
       setMessage({ type: 'success', text: 'Profile updated successfully!' })
       setTimeout(() => setMessage(null), 3000)
     } catch (error) {
+      console.error('Error saving profile:', error)
       setMessage({ type: 'error', text: 'Failed to save profile. Please try again.' })
       setTimeout(() => setMessage(null), 3000)
     } finally {
@@ -31,26 +45,58 @@ export default function ProfileManagement() {
   }
 
   const handleSkillAdd = (skill: string) => {
-    if (skill.trim() && !profile.skills.includes(skill.trim())) {
-      setProfile(prev => ({
-        ...prev,
-        skills: [...prev.skills, skill.trim()]
-      }))
-    }
+    if (!profile || !skill.trim() || profile.skills.includes(skill.trim())) return
+    
+    setProfile(prev => prev ? ({
+      ...prev,
+      skills: [...prev.skills, skill.trim()]
+    }) : null)
   }
 
   const handleSkillRemove = (skillToRemove: string) => {
-    setProfile(prev => ({
+    if (!profile) return
+    
+    setProfile(prev => prev ? ({
       ...prev,
       skills: prev.skills.filter(skill => skill !== skillToRemove)
-    }))
+    }) : null)
   }
 
   const handleImageUpload = (imageUrl: string) => {
-    setProfile(prev => ({
+    if (!profile) return
+    
+    setProfile(prev => prev ? ({
       ...prev,
       avatar: imageUrl
-    }))
+    }) : null)
+  }
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="flex items-center space-x-4">
+          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
+          <div className="space-y-2">
+            <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-48 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-64 animate-pulse"></div>
+          </div>
+        </div>
+        <div className="h-96 bg-gray-200 dark:bg-gray-800 rounded-xl animate-pulse"></div>
+      </div>
+    )
+  }
+
+  if (!profile) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-8 text-center py-20">
+        <div className="text-6xl mb-4">⚠️</div>
+        <h1 className="text-2xl font-bold text-foreground">Profile Not Found</h1>
+        <p className="text-foreground/70">Unable to load profile data.</p>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg">
+          Retry
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -291,12 +337,33 @@ export default function ProfileManagement() {
               <input
                 type="url"
                 value={profile.resume}
-                onChange={(e) => setProfile(prev => ({ ...prev, resume: e.target.value }))}
+                onChange={(e) => setProfile(prev => prev ? ({ ...prev, resume: e.target.value }) : null)}
                 placeholder="https://link-to-your-resume.pdf"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
               />
               <p className="text-sm text-foreground/60 mt-1">
                 Upload your resume to Google Drive, Dropbox, or similar service and paste the public link here
+              </p>
+            </div>
+          </div>
+
+          {/* My Story */}
+          <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+            <h2 className="text-xl font-bold text-foreground mb-6">My Story</h2>
+            
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Story Content
+              </label>
+              <textarea
+                value={profile.story}
+                onChange={(e) => setProfile(prev => prev ? ({ ...prev, story: e.target.value }) : null)}
+                rows={12}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                placeholder="Tell your story... Use double line breaks to separate paragraphs."
+              />
+              <p className="text-sm text-foreground/60 mt-1">
+                This content will appear in the "My Story" section on the About page. Use double line breaks to separate paragraphs.
               </p>
             </div>
           </div>

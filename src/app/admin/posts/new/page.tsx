@@ -3,17 +3,18 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
-import { blogService, BlogPostData } from '@/lib/blog-service'
+import { blogService } from '@/lib/service-switcher'
+import { BlogPostData } from '@/lib/blog-service'
 import { ActivityService } from '@/lib/activity-service'
 import { ProfileService } from '@/lib/profile-service'
 
 export default function NewBlogPost() {
   const router = useRouter()
   
-  const handleSave = (postData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
+  const handleSave = async (postData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
     try {
       // Create the new post
-      blogService.savePost({
+      await blogService.savePost({
         ...postData,
         status: isDraft ? 'draft' : 'published'
       })

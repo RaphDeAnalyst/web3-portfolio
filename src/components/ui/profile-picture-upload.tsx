@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
-import { ProfileService } from '@/lib/profile-service'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { profileService } from '@/lib/service-switcher'
 
 interface ProfilePictureUploadProps {
   onImageSelect: (imageUrl: string) => void
@@ -154,7 +154,7 @@ export function ProfilePictureUpload({
 
       // Update profile and callback
       onImageSelect(imageUrl)
-      ProfileService.updateProfileField('avatar', imageUrl)
+      await profileService.updateProfileField('avatar', imageUrl)
 
       setTimeout(() => {
         setUploading(false)
@@ -203,8 +203,22 @@ export function ProfilePictureUpload({
     }
   }
 
-  const profileData = ProfileService.getProfile()
-  const displayImage = preview || currentImage || profileData.avatar
+  const [profileData, setProfileData] = useState<any>(null)
+  
+  // Load profile data on mount
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await profileService.getProfile()
+        setProfileData(data)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
+    }
+    loadProfile()
+  }, [])
+  
+  const displayImage = preview || currentImage || profileData?.avatar
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -235,7 +249,7 @@ export function ProfilePictureUpload({
           {displayImage && displayImage !== '/avatar.jpg' ? (
             <img
               src={displayImage}
-              alt={`${profileData.name || 'Matthew Raphael'}'s profile picture`}
+              alt={`${profileData?.name || 'Matthew Raphael'}'s profile picture`}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
               onError={(e) => {
                 const target = e.target as HTMLImageElement
@@ -247,7 +261,7 @@ export function ProfilePictureUpload({
               <span className={`font-bold ${
                 size === 'sm' ? 'text-lg' : size === 'md' ? 'text-xl' : size === 'lg' ? 'text-2xl' : 'text-4xl'
               }`}>
-                {(profileData.name || 'Matthew Raphael').charAt(0).toUpperCase()}
+                {(profileData?.name || 'Matthew Raphael').charAt(0).toUpperCase()}
               </span>
             </div>
           ) : (
@@ -328,10 +342,10 @@ export function ProfilePictureUpload({
       {currentImage && currentImage !== '/avatar.jpg' && !uploading && (
         <button
           type="button"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.stopPropagation()
             onImageSelect('/avatar.jpg')
-            ProfileService.updateProfileField('avatar', '/avatar.jpg')
+            await profileService.updateProfileField('avatar', '/avatar.jpg')
           }}
           className="block mx-auto text-sm text-red-500 hover:text-red-700 transition-colors"
         >

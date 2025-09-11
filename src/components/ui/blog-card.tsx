@@ -237,10 +237,6 @@ export function BlogCard({
                 <span className="text-sm">Views</span>
                 <span>{viewTracker.getFormattedViewCount(slug)}</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <span className="text-sm">GitHub Comments</span>
-                <span>→</span>
-              </div>
             </div>
           </div>
         </div>

@@ -1,9 +1,36 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { ParticleBackground } from '@/components/ui/particle-background'
 import { ActivityGraph } from '@/components/admin/activity-graph'
 import TiltedCard from '@/components/ui/TiltedCard'
 import Link from 'next/link'
+import { blogService, projectService } from '@/lib/service-switcher'
 
 export default function Home() {
+  const [featuredProjects, setFeaturedProjects] = useState<any[]>([])
+  const [featuredPosts, setFeaturedPosts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadFeaturedContent = async () => {
+      try {
+        const [projects, posts] = await Promise.all([
+          projectService.getFeaturedProjects(),
+          blogService.getFeaturedPosts()
+        ])
+        
+        setFeaturedProjects(projects)
+        setFeaturedPosts(posts)
+      } catch (error) {
+        console.error('Error loading featured content:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadFeaturedContent()
+  }, [])
   return (
     <div className="min-h-screen">
       {/* Enhanced Hero Section */}
@@ -252,81 +279,73 @@ export default function Home() {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {[
-              {
-                title: "Ethereum DeFi Wallet Analysis",
-                description: "Dashboard analyzing top DeFi wallets, token movements, and whale activity using Dune Analytics. Tracked 10K+ wallets across major protocols.",
-                tech: ["Dune Analytics", "SQL", "Ethereum", "DeFi"],
-                link: "/portfolio",
-                category: "Web3 Analytics"
-              },
-              {
-                title: "NFT Marketplace Trends",
-                description: "Analyzed 200K+ marketplace transactions to reveal top collections, buyer behavior patterns, and wash trading detection.",
-                tech: ["Python", "Pandas", "Web3.py", "OpenSea API"],
-                link: "/portfolio",
-                category: "Market Analysis"
-              },
-              {
-                title: "Stablecoin Flow Tracker",
-                description: "Real-time visualization of USDT/USDC flows across exchanges during high-volatility periods. Built interactive Sankey diagrams.",
-                tech: ["SQL", "D3.js", "Flipside", "React"],
-                link: "/portfolio",
-                category: "DeFi Analytics"
-              },
-              {
-                title: "Web2 → Web3 Transition Study",
-                description: "Comprehensive case study documenting my analytical approach evolution from traditional Excel/SQL to blockchain analytics tools.",
-                tech: ["Documentation", "Excel", "Dune", "Python"],
-                link: "/portfolio",
-                category: "Case Study"
-              }
-            ].map((project, index) => (
-              <Link key={index} href={project.link}>
-                <div className="group relative h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
-                  {/* Project Category */}
-                  <div className="flex justify-end mb-6">
-                    <div className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium">
-                      {project.category}
-                    </div>
-                  </div>
-
-                  {/* Project Content */}
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200">
-                      {project.title}
-                    </h3>
-                    <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
-                      {project.description}
-                    </p>
-                    
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech, techIndex) => (
-                        <span key={techIndex} className="px-3 py-1 rounded-full bg-cyber-500/10 text-cyber-500 text-sm font-medium">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* CTA */}
-                    <div className="flex items-center justify-between pt-4">
-                      <span className="text-primary-500 font-medium group-hover:text-primary-600 transition-colors duration-200">
-                        View Project →
-                      </span>
-                      <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors duration-200">
-                        <span className="text-primary-500 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200">↗</span>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+              ))}
+            </div>
+          ) : featuredProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+              {featuredProjects.slice(0, 4).map((project, index) => (
+                <Link key={project.id || index} href={`/portfolio#${project.id}`}>
+                  <div className="group relative h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
+                    {/* Project Category */}
+                    <div className="flex justify-end mb-6">
+                      <div className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium">
+                        {project.category}
                       </div>
                     </div>
-                  </div>
 
-                  {/* Hover Effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
+                    {/* Project Content */}
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200">
+                        {project.title}
+                      </h3>
+                      <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
+                        {project.description}
+                      </p>
+                      
+                      {/* Tech Stack */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.techStack?.map((tech: string, techIndex: number) => (
+                          <span key={techIndex} className="px-3 py-1 rounded-full bg-cyber-500/10 text-cyber-500 text-sm font-medium">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* CTA */}
+                      <div className="flex items-center justify-between pt-4">
+                        <span className="text-primary-500 font-medium group-hover:text-primary-600 transition-colors duration-200">
+                          View Project →
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors duration-200">
+                          <span className="text-primary-500 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200">↗</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hover Effect */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <div className="text-6xl mb-4">🚧</div>
+              <h3 className="text-2xl font-bold text-foreground mb-4">No Featured Projects</h3>
+              <p className="text-foreground/60 mb-6">
+                Featured projects will appear here once they're selected in the admin panel.
+              </p>
+              <Link href="/portfolio">
+                <button className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+                  View All Projects
+                </button>
               </Link>
-            ))}
-          </div>
+            </div>
+          )}
 
           {/* View All Projects CTA */}
           <div className="text-center mt-16">
@@ -359,82 +378,83 @@ export default function Home() {
           </div>
 
           {/* Blog Posts Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "From Excel to Ethereum: My First Steps in Blockchain Analytics",
-                description: "A personal journey documenting the transition from traditional spreadsheet analysis to on-chain data exploration.",
-                readTime: "8 min read",
-                category: "Journey",
-                date: "Jan 2025",
-                color: "cyber-500"
-              },
-              {
-                title: "5 SQL Tricks Every Web3 Analyst Should Know",
-                description: "Practical SQL techniques that translate perfectly from Web2 databases to blockchain query platforms like Dune.",
-                readTime: "6 min read",
-                category: "Tutorial",
-                date: "Dec 2024",
-                color: "primary-500"
-              },
-              {
-                title: "Detecting Spam Wallets on Testnets: A Case Study",
-                description: "Deep dive into identifying suspicious wallet behavior patterns using statistical analysis and on-chain forensics.",
-                readTime: "12 min read",
-                category: "Analysis",
-                date: "Nov 2024",
-                color: "purple-500"
-              }
-            ].map((post, index) => (
-              <Link key={index} href="/blog">
-                <article className="group h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
-                  {/* Post Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      post.color === 'cyber-500' ? 'bg-cyber-500/10 text-cyber-500' :
-                      post.color === 'primary-500' ? 'bg-primary-500/10 text-primary-500' :
-                      'bg-purple-500/10 text-purple-500'
-                    }`}>
-                      {post.category}
-                    </div>
-                    <span className="text-sm text-foreground/50">{post.date}</span>
-                  </div>
-
-                  {/* Post Content */}
-                  <div className="space-y-4">
-                    <h3 className={`text-xl font-bold text-foreground transition-colors duration-200 ${
-                      post.color === 'cyber-500' ? 'group-hover:text-cyber-500' :
-                      post.color === 'primary-500' ? 'group-hover:text-primary-500' :
-                      'group-hover:text-purple-500'
-                    }`}>
-                      {post.title}
-                    </h3>
-                    <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
-                      {post.description}
-                    </p>
-                    
-                    {/* Read More */}
-                    <div className="flex items-center justify-between pt-4">
-                      <span className="text-sm text-foreground/60">{post.readTime}</span>
-                      <span className={`font-medium transition-colors duration-200 ${
-                        post.color === 'cyber-500' ? 'text-cyber-500 group-hover:text-cyber-600' :
-                        post.color === 'primary-500' ? 'text-primary-500 group-hover:text-primary-600' :
-                        'text-purple-500 group-hover:text-purple-600'
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, index) => (
+                <div key={index} className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+              ))}
+            </div>
+          ) : featuredPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {featuredPosts.slice(0, 3).map((post, index) => {
+                const colors = ['cyber-500', 'primary-500', 'purple-500']
+                const color = colors[index % colors.length]
+                return (
+                <Link key={post.id || index} href={`/blog/${post.slug}`}>
+                  <article className="group h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
+                    {/* Post Header */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        color === 'cyber-500' ? 'bg-cyber-500/10 text-cyber-500' :
+                        color === 'primary-500' ? 'bg-primary-500/10 text-primary-500' :
+                        'bg-purple-500/10 text-purple-500'
                       }`}>
-                        Read More →
-                      </span>
+                        {post.category}
+                      </div>
+                      <span className="text-sm text-foreground/50">{post.date}</span>
                     </div>
-                  </div>
 
-                  {/* Hover Effect */}
-                  <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    post.color === 'cyber-500' ? 'bg-cyber-500/5' :
-                    post.color === 'primary-500' ? 'bg-primary-500/5' :
-                    'bg-purple-500/5'
-                  }`}></div>
-                </article>
+                    {/* Post Content */}
+                    <div className="space-y-4">
+                      <h3 className={`text-xl font-bold text-foreground transition-colors duration-200 ${
+                        color === 'cyber-500' ? 'group-hover:text-cyber-500' :
+                        color === 'primary-500' ? 'group-hover:text-primary-500' :
+                        'group-hover:text-purple-500'
+                      }`}>
+                        {post.title}
+                      </h3>
+                      <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
+                        {post.summary}
+                      </p>
+                      
+                      {/* Read More */}
+                      <div className="flex items-center justify-between pt-4">
+                        <span className="text-sm text-foreground/60">{post.readTime}</span>
+                        <span className={`font-medium transition-colors duration-200 ${
+                          color === 'cyber-500' ? 'text-cyber-500 group-hover:text-cyber-600' :
+                          color === 'primary-500' ? 'text-primary-500 group-hover:text-primary-600' :
+                          'text-purple-500 group-hover:text-purple-600'
+                        }`}>
+                          Read More →
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Hover Effect */}
+                    <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                      color === 'cyber-500' ? 'bg-cyber-500/5' :
+                      color === 'primary-500' ? 'bg-primary-500/5' :
+                      'bg-purple-500/5'
+                    }`}></div>
+                  </article>
+                </Link>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <div className="text-6xl mb-4">📝</div>
+              <h3 className="text-2xl font-bold text-foreground mb-4">No Featured Blog Posts</h3>
+              <p className="text-foreground/60 mb-6">
+                Featured blog posts will appear here once they're selected in the admin panel.
+              </p>
+              <Link href="/blog">
+                <button className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+                  View All Posts
+                </button>
               </Link>
-            ))}
+            </div>
+          )}
           </div>
 
           {/* View All Posts CTA */}

@@ -16,6 +16,14 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
   const utterancesTheme = resolvedTheme === 'dark' ? 'github-dark' : 'github-light'
 
   useEffect(() => {
+    if (!ref.current) return
+
+    const container = ref.current
+    let mounted = true
+    
+    // Clear any existing content
+    container.innerHTML = ''
+    
     const script = document.createElement('script')
     
     script.src = 'https://utteranc.es/client.js'
@@ -28,16 +36,46 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
     script.setAttribute('theme', utterancesTheme)
     script.setAttribute('label', '💬 blog-comment')
     
-    // Clear any existing comments and add new script
-    if (ref.current) {
-      ref.current.innerHTML = ''
-      ref.current.appendChild(script)
+    // Add error handler
+    script.onerror = () => {
+      if (mounted) {
+        console.warn('Failed to load Utterances comments')
+      }
+    }
+    
+    // Add load handler to prevent issues
+    script.onload = () => {
+      if (mounted) {
+        console.debug('Utterances comments loaded successfully')
+      }
+    }
+    
+    // Only append if still mounted
+    if (mounted && container.parentNode) {
+      container.appendChild(script)
     }
 
     return () => {
-      // Cleanup on unmount
-      if (ref.current) {
-        ref.current.innerHTML = ''
+      mounted = false
+      // More careful cleanup - only clear if container still exists and has a parent
+      if (container && container.parentNode && document.contains(container)) {
+        try {
+          // Remove script elements to prevent further execution
+          const scripts = container.querySelectorAll('script')
+          scripts.forEach(s => {
+            try {
+              s.remove()
+            } catch (e) {
+              // Ignore removal errors
+            }
+          })
+          
+          // Clear container content
+          container.innerHTML = ''
+        } catch (error) {
+          // Ignore errors during cleanup - component is unmounting anyway
+          console.debug('Utterances cleanup error (safe to ignore):', error)
+        }
       }
     }
   }, [utterancesTheme, slug]) // Re-run when theme or slug changes
@@ -61,15 +99,7 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
       </div>
       
       {/* Utterances will inject the comment interface here */}
-      <div ref={ref} className="utterances-container" />
-      
-      {/* Fallback message while loading */}
-      <div className="text-center py-8 text-foreground/50">
-        <div className="inline-flex items-center space-x-2">
-          <div className="w-4 h-4 border-2 border-cyber-500 border-t-transparent rounded-full animate-spin"></div>
-          <span>Loading comments...</span>
-        </div>
-      </div>
+      <div ref={ref} className="utterances-container min-h-[200px]" />
     </div>
   )
 }

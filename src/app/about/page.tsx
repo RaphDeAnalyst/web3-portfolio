@@ -1,15 +1,30 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
+import { profileService } from '@/lib/service-switcher'
 
-export const metadata: Metadata = {
-  title: "About | Web3 Data Analyst Journey from Traditional to Blockchain Analytics",
-  description: "Learn about my transition from traditional data analytics (Python, SQL, Excel) to Web3 blockchain analytics (Dune Analytics, DeFi protocols). 3+ years experience in statistical modeling, now building expertise in on-chain data analysis and smart contract analysis.",
-  keywords: ["About Web3 Data Analyst", "Career Transition", "Traditional Analytics to Web3", "Python SQL Experience", "Dune Analytics Learning", "DeFi Protocol Analysis", "Statistical Modeling", "Blockchain Data Analysis"],
-}
 
 export default function About() {
+  const [profile, setProfile] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadProfile()
+  }, [])
   const skills = [
     {
       title: 'Core Data Analytics',
@@ -125,26 +140,28 @@ export default function About() {
               <div className="space-y-8">
                 <div>
                   <h2 className="text-3xl font-bold text-foreground mb-6">My Story</h2>
-                  <div className="space-y-6 text-lg text-foreground/80 leading-relaxed">
-                    <p>
-                      I'm a data analyst transitioning from Web2 to Web3, with strong foundations in Python, SQL, and statistical modeling. 
-                      I began my analytics journey in 2022, building skills in data querying, visualization, and predictive analytics. 
-                      By 2023, I had advanced into statistical modeling, regression analysis, and machine learning applications, 
-                      applying analytics to solve real-world problems in traditional finance.
-                    </p>
-                    <p>
-                      In 2024, I became fascinated by blockchain's open datasets and began studying DeFi protocols, smart contracts, and tokenomics. 
-                      This curiosity led me to start hands-on Web3 analytics projects in 2025. For example, I built an 
-                      <span className="text-primary-500 font-medium"> Ethereum gas price dashboard</span> that identified 20% cost savings opportunities, 
-                      and created <span className="text-cyber-500 font-medium">8 Dune Analytics dashboards</span> tracking over $100M in DeFi volumes.
-                    </p>
-                    <p>
-                      Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior, DeFi activity, and NFT markets, 
-                      while also learning Solidity basics to deepen my understanding of blockchain data structures. 
-                      My goal is to establish myself as a <span className="text-purple-500 font-medium">Web3 Data & AI Specialist</span>, 
-                      bridging the rigor of traditional analytics with the transparency and innovation of blockchain data.
-                    </p>
-                  </div>
+                  {loading ? (
+                    <div className="space-y-4">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
+                    </div>
+                  ) : (
+                    <div className="space-y-6 text-lg text-foreground/80 leading-relaxed">
+                      {profile?.story ? (
+                        profile.story.split('\n\n').map((paragraph: string, index: number) => (
+                          <p key={index} dangerouslySetInnerHTML={{ 
+                            __html: paragraph
+                              .replace(/Ethereum gas price dashboard/g, '<span class="text-primary-500 font-medium">Ethereum gas price dashboard</span>')
+                              .replace(/8 Dune Analytics dashboards/g, '<span class="text-cyber-500 font-medium">8 Dune Analytics dashboards</span>')
+                              .replace(/Web3 Data & AI Specialist/g, '<span class="text-purple-500 font-medium">Web3 Data & AI Specialist</span>')
+                          }} />
+                        ))
+                      ) : (
+                        <p>Loading story...</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -228,11 +245,20 @@ export default function About() {
                   Start a Project
                 </button>
               </Link>
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
-                  Download Resume
+              {profile?.resume ? (
+                <a href={profile.resume} target="_blank" rel="noopener noreferrer">
+                  <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
+                    Download Resume
+                  </button>
+                </a>
+              ) : (
+                <button 
+                  disabled 
+                  className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground/50 font-semibold text-lg opacity-50 cursor-not-allowed"
+                >
+                  Resume Not Available
                 </button>
-              </a>
+              )}
             </div>
           </div>
         </div>

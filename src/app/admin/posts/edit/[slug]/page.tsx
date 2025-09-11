@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
-import { blogService, BlogPostData } from '@/lib/blog-service'
+import { blogService } from '@/lib/service-switcher'
+import { BlogPostData } from '@/lib/blog-service'
 
 export default function EditBlogPost() {
   const router = useRouter()
@@ -16,18 +17,21 @@ export default function EditBlogPost() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Find the post by ID
-    const post = blogService.getPostById(id)
-    if (post) {
-      setPostData(post)
+    const loadPost = async () => {
+      // Find the post by ID
+      const post = await blogService.getPostById(id)
+      if (post) {
+        setPostData(post)
+      }
+      setLoading(false)
     }
-    setLoading(false)
+    loadPost()
   }, [id])
 
-  const handleSave = (updatedPostData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
+  const handleSave = async (updatedPostData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
     try {
       // Save the updated post
-      blogService.savePost({
+      await blogService.savePost({
         ...updatedPostData,
         status: isDraft ? 'draft' : 'published'
       }, id)

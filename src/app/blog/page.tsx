@@ -3,7 +3,8 @@
 import { useState, useMemo, useEffect } from 'react'
 import { BlogCard } from '@/components/ui/blog-card'
 import { NewsletterSignup } from '@/components/ui/newsletter-signup'
-import { blogService, BlogPostData } from '@/lib/blog-service'
+import { blogService } from '@/lib/service-switcher'
+import { BlogPostData } from '@/lib/blog-service'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -13,19 +14,19 @@ export default function Blog() {
   const [categories, setCategories] = useState<string[]>(['All'])
 
   useEffect(() => {
-    const loadPosts = () => {
-      const publishedPosts = blogService.getPublishedPosts()
+    const loadPosts = async () => {
+      const publishedPosts = await blogService.getPublishedPosts()
       setPosts(publishedPosts)
       
-      const allCategories = ['All', ...blogService.getCategories()]
+      const allCategories = ['All', ...await blogService.getCategories()]
       setCategories(allCategories)
     }
 
     loadPosts()
     
     // Listen for storage changes
-    const handleStorageChange = () => {
-      loadPosts()
+    const handleStorageChange = async () => {
+      await loadPosts()
     }
     
     window.addEventListener('storage', handleStorageChange)

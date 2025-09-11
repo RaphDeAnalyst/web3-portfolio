@@ -5,24 +5,52 @@ import { notFound } from 'next/navigation'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { UtterancesComments, UtterancesSetupInstructions } from '@/components/ui/utterances-comments'
 import Link from 'next/link'
-import { blogService } from '@/lib/blog-service'
+import { blogService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
-  const post = blogService.getPostBySlug(params.slug)
-  const [viewCount, setViewCount] = useState(0)
+  const [post, setPost] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
+
+  // All hooks at the top
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const postData = await blogService.getPostBySlug(params.slug)
+        setPost(postData)
+      } catch (error) {
+        console.error('Error loading post:', error)
+        setPost(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPost()
+  }, [params.slug])
+
+  useEffect(() => {
+    if (post) {
+      setIsClient(true)
+      viewTracker.incrementView(params.slug)
+    }
+  }, [params.slug, post])
+
+  // Render logic after all hooks
+  if (loading) {
+    return (
+      <div className="min-h-screen py-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-cyber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-foreground/60">Loading article...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!post) {
     return notFound()
   }
-
-  // Track view on mount
-  useEffect(() => {
-    setIsClient(true)
-    const newCount = viewTracker.incrementView(params.slug)
-    setViewCount(newCount)
-  }, [params.slug])
 
   return (
     <div className="min-h-screen py-20">

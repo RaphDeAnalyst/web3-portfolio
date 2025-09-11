@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { blogService, BlogPostData } from '@/lib/blog-service'
+import { blogService } from '@/lib/service-switcher'
+import { BlogPostData } from '@/lib/blog-service'
 import { ActivityService } from '@/lib/activity-service'
 
 export default function PostsManagement() {
@@ -11,7 +12,11 @@ export default function PostsManagement() {
   const [filterCategory, setFilterCategory] = useState('all')
 
   useEffect(() => {
-    setPosts(blogService.getAllPosts())
+    const loadPosts = async () => {
+      const allPosts = await blogService.getAllPosts()
+      setPosts(allPosts)
+    }
+    loadPosts()
   }, [])
 
   const categories = Array.from(new Set(posts.map(post => post.category)))
@@ -23,10 +28,11 @@ export default function PostsManagement() {
     return matchesSearch && matchesCategory
   })
 
-  const handleDeletePost = (id: string) => {
+  const handleDeletePost = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
-      blogService.deletePost(id)
-      setPosts(blogService.getAllPosts())
+      await blogService.deletePost(id)
+      const allPosts = await blogService.getAllPosts()
+      setPosts(allPosts)
     }
   }
 
