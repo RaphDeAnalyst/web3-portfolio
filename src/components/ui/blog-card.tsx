@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ProfileService } from '@/lib/profile-service'
+import { viewTracker } from '@/lib/view-tracking'
 
 interface BlogCardProps {
   title: string
@@ -40,6 +41,7 @@ export function BlogCard({
   const [isHovered, setIsHovered] = useState(false)
   const [profileData, setProfileData] = useState(ProfileService.getProfile())
   const [isHydrated, setIsHydrated] = useState(false)
+  const [viewCount, setViewCount] = useState(0)
 
   useEffect(() => {
     // Set hydrated state and update profile data when component mounts
@@ -54,12 +56,15 @@ export function BlogCard({
     
     updateProfile()
     
+    // Get view count for this post
+    setViewCount(viewTracker.getViewCount(slug))
+    
     // Listen for storage changes to update profile in real-time
     const handleStorageChange = () => updateProfile()
     window.addEventListener('storage', handleStorageChange)
     
     return () => window.removeEventListener('storage', handleStorageChange)
-  }, [])
+  }, [slug])
 
   const categoryColors = {
     'Web3': 'cyber-500',
@@ -226,15 +231,15 @@ export function BlogCard({
               </span>
             </div>
             
-            {/* Engagement metrics placeholder */}
+            {/* Engagement metrics */}
             <div className="flex items-center space-x-4 text-xs text-foreground/50">
               <div className="flex items-center space-x-1">
                 <span className="text-sm">Views</span>
-                <span>{Math.floor(Math.random() * 1000 + 500)}</span>
+                <span>{viewTracker.getFormattedViewCount(slug)}</span>
               </div>
               <div className="flex items-center space-x-1">
-                <span className="text-sm">Comments</span>
-                <span>{Math.floor(Math.random() * 50 + 10)}</span>
+                <span className="text-sm">GitHub Comments</span>
+                <span>→</span>
               </div>
             </div>
           </div>

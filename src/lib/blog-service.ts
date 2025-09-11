@@ -18,6 +18,8 @@ export interface BlogPostData {
   status: 'draft' | 'published'
   featured?: boolean
   featuredImage?: string
+  views?: number
+  lastViewedAt?: string
   createdAt?: string
   updatedAt?: string
 }

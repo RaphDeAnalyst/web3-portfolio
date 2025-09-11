@@ -1,16 +1,28 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
+import { UtterancesComments, UtterancesSetupInstructions } from '@/components/ui/utterances-comments'
 import Link from 'next/link'
 import { blogService } from '@/lib/blog-service'
+import { viewTracker } from '@/lib/view-tracking'
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
   const post = blogService.getPostBySlug(params.slug)
+  const [viewCount, setViewCount] = useState(0)
+  const [isClient, setIsClient] = useState(false)
 
   if (!post) {
     return notFound()
   }
+
+  // Track view on mount
+  useEffect(() => {
+    setIsClient(true)
+    const newCount = viewTracker.incrementView(params.slug)
+    setViewCount(newCount)
+  }, [params.slug])
 
   return (
     <div className="min-h-screen py-20">
@@ -29,13 +41,21 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
           {/* Article Header */}
           <div className="space-y-6">
             {/* Category Badge */}
-            <div className="flex items-center space-x-3">
-              <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 text-sm font-medium">
-                {post.category}
-              </span>
-              <span className="text-sm text-foreground/60">
-                {post.date} • {post.readTime}
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 text-sm font-medium">
+                  {post.category}
+                </span>
+                <span className="text-sm text-foreground/60">
+                  {post.date} • {post.readTime}
+                </span>
+              </div>
+              {isClient && (
+                <div className="flex items-center space-x-2 text-sm text-foreground/60">
+                  <span>👁️</span>
+                  <span>{viewTracker.getFormattedViewCount(params.slug)} views</span>
+                </div>
+              )}
             </div>
 
             {/* Title */}
@@ -96,6 +116,17 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Comments Section */}
+      <section className="px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="max-w-4xl mx-auto">
+          {/* Setup Instructions (remove this after setting up utterances) */}
+          <UtterancesSetupInstructions />
+          
+          {/* Utterances Comments */}
+          <UtterancesComments slug={params.slug} title={post.title} />
         </div>
       </section>
 
