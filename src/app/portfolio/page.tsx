@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { ProjectCard } from '@/components/ui/project-card'
 import { FilterTabs } from '@/components/ui/filter-tabs'
 import { projectCategories, Project } from '@/data/projects'
-import { ProjectService } from '@/lib/project-service'
+import { projectService } from '@/lib/service-switcher'
 import Link from 'next/link'
 
 export default function Portfolio() {
@@ -15,9 +15,9 @@ export default function Portfolio() {
 
   // Load projects on component mount
   useEffect(() => {
-    const loadProjects = () => {
+    const loadProjects = async () => {
       try {
-        const allProjects = ProjectService.getAllProjects()
+        const allProjects = await projectService.getAllProjects()
         setProjects(allProjects)
       } catch (error) {
         console.error('Error loading projects:', error)

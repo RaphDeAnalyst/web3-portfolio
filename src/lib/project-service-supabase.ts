@@ -29,6 +29,7 @@ export class ProjectServiceSupabase {
       title: project.title,
       description: project.description,
       category: project.category,
+      tech: project.tech_stack,
       techStack: project.tech_stack,
       tech_stack: project.tech_stack,
       status: project.status,

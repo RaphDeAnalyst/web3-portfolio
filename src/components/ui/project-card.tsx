@@ -219,7 +219,7 @@ export function ProjectCard({
 
           {/* Tech Stack */}
           <div className="flex flex-wrap gap-2">
-            {tech.map((technology, index) => (
+            {tech && tech.map((technology, index) => (
               <span
                 key={index}
                 className={`text-xs px-3 py-1 rounded-full bg-muted text-foreground/70 hover:bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/10 hover:text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} transition-colors duration-200 cursor-default`}
