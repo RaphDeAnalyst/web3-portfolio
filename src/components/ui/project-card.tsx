@@ -311,7 +311,7 @@ export function ProjectCard({
                 {duneUrl && duneUrl !== '#' && duneUrl.trim() !== '' && (
                   <Link href={duneUrl} target="_blank" className="w-full">
                     <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200 text-sm font-medium text-center">
-                      Dune Dashboard
+                      Dashboard
                     </button>
                   </Link>
                 )}
