@@ -15,6 +15,9 @@ interface ProjectCardProps {
   duneUrl?: string
   blogPostSlug?: string
   metrics?: Record<string, string>
+  features?: string[]
+  challenges?: string
+  learnings?: string
   featured?: boolean
   timeline?: '2022-2023' | '2024' | '2025'
   phase?: 'Traditional Analytics' | 'Exploratory Phase' | 'Web3 Analytics'
@@ -33,6 +36,9 @@ export function ProjectCard({
   duneUrl,
   blogPostSlug,
   metrics,
+  features,
+  challenges,
+  learnings,
   featured = false,
   timeline,
   phase,
@@ -215,6 +221,37 @@ export function ProjectCard({
               </span>
             ))}
           </div>
+
+          {/* Key Features */}
+          {features && features.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-foreground">Key Features</h4>
+              <div className="space-y-1">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <div className={`w-1.5 h-1.5 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}`}></div>
+                    <span className="text-xs text-foreground/80">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Challenges */}
+          {challenges && challenges.trim() && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-foreground">Challenges</h4>
+              <p className="text-xs text-foreground/70 leading-relaxed">{challenges}</p>
+            </div>
+          )}
+
+          {/* Key Learnings */}
+          {learnings && learnings.trim() && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-foreground">Key Learnings</h4>
+              <p className="text-xs text-foreground/70 leading-relaxed">{learnings}</p>
+            </div>
+          )}
 
           {/* Action Buttons - Two Row Layout */}
           <div className="space-y-3">

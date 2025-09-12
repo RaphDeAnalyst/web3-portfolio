@@ -49,6 +49,9 @@ export interface Project {
   blog_post_slug?: string
   image?: string
   metrics?: Record<string, string>
+  features?: string[]
+  challenges?: string
+  learnings?: string
   created_at: string
   updated_at: string
 }

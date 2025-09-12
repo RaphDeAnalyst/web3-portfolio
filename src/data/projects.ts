@@ -13,6 +13,9 @@ export interface Project {
   duneUrl?: string
   blogPostSlug?: string
   metrics?: Record<string, string>
+  features?: string[]
+  challenges?: string
+  learnings?: string
   featured?: boolean
   timeline?: '2022-2023' | '2024' | '2025'
   phase?: 'Traditional Analytics' | 'Exploratory Phase' | 'Web3 Analytics'
