@@ -193,8 +193,8 @@ export default function Blog() {
               featuredPosts.length === 1 
                 ? 'grid-cols-1 lg:grid-cols-6' 
                 : featuredPosts.length === 2
-                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto'
+                ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
+                : 'grid-cols-1 sm:grid-cols-3 max-w-7xl mx-auto'
             }`}>
               {featuredPosts.map((post) => (
                 <BlogCard 

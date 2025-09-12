@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { ParticleBackground } from '@/components/ui/particle-background'
 import { ActivityGraph } from '@/components/admin/activity-graph'
 import TiltedCard from '@/components/ui/TiltedCard'
+import { ProjectCard } from '@/components/ui/project-card'
 import Link from 'next/link'
 import { blogService, projectService } from '@/lib/service-switcher'
 
@@ -282,56 +283,27 @@ export default function Home() {
 
           {/* Projects Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              {[...Array(4)].map((_, index) => (
-                <div key={index} className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+            <div className={`grid gap-8 ${
+              'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            }`}>
+              {[...Array(3)].map((_, index) => (
+                <div key={index} className="h-96 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
               ))}
             </div>
           ) : featuredProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              {featuredProjects.slice(0, 4).map((project, index) => (
-                <Link key={project.id || index} href={`/portfolio#${project.id}`}>
-                  <div className="group relative h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
-                    {/* Project Category */}
-                    <div className="flex justify-end mb-6">
-                      <div className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-xs font-medium">
-                        {project.category}
-                      </div>
-                    </div>
-
-                    {/* Project Content */}
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200">
-                        {project.title}
-                      </h3>
-                      <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
-                        {project.description}
-                      </p>
-                      
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-2">
-                        {project.techStack?.map((tech: string, techIndex: number) => (
-                          <span key={techIndex} className="px-3 py-1 rounded-full bg-cyber-500/10 text-cyber-500 text-sm font-medium">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* CTA */}
-                      <div className="flex items-center justify-between pt-4">
-                        <span className="text-primary-500 font-medium group-hover:text-primary-600 transition-colors duration-200">
-                          View Project →
-                        </span>
-                        <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center group-hover:bg-primary-500/20 transition-colors duration-200">
-                          <span className="text-primary-500 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200">↗</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Hover Effect */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                </Link>
+            <div className={`grid gap-8 ${
+              featuredProjects.length === 1 
+                ? 'grid-cols-1 lg:grid-cols-6' 
+                : featuredProjects.length === 2
+                ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
+                : 'grid-cols-1 sm:grid-cols-3 max-w-7xl mx-auto'
+            }`}>
+              {featuredProjects.map((project, index) => (
+                <ProjectCard 
+                  key={index} 
+                  {...project} 
+                  featuredCount={featuredProjects.length}
+                />
               ))}
             </div>
           ) : (
