@@ -79,8 +79,8 @@ export default function ActivityManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Activity Tracker</h1>
-          <p className="text-foreground/70 mt-1">Track and visualize your productivity</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Activity Tracker</h1>
+          <p className="text-sm sm:text-base text-foreground/70 mt-1">Track and visualize your productivity</p>
         </div>
         <button
           onClick={() => setShowAddForm(true)}

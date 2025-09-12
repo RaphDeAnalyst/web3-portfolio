@@ -39,7 +39,7 @@ export default function Contact() {
             <div className="lg:col-span-2 space-y-8">
               <div className="p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
                 <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-foreground mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
                     Start Your Project
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
@@ -53,7 +53,7 @@ export default function Contact() {
               {/* Availability Calendar Section */}
               <div className="p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
                 <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-foreground mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
                     Check My <span className="text-gradient">Availability</span>
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
@@ -85,7 +85,7 @@ export default function Contact() {
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6">
               My <span className="text-gradient">Approach</span>
             </h2>
             <p className="text-xl text-foreground/70">
@@ -159,7 +159,7 @@ export default function Contact() {
               </svg>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6">
               Let's Build the Future Together
             </h2>
             
@@ -176,7 +176,7 @@ export default function Contact() {
                 Start Your Project
               </button>
               <button 
-                onClick={() => window.open('https://calendly.com/matthewraphael-matthewraphael/30min', '_blank')}
+                onClick={() => window.open('https://calendly.com/your-link', '_blank')}
                 className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
               >
                 Schedule Call

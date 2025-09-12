@@ -88,9 +88,9 @@ export default function AllActivities() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </Link>
-            <h1 className="text-3xl font-bold text-foreground">All Activities</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">All Activities</h1>
           </div>
-          <p className="text-foreground/70">Complete history of your tracked activities</p>
+          <p className="text-sm sm:text-base text-foreground/70">Complete history of your tracked activities</p>
         </div>
         <div className="text-sm text-foreground/60">
           {filteredActivities.length} of {activities.length} activities

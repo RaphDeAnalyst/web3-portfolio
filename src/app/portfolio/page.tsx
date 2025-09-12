@@ -230,7 +230,7 @@ export default function Portfolio() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search projects, technologies, or descriptions..."
+                    placeholder="Search projects..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
@@ -383,7 +383,7 @@ export default function Portfolio() {
                 ? 'grid-cols-1 lg:grid-cols-6' 
                 : featuredProjects.length === 2
                 ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
-                : 'grid-cols-1 sm:grid-cols-3 max-w-7xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
             }`}>
               {featuredProjects.map((project, index) => (
                 <ProjectCard 
@@ -460,7 +460,7 @@ export default function Portfolio() {
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="p-12 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-cyber-500/5 backdrop-blur-sm">
-            <h2 className="text-3xl font-bold text-foreground mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">
               Interested in <span className="text-gradient">Collaborating?</span>
             </h2>
             <p className="text-xl text-foreground/70 mb-8 leading-relaxed">

@@ -125,7 +125,7 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">Dashboard</h1>
         <p className="text-foreground/70">Welcome back! Here's your content overview.</p>
       </div>
 

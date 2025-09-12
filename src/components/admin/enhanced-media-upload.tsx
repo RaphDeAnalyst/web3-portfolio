@@ -233,7 +233,7 @@ export default function EnhancedMediaUpload() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Enhanced Media Manager</h1>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Media Manager</h1>
           <p className="text-foreground/70 mt-1">Hybrid storage with smart routing and migration tools</p>
         </div>
         
@@ -249,7 +249,7 @@ export default function EnhancedMediaUpload() {
 
       {/* Navigation Tabs */}
       <div className="border-b border-gray-200 dark:border-gray-800">
-        <nav className="flex space-x-8">
+        <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto">
           {[
             { id: 'upload', label: 'Upload', icon: '📤' },
             { id: 'library', label: 'Library', icon: '📚' },
@@ -462,7 +462,7 @@ export default function EnhancedMediaUpload() {
                 <p className="text-xs text-gray-500 mb-3">
                   Paste any YouTube URL (watch, shorts, embed)
                 </p>
-                <div className="flex space-x-2">
+                <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                   <input
                     type="url"
                     placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ"
@@ -489,7 +489,7 @@ export default function EnhancedMediaUpload() {
                         }
                       }
                     }}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors flex-shrink-0"
                   >
                     Add
                   </button>
@@ -504,7 +504,7 @@ export default function EnhancedMediaUpload() {
                 <p className="text-xs text-gray-500 mb-3">
                   Paste shareable Google Drive link (PDFs, docs, etc.)
                 </p>
-                <div className="flex space-x-2">
+                <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                   <input
                     type="url"
                     placeholder="https://drive.google.com/file/d/1ABC..."
@@ -531,7 +531,7 @@ export default function EnhancedMediaUpload() {
                         }
                       }
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors flex-shrink-0"
                   >
                     Add
                   </button>

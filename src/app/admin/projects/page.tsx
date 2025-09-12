@@ -84,7 +84,7 @@ export default function ProjectsManagement() {
           </div>
           <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded w-32 animate-pulse"></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className="h-24 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"></div>
           ))}
@@ -98,8 +98,8 @@ export default function ProjectsManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Projects</h1>
-          <p className="text-foreground/70 mt-1">Manage your portfolio projects</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Projects</h1>
+          <p className="text-sm sm:text-base text-foreground/70 mt-1">Manage your portfolio projects</p>
         </div>
         <Link
           href="/admin/projects/new"
@@ -109,8 +109,8 @@ export default function ProjectsManagement() {
         </Link>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Stats Cards - Mobile Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>

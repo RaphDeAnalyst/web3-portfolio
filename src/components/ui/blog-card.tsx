@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ProfileService } from '@/lib/profile-service'
+import { profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
 
 interface BlogCardProps {
@@ -39,7 +39,7 @@ export function BlogCard({
 }: BlogCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const [profileData, setProfileData] = useState(ProfileService.getProfile())
+  const [profileData, setProfileData] = useState(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [viewCount, setViewCount] = useState(0)
 
@@ -47,11 +47,13 @@ export function BlogCard({
     // Set hydrated state and update profile data when component mounts
     setIsHydrated(true)
     
-    // Refresh profile to clear any old cached data
-    ProfileService.refreshProfile()
-    
-    const updateProfile = () => {
-      setProfileData(ProfileService.getProfile())
+    const updateProfile = async () => {
+      try {
+        const profile = await profileService.getProfile()
+        setProfileData(profile)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
     }
     
     updateProfile()
@@ -62,8 +64,12 @@ export function BlogCard({
     // Listen for storage changes to update profile in real-time
     const handleStorageChange = () => updateProfile()
     window.addEventListener('storage', handleStorageChange)
+    window.addEventListener('profileUpdated', handleStorageChange)
     
-    return () => window.removeEventListener('storage', handleStorageChange)
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('profileUpdated', handleStorageChange)
+    }
   }, [slug])
 
   const categoryColors = {
@@ -187,7 +193,7 @@ export function BlogCard({
           {/* Author */}
           {author && (
             <div className="flex items-center space-x-3 pt-4 border-t border-gray-200/30 dark:border-gray-800/30 mt-auto">
-              {isHydrated && profileData.avatar && profileData.avatar !== '/avatar.jpg' ? (
+              {isHydrated && profileData?.avatar && profileData.avatar !== '/avatar.jpg' && profileData.avatar.startsWith('http') ? (
                 <img
                   src={profileData.avatar}
                   alt={author.name}
@@ -202,7 +208,7 @@ export function BlogCard({
                 <div className="text-sm font-medium text-foreground">{author.name}</div>
                 <div className="text-xs text-foreground/60">
                   {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI Specialist' : 
-                   (isHydrated ? profileData.title : 'Web3 Data & AI Specialist')}
+                   (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
                 </div>
               </div>
             </div>

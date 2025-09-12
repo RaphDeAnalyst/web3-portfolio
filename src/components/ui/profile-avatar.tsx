@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ProfileService, ProfileData } from '@/lib/profile-service'
+import { profileService } from '@/lib/service-switcher'
+import type { ProfileData } from '@/lib/profile-service'
 
 interface ProfileAvatarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
@@ -22,7 +23,7 @@ export function ProfileAvatar({
   onClick,
   priority = false
 }: ProfileAvatarProps) {
-  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
+  const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [imageLoading, setImageLoading] = useState(true)
   const [imageError, setImageError] = useState(false)
@@ -65,8 +66,13 @@ export function ProfileAvatar({
 
   useEffect(() => {
     setIsHydrated(true)
-    const updateProfile = () => {
-      setProfile(ProfileService.getProfile())
+    const updateProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
     }
     
     updateProfile()
@@ -94,8 +100,8 @@ export function ProfileAvatar({
     setImageLoading(false)
   }
 
-  const hasCustomAvatar = isHydrated && profile.avatar && profile.avatar !== '/avatar.jpg' && !imageError
-  const initials = (profile.name || 'Matthew Raphael').split(' ').map(n => n.charAt(0).toUpperCase()).join('').slice(0, 2)
+  const hasCustomAvatar = isHydrated && profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') && !imageError
+  const initials = (profile?.name || 'Matthew Raphael').split(' ').map(n => n.charAt(0).toUpperCase()).join('').slice(0, 2)
 
   return (
     <div className={`flex items-center space-x-3 ${className} ${onClick ? 'cursor-pointer' : ''}`} onClick={onClick}>

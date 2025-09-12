@@ -203,7 +203,7 @@ export function ContactForm() {
           value={formData.company}
           onChange={handleChange}
           className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
-          placeholder="Your company or DAO name (optional)"
+          placeholder="Company (optional)"
           disabled={isSubmitting}
         />
       </div>
@@ -298,7 +298,7 @@ export function ContactForm() {
           className={`w-full px-4 py-3 rounded-lg border ${
             errors.message ? 'border-red-500' : 'border-border'
           } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200 resize-none`}
-          placeholder="Tell me about your project, goals, and any specific requirements..."
+          placeholder="Tell me about your project..."
           disabled={isSubmitting}
         />
         {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}

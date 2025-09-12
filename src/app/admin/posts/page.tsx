@@ -50,8 +50,8 @@ export default function PostsManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Blog Posts</h1>
-          <p className="text-foreground/70 mt-1">Manage your blog content</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Blog Posts</h1>
+          <p className="text-sm sm:text-base text-foreground/70 mt-1">Manage your blog content</p>
         </div>
         <Link
           href="/admin/posts/new"

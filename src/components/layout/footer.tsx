@@ -48,18 +48,15 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Brand */}
           <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 rounded bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center">
-              <span className="text-white font-bold text-xs">W3</span>
-            </div>
             <span className="text-sm font-medium text-foreground/80">
               Matthew Raphael - Web3 Analytics
             </span>
           </div>
 
           {/* Center section with social links and theme toggle */}
-          <div className="flex items-center space-x-6">
+          <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-6">
             {/* Social Links */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center space-x-4">
               {socialLinks.map((link) => (
                 <a
                   key={link.name}

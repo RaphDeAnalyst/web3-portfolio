@@ -116,7 +116,7 @@ export function ProfileCard() {
               <div className="relative">
                 {loading ? (
                   <div className="w-40 h-40 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
-                ) : isHydrated && profile?.avatar && profile.avatar !== '/avatar.jpg' ? (
+                ) : isHydrated && profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
                   <img
                     src={profile.avatar}
                     alt={profile?.name || 'Matthew Raphael'}

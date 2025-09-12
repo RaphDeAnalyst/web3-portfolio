@@ -111,17 +111,17 @@ export default function ProfileManagement() {
             ←
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Profile Management</h1>
-            <p className="text-foreground/70">Update your profile information and settings</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Profile Management</h1>
+            <p className="text-sm sm:text-base text-foreground/70">Update your profile information and settings</p>
           </div>
         </div>
         
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="px-6 py-3 bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
         >
-          {isLoading ? 'Saving...' : 'Save Changes'}
+          <span>{isLoading ? 'Saving...' : 'Save Changes'}</span>
         </button>
       </div>
 

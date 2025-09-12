@@ -139,7 +139,7 @@ export default function About() {
               {/* Biography */}
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-foreground mb-6">My Story</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">My Story</h2>
                   {loading ? (
                     <div className="space-y-4">
                       <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
@@ -202,15 +202,15 @@ export default function About() {
           </div>
 
           <div className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-cyber-500 to-purple-500 rounded-full"></div>
+            <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-cyber-500 to-purple-500 rounded-full"></div>
             
-            <div className="space-y-12">
+            <div className="space-y-8 sm:space-y-12">
               {journey.map((item, index) => (
-                <div key={index} className="relative flex items-start space-x-8">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 border-4 border-background shadow-lg">
+                <div key={index} className="relative flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:space-x-8">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 mx-auto sm:mx-0 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 border-4 border-background shadow-lg">
                   </div>
                   
-                  <div className="flex-1 pb-8">
+                  <div className="flex-1 pb-6 sm:pb-8">
                     <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xl font-bold text-foreground">{item.title}</h3>

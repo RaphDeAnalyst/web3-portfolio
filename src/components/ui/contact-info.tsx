@@ -1,17 +1,26 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ProfileService, ProfileData } from '@/lib/profile-service'
+import { profileService } from '@/lib/service-switcher'
+import type { ProfileData } from '@/lib/profile-service-supabase'
 import { ContactAvatar } from '@/components/ui/profile-avatar'
 
 export function ContactInfo() {
   const [copiedItem, setCopiedItem] = useState<string | null>(null)
-  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
+  const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
     setIsHydrated(true)
-    setProfile(ProfileService.getProfile())
+    const loadProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
+    }
+    loadProfile()
   }, [])
 
   const handleCopy = async (text: string, item: string) => {
@@ -112,7 +121,7 @@ export function ContactInfo() {
         
         {/* Quick Bio */}
         <p className="text-sm text-foreground/70 leading-relaxed border-t border-gray-200/30 dark:border-gray-800/30 pt-4">
-          {profile.bio || 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.'}
+          {profile?.bio || 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.'}
         </p>
       </div>
 

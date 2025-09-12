@@ -296,7 +296,7 @@ export default function Home() {
                 ? 'grid-cols-1 lg:grid-cols-6' 
                 : featuredProjects.length === 2
                 ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
-                : 'grid-cols-1 sm:grid-cols-3 max-w-7xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
             }`}>
               {featuredProjects.map((project, index) => (
                 <ProjectCard 
@@ -353,13 +353,21 @@ export default function Home() {
 
           {/* Blog Posts Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className={`grid gap-8 ${
+              'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
+            }`}>
               {[...Array(3)].map((_, index) => (
                 <div key={index} className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
               ))}
             </div>
           ) : featuredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className={`grid gap-8 ${
+              featuredPosts.length === 1 
+                ? 'grid-cols-1 lg:grid-cols-6' 
+                : featuredPosts.length === 2
+                ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
+            }`}>
               {featuredPosts.slice(0, 3).map((post, index) => {
                 const colors = ['cyber-500', 'primary-500', 'purple-500']
                 const color = colors[index % colors.length]

@@ -58,8 +58,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="max-w-md w-full mx-4">
           <div className="bg-background/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-800/50 p-8 shadow-2xl">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-2xl">
-              </div>
               <h1 className="text-2xl font-bold text-foreground mb-2">Admin Panel</h1>
               <p className="text-foreground/60">Enter password to access dashboard</p>
             </div>
@@ -127,9 +125,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Header */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold text-sm">
-                A
-              </div>
               <div>
                 <h2 className="font-bold text-foreground">Admin Panel</h2>
                 <p className="text-xs text-foreground/60">Content Management</p>

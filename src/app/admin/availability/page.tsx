@@ -369,32 +369,32 @@ export default function AvailabilityAdmin() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Availability Management</h1>
-          <p className="text-foreground/70">Manage your consultation availability and booking schedule.</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">Availability Management</h1>
+          <p className="text-sm sm:text-base text-foreground/70">Manage your consultation availability and booking schedule.</p>
         </div>
         
         {/* Quick Actions */}
         <div className="flex items-center space-x-4">
-          <button className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-colors">
-            Set Weekly Template
+          <button className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2">
+            <span>Set Weekly Template</span>
           </button>
           <button 
             onClick={() => setShowBulkUpdate(true)}
-            className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
           >
-            Bulk Edit
+            <span>Bulk Edit</span>
           </button>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Stats Cards - Mobile Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 rounded-lg bg-green-500 flex items-center justify-center text-white text-xl">
               📅
             </div>
-            <span className="text-2xl font-bold text-foreground">{stats.available}</span>
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{stats.available}</span>
           </div>
           <h3 className="font-medium text-foreground mb-1">Available Days</h3>
           <p className="text-sm text-foreground/60">This month</p>
@@ -405,7 +405,7 @@ export default function AvailabilityAdmin() {
             <div className="w-12 h-12 rounded-lg bg-yellow-500 flex items-center justify-center text-white text-xl">
               ⏰
             </div>
-            <span className="text-2xl font-bold text-foreground">{stats.limited}</span>
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{stats.limited}</span>
           </div>
           <h3 className="font-medium text-foreground mb-1">Limited Days</h3>
           <p className="text-sm text-foreground/60">Partial availability</p>
@@ -416,7 +416,7 @@ export default function AvailabilityAdmin() {
             <div className="w-12 h-12 rounded-lg bg-red-500 flex items-center justify-center text-white text-xl">
               🚫
             </div>
-            <span className="text-2xl font-bold text-foreground">{stats.busy}</span>
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{stats.busy}</span>
           </div>
           <h3 className="font-medium text-foreground mb-1">Busy Days</h3>
           <p className="text-sm text-foreground/60">No availability</p>
@@ -427,7 +427,7 @@ export default function AvailabilityAdmin() {
             <div className="w-12 h-12 rounded-lg bg-primary-500 flex items-center justify-center text-white text-xl">
               📊
             </div>
-            <span className="text-2xl font-bold text-foreground">{stats.totalSlots}</span>
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{stats.totalSlots}</span>
           </div>
           <h3 className="font-medium text-foreground mb-1">Time Slots</h3>
           <p className="text-sm text-foreground/60">Total available</p>
@@ -435,70 +435,70 @@ export default function AvailabilityAdmin() {
       </div>
 
       {/* Calendar */}
-      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm">
-        {/* Calendar Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground">
+      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 lg:p-8 shadow-sm">
+        {/* Calendar Header - Mobile Responsive */}
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground text-center sm:text-left">
             {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
           </h2>
           
-          <div className="flex items-center space-x-4">
-            {/* Legend */}
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-sm text-foreground/80">Available</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <span className="text-sm text-foreground/80">Limited</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-sm text-foreground/80">Busy</span>
-              </div>
-            </div>
+          {/* Navigation - Mobile Optimized */}
+          <div className="flex items-center justify-center space-x-2">
+            <button
+              onClick={() => navigateMonth('prev')}
+              className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200"
+            >
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
             
-            {/* Navigation */}
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => navigateMonth('prev')}
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200"
-              >
-                <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              
-              <button
-                onClick={() => setCurrentDate(new Date())}
-                className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
-              >
-                Today
-              </button>
-              
-              <button
-                onClick={() => navigateMonth('next')}
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200"
-              >
-                <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            <button
+              onClick={() => setCurrentDate(new Date())}
+              className="px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
+            >
+              Today
+            </button>
+            
+            <button
+              onClick={() => navigateMonth('next')}
+              className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200"
+            >
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
 
-        {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-4 mb-4">
-          {dayNames.map(day => (
-            <div key={day} className="h-8 flex items-center justify-center text-sm font-semibold text-foreground/60">
-              {day}
+        {/* Legend - Mobile Stacked */}
+        <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-center sm:space-y-0 sm:space-x-6 mb-6 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <span className="text-sm text-foreground/80">Available</span>
+          </div>
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <span className="text-sm text-foreground/80">Limited</span>
+          </div>
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <span className="text-sm text-foreground/80">Busy</span>
+          </div>
+        </div>
+
+        {/* Calendar Grid - Mobile Responsive */}
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-4 mb-4">
+          {dayNames.map((day, index) => (
+            <div key={day} className="h-6 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-semibold text-foreground/60">
+              <span className="sm:hidden">{day.slice(0, 1)}</span>
+              <span className="hidden sm:inline lg:hidden">{day.slice(0, 2)}</span>
+              <span className="hidden lg:inline">{day}</span>
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-4">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-4">
           {getCalendarDays().map((day, index) => {
             const dayAvailability = getAvailabilityForDate(day)
             const isCurrentMonth = day.getMonth() === currentDate.getMonth()
@@ -507,14 +507,14 @@ export default function AvailabilityAdmin() {
             return (
               <div key={index} className="aspect-square">
                 <div
-                  className={getDateClasses(day, dayAvailability)}
+                  className={`${getDateClasses(day, dayAvailability)} min-h-[2.5rem] sm:min-h-[3rem] lg:min-h-[4rem]`}
                   onClick={() => !isPast && isCurrentMonth && handleDateClick(day)}
                 >
-                  <span className="text-lg font-semibold">{day.getDate()}</span>
+                  <span className="text-xs sm:text-sm lg:text-lg font-semibold">{day.getDate()}</span>
                   
-                  {/* Status indicator */}
+                  {/* Status indicator - Responsive Size */}
                   {isCurrentMonth && !isPast && (
-                    <div className={`w-2 h-2 rounded-full mt-1 ${getStatusColor(dayAvailability.status)}`}></div>
+                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-0.5 sm:mt-1 ${getStatusColor(dayAvailability.status)}`}></div>
                   )}
                 </div>
               </div>
@@ -539,15 +539,15 @@ export default function AvailabilityAdmin() {
         />
       )}
 
-      {/* Bulk Update Modal */}
+      {/* Bulk Update Modal - Mobile Responsive */}
       {showBulkUpdate && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background rounded-2xl border border-gray-200 dark:border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-800">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground">Bulk Update Availability</h2>
-                  <p className="text-foreground/70 text-sm mt-1">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-background rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 w-full max-w-sm sm:max-w-md lg:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800">
+              <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                <div className="text-center sm:text-left">
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">Bulk Update Availability</h2>
+                  <p className="text-foreground/70 text-xs sm:text-sm mt-1">
                     Update multiple days at once for the next 90 days
                   </p>
                 </div>
@@ -556,41 +556,41 @@ export default function AvailabilityAdmin() {
                     setShowBulkUpdate(false)
                     setSaveMessage(null)
                   }}
-                  className="p-2 text-foreground/60 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                  className="self-end sm:self-auto p-2 text-foreground/60 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
             </div>
             
-            <div className="p-6 space-y-6">
-              {/* Bulk Update Type */}
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              {/* Bulk Update Type - Mobile Responsive */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3">Update Type</label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={() => setBulkUpdateType('weekdays')}
-                    className={`p-4 rounded-lg border-2 text-left transition-colors ${
+                    className={`p-3 sm:p-4 rounded-lg border-2 text-left transition-colors ${
                       bulkUpdateType === 'weekdays'
                         ? 'border-primary-500 bg-primary-500/10 text-primary-500'
                         : 'border-gray-200 dark:border-gray-700 hover:border-primary-500/50'
                     }`}
                   >
-                    <div className="font-medium">All Weekdays</div>
-                    <div className="text-sm text-foreground/60">Monday - Friday</div>
+                    <div className="font-medium text-sm sm:text-base">All Weekdays</div>
+                    <div className="text-xs sm:text-sm text-foreground/60">Monday - Friday</div>
                   </button>
                   <button
                     onClick={() => setBulkUpdateType('saturdays')}
-                    className={`p-4 rounded-lg border-2 text-left transition-colors ${
+                    className={`p-3 sm:p-4 rounded-lg border-2 text-left transition-colors ${
                       bulkUpdateType === 'saturdays'
                         ? 'border-primary-500 bg-primary-500/10 text-primary-500'
                         : 'border-gray-200 dark:border-gray-700 hover:border-primary-500/50'
                     }`}
                   >
-                    <div className="font-medium">All Saturdays</div>
-                    <div className="text-sm text-foreground/60">Saturday only</div>
+                    <div className="font-medium text-sm sm:text-base">All Saturdays</div>
+                    <div className="text-xs sm:text-sm text-foreground/60">Saturday only</div>
                   </button>
                 </div>
               </div>
@@ -625,40 +625,44 @@ export default function AvailabilityAdmin() {
                   
                   <div className="space-y-3">
                     {bulkSlots.map((slot, index) => (
-                      <div key={index} className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <input
-                          type="time"
-                          value={slot.start}
-                          onChange={(e) => updateBulkTimeSlot(index, 'start', e.target.value)}
-                          className="px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
-                        />
-                        <span className="text-foreground/60">to</span>
-                        <input
-                          type="time"
-                          value={slot.end}
-                          onChange={(e) => updateBulkTimeSlot(index, 'end', e.target.value)}
-                          className="px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
-                        />
-                        <select
-                          value={slot.timezone}
-                          onChange={(e) => updateBulkTimeSlot(index, 'timezone', e.target.value)}
-                          className="px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
-                        >
-                          <option value="WAT">WAT</option>
-                          <option value="UTC">UTC</option>
-                          <option value="EST">EST</option>
-                          <option value="PST">PST</option>
-                        </select>
-                        {bulkSlots.length > 1 && (
-                          <button
-                            onClick={() => removeBulkTimeSlot(index)}
-                            className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                      <div key={index} className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="flex items-center space-x-2 flex-1">
+                          <input
+                            type="time"
+                            value={slot.start}
+                            onChange={(e) => updateBulkTimeSlot(index, 'start', e.target.value)}
+                            className="flex-1 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
+                          />
+                          <span className="text-foreground/60 text-sm">to</span>
+                          <input
+                            type="time"
+                            value={slot.end}
+                            onChange={(e) => updateBulkTimeSlot(index, 'end', e.target.value)}
+                            className="flex-1 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
+                          />
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <select
+                            value={slot.timezone}
+                            onChange={(e) => updateBulkTimeSlot(index, 'timezone', e.target.value)}
+                            className="px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-foreground text-sm"
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                        )}
+                            <option value="WAT">WAT</option>
+                            <option value="UTC">UTC</option>
+                            <option value="EST">EST</option>
+                            <option value="PST">PST</option>
+                          </select>
+                          {bulkSlots.length > 1 && (
+                            <button
+                              onClick={() => removeBulkTimeSlot(index)}
+                              className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -676,27 +680,27 @@ export default function AvailabilityAdmin() {
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
-                <div className="text-sm text-foreground/60">
+              {/* Actions - Mobile Responsive */}
+              <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pt-4 border-t border-gray-200 dark:border-gray-800">
+                <div className="text-xs sm:text-sm text-foreground/60 text-center sm:text-left">
                   This will update {bulkUpdateType} for the next 90 days
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
                   <button
                     onClick={() => {
                       setShowBulkUpdate(false)
                       setSaveMessage(null)
                     }}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:border-gray-400 transition-colors"
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:border-gray-400 transition-colors text-sm"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleBulkUpdate}
                     disabled={isBulkSaving}
-                    className="px-6 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none"
+                    className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none flex items-center justify-center space-x-2 text-sm"
                   >
-                    {isBulkSaving ? 'Updating...' : 'Apply Bulk Update'}
+                    <span>{isBulkSaving ? 'Updating...' : 'Apply Bulk Update'}</span>
                   </button>
                 </div>
               </div>
@@ -878,7 +882,7 @@ function DayEditor({
                 type="url"
                 value={bookingUrl}
                 onChange={(e) => setBookingUrl(e.target.value)}
-                placeholder="https://calendly.com/matthewraphael-matthewraphael/30min"
+                placeholder="https://calendly.com/your-link"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
               />
             </div>
@@ -890,7 +894,7 @@ function DayEditor({
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add any special notes or instructions..."
+              placeholder="Add notes..."
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
             />

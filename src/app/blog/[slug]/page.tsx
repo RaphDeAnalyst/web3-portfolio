@@ -5,13 +5,14 @@ import { notFound } from 'next/navigation'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { UtterancesComments, UtterancesSetupInstructions } from '@/components/ui/utterances-comments'
 import Link from 'next/link'
-import { blogService } from '@/lib/service-switcher'
+import { blogService, profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
   const [post, setPost] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
+  const [profile, setProfile] = useState<any>(null)
 
   // All hooks at the top
   useEffect(() => {
@@ -28,6 +29,18 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
     }
     loadPost()
   }, [params.slug])
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
+    }
+    loadProfile()
+  }, [])
 
   useEffect(() => {
     if (post) {
@@ -109,12 +122,22 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
 
             {/* Author */}
             <div className="flex items-center space-x-4 pt-6 border-t border-gray-200/30 dark:border-gray-800/30">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold">
-                {post.author.name.charAt(0)}
-              </div>
+              {profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
+                <img
+                  src={profile.avatar}
+                  alt={post.author.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold">
+                  {post.author.name.charAt(0)}
+                </div>
+              )}
               <div>
                 <div className="font-medium text-foreground">{post.author.name}</div>
-                <div className="text-sm text-foreground/60">Web3 Data & AI Specialist</div>
+                <div className="text-sm text-foreground/60">
+                  {profile?.title || 'Web3 Data & AI Specialist'}
+                </div>
               </div>
             </div>
           </div>
