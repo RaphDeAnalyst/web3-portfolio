@@ -220,6 +220,41 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
             </div>
           </div>
 
+          {/* Project Image */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Project Image URL</label>
+            <input
+              type="url"
+              value={formData.image || ''}
+              onChange={(e) => handleInputChange('image', e.target.value)}
+              placeholder="https://your-image-hosting.com/project-screenshot.jpg"
+              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            />
+            <p className="text-xs text-foreground/60">
+              Upload your image to a hosting service (like imgbb.com, imgur.com, or GitHub) and paste the URL here. 
+              Recommended size: 800x400px or similar aspect ratio.
+            </p>
+            {formData.image && (
+              <div className="mt-3">
+                <label className="text-xs text-foreground/60 block mb-2">Preview:</label>
+                <div className="relative w-full max-w-md h-32 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+                  <img 
+                    src={formData.image} 
+                    alt="Project preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling!.style.display = 'flex';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 hidden items-center justify-center">
+                    <span className="text-xs text-foreground/60">Invalid image URL</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Additional Links */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
