@@ -145,26 +145,6 @@ export function ProjectCard({
             <div className={`absolute bottom-4 left-4 w-4 h-4 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/30`}></div>
           </div>
         )}
-        
-        {/* Overlay on hover */}
-        <div className={`absolute inset-0 bg-black/60 flex items-center justify-center space-x-4 transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        }`}>
-          {demoUrl && (
-            <Link href={demoUrl} target="_blank">
-              <button className="px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm text-gray-900 font-medium hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg">
-                Live Demo
-              </button>
-            </Link>
-          )}
-          {githubUrl && (
-            <Link href={githubUrl} target="_blank">
-              <button className="px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm text-gray-900 font-medium hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg">
-                GitHub
-              </button>
-            </Link>
-          )}
-        </div>
       </div>
 
       {/* Content */}
