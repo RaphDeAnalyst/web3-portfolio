@@ -48,6 +48,7 @@ export interface Project {
   dune_url?: string
   blog_post_slug?: string
   image?: string
+  metrics?: Record<string, string>
   created_at: string
   updated_at: string
 }

@@ -48,6 +48,7 @@ export class ProjectServiceSupabase {
       duneUrl: project.dune_url,
       blogPostSlug: project.blog_post_slug,
       image: project.image,
+      metrics: project.metrics || {},
       links: {
         github: project.github_url,
         demo: project.demo_url
@@ -68,7 +69,8 @@ export class ProjectServiceSupabase {
       demo_url: (project as any).demoUrl || project.demo || project.demo_url || project.links?.demo,
       dune_url: project.duneUrl,
       blog_post_slug: project.blogPostSlug,
-      image: project.image
+      image: project.image,
+      metrics: project.metrics
     }
   }
 
