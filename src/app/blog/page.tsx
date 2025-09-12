@@ -56,7 +56,7 @@ export default function Blog() {
     })
 
     // Separate featured and regular posts
-    const featured = sorted.filter(post => post.featured).slice(0, 2) // Max 2 featured
+    const featured = sorted.filter(post => post.featured).slice(0, 3) // Max 3 featured
     const regular = sorted.filter(post => !post.featured)
 
     return {
@@ -192,7 +192,9 @@ export default function Blog() {
             <div className={`grid gap-8 ${
               featuredPosts.length === 1 
                 ? 'grid-cols-1 lg:grid-cols-6' 
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+                : featuredPosts.length === 2
+                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto'
             }`}>
               {featuredPosts.map((post) => (
                 <BlogCard 

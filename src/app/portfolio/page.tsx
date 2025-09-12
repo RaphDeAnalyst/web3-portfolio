@@ -43,7 +43,7 @@ export default function Portfolio() {
     })
 
     // Separate featured and regular projects
-    const featured = sorted.filter(project => project.featured).slice(0, 2) // Max 2 featured
+    const featured = sorted.filter(project => project.featured).slice(0, 3) // Max 3 featured
     const regular = sorted.filter(project => !project.featured)
 
     return {
@@ -163,7 +163,9 @@ export default function Portfolio() {
             <div className={`grid gap-8 ${
               featuredProjects.length === 1 
                 ? 'grid-cols-1 lg:grid-cols-6' 
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+                : featuredProjects.length === 2
+                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto'
             }`}>
               {featuredProjects.map((project, index) => (
                 <ProjectCard 

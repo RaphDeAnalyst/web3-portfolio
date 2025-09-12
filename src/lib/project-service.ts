@@ -117,9 +117,9 @@ export class ProjectService {
     })
   }
   
-  // Get featured projects (max 2)
+  // Get featured projects (max 3)
   getFeaturedProjects(): Project[] {
-    return this.getAllProjects().filter(p => p.featured).slice(0, 2)
+    return this.getAllProjects().filter(p => p.featured).slice(0, 3)
   }
   
   // Set featured status
@@ -130,11 +130,11 @@ export class ProjectService {
       throw new Error('Project index out of range')
     }
     
-    // If setting to featured, check if we already have 2 featured projects
+    // If setting to featured, check if we already have 3 featured projects
     if (featured) {
       const currentFeatured = projects.filter(p => p.featured)
-      if (currentFeatured.length >= 2) {
-        throw new Error('Maximum of 2 projects can be featured. Please unfeature another project first.')
+      if (currentFeatured.length >= 3) {
+        throw new Error('Maximum of 3 projects can be featured. Please unfeature another project first.')
       }
     }
     

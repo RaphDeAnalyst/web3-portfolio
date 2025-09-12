@@ -85,6 +85,9 @@ export function BlogCard({
     } else if (featuredCount === 2) {
       // Two featured posts: each gets 1.5x width (achieved through container max-width and equal columns)
       return 'col-span-1'
+    } else if (featuredCount === 3) {
+      // Three featured posts: each gets equal width in a 3-column grid
+      return 'col-span-1'
     }
     
     return ''

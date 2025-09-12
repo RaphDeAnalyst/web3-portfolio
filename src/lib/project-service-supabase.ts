@@ -246,14 +246,14 @@ export class ProjectServiceSupabase {
     }
   }
 
-  // Get featured projects (max 2)
+  // Get featured projects (max 3)
   async getFeaturedProjects(): Promise<Project[]> {
     try {
       const { data, error } = await supabase
         .from('projects')
         .select('*')
         .eq('featured', true)
-        .limit(2)
+        .limit(3)
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -272,10 +272,10 @@ export class ProjectServiceSupabase {
   async setFeaturedStatus(id: string, featured: boolean): Promise<void> {
     try {
       if (featured) {
-        // Check if we already have 2 featured projects
+        // Check if we already have 3 featured projects
         const currentFeatured = await this.getFeaturedProjects()
-        if (currentFeatured.length >= 2) {
-          throw new Error('Maximum of 2 projects can be featured. Please unfeature another project first.')
+        if (currentFeatured.length >= 3) {
+          throw new Error('Maximum of 3 projects can be featured. Please unfeature another project first.')
         }
       }
 
