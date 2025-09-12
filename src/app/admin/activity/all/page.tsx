@@ -49,15 +49,6 @@ export default function AllActivities() {
     }
   }
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'post': return '📝'
-      case 'project': return '💼'
-      case 'media': return '🖼️'
-      case 'update': return '📈'
-      default: return '📊'
-    }
-  }
 
   const getIntensityColor = (intensity: number) => {
     switch (intensity) {
@@ -130,10 +121,10 @@ export default function AllActivities() {
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
             >
               <option value="all">All Types</option>
-              <option value="post">📝 Blog Posts</option>
-              <option value="project">💼 Projects</option>
-              <option value="media">🖼️ Media</option>
-              <option value="update">📈 Updates</option>
+              <option value="post">Blog Posts</option>
+              <option value="project">Projects</option>
+              <option value="media">Media</option>
+              <option value="update">Updates</option>
             </select>
           </div>
         </div>
@@ -145,7 +136,6 @@ export default function AllActivities() {
           <div className="space-y-4">
             {paginatedActivities.map((activity) => (
               <div key={activity.id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border border-gray-100 dark:border-gray-800">
-                <span className="text-2xl flex-shrink-0">{getTypeIcon(activity.type)}</span>
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-3 mb-2">
@@ -175,7 +165,7 @@ export default function AllActivities() {
                   className="text-foreground/40 hover:text-red-500 transition-colors flex-shrink-0"
                   title="Delete activity"
                 >
-                  🗑️
+Delete
                 </button>
               </div>
             ))}

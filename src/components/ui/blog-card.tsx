@@ -99,7 +99,7 @@ export function BlogCard({
     <Link href={`/blog/${slug}`} className={`${cardSize}`}>
       <div 
         className={`group relative rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover overflow-hidden ${
-          featured ? 'p-8 min-h-[600px]' : 'p-6 min-h-[500px]'
+          featured ? 'p-4 sm:p-8 min-h-[500px] sm:min-h-[600px]' : 'p-4 sm:p-6 min-h-[400px] sm:min-h-[500px]'
         } flex flex-col cursor-pointer`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -119,7 +119,7 @@ export function BlogCard({
 
         {/* Article Image */}
         {(featuredImage || image || featured) && (
-          <div className={`relative ${featured ? 'h-64 mb-6' : 'h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
+          <div className={`relative ${featured ? 'h-48 sm:h-64 mb-4 sm:mb-6' : 'h-40 sm:h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
             {(featuredImage || image) ? (
               <>
                 <img 
@@ -175,12 +175,12 @@ export function BlogCard({
           </div>
 
           {/* Title */}
-          <h3 className={`${featured ? 'text-2xl lg:text-3xl' : 'text-xl'} font-bold text-foreground group-hover:text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} transition-colors duration-200 leading-tight`}>
+          <h3 className={`${featured ? 'text-lg sm:text-2xl lg:text-3xl' : 'text-lg sm:text-xl'} font-bold text-foreground group-hover:text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} transition-colors duration-200 leading-tight`}>
             {title}
           </h3>
 
           {/* Summary */}
-          <p className={`text-foreground/70 leading-relaxed ${featured ? 'text-base' : 'text-sm'} line-clamp-3`}>
+          <p className={`text-foreground/70 leading-relaxed ${featured ? 'text-sm sm:text-base' : 'text-sm'} line-clamp-3`}>
             {summary}
           </p>
 
@@ -209,7 +209,7 @@ export function BlogCard({
           )}
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap gap-1 sm:gap-2 pt-2">
             {tags.slice(0, featured ? 6 : 4).map((tag, index) => (
               <span
                 key={index}

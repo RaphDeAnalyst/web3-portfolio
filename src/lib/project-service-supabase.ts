@@ -207,6 +207,13 @@ export class ProjectServiceSupabase {
       }
 
       console.log(`Project added: ${newProject.title}`)
+      
+      // Track activity (non-blocking)
+      try {
+        await activityServiceSupabase.trackProject(newProject.title || 'Unknown Project', false)
+      } catch (activityError) {
+        console.warn('Activity tracking failed, but project creation succeeded:', activityError)
+      }
     } catch (error) {
       console.error('Error in addProject:', error)
       throw error

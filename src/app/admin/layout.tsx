@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
 
@@ -96,8 +97,32 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Mobile menu button */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 rounded-lg bg-background border border-gray-200 dark:border-gray-800 shadow-lg"
+        >
+          <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+          </div>
+        </button>
+      </div>
+      
+      {/* Mobile overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40" 
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 w-64 bg-background border-r border-gray-200 dark:border-gray-800">
+      <div className={`fixed inset-y-0 left-0 w-64 bg-background border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 z-40 ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } lg:translate-x-0`}>
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-800">
@@ -144,8 +169,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </div>
       
       {/* Main Content */}
-      <div className="ml-64">
-        <div className="min-h-screen p-8">
+      <div className="lg:ml-64">
+        <div className="min-h-screen p-4 lg:p-8 pt-16 lg:pt-8">
           {children}
         </div>
       </div>

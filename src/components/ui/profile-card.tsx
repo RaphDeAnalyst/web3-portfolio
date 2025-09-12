@@ -127,7 +127,6 @@ export function ProfileCard() {
                     {profile?.name ? profile.name.charAt(0).toUpperCase() : 'MR'}
                   </div>
                 )}
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary-500 to-cyber-500 rounded-full blur opacity-20 animate-pulse"></div>
                 
                 {/* Status Indicator */}
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyber-500 rounded-full border-4 border-background flex items-center justify-center">

@@ -46,35 +46,35 @@ export default function Home() {
         
         {/* Hero Content */}
         <div className="relative z-10 max-w-6xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <div className="space-y-10">
+          <div className="space-y-6 sm:space-y-10">
             {/* Pre-heading */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full border border-cyber-500/30 bg-cyber-500/5 backdrop-blur-sm">
+            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full border border-cyber-500/30 bg-cyber-500/5 backdrop-blur-sm">
               <span className="w-2 h-2 bg-cyber-500 rounded-full mr-3 animate-pulse"></span>
               <span className="text-sm font-medium text-cyber-500">Welcome to the Future of Web3</span>
             </div>
 
             {/* Main Heading with Enhanced Typography */}
             <div className="space-y-6">
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
                 <span className="block text-gradient mb-2">Matthew Raphael</span>
               </h1>
               <div className="max-w-3xl mx-auto">
-                <p className="text-xl sm:text-2xl lg:text-3xl text-foreground/70 leading-relaxed font-light">
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-foreground/70 leading-relaxed font-light">
                   Transitioning from <span className="text-primary-500 font-medium">traditional data analytics</span> to <span className="text-cyber-500 font-medium">blockchain insights</span> and Web3 analytics
                 </p>
               </div>
             </div>
 
             {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
               <Link href="/portfolio">
-                <button className="group relative px-10 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-2xl shadow-primary-500/30">
+                <button className="group relative px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-base sm:text-lg hover:scale-105 transition-transform duration-200 shadow-2xl shadow-primary-500/30">
                   <span className="relative z-10">View Portfolio</span>
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 to-cyber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                 </button>
               </Link>
               <Link href="/contact">
-                <button className="px-10 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground text-lg font-semibold hover:border-cyber-500 hover:text-cyber-500 hover:bg-cyber-500/5 transition-all duration-200 backdrop-blur-sm">
+                <button className="px-8 sm:px-10 py-3 sm:py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground text-base sm:text-lg font-semibold hover:border-cyber-500 hover:text-cyber-500 hover:bg-cyber-500/5 transition-all duration-200 backdrop-blur-sm">
                   Get In Touch
                 </button>
               </Link>

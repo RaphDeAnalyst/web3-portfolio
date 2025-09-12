@@ -339,52 +339,6 @@ export class ActivityServiceSupabase {
     }
   }
 
-  // Initialize with some sample data if empty
-  static async initializeSampleData(): Promise<void> {
-    try {
-      const activities = await this.getActivity()
-      if (activities.length > 0) return
-
-      const sampleActivities: Omit<Activity, 'id'>[] = [
-        {
-          date: new Date().toISOString().split('T')[0],
-          type: 'post',
-          title: 'Updated portfolio website',
-          intensity: 2
-        },
-        {
-          date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          type: 'project',
-          title: 'Added new project',
-          intensity: 3
-        },
-        {
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          type: 'post',
-          title: 'Published blog post',
-          intensity: 4
-        },
-        {
-          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          type: 'update',
-          title: 'Updated project documentation',
-          intensity: 1
-        },
-        {
-          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          type: 'project',
-          title: 'Completed data analysis project',
-          intensity: 4
-        }
-      ]
-
-      for (const activity of sampleActivities) {
-        await this.addActivity(activity)
-      }
-    } catch (error) {
-      console.error('Error initializing sample data:', error)
-    }
-  }
 
   // Track blog post creation/update
   static async trackBlogPost(title: string, isUpdate = false): Promise<void> {

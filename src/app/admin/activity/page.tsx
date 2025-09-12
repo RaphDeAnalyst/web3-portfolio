@@ -56,15 +56,6 @@ export default function ActivityManagement() {
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3)
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'post': return '📝'
-      case 'project': return '💼'
-      case 'media': return '🖼️'
-      case 'update': return '📈'
-      default: return '📊'
-    }
-  }
 
   const getIntensityColor = (intensity: number) => {
     switch (intensity) {
@@ -95,7 +86,6 @@ export default function ActivityManagement() {
           onClick={() => setShowAddForm(true)}
           className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
         >
-          <span>➕</span>
           <span>Add Activity</span>
         </button>
       </div>
@@ -105,7 +95,6 @@ export default function ActivityManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-foreground/70">Total Activity</h3>
-            <span className="text-2xl">📊</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{stats.total}</p>
           <p className="text-xs text-foreground/60 mt-1">All time contributions</p>
@@ -114,7 +103,6 @@ export default function ActivityManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-foreground/70">Current Streak</h3>
-            <span className="text-2xl">🔥</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{stats.streak}</p>
           <p className="text-xs text-foreground/60 mt-1">consecutive days</p>
@@ -123,7 +111,6 @@ export default function ActivityManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-foreground/70">This Month</h3>
-            <span className="text-2xl">📅</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{stats.thisMonth}</p>
           <p className="text-xs text-foreground/60 mt-1">activities this month</p>
@@ -132,7 +119,6 @@ export default function ActivityManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-foreground/70">Monthly Avg</h3>
-            <span className="text-2xl">📈</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{Math.round(stats.averagePerMonth)}</p>
           <p className="text-xs text-foreground/60 mt-1">average per month</p>
@@ -166,7 +152,6 @@ export default function ActivityManagement() {
             <div className="space-y-3">
               {recentActivities.map((activity) => (
                 <div key={activity.id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border border-gray-100 dark:border-gray-800">
-                  <span className="text-2xl flex-shrink-0">{getTypeIcon(activity.type)}</span>
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-3 mb-1">
@@ -192,21 +177,19 @@ export default function ActivityManagement() {
                     className="text-foreground/40 hover:text-red-500 transition-colors flex-shrink-0"
                     title="Delete activity"
                   >
-                    🗑️
+Delete
                   </button>
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="text-4xl mb-4">📊</div>
               <h3 className="text-lg font-medium text-foreground mb-2">No activities yet</h3>
               <p className="text-foreground/60 mb-6">Start tracking your work to see your progress</p>
               <button
                 onClick={() => setShowAddForm(true)}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
               >
-                <span>➕</span>
                 <span>Add First Activity</span>
               </button>
             </div>
@@ -224,7 +207,7 @@ export default function ActivityManagement() {
                 onClick={() => setShowAddForm(false)}
                 className="text-foreground/60 hover:text-foreground transition-colors"
               >
-                ✕
+Close
               </button>
             </div>
 
@@ -246,10 +229,10 @@ export default function ActivityManagement() {
                   onChange={(e) => setNewActivity(prev => ({ ...prev, type: e.target.value as any }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
                 >
-                  <option value="post">📝 Blog Post</option>
-                  <option value="project">💼 Project</option>
-                  <option value="media">🖼️ Media</option>
-                  <option value="update">📈 Update</option>
+                  <option value="post">Blog Post</option>
+                  <option value="project">Project</option>
+                  <option value="media">Media</option>
+                  <option value="update">Update</option>
                 </select>
               </div>
 

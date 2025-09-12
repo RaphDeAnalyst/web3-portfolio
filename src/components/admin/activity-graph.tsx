@@ -14,9 +14,6 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
   const [hoveredCell, setHoveredCell] = useState<{ date: string; intensity: number; activities: any[] } | null>(null)
 
   useEffect(() => {
-    // Initialize sample data on first load
-    ActivityService.initializeSampleData()
-    
     // Load year data
     const yearData = ActivityService.getYearData(selectedYear)
     setData(yearData)
@@ -111,7 +108,7 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
   const stats = ActivityService.getActivityStats()
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full max-w-full">
       {/* Year Selector */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-foreground/70">
@@ -129,11 +126,14 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
       </div>
 
       {/* Graph */}
-      <div className="relative">
-        {/* Month Labels */}
-        <div className="flex mb-2 text-xs text-foreground/60">
-          <div className="w-8"></div> {/* Space for weekday labels */}
-          <div className="flex relative" style={{ width: `${weeklyData.length * 11}px` }}>
+      <div className="relative overflow-hidden" style={{ paddingTop: '28px' }}>
+        {/* Scrollable container for all screen sizes */}
+        <div className="overflow-x-auto" style={{ paddingTop: '12px' }}>
+          <div className="min-w-max">
+            {/* Month Labels */}
+            <div className="flex mb-2 text-xs text-foreground/60">
+              <div className="w-8 sm:w-10 flex-shrink-0"></div>
+              <div className="flex" style={{ gap: '2px' }}>
             {weeklyData.map((week, weekIndex) => {
               // Get the first day of this week
               const firstDay = week.find(day => day !== null)
@@ -149,35 +149,47 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
                                 new Date(weeklyData[weekIndex - 1]?.find(d => d !== null)?.date || '').getMonth() !== month)
               
               return (
-                <div key={weekIndex} className="relative" style={{ width: '13px' }}>
+                <div key={weekIndex} className="relative flex-shrink-0" style={{ width: '9px' }}>
                   {showLabel && (
-                    <div className="absolute text-xs text-foreground/60 whitespace-nowrap -ml-1">
-                      {months[month]}
-                    </div>
+                    <>
+                      {/* Month Labels */}
+                      <div className="absolute text-xs font-medium text-gray-700 dark:text-gray-300" style={{ left: '0px', top: '-12px', whiteSpace: 'nowrap' }}>
+                        {months[month]}
+                      </div>
+                    </>
                   )}
                 </div>
               )
             })}
-          </div>
-        </div>
-
-        {/* Activity Grid */}
-        <div className="flex">
-          {/* Weekday Labels */}
-          <div className="flex flex-col text-xs text-foreground/60 pr-3">
-            {['Mon', 'Wed', 'Fri'].map((day, index) => (
-              <div key={day} className="h-[10px] mb-[3px] flex items-center" style={{ 
-                marginTop: index === 0 ? '11px' : '14px' 
-              }}>
-                {day}
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Activity Cells */}
-          <div className="flex gap-[2px] overflow-x-auto">
+            {/* Activity Grid */}
+            <div className="flex">
+              {/* Weekday Labels */}
+              <div className="flex flex-col text-xs text-foreground/60 pr-2 flex-shrink-0">
+                <div className="h-[9px] mb-[2px] flex items-center justify-end w-6 sm:w-8">
+                  <span className="hidden sm:inline">Mon</span>
+                  <span className="sm:hidden">M</span>
+                </div>
+                <div className="h-[9px] mb-[2px]"></div>
+                <div className="h-[9px] mb-[2px] flex items-center justify-end w-6 sm:w-8">
+                  <span className="hidden sm:inline">Wed</span>
+                  <span className="sm:hidden">W</span>
+                </div>
+                <div className="h-[9px] mb-[2px]"></div>
+                <div className="h-[9px] mb-[2px] flex items-center justify-end w-6 sm:w-8">
+                  <span className="hidden sm:inline">Fri</span>
+                  <span className="sm:hidden">F</span>
+                </div>
+                <div className="h-[9px] mb-[2px]"></div>
+                <div className="h-[9px]"></div>
+              </div>
+
+              {/* Activity Cells */}
+              <div className="flex gap-[2px]">
             {weeklyData.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-[2px]">
+              <div key={weekIndex} className="flex flex-col gap-[2px] flex-shrink-0">
                 {week.map((dayData, dayIndex) => {
                   const isEmpty = !dayData
                   
@@ -197,8 +209,11 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
                 })}
               </div>
             ))}
+              </div>
+            </div>
           </div>
         </div>
+
 
         {/* Tooltip */}
         {showTooltip && hoveredCell && (
@@ -217,10 +232,10 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
               <div className="space-y-1">
                 {hoveredCell.activities.slice(0, 3).map((activity, index) => (
                   <div key={index} className="text-xs flex items-center space-x-2">
-                    <span className="flex-shrink-0">
-                      {activity.type === 'post' ? '📝' : 
-                       activity.type === 'project' ? '💼' : 
-                       activity.type === 'media' ? '🖼️' : '📈'}
+                    <span className="flex-shrink-0 text-gray-400">
+                      {activity.type === 'post' ? 'POST' : 
+                       activity.type === 'project' ? 'PROJ' : 
+                       activity.type === 'media' ? 'MED' : 'UPD'}
                     </span>
                     <span className="truncate">{activity.title}</span>
                   </div>
@@ -240,7 +255,7 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end text-xs text-foreground/60 space-x-2">
+      <div className="flex items-center justify-center sm:justify-end text-xs text-foreground/60 space-x-2">
         <span>Less</span>
         <div className="flex items-center space-x-[3px]">
           {[0, 1, 2, 3, 4].map((level) => (
@@ -254,21 +269,21 @@ export function ActivityGraph({ year, showTooltip = true }: ActivityGraphProps) 
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
         <div className="text-center">
-          <div className="text-lg font-bold text-foreground">{stats.total}</div>
+          <div className="text-base sm:text-lg font-bold text-foreground">{stats.total}</div>
           <div className="text-xs text-foreground/60">Total contributions</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-foreground">{stats.streak}</div>
+          <div className="text-base sm:text-lg font-bold text-foreground">{stats.streak}</div>
           <div className="text-xs text-foreground/60">Day streak</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-foreground">{stats.thisMonth}</div>
+          <div className="text-base sm:text-lg font-bold text-foreground">{stats.thisMonth}</div>
           <div className="text-xs text-foreground/60">This month</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-foreground">{Math.round(stats.averagePerMonth)}</div>
+          <div className="text-base sm:text-lg font-bold text-foreground">{Math.round(stats.averagePerMonth)}</div>
           <div className="text-xs text-foreground/60">Monthly avg</div>
         </div>
       </div>

@@ -11,7 +11,9 @@ export default function AdminDashboard() {
     totalProjects: 0,
     thisMonthActivity: 0,
     totalActivity: 0,
-    streak: 0
+    streak: 0,
+    thisMonthPosts: 0,
+    thisMonthProjects: 0
   })
 
   useEffect(() => {
@@ -29,6 +31,23 @@ export default function AdminDashboard() {
           return date.getMonth() === thisMonth && date.getFullYear() === thisYear
         }).length
 
+        const lastMonthActivity = activity.filter(a => {
+          const date = new Date(a.date)
+          const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1
+          const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear
+          return date.getMonth() === lastMonth && date.getFullYear() === lastMonthYear
+        }).length
+
+        const thisMonthPosts = activity.filter(a => {
+          const date = new Date(a.date)
+          return date.getMonth() === thisMonth && date.getFullYear() === thisYear && a.type === 'post'
+        }).length
+
+        const thisMonthProjects = activity.filter(a => {
+          const date = new Date(a.date)
+          return date.getMonth() === thisMonth && date.getFullYear() === thisYear && a.type === 'project'
+        }).length
+
         const streak = ActivityService.getCurrentStreak()
         
         setStats({
@@ -36,7 +55,9 @@ export default function AdminDashboard() {
           totalProjects: projects.projects.length,
           thisMonthActivity,
           totalActivity: activity.length,
-          streak
+          streak,
+          thisMonthPosts,
+          thisMonthProjects
         })
       } catch (error) {
         console.error('Error loading stats:', error)
@@ -50,16 +71,16 @@ export default function AdminDashboard() {
     {
       title: 'Total Blog Posts',
       value: stats.totalPosts,
-      icon: '📝',
+      icon: null,
       color: 'bg-blue-500',
-      change: '+2 this month'
+      change: stats.thisMonthPosts > 0 ? `+${stats.thisMonthPosts} this month` : 'No posts this month'
     },
     {
       title: 'Total Projects',
       value: stats.totalProjects,
       icon: null,
       color: 'bg-green-500',
-      change: '+1 this month'
+      change: stats.thisMonthProjects > 0 ? `+${stats.thisMonthProjects} this month` : 'No projects this month'
     },
     {
       title: 'This Month Activity',
@@ -77,32 +98,28 @@ export default function AdminDashboard() {
     }
   ]
 
-  const recentActivity = [
-    {
-      type: 'post',
-      title: 'Published "My First Week Learning Dune Analytics"',
-      time: '2 hours ago',
-      icon: '📝'
-    },
-    {
-      type: 'project',
-      title: 'Updated Ethereum Gas Price Analysis Dashboard',
-      time: '1 day ago',
-      icon: '💼'
-    },
-    {
-      type: 'post',
-      title: 'Published "Python for Blockchain Data: My Learning Path"',
-      time: '3 days ago',
-      icon: '📝'
-    },
-    {
-      type: 'project',
-      title: 'Added DeFi TVL Trend Analysis project',
-      time: '5 days ago',
-      icon: '💼'
-    }
-  ]
+  const recentActivity = ActivityService.getActivity()
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 4)
+    .map(activity => ({
+      type: activity.type,
+      title: activity.title,
+      time: getTimeAgo(activity.date),
+      icon: null
+    }))
+
+  function getTimeAgo(dateString: string): string {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInMs = now.getTime() - date.getTime()
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+    
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return '1 day ago'
+    if (diffInDays < 7) return `${diffInDays} days ago`
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
+    return `${Math.floor(diffInDays / 30)} months ago`
+  }
 
   return (
     <div className="space-y-8">
@@ -129,9 +146,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* Activity Overview & Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Activity Graph */}
-        <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+        <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 overflow-visible">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-foreground">Activity Overview</h2>
             <div className="text-sm text-foreground/60">
@@ -147,7 +164,6 @@ export default function AdminDashboard() {
           <div className="space-y-4">
             {recentActivity.map((activity, index) => (
               <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                <span className="text-lg flex-shrink-0">{activity.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground">{activity.title}</p>
                   <p className="text-xs text-foreground/60 mt-1">{activity.time}</p>
@@ -164,7 +180,6 @@ export default function AdminDashboard() {
         <div className="space-y-3">
           <Link href="/admin/posts/new">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-cyber-500 hover:bg-cyber-500/5 transition-colors group">
-              <span className="text-2xl group-hover:scale-110 transition-transform">📝</span>
               <div className="text-left">
                 <div className="font-medium text-foreground">Create New Post</div>
                 <div className="text-sm text-foreground/60">Write and publish a blog post</div>
@@ -174,7 +189,6 @@ export default function AdminDashboard() {
           
           <Link href="/admin/projects/new">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/5 transition-colors group">
-              <span className="text-2xl group-hover:scale-110 transition-transform">💼</span>
               <div className="text-left">
                 <div className="font-medium text-foreground">Add New Project</div>
                 <div className="text-sm text-foreground/60">Showcase your latest work</div>
@@ -184,7 +198,6 @@ export default function AdminDashboard() {
           
           <Link href="/admin/media">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-purple-500 hover:bg-purple-500/5 transition-colors group">
-              <span className="text-2xl group-hover:scale-110 transition-transform">🖼️</span>
               <div className="text-left">
                 <div className="font-medium text-foreground">Upload Media</div>
                 <div className="text-sm text-foreground/60">Add images and files</div>
@@ -194,7 +207,6 @@ export default function AdminDashboard() {
           
           <Link href="/admin/availability">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-500/5 transition-colors group">
-              <span className="text-2xl group-hover:scale-110 transition-transform">📅</span>
               <div className="text-left">
                 <div className="font-medium text-foreground">Manage Availability</div>
                 <div className="text-sm text-foreground/60">Set consultation times and schedule</div>
@@ -204,7 +216,6 @@ export default function AdminDashboard() {
           
           <Link href="/admin/profile">
             <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-green-500 hover:bg-green-500/5 transition-colors group">
-              <span className="text-2xl group-hover:scale-110 transition-transform">👤</span>
               <div className="text-left">
                 <div className="font-medium text-foreground">Manage Profile</div>
                 <div className="text-sm text-foreground/60">Update your profile and avatar</div>

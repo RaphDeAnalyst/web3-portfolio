@@ -57,7 +57,6 @@ export default function PostsManagement() {
           href="/admin/posts/new"
           className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
         >
-          <span>📝</span>
           <span>New Post</span>
         </Link>
       </div>
@@ -71,7 +70,6 @@ export default function PostsManagement() {
               <p className="text-2xl font-bold text-foreground">{posts.length}</p>
             </div>
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-blue-500 text-xl">📝</span>
             </div>
           </div>
         </div>
@@ -111,7 +109,6 @@ export default function PostsManagement() {
               <p className="text-2xl font-bold text-foreground">{categories.length}</p>
             </div>
             <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-purple-500 text-xl">🏷️</span>
             </div>
           </div>
         </div>
@@ -144,7 +141,56 @@ export default function PostsManagement() {
 
       {/* Posts List */}
       <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile Card Layout */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            {filteredPosts.map((post) => (
+              <div key={post.slug} className="p-4 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-foreground text-sm">{post.title}</h3>
+                    <p className="text-xs text-foreground/60 mt-1 line-clamp-2">{post.summary}</p>
+                  </div>
+                  <span className={`px-2 py-1 text-xs rounded-full ml-2 ${getStatusColor(post.status)}`}>
+                    {post.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-foreground/70">
+                  <div className="flex items-center space-x-3">
+                    <span className="px-2 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400 rounded-full">
+                      {post.category}
+                    </span>
+                    <span>{new Date(post.date).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Link
+                      href={`/admin/posts/edit/${post.id}`}
+                      className="p-1 text-foreground/60 hover:text-cyber-500 transition-colors"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      target="_blank"
+                      className="p-1 text-foreground/60 hover:text-primary-500 transition-colors"
+                    >
+                      View
+                    </Link>
+                    <button
+                      onClick={() => handleDeletePost(post.id!)}
+                      className="p-1 text-foreground/60 hover:text-red-500 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Desktop Table Layout */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">
               <tr>
@@ -188,7 +234,7 @@ export default function PostsManagement() {
                         className="p-2 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors"
                         title="Edit post"
                       >
-                        ✏️
+Edit
                       </Link>
                       <Link
                         href={`/blog/${post.slug}`}
@@ -196,14 +242,14 @@ export default function PostsManagement() {
                         className="p-2 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors"
                         title="View post"
                       >
-                        👁️
+View
                       </Link>
                       <button
                         onClick={() => handleDeletePost(post.id!)}
                         className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                         title="Delete post"
                       >
-                        🗑️
+Delete
                       </button>
                     </div>
                   </td>
@@ -215,7 +261,6 @@ export default function PostsManagement() {
         
         {filteredPosts.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">📝</div>
             <h3 className="text-lg font-medium text-foreground mb-2">No posts found</h3>
             <p className="text-foreground/60 mb-6">
               {searchTerm || filterCategory !== 'all' 
@@ -227,7 +272,6 @@ export default function PostsManagement() {
               href="/admin/posts/new"
               className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
             >
-              <span>📝</span>
               <span>Create First Post</span>
             </Link>
           </div>

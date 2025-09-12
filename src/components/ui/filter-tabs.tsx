@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 interface FilterTabsProps {
   categories: string[]
   activeCategory: string
@@ -10,17 +8,7 @@ interface FilterTabsProps {
 }
 
 export function FilterTabs({ categories, activeCategory, onCategoryChange, projectCounts }: FilterTabsProps) {
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null)
 
-  const categoryIcons = {
-    'All': '🌟',
-    'Analytics': '📊',
-    'Smart Contracts': '📜',
-    'Dashboards': '📈',
-    'AI x Web3': '🤖',
-    'DeFi': '💎',
-    'Infrastructure': '🏗️'
-  }
 
   const categoryColors = {
     'All': 'cyber-500',
@@ -29,14 +17,14 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
     'Dashboards': 'purple-500',
     'AI x Web3': 'yellow-500',
     'DeFi': 'green-500',
+    'Learning': 'orange-500',
     'Infrastructure': 'blue-500'
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 mb-12">
+    <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 px-4 sm:px-0">
       {categories.map((category) => {
         const isActive = activeCategory === category
-        const isHovered = hoveredTab === category
         const count = projectCounts[category] || 0
         const color = categoryColors[category as keyof typeof categoryColors] || 'cyber-500'
         
@@ -44,28 +32,23 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
           <button
             key={category}
             onClick={() => onCategoryChange(category)}
-            onMouseEnter={() => setHoveredTab(category)}
-            onMouseLeave={() => setHoveredTab(null)}
-            className={`relative group px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+            className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
               isActive
                 ? `bg-${color}/20 text-${color} border-2 border-${color}/40 shadow-lg shadow-${color}/20`
-                : 'bg-background/50 text-foreground/70 border-2 border-border hover:border-border-hover'
+                : 'bg-background/50 text-foreground/70 border-2 border-border'
             } backdrop-blur-sm`}
           >
-            {/* Background glow effect */}
-            <div className={`absolute inset-0 rounded-full bg-${color}/10 opacity-0 ${
-              isActive || isHovered ? 'opacity-100' : ''
+            {/* Background glow effect - only for active */}
+            <div className={`absolute inset-0 rounded-lg bg-${color}/10 opacity-0 ${
+              isActive ? 'opacity-100' : ''
             } transition-opacity duration-300`}></div>
             
             {/* Content */}
             <div className="relative z-10 flex items-center space-x-2">
-              <span className="text-lg">
-                {categoryIcons[category as keyof typeof categoryIcons] || '📁'}
-              </span>
               <span>{category}</span>
               
               {/* Count badge */}
-              <div className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${
+              <div className={`ml-1 sm:ml-1.5 px-1 sm:px-1.5 py-0.5 rounded-full text-xs font-medium ${
                 isActive 
                   ? `bg-${color}/30 text-${color}`
                   : 'bg-muted text-foreground/60'
@@ -76,13 +59,9 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
 
             {/* Active indicator */}
             {isActive && (
-              <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full bg-${color} animate-pulse`}></div>
+              <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-${color} animate-pulse`}></div>
             )}
 
-            {/* Hover effect */}
-            <div className={`absolute inset-0 rounded-full border-2 border-${color}/30 opacity-0 ${
-              isHovered && !isActive ? 'opacity-100' : ''
-            } transition-opacity duration-200`}></div>
           </button>
         )
       })}

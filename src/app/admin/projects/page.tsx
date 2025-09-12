@@ -105,7 +105,6 @@ export default function ProjectsManagement() {
           href="/admin/projects/new"
           className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
         >
-          <span>💼</span>
           <span>New Project</span>
         </Link>
       </div>
@@ -119,7 +118,6 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.total}</p>
             </div>
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-blue-500 text-xl">💼</span>
             </div>
           </div>
         </div>
@@ -155,7 +153,6 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.featured}</p>
             </div>
             <div className="w-10 h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-primary-500 text-xl">⭐</span>
             </div>
           </div>
         </div>
@@ -198,13 +195,13 @@ export default function ProjectsManagement() {
 
       {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredProjects.map((project, index) => (
-            <div key={index} className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition-shadow">
+            <div key={index} className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 hover:shadow-lg transition-shadow">
               {/* Project Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <h3 className="font-bold text-foreground text-lg mb-2">{project.title}</h3>
+                  <h3 className="font-bold text-foreground text-base sm:text-lg mb-2">{project.title}</h3>
                   <p className="text-foreground/70 text-sm line-clamp-3 mb-3">{project.description}</p>
                 </div>
               </div>
@@ -251,7 +248,7 @@ export default function ProjectsManagement() {
 
 
               {/* Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800 gap-2 sm:gap-0">
                 <div className="flex space-x-2">
                   {project.demoUrl && (
                     <a
@@ -283,14 +280,14 @@ export default function ProjectsManagement() {
                     className="p-2 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors"
                     title="Edit project"
                   >
-                    ✏️
+Edit
                   </Link>
                   <button
                     onClick={() => handleDeleteProject(index)}
                     className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                     title="Delete project"
                   >
-                    🗑️
+Delete
                   </button>
                 </div>
               </div>
@@ -299,7 +296,6 @@ export default function ProjectsManagement() {
         </div>
       ) : (
         <div className="text-center py-12 bg-background rounded-lg border border-gray-200 dark:border-gray-800">
-          <div className="text-6xl mb-4">💼</div>
           <h3 className="text-lg font-medium text-foreground mb-2">No projects found</h3>
           <p className="text-foreground/60 mb-6">
             {searchTerm || filterCategory !== 'all' 
@@ -311,7 +307,6 @@ export default function ProjectsManagement() {
             href="/admin/projects/new"
             className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
           >
-            <span>💼</span>
             <span>Add First Project</span>
           </Link>
         </div>

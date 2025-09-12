@@ -206,46 +206,6 @@ export class ActivityService {
     return data
   }
 
-  // Initialize with some sample data if empty
-  static initializeSampleData(): void {
-    const activities = this.getActivity()
-    if (activities.length > 0) return
-
-    const sampleActivities: Omit<Activity, 'id'>[] = [
-      {
-        date: new Date().toISOString().split('T')[0],
-        type: 'post',
-        title: 'Updated portfolio website',
-        intensity: 2
-      },
-      {
-        date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        type: 'project',
-        title: 'Added new project',
-        intensity: 3
-      },
-      {
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        type: 'post',
-        title: 'Published blog post',
-        intensity: 4
-      },
-      {
-        date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        type: 'update',
-        title: 'Updated project documentation',
-        intensity: 1
-      },
-      {
-        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        type: 'project',
-        title: 'Completed data analysis project',
-        intensity: 4
-      }
-    ]
-
-    sampleActivities.forEach(activity => this.addActivity(activity))
-  }
 
   // Save activities to localStorage
   private static saveActivity(activities: Activity[]): void {
