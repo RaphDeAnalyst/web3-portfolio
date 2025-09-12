@@ -222,36 +222,44 @@ export function ProjectCard({
             ))}
           </div>
 
-          {/* Key Features */}
-          {features && features.length > 0 && (
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium text-foreground">Key Features</h4>
-              <div className="space-y-1">
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div className={`w-1.5 h-1.5 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}`}></div>
-                    <span className="text-xs text-foreground/80">{feature}</span>
+          {/* Project Details - Two Row Layout */}
+          {(features && features.length > 0) || (challenges && challenges.trim()) || (learnings && learnings.trim()) ? (
+            <div className="space-y-3">
+              {/* Top Row - Key Features and Challenges */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Key Features */}
+                {features && features.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-foreground">Key Features</h4>
+                    <div className="space-y-1">
+                      {features.map((feature, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <div className={`w-1.5 h-1.5 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}`}></div>
+                          <span className="text-xs text-foreground/80">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
+
+                {/* Challenges */}
+                {challenges && challenges.trim() && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-foreground">Challenges</h4>
+                    <p className="text-xs text-foreground/70 leading-relaxed">{challenges}</p>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
 
-          {/* Challenges */}
-          {challenges && challenges.trim() && (
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium text-foreground">Challenges</h4>
-              <p className="text-xs text-foreground/70 leading-relaxed">{challenges}</p>
+              {/* Bottom Row - Key Learnings */}
+              {learnings && learnings.trim() && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">Key Learnings</h4>
+                  <p className="text-xs text-foreground/70 leading-relaxed">{learnings}</p>
+                </div>
+              )}
             </div>
-          )}
-
-          {/* Key Learnings */}
-          {learnings && learnings.trim() && (
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium text-foreground">Key Learnings</h4>
-              <p className="text-xs text-foreground/70 leading-relaxed">{learnings}</p>
-            </div>
-          )}
+          ) : null}
 
           {/* Action Buttons - Two Row Layout */}
           <div className="space-y-3">
