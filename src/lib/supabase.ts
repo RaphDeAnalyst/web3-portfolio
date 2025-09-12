@@ -45,6 +45,8 @@ export interface Project {
   featured: boolean
   github_url?: string
   demo_url?: string
+  dune_url?: string
+  blog_post_slug?: string
   image?: string
   created_at: string
   updated_at: string

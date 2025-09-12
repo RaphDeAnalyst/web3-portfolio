@@ -44,7 +44,20 @@ export default function EditProject() {
       router.push('/admin/projects')
     } catch (error) {
       console.error('Error updating project:', error)
-      alert('Error updating project. Please try again.')
+      
+      // Provide specific error messages based on error type
+      let errorMessage = 'Error updating project. Please try again.'
+      if (error instanceof Error) {
+        if (error.message.includes('schema error')) {
+          errorMessage = 'Database error: Missing columns. Please run the database migration script.'
+        } else if (error.message.includes('connection')) {
+          errorMessage = 'Connection error. Please check your internet connection and try again.'
+        } else if (error.message.includes('Failed to update')) {
+          errorMessage = error.message
+        }
+      }
+      
+      alert(errorMessage)
     }
   }
 

@@ -20,8 +20,10 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
     category: 'Analytics',
     status: 'Development',
     tech: [],
-    demoUrl: '#',
-    githubUrl: '#',
+    demoUrl: '',
+    githubUrl: '',
+    duneUrl: '',
+    blogPostSlug: '',
     metrics: {},
     featured: false,
     timeline: '2025',
@@ -213,6 +215,30 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
                 value={formData.githubUrl}
                 onChange={(e) => handleInputChange('githubUrl', e.target.value)}
                 placeholder="https://github.com/username/repo"
+                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+              />
+            </div>
+          </div>
+
+          {/* Additional Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Dune Dashboard URL</label>
+              <input
+                type="url"
+                value={formData.duneUrl || ''}
+                onChange={(e) => handleInputChange('duneUrl', e.target.value)}
+                placeholder="https://dune.com/username/dashboard"
+                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Related Blog Post Slug</label>
+              <input
+                type="text"
+                value={formData.blogPostSlug || ''}
+                onChange={(e) => handleInputChange('blogPostSlug', e.target.value)}
+                placeholder="my-project-analysis"
                 className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
               />
             </div>

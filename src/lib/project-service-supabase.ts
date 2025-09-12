@@ -8,6 +8,7 @@ export interface Project {
   category: string
   techStack?: string[]
   tech_stack?: string[]
+  tech?: string[]
   status: string
   featured?: boolean
   github?: string
@@ -15,6 +16,10 @@ export interface Project {
   image?: string
   github_url?: string
   demo_url?: string
+  githubUrl?: string
+  demoUrl?: string
+  duneUrl?: string
+  blogPostSlug?: string
   links?: {
     github?: string
     demo?: string
@@ -38,6 +43,10 @@ export class ProjectServiceSupabase {
       demo: project.demo_url,
       github_url: project.github_url,
       demo_url: project.demo_url,
+      githubUrl: project.github_url,
+      demoUrl: project.demo_url,
+      duneUrl: project.dune_url,
+      blogPostSlug: project.blog_post_slug,
       image: project.image,
       links: {
         github: project.github_url,
@@ -55,8 +64,10 @@ export class ProjectServiceSupabase {
       tech_stack: project.techStack || project.tech_stack || [],
       status: project.status,
       featured: project.featured || false,
-      github_url: project.github || project.github_url || project.links?.github,
-      demo_url: project.demo || project.demo_url || project.links?.demo,
+      github_url: (project as any).githubUrl || project.github || project.github_url || project.links?.github,
+      demo_url: (project as any).demoUrl || project.demo || project.demo_url || project.links?.demo,
+      dune_url: project.duneUrl,
+      blog_post_slug: project.blogPostSlug,
       image: project.image
     }
   }
@@ -128,10 +139,24 @@ export class ProjectServiceSupabase {
 
       if (error) {
         console.error('Error updating project:', error)
-        throw error
+        // Handle specific database errors
+        if (error.code === '42703') {
+          throw new Error('Database schema error. Please ensure all required columns exist in the projects table.')
+        }
+        if (error.message.includes('connection') || error.message.includes('fetch')) {
+          throw new Error('Connection error. Please check your internet connection and try again.')
+        }
+        throw new Error(`Failed to update project: ${error.message}`)
       }
 
       console.log(`Project updated: ${updatedProject.title || id}`)
+      
+      // Track activity (non-blocking)
+      try {
+        await activityServiceSupabase.trackProject(updatedProject.title || 'Unknown Project', true)
+      } catch (activityError) {
+        console.warn('Activity tracking failed, but project update succeeded:', activityError)
+      }
     } catch (error) {
       console.error('Error in updateProject:', error)
       throw error

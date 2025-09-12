@@ -10,6 +10,8 @@ export interface Project {
   status: 'Live' | 'Learning' | 'Complete' | 'Development' | 'Beta'
   demoUrl: string
   githubUrl: string
+  duneUrl?: string
+  blogPostSlug?: string
   metrics: Record<string, string>
   featured?: boolean
   timeline?: '2022-2023' | '2024' | '2025'
