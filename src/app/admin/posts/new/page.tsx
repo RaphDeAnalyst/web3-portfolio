@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
-import { ActivityService } from '@/lib/activity-service'
 import { ProfileService } from '@/lib/profile-service'
 
 export default function NewBlogPost() {
@@ -18,11 +17,6 @@ export default function NewBlogPost() {
         ...postData,
         status: isDraft ? 'draft' : 'published'
       })
-      
-      // Track activity if published
-      if (!isDraft) {
-        ActivityService.trackBlogPost(postData.title, false)
-      }
       
       // Redirect back to posts list
       router.push('/admin/posts')

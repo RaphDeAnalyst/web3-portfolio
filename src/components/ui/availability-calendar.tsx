@@ -1,7 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { AvailabilityService, TimeSlot, DayAvailability } from '@/lib/availability-service'
+import { useState } from 'react'
+
+interface TimeSlot {
+  start: string
+  end: string
+  timezone: string
+}
+
+interface DayAvailability {
+  date: string
+  status: 'available' | 'limited' | 'busy' | 'unavailable'
+  slots: TimeSlot[]
+  bookingUrl?: string
+  notes?: string
+}
 
 interface TooltipData {
   day: DayAvailability
@@ -13,52 +26,8 @@ export function AvailabilityCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [hoveredDate, setHoveredDate] = useState<TooltipData | null>(null)
   const [showTooltip, setShowTooltip] = useState(false)
-  const [availabilityData, setAvailabilityData] = useState<DayAvailability[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [lastFetch, setLastFetch] = useState<number>(Date.now())
 
-  // Fetch availability data from API
-  const fetchAvailability = async (forceRefresh = false) => {
-    try {
-      setIsLoading(true)
-      
-      // Use cache busting parameter to ensure fresh data
-      const cacheParam = forceRefresh ? `&_force=${Date.now()}` : `?_t=${Date.now()}`
-      const response = await fetch(`/api/availability${cacheParam}`, {
-        // Prevent caching at browser level for real-time updates
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        }
-      })
-      
-      if (response.ok) {
-        const data = await response.json()
-        setAvailabilityData(data)
-        setLastFetch(Date.now())
-      } else {
-        console.error('Failed to fetch availability:', response.statusText)
-      }
-    } catch (error) {
-      console.error('Error fetching availability:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // Initial fetch and periodic refresh
-  useEffect(() => {
-    fetchAvailability(true) // Force refresh on mount
-    
-    // Auto-refresh every 30 seconds to catch admin changes
-    const intervalId = setInterval(() => fetchAvailability(true), 30000)
-    
-    return () => clearInterval(intervalId)
-  }, [])
-
-  // Get availability for a specific date
+  // Your hardcoded weekly schedule
   const getAvailabilityForDate = (date: Date): DayAvailability => {
     // Use local date to avoid timezone issues
     const year = date.getFullYear()
@@ -66,14 +35,56 @@ export function AvailabilityCalendar() {
     const day = String(date.getDate()).padStart(2, '0')
     const dateStr = `${year}-${month}-${day}`
     
-    const savedAvailability = availabilityData.find(a => a.date === dateStr)
+    const dayOfWeek = date.getDay() // 0=Sunday, 1=Monday, ..., 6=Saturday
+    const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
     
-    if (savedAvailability) {
-      return savedAvailability
+    if (isPast) {
+      return { 
+        date: dateStr, 
+        status: 'unavailable', 
+        slots: [] 
+      }
     }
     
-    // Fallback to service default logic for dates not explicitly set
-    return AvailabilityService.getDefaultAvailability(date)
+    // Your exact weekly schedule:
+    // Monday-Friday: 09:00-17:00 WAT (Available)
+    // Saturday: 10:00-13:00 WAT (Limited)
+    // Sunday: Unavailable
+    switch (dayOfWeek) {
+      case 0: // Sunday
+        return {
+          date: dateStr,
+          status: 'unavailable',
+          slots: [],
+          bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min',
+          notes: 'Not available on Sundays'
+        }
+      
+      case 1: // Monday
+      case 2: // Tuesday  
+      case 3: // Wednesday
+      case 4: // Thursday
+      case 5: // Friday
+        return {
+          date: dateStr,
+          status: 'available',
+          slots: [
+            { start: '09:00', end: '17:00', timezone: 'WAT' }
+          ],
+          bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min',
+          notes: 'Regular weekday availability'
+        }
+      
+      case 6: // Saturday
+      default:
+        return {
+          date: dateStr,
+          status: 'limited',
+          slots: [{ start: '10:00', end: '13:00', timezone: 'WAT' }],
+          bookingUrl: 'https://calendly.com/matthewraphael-matthewraphael/30min',
+          notes: 'Saturday limited hours'
+        }
+    }
   }
 
   // Get calendar grid for current month
@@ -242,18 +253,6 @@ export function AvailabilityCalendar() {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-  // Show loading state
-  if (isLoading) {
-    return (
-      <div className="relative max-w-sm mx-auto">
-        <div className="flex items-center justify-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-          <span className="ml-2 text-foreground/60">Loading availability...</span>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="relative max-w-sm mx-auto">
       {/* Calendar Header */}
@@ -263,17 +262,6 @@ export function AvailabilityCalendar() {
         </h3>
         
         <div className="flex items-center space-x-2">
-          {/* Refresh button */}
-          <button
-            onClick={() => fetchAvailability(true)}
-            disabled={isLoading}
-            className="p-1.5 rounded border border-border hover:border-primary-500 hover:bg-primary-500/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Refresh availability"
-          >
-            <svg className={`w-4 h-4 text-foreground ${isLoading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
           <button
             onClick={() => navigateMonth('prev')}
             className="p-1.5 rounded border border-border hover:border-cyber-500 hover:bg-cyber-500/10 transition-colors duration-200"
@@ -312,10 +300,6 @@ export function AvailabilityCalendar() {
         <div className="flex items-center space-x-1">
           <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
           <span className="text-sm text-foreground/80">Limited</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <div className="w-2 h-2 rounded-full bg-red-500"></div>
-          <span className="text-sm text-foreground/80">Busy</span>
         </div>
         <div className="flex items-center space-x-1">
           <div className="w-2 h-2 rounded-full bg-gray-400"></div>
@@ -503,6 +487,27 @@ export function AvailabilityCalendar() {
           </div>
           <div className="text-xs text-foreground/60">
             Date will be pre-selected in Calendly for faster booking
+          </div>
+        </div>
+      </div>
+
+      {/* Fixed Schedule Information */}
+      <div className="mt-4 p-3 rounded bg-gradient-to-r from-primary-500/5 to-cyber-500/5 border border-primary-500/20">
+        <div className="text-sm text-foreground/70 space-y-2">
+          <div className="font-medium text-foreground mb-2">Regular Schedule (WAT):</div>
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span className="text-cyber-500 font-medium">9:00 AM - 5:00 PM</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Saturday:</span>
+              <span className="text-yellow-500 font-medium">10:00 AM - 1:00 PM</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Sunday:</span>
+              <span className="text-gray-500 font-medium">Unavailable</span>
+            </div>
           </div>
         </div>
       </div>

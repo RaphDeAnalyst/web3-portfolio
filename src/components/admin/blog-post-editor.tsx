@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
-import { ActivityService } from '@/lib/activity-service'
 import { BlogPostData } from '@/lib/blog-service'
 
 interface BlogPostEditorProps {
@@ -82,10 +81,6 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
       status: (isDraft ? 'draft' : 'published') as 'draft' | 'published'
     }
 
-    // Track activity
-    if (!isDraft) {
-      ActivityService.trackBlogPost(formData.title, !!initialData)
-    }
 
     try {
       await onSave(dataToSave, isDraft)

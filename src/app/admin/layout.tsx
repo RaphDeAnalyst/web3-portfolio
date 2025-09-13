@@ -47,8 +47,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Blog Posts', href: '/admin/posts' },
     { name: 'Projects', href: '/admin/projects' },
     { name: 'Profile', href: '/admin/profile' },
-    { name: 'Availability', href: '/admin/availability' },
-    { name: 'Activity', href: '/admin/activity' },
     { name: 'Media', href: '/admin/media' },
   ]
 

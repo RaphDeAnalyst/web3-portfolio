@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
 import { projectService } from '@/lib/service-switcher'
-import { ActivityService } from '@/lib/activity-service'
 
 export default function EditProject() {
   const router = useRouter()
@@ -40,9 +39,6 @@ export default function EditProject() {
         ...updatedProjectData,
         status: isDraft ? 'Learning' : updatedProjectData.status
       })
-      
-      // Track the activity
-      ActivityService.trackProject(updatedProjectData.title, true)
       
       // Redirect to projects list
       router.push('/admin/projects')

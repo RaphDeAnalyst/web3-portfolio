@@ -188,9 +188,9 @@ export default function Portfolio() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Explore my journey from <span className="text-primary-500 font-medium">traditional analytics</span> to 
-            <span className="text-cyber-500 font-medium"> Web3 insights</span>, including 
-            <span className="text-purple-500 font-medium"> learning projects</span> and practical applications
+            Explore how I apply <span className="text-primary-500 font-medium">traditional analytics skills</span> to 
+            <span className="text-cyber-500 font-medium"> Web3 insights</span>, bridging the gap between established data methods and 
+            <span className="text-purple-500 font-medium"> decentralized ecosystems</span>
           </p>
         </div>
       </section>

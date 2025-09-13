@@ -1,5 +1,4 @@
 import { projects as staticProjects, Project } from '@/data/projects'
-import { ActivityService } from './activity-service'
 
 export class ProjectService {
   private STORAGE_KEY = 'portfolio_projects'
@@ -77,8 +76,6 @@ export class ProjectService {
     // Save to localStorage
     this.saveAllProjects(projects)
     
-    // Track activity
-    ActivityService.trackProject(projects[index].title, true)
   }
   
   // Add new project
@@ -92,8 +89,6 @@ export class ProjectService {
     projects.unshift(projectWithId) // Add to beginning of array
     this.saveAllProjects(projects)
     
-    // Track activity
-    ActivityService.trackProject(newProject.title, false)
   }
   
   // Delete project
@@ -108,13 +103,6 @@ export class ProjectService {
     projects.splice(index, 1)
     this.saveAllProjects(projects)
     
-    // Track activity
-    ActivityService.addActivity({
-      date: new Date().toISOString().split('T')[0],
-      type: 'project',
-      title: `Deleted project: ${deletedProject.title}`,
-      intensity: 2
-    })
   }
   
   // Get featured projects (max 3)
@@ -146,12 +134,6 @@ export class ProjectService {
     if (typeof window === 'undefined') return
     
     localStorage.removeItem(this.STORAGE_KEY)
-    ActivityService.addActivity({
-      date: new Date().toISOString().split('T')[0],
-      type: 'update',
-      title: 'Reset projects to static data',
-      intensity: 1
-    })
   }
   
   // Get projects statistics

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { mediaServiceHybrid, MediaFile, StorageProvider, UploadOptions } from '@/lib/media-service-hybrid'
 import { smartUploadRouter, RoutingDecision } from '@/lib/smart-upload-router'
 import { MediaMigration, quickMigration } from '@/lib/media-migration'
-import { ActivityService } from '@/lib/activity-service'
 
 interface UploadState {
   uploading: boolean
@@ -113,12 +112,6 @@ export default function EnhancedMediaUpload() {
             progress: { ...prev.progress, [fileKey]: 100 }
           }))
           
-          // Track activity (non-blocking)
-          try {
-            ActivityService.trackMedia(file.name)
-          } catch (error) {
-            console.warn('Activity tracking failed, but upload succeeded:', error)
-          }
           
           // Refresh media list
           await loadMediaFiles()

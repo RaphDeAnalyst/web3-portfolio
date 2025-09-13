@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
-import { ActivityService } from '@/lib/activity-service'
 
 export default function PostsManagement() {
   const [posts, setPosts] = useState<BlogPostData[]>([])

@@ -112,11 +112,6 @@ export function ContactInfo() {
           {/* Professional Profile Avatar */}
           <ContactAvatar />
           
-          {/* Additional Status */}
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-foreground/60">Ready to help bring</span>
-            <span className="text-xs text-primary-500 font-medium">your Web3 vision to life</span>
-          </div>
         </div>
         
         {/* Quick Bio */}
@@ -223,8 +218,50 @@ export function ContactInfo() {
               extensive experience in remote Web3 project delivery.
             </p>
             <div className="flex items-center space-x-2 text-sm">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-              <span className="text-green-500 font-medium">Currently Available</span>
+              {(() => {
+                const now = new Date()
+                const dayOfWeek = now.getDay() // 0=Sunday, 1=Monday, ..., 6=Saturday
+                const currentHour = now.getHours()
+                const currentMinute = now.getMinutes()
+                const currentTime = currentHour * 60 + currentMinute // Convert to minutes
+                
+                let status = 'Unavailable'
+                let color = 'gray-500'
+                let animate = false
+                
+                if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                  // Monday-Friday: 9:00 AM - 5:00 PM (540-1020 minutes)
+                  if (currentTime >= 540 && currentTime <= 1020) {
+                    status = 'Currently Available'
+                    color = 'green-500'
+                    animate = true
+                  } else {
+                    status = 'Available Today (9 AM - 5 PM)'
+                    color = 'green-500'
+                  }
+                } else if (dayOfWeek === 6) {
+                  // Saturday: 10:00 AM - 1:00 PM (600-780 minutes)
+                  if (currentTime >= 600 && currentTime <= 780) {
+                    status = 'Currently Available'
+                    color = 'yellow-500'
+                    animate = true
+                  } else {
+                    status = 'Limited Today (10 AM - 1 PM)'
+                    color = 'yellow-500'
+                  }
+                } else {
+                  // Sunday
+                  status = 'Unavailable Today'
+                  color = 'gray-500'
+                }
+                
+                return (
+                  <>
+                    <div className={`w-2 h-2 rounded-full bg-${color} ${animate ? 'animate-pulse' : ''}`}></div>
+                    <span className={`text-${color} font-medium`}>{status}</span>
+                  </>
+                )
+              })()}
             </div>
           </div>
 
@@ -233,7 +270,7 @@ export function ContactInfo() {
             <h5 className="font-semibold text-foreground mb-3">Working Hours</h5>
             <div className="space-y-2">
               {availability.map((zone, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
+                <div key={index} className="flex items-center text-sm">
                   <div className="flex items-center space-x-2">
                     <div className={`w-2 h-2 rounded-full ${
                       zone.color === 'green-500' ? 'bg-green-500' :
@@ -243,12 +280,6 @@ export function ContactInfo() {
                     }`}></div>
                     <span className="text-foreground/80">{zone.timezone}: {zone.hours}</span>
                   </div>
-                  <span className={`text-xs font-medium ${
-                    zone.color === 'green-500' ? 'text-green-500' :
-                    zone.color === 'blue-500' ? 'text-blue-500' :
-                    zone.color === 'gray-500' ? 'text-gray-500' :
-                    'text-yellow-500'
-                  }`}>{zone.status}</span>
                 </div>
               ))}
             </div>

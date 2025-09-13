@@ -7,8 +7,6 @@ import { projectService as legacyProjectService } from './project-service'
 import { projectServiceSupabase } from './project-service-supabase'
 import { ProfileService as legacyProfileService } from './profile-service'
 import { profileServiceSupabase } from './profile-service-supabase'
-import { ActivityService as legacyActivityService } from './activity-service'
-import { activityServiceSupabase } from './activity-service-supabase'
 
 // Configuration for which services to use
 export const SERVICE_CONFIG = {
@@ -16,7 +14,6 @@ export const SERVICE_CONFIG = {
   BLOG_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_BLOG !== 'false',
   PROJECT_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_PROJECTS !== 'false',
   PROFILE_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_PROFILE !== 'false',
-  ACTIVITY_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_ACTIVITY !== 'false',
 }
 
 // Unified Blog Service Interface
@@ -245,96 +242,3 @@ export const profileService = {
   }
 }
 
-// Unified Activity Service Interface
-export const activityService = {
-  async getActivity() {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getActivity()
-    }
-    return legacyActivityService.getActivity()
-  },
-
-  async addActivity(activity: any) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.addActivity(activity)
-    }
-    return legacyActivityService.addActivity(activity)
-  },
-
-  async updateActivity(id: string, updates: any) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.updateActivity(id, updates)
-    }
-    return legacyActivityService.updateActivity(id, updates)
-  },
-
-  async deleteActivity(id: string) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.deleteActivity(id)
-    }
-    return legacyActivityService.deleteActivity(id)
-  },
-
-  async getActivityForDate(date: string) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getActivityForDate(date)
-    }
-    return legacyActivityService.getActivityForDate(date)
-  },
-
-  async getActivityForDateRange(startDate: string, endDate: string) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getActivityForDateRange(startDate, endDate)
-    }
-    return legacyActivityService.getActivityForDateRange(startDate, endDate)
-  },
-
-  async getCurrentStreak() {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getCurrentStreak()
-    }
-    return legacyActivityService.getCurrentStreak()
-  },
-
-  async getActivityStats() {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getActivityStats()
-    }
-    return legacyActivityService.getActivityStats()
-  },
-
-  async getYearData(year?: number) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.getYearData(year)
-    }
-    return legacyActivityService.getYearData(year)
-  },
-
-  async initializeSampleData() {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.initializeSampleData()
-    }
-    return legacyActivityService.initializeSampleData()
-  },
-
-  async trackBlogPost(title: string, isUpdate = false) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.trackBlogPost(title, isUpdate)
-    }
-    return legacyActivityService.trackBlogPost(title, isUpdate)
-  },
-
-  async trackProject(title: string, isUpdate = false) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.trackProject(title, isUpdate)
-    }
-    return legacyActivityService.trackProject(title, isUpdate)
-  },
-
-  async trackMedia(filename: string) {
-    if (SERVICE_CONFIG.ACTIVITY_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await activityServiceSupabase.trackMedia(filename)
-    }
-    return legacyActivityService.trackMedia(filename)
-  }
-}

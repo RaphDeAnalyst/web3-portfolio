@@ -36,9 +36,9 @@ export default function About() {
       skills: [
         'Python for Data Analysis (Advanced)',
         'SQL Database Querying (Advanced)',
-        'Data Visualization (Proficient)',
         'Pandas & NumPy Libraries (Advanced)',
-        'Excel & Statistical Analysis (Advanced)'
+        'Excel & Data Processing (Advanced)',
+        'Database Design & ETL (Proficient)'
       ]
     },
     {
@@ -57,18 +57,18 @@ export default function About() {
       ]
     },
     {
-      title: 'Statistical Analysis & ML',
+      title: 'Visualization & Insight',
       description: 'Proficient • Applied Experience',
       color: 'purple-500',
       gradient: 'from-purple-500/20 to-purple-500/5',
       level: 'Proficient' as const,
       progress: 70,
       skills: [
+        'Dashboard Development (Advanced)',
+        'Tableau & PowerBI (Proficient)',
         'Statistical Modeling (Proficient)',
-        'Predictive Analytics (Proficient)',
-        'Regression Analysis (Advanced)',
-        'A/B Testing & Hypothesis Testing (Proficient)',
-        'Machine Learning (Learning)'
+        'Business Intelligence (Proficient)',
+        'Data Storytelling (Advanced)'
       ]
     }
   ]

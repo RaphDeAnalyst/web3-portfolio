@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { ParticleBackground } from '@/components/ui/particle-background'
-import { ActivityGraph } from '@/components/admin/activity-graph'
 import TiltedCard from '@/components/ui/TiltedCard'
 import { ProjectCard } from '@/components/ui/project-card'
 import Link from 'next/link'

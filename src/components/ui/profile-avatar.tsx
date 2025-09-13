@@ -116,8 +116,8 @@ export function ProfileAvatar({
             
             {/* Actual Image */}
             <img
-              src={profile.avatar}
-              alt={`${profile.name || 'Matthew Raphael'}'s profile picture`}
+              src={profile?.avatar}
+              alt={`${profile?.name || 'Matthew Raphael'}'s profile picture`}
               className={`${sizeClasses[size]} rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10 transition-all duration-300 hover:shadow-primary-500/20 hover:scale-105 ${
                 imageLoading ? 'opacity-0 absolute inset-0' : 'opacity-100'
               }`}
@@ -143,14 +143,14 @@ export function ProfileAvatar({
         <div className="flex-1 min-w-0">
           {showName && (
             <div className={`font-bold text-foreground ${nameTextSizeClasses[size]} truncate`}>
-              {profile.name || 'Matthew Raphael'}
+              {profile?.name || 'Matthew Raphael'}
             </div>
           )}
           {showTitle && (
             <div className={`text-foreground/60 ${titleTextSizeClasses[size]} truncate`}>
-              {profile.name === 'Matthew Raphael' || !profile.name ? 
+              {profile?.name === 'Matthew Raphael' || !profile?.name ? 
                 'RaphdeAnalyst • Web3 Data & AI Specialist' : 
-                (profile.title || 'Web3 Data & AI Specialist')
+                (profile?.title || 'Web3 Data & AI Specialist')
               }
             </div>
           )}
@@ -162,13 +162,18 @@ export function ProfileAvatar({
 
 // Utility hook for profile data
 export function useProfile() {
-  const [profile, setProfile] = useState<ProfileData>(ProfileService.getProfile())
+  const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
     setIsHydrated(true)
-    const updateProfile = () => {
-      setProfile(ProfileService.getProfile())
+    const updateProfile = async () => {
+      try {
+        const profileData = await profileService.getProfile()
+        setProfile(profileData)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      }
     }
     
     updateProfile()
@@ -183,7 +188,7 @@ export function useProfile() {
     }
   }, [])
 
-  return { profile, isHydrated }
+  return { profile: profile || { name: 'Matthew Raphael', title: 'Web3 Data & AI Specialist', avatar: '/avatar.jpg' }, isHydrated }
 }
 
 // Predefined avatar variations for common use cases
