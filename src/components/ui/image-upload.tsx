@@ -143,7 +143,7 @@ export function ImageUpload({
             e.stopPropagation()
             onImageSelect('')
           }}
-          className="text-sm text-red-500 hover:text-red-700 transition-colors"
+          className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
         >
           Remove image
         </button>

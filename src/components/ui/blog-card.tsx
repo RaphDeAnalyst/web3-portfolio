@@ -73,12 +73,12 @@ export function BlogCard({
   }, [slug])
 
   const categoryColors = {
-    'Web3': 'cyber-500',
-    'AI': 'purple-500',
+    'Web3': 'primary-600',
+    'AI': 'primary-500',
     'Analytics': 'primary-500',
-    'DeFi': 'green-500',
-    'Tutorial': 'yellow-500',
-    'Research': 'blue-500'
+    'DeFi': 'primary-600',
+    'Tutorial': 'primary-400',
+    'Research': 'primary-500'
   }
 
   // Dynamic sizing based on featured status and count
@@ -111,12 +111,12 @@ export function BlogCard({
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Background Gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-br from-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         
         {/* Featured Badge */}
         {featured && (
           <div className="absolute top-4 right-4 z-20">
-            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-gradient-to-r from-cyber-500 to-primary-500 text-white text-xs font-medium">
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
               <span>Featured</span>
             </div>
@@ -138,14 +138,14 @@ export function BlogCard({
                 />
                 {!imageLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-8 h-8 border-2 border-cyber-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 )}
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className={`w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} to-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/70 flex items-center justify-center text-white text-sm font-bold`}>
+                  <div className="w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-primary-500 to-primary-400 flex items-center justify-center text-white text-sm font-bold">
                     {category.slice(0, 3).toUpperCase()}
                   </div>
                   <div className="text-sm text-foreground/60">Blog Post</div>
@@ -169,7 +169,7 @@ export function BlogCard({
           {/* Meta Info */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <span className={`text-xs font-medium px-3 py-1 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/10 text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}`}>
+              <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary-500/10 text-primary-500">
                 {category}
               </span>
               <div className="flex items-center space-x-2 text-xs text-foreground/60">
@@ -181,7 +181,7 @@ export function BlogCard({
           </div>
 
           {/* Title */}
-          <h3 className={`${featured ? 'text-lg sm:text-2xl lg:text-3xl' : 'text-lg sm:text-xl'} font-bold text-foreground group-hover:text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} transition-colors duration-200 leading-tight`}>
+          <h3 className={`${featured ? 'text-lg sm:text-2xl lg:text-3xl' : 'text-lg sm:text-xl'} font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200 leading-tight`}>
             {title}
           </h3>
 
@@ -200,7 +200,7 @@ export function BlogCard({
                   className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold text-sm">
                   {author.name.charAt(0)}
                 </div>
               )}
@@ -219,7 +219,7 @@ export function BlogCard({
             {tags.slice(0, featured ? 6 : 4).map((tag, index) => (
               <span
                 key={index}
-                className={`text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground/60 hover:bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'}/10 hover:text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} transition-colors duration-200`}
+                className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground/60 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
               >
                 #{tag}
               </span>
@@ -235,7 +235,7 @@ export function BlogCard({
           <div className="flex items-center justify-between pt-4">
             <div className="flex items-center space-x-2 text-sm text-foreground/60">
               <span>Continue reading</span>
-              <span className={`text-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} group-hover:translate-x-1 transition-transform duration-200`}>
+              <span className="text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
                 →
               </span>
             </div>
@@ -251,7 +251,7 @@ export function BlogCard({
         </div>
 
         {/* Corner Accent */}
-        <div className={`absolute top-4 left-4 w-2 h-2 rounded-full bg-${categoryColors[category as keyof typeof categoryColors] || 'cyber-500'} opacity-60 group-hover:opacity-100 transition-opacity duration-200`}></div>
+        <div className="absolute top-4 left-4 w-2 h-2 rounded-full bg-primary-500 opacity-60 group-hover:opacity-100 transition-opacity duration-200"></div>
       </div>
     </Link>
   )

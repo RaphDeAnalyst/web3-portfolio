@@ -40,19 +40,19 @@ export function ConfirmDialog({
 
   const variantStyles = {
     danger: {
-      iconColor: 'text-red-500',
-      iconBg: 'bg-red-100 dark:bg-red-900/30',
-      confirmBtn: 'bg-red-500 hover:bg-red-600 focus:ring-red-500',
+      iconColor: 'text-primary-800',
+      iconBg: 'bg-primary-100 dark:bg-primary-900/30',
+      confirmBtn: 'bg-primary-800 hover:bg-primary-900 focus:ring-primary-800',
     },
     warning: {
-      iconColor: 'text-yellow-500',
-      iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
-      confirmBtn: 'bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500',
+      iconColor: 'text-primary-500',
+      iconBg: 'bg-primary-100 dark:bg-primary-900/30',
+      confirmBtn: 'bg-primary-500 hover:bg-primary-600 focus:ring-primary-500',
     },
     info: {
-      iconColor: 'text-blue-500',
-      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-      confirmBtn: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-500',
+      iconColor: 'text-primary-600',
+      iconBg: 'bg-primary-100 dark:bg-primary-900/30',
+      confirmBtn: 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-600',
     }
   }
 

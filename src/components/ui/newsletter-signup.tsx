@@ -27,7 +27,7 @@ export function NewsletterSignup() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-500/10 via-gray-400/10 to-gray-600/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
       {/* Background Pattern */}
       <div className="absolute inset-0 cyber-grid opacity-5"></div>
       
@@ -69,7 +69,7 @@ export function NewsletterSignup() {
               disabled={isSubmitting || isSubmitted}
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 isSubmitted 
-                  ? 'bg-green-500 text-white' 
+                  ? 'bg-gray-600 text-white' 
                   : 'bg-gradient-to-r from-primary-500 to-cyber-500 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
               } ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
             >

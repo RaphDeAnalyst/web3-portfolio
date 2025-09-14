@@ -12,9 +12,9 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-yellow-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-yellow-500">Let's Collaborate</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-400/30 bg-primary-400/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-primary-400 rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-primary-400">Let's Collaborate</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
@@ -24,9 +24,9 @@ export default function Contact() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Whether you need <span className="text-primary-500 font-medium">analytics dashboards</span>, 
-            <span className="text-cyber-500 font-medium"> smart contracts</span>, or 
-            <span className="text-purple-500 font-medium"> AI-powered solutions</span>, 
+            Whether you need <span className="text-primary-600 font-medium">analytics dashboards</span>,
+            <span className="text-primary-500 font-medium"> smart contracts</span>, or
+            <span className="text-primary-400 font-medium"> AI-powered solutions</span>, 
             let's bring your Web3 vision to life.
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function Contact() {
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
                     See my real-time availability and book a consultation call. 
-                    <span className="text-cyber-500 font-medium"> Hover over any date</span> to see available time slots, 
+                    <span className="text-primary-600 font-medium"> Hover over any date</span> to see available time slots,
                     or <span className="text-primary-500 font-medium"> click to book</span> directly.
                   </p>
                 </div>

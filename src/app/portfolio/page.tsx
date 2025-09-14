@@ -125,9 +125,9 @@ export default function Portfolio() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Explore how I apply <span className="text-primary-500 font-medium">traditional analytics skills</span> to 
-            <span className="text-cyber-500 font-medium"> Web3 insights</span>, bridging the gap between established data methods and 
-            <span className="text-purple-500 font-medium"> decentralized ecosystems</span>
+            Explore how I apply <span className="text-primary-600 font-medium">traditional analytics skills</span> to
+            <span className="text-primary-500 font-medium"> Web3 insights</span>, bridging the gap between established data methods and
+            <span className="text-primary-600 font-medium"> decentralized ecosystems</span>
           </p>
         </div>
       </section>
@@ -144,7 +144,7 @@ export default function Portfolio() {
                 placeholder="Search projects..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 text-sm sm:text-base"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
                 <Search className="w-5 h-5" />
@@ -182,7 +182,7 @@ export default function Portfolio() {
                   onClick={() => setSortBy(option.value)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     sortBy === option.value
-                      ? 'bg-cyber-500/20 text-cyber-500'
+                      ? 'bg-primary-500/20 text-primary-500'
                       : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
@@ -258,14 +258,14 @@ export default function Portfolio() {
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery('')}
-                    className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200"
+                    className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-medium hover:scale-105 transition-transform duration-200"
                   >
                     Clear Search
                   </button>
                 )}
                 <button 
                   onClick={() => setActiveCategory('All')}
-                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
+                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200"
                 >
                   View All Projects
                 </button>
@@ -278,7 +278,7 @@ export default function Portfolio() {
       {/* Call to Action */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="p-12 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-cyber-500/5 backdrop-blur-sm">
+          <div className="p-12 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-primary-300/5 backdrop-blur-sm">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">
               Interested in <span className="text-gradient">Collaborating?</span>
             </h2>
@@ -288,12 +288,12 @@ export default function Portfolio() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-semibold hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
                   Get In Touch
                 </button>
               </Link>
               <Link href="/about">
-                <button className="px-8 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground font-semibold hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
+                <button className="px-8 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground font-semibold hover:border-primary-500 hover:text-primary-500 transition-colors duration-200">
                   Learn About Me
                 </button>
               </Link>

@@ -136,8 +136,8 @@ export function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="text-center p-12 rounded-2xl bg-gradient-to-br from-green-500/10 to-cyber-500/10 border border-green-500/20">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center text-white text-2xl">
+      <div className="text-center p-12 rounded-2xl bg-gradient-to-br from-primary-600/10 to-primary-400/10 border border-primary-600/20">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary-600 flex items-center justify-center text-white text-2xl">
           ✓
         </div>
         <h3 className="text-2xl font-bold text-foreground mb-4">Message Sent Successfully!</h3>
@@ -166,12 +166,12 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.name ? 'border-red-500' : 'border-border'
-            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+              errors.name ? 'border-primary-800' : 'border-border'
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200`}
             placeholder="Your full name"
             disabled={isSubmitting}
           />
-          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+          {errors.name && <p className="mt-1 text-sm text-primary-800">{errors.name}</p>}
         </div>
 
         <div>
@@ -185,12 +185,12 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.email ? 'border-red-500' : 'border-border'
-            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200`}
+              errors.email ? 'border-primary-800' : 'border-border'
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200`}
             placeholder="your.email@example.com"
             disabled={isSubmitting}
           />
-          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-sm text-primary-800">{errors.email}</p>}
         </div>
       </div>
 
@@ -205,7 +205,7 @@ export function ContactForm() {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
           placeholder="Company (optional)"
           disabled={isSubmitting}
         />
@@ -222,7 +222,7 @@ export function ContactForm() {
               key={type.value}
               className={`relative cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
                 formData.projectType === type.value
-                  ? 'border-cyber-500 bg-cyber-500/10 text-cyber-500'
+                  ? 'border-primary-500 bg-primary-500/10 text-primary-500'
                   : 'border-border hover:border-border-hover'
               }`}
             >
@@ -255,7 +255,7 @@ export function ContactForm() {
             name="budget"
             value={formData.budget}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
             disabled={isSubmitting}
           >
             {budgetRanges.map((range) => (
@@ -275,7 +275,7 @@ export function ContactForm() {
             name="timeline"
             value={formData.timeline}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
             disabled={isSubmitting}
           >
             {timeframes.map((time) => (
@@ -299,12 +299,12 @@ export function ContactForm() {
           onChange={handleChange}
           rows={6}
           className={`w-full px-4 py-3 rounded-lg border ${
-            errors.message ? 'border-red-500' : 'border-border'
-          } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-cyber-500/20 focus:border-cyber-500 transition-all duration-200 resize-none`}
+            errors.message ? 'border-primary-800' : 'border-border'
+          } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 resize-none`}
           placeholder="Tell me about your project..."
           disabled={isSubmitting}
         />
-        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
+        {errors.message && <p className="mt-1 text-sm text-primary-800">{errors.message}</p>}
         <p className="mt-2 text-xs text-foreground/60">
           Minimum 20 characters. The more details you provide, the better I can help!
         </p>
@@ -317,7 +317,7 @@ export function ContactForm() {
         className={`w-full px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
           isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-primary-500 to-cyber-500 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
+            : 'bg-gradient-to-r from-primary-600 to-primary-400 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
         }`}
       >
         {isSubmitting && (

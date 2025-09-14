@@ -38,7 +38,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
       <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
         color === 'cyber-500' ? 'bg-cyber-500/10' :
         color === 'primary-500' ? 'bg-primary-500/10' :
-        'bg-purple-500/10'
+        'bg-gray-500/10'
       }`}></div>
       
       {/* Content */}
@@ -48,7 +48,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
             color === 'cyber-500' ? 'bg-cyber-500/20' :
             color === 'primary-500' ? 'bg-primary-500/20' :
-            'bg-purple-500/20'
+            'bg-gray-500/20'
           }`}>
             {icon}
           </div>
@@ -56,7 +56,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
             <h3 className={`text-xl font-bold text-foreground transition-colors duration-200 ${
               color === 'cyber-500' ? 'group-hover:text-cyber-500' :
               color === 'primary-500' ? 'group-hover:text-primary-500' :
-              'group-hover:text-purple-500'
+              'group-hover:text-gray-600 dark:group-hover:text-gray-400'
             }`}>
               {title}
             </h3>
@@ -77,7 +77,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
               <div className={`w-2 h-2 rounded-full opacity-60 ${
                 color === 'cyber-500' ? 'bg-cyber-500' :
                 color === 'primary-500' ? 'bg-primary-500' :
-                'bg-purple-500'
+                'bg-gray-500'
               }`}></div>
               <span className="text-foreground/80 group-hover:text-foreground transition-colors duration-200">
                 {skill}
@@ -93,7 +93,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
             <span className={`text-sm font-medium ${
               color === 'cyber-500' ? 'text-cyber-500' :
               color === 'primary-500' ? 'text-primary-500' :
-              'text-purple-500'
+              'text-gray-600 dark:text-gray-400'
             }`}>{level}</span>
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
@@ -103,7 +103,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
               } ${
                 color === 'cyber-500' ? 'bg-gradient-to-r from-cyber-500 to-cyber-500/70' :
                 color === 'primary-500' ? 'bg-gradient-to-r from-primary-500 to-primary-500/70' :
-                'bg-gradient-to-r from-purple-500 to-purple-500/70'
+                'bg-gradient-to-r from-gray-500 to-gray-500/70'
               }`}
             ></div>
           </div>
@@ -114,7 +114,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
       <div className={`absolute top-4 right-4 w-3 h-3 rounded-full opacity-40 group-hover:opacity-80 transition-opacity duration-200 ${
         color === 'cyber-500' ? 'bg-cyber-500' :
         color === 'primary-500' ? 'bg-primary-500' :
-        'bg-purple-500'
+        'bg-gray-500'
       }`}></div>
     </div>
   )

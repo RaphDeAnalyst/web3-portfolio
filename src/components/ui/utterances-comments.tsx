@@ -107,11 +107,11 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
 // Instructions component to show setup steps
 export function UtterancesSetupInstructions() {
   return (
-    <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
-      <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">
+    <div className="bg-gray-100 dark:bg-gray-900/20 border border-gray-200 dark:border-gray-800 rounded-lg p-6 mb-8">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
         🚀 Setup Utterances Comments
       </h3>
-      <div className="text-sm text-blue-800 dark:text-blue-200 space-y-3">
+      <div className="text-sm text-gray-800 dark:text-gray-200 space-y-3">
         <p>To enable GitHub comments on your blog posts, follow these steps:</p>
         
         <ol className="list-decimal list-inside space-y-2 ml-4">
@@ -121,23 +121,23 @@ export function UtterancesSetupInstructions() {
               href="https://github.com/apps/utterances" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="underline hover:text-blue-600"
+              className="underline hover:text-gray-600 dark:hover:text-gray-300"
             >
               github.com/apps/utterances
             </a>
           </li>
           <li>Click "Configure" and install the app on your repository</li>
-          <li>Grant access to your <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">web3-portfolio</code> repository</li>
+          <li>Grant access to your <code className="bg-gray-200 dark:bg-gray-800 px-1 rounded">web3-portfolio</code> repository</li>
           <li>
             Update the repo name in{' '}
-            <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">
+            <code className="bg-gray-200 dark:bg-gray-800 px-1 rounded">
               utterances-comments.tsx
             </code>
           </li>
           <li>Deploy your changes - comments will work immediately!</li>
         </ol>
         
-        <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-800 rounded border-l-4 border-blue-500">
+        <div className="mt-4 p-3 bg-gray-200 dark:bg-gray-800 rounded border-l-4 border-gray-500">
           <p className="font-medium">Replace this line in the component:</p>
           <code className="text-xs block mt-1 font-mono">
             script.setAttribute('repo', 'your-username/web3-portfolio')

@@ -333,7 +333,7 @@ export function ProfilePictureUpload({
 
       {/* Error message */}
       {error && (
-        <div className="text-center text-sm text-red-500 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg">
+        <div className="text-center text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/50 p-2 rounded-lg">
           {error}
         </div>
       )}
@@ -347,7 +347,7 @@ export function ProfilePictureUpload({
             onImageSelect('/avatar.jpg')
             await profileService.updateProfileField('avatar', '/avatar.jpg')
           }}
-          className="block mx-auto text-sm text-red-500 hover:text-red-700 transition-colors"
+          className="block mx-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
         >
           Remove photo
         </button>

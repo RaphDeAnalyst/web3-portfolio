@@ -45,11 +45,11 @@ export function WalletConnect() {
   ]
 
   const networks = [
-    { id: 1, name: 'Ethereum', icon: '⟐', color: 'blue-500' },
-    { id: 137, name: 'Polygon', icon: '🔷', color: 'purple-500' },
-    { id: 56, name: 'BSC', icon: '🟡', color: 'yellow-500' },
-    { id: 42161, name: 'Arbitrum', icon: '🔹', color: 'blue-600' },
-    { id: 10, name: 'Optimism', icon: '🔴', color: 'red-500' }
+    { id: 1, name: 'Ethereum', icon: '⟐', color: 'gray-500' },
+    { id: 137, name: 'Polygon', icon: '🔷', color: 'gray-600' },
+    { id: 56, name: 'BSC', icon: '🟡', color: 'gray-400' },
+    { id: 42161, name: 'Arbitrum', icon: '🔹', color: 'gray-700' },
+    { id: 10, name: 'Optimism', icon: '🔴', color: 'gray-800' }
   ]
 
   const formatAddress = (addr: string) => {
@@ -93,11 +93,11 @@ export function WalletConnect() {
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full animate-pulse ${
               !getCurrentNetwork() ? 'bg-gray-500' :
-              getCurrentNetwork()?.color === 'blue-500' ? 'bg-blue-500' :
-              getCurrentNetwork()?.color === 'purple-500' ? 'bg-purple-500' :
-              getCurrentNetwork()?.color === 'yellow-500' ? 'bg-yellow-500' :
-              getCurrentNetwork()?.color === 'blue-600' ? 'bg-blue-600' :
-              getCurrentNetwork()?.color === 'red-500' ? 'bg-red-500' :
+              getCurrentNetwork()?.color === 'gray-500' ? 'bg-gray-500' :
+              getCurrentNetwork()?.color === 'gray-600' ? 'bg-gray-600' :
+              getCurrentNetwork()?.color === 'gray-400' ? 'bg-gray-400' :
+              getCurrentNetwork()?.color === 'gray-700' ? 'bg-gray-700' :
+              getCurrentNetwork()?.color === 'gray-800' ? 'bg-gray-800' :
               'bg-gray-500'
             }`}></div>
             <span className="text-xs text-foreground/60">{getCurrentNetwork()?.name || 'Unknown'}</span>
@@ -116,7 +116,7 @@ export function WalletConnect() {
           {/* Disconnect Button */}
           <button
             onClick={disconnect}
-            className="text-xs text-foreground/60 hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
+            className="text-xs text-foreground/60 hover:text-foreground transition-colors duration-200 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             Disconnect
           </button>
@@ -134,12 +134,12 @@ export function WalletConnect() {
                 className={`w-full flex items-center space-x-3 p-2 rounded-lg text-left transition-colors duration-200 ${
                   chainId === network.id
                     ? `${
-                      network.color === 'blue-500' ? 'bg-blue-500/10 text-blue-500' :
-                      network.color === 'purple-500' ? 'bg-purple-500/10 text-purple-500' :
-                      network.color === 'yellow-500' ? 'bg-yellow-500/10 text-yellow-500' :
-                      network.color === 'blue-600' ? 'bg-blue-600/10 text-blue-600' :
-                      network.color === 'red-500' ? 'bg-red-500/10 text-red-500' :
-                      'bg-gray-500/10 text-gray-500'
+                      network.color === 'gray-500' ? 'bg-gray-500/20 text-gray-700 dark:text-gray-300' :
+                      network.color === 'gray-600' ? 'bg-gray-600/20 text-gray-700 dark:text-gray-300' :
+                      network.color === 'gray-400' ? 'bg-gray-400/20 text-gray-700 dark:text-gray-300' :
+                      network.color === 'gray-700' ? 'bg-gray-700/20 text-gray-700 dark:text-gray-300' :
+                      network.color === 'gray-800' ? 'bg-gray-800/20 text-gray-700 dark:text-gray-300' :
+                      'bg-gray-500/20 text-gray-700 dark:text-gray-300'
                     }`
                     : 'hover:bg-gray-100 dark:hover:bg-gray-800'
                 } ${isSwitchingNetwork ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -147,7 +147,7 @@ export function WalletConnect() {
                 <span className="text-lg">{network.icon}</span>
                 <span className="text-sm font-medium">{network.name}</span>
                 {chainId === network.id && (
-                  <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full ml-auto">
+                  <span className="text-xs bg-gray-700 dark:bg-gray-300 text-white dark:text-gray-900 px-2 py-0.5 rounded-full ml-auto">
                     Active
                   </span>
                 )}

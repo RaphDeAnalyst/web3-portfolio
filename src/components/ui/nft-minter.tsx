@@ -38,13 +38,13 @@ export function NFTMinter() {
       name: 'AI Pioneer Token',
       description: 'Recognition for AI + Web3 innovation',
       rarity: 'Epic',
-      color: 'purple-500'
+      color: 'gray-600'
     },
     {
       name: 'Early Supporter NFT',
       description: 'Exclusive badge for portfolio visitors',
       rarity: 'Legendary',
-      color: 'yellow-500'
+      color: 'gray-500'
     }
   ]
 
@@ -103,8 +103,8 @@ export function NFTMinter() {
 
   if (mintSuccess) {
     return (
-      <div className="text-center p-8 rounded-2xl border border-green-500/20 bg-gradient-to-br from-green-500/10 to-cyber-500/10 backdrop-blur-sm">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center text-white text-lg font-bold">
+      <div className="text-center p-8 rounded-2xl border border-gray-500/20 bg-gradient-to-br from-gray-500/10 to-gray-600/10 backdrop-blur-sm">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-600 flex items-center justify-center text-white text-lg font-bold">
           ✓
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">NFT Minted Successfully!</h3>
@@ -114,7 +114,7 @@ export function NFTMinter() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button 
             onClick={() => window.open('https://opensea.io', '_blank')}
-            className="px-6 py-3 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-colors duration-200"
+            className="px-6 py-3 rounded-lg bg-gray-600 text-white font-medium hover:bg-gray-700 transition-colors duration-200"
           >
             View on OpenSea
           </button>
@@ -152,8 +152,8 @@ export function NFTMinter() {
                 ? `${
                   design.color === 'cyber-500' ? 'border-cyber-500 bg-cyber-500/10 shadow-lg shadow-cyber-500/20' :
                   design.color === 'primary-500' ? 'border-primary-500 bg-primary-500/10 shadow-lg shadow-primary-500/20' :
-                  design.color === 'purple-500' ? 'border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20' :
-                  'border-yellow-500 bg-yellow-500/10 shadow-lg shadow-yellow-500/20'
+                  design.color === 'gray-600' ? 'border-gray-600 bg-gray-600/10 shadow-lg shadow-gray-600/20' :
+                  'border-gray-500 bg-gray-500/10 shadow-lg shadow-gray-500/20'
                 }`
                 : 'border-gray-200/50 dark:border-gray-800/50 bg-background/30 hover:border-gray-300 dark:hover:border-gray-700'
             } backdrop-blur-sm`}
@@ -167,8 +167,8 @@ export function NFTMinter() {
                   selectedDesign === index ? (
                     design.color === 'cyber-500' ? 'text-cyber-500' :
                     design.color === 'primary-500' ? 'text-primary-500' :
-                    design.color === 'purple-500' ? 'text-purple-500' :
-                    'text-yellow-500'
+                    design.color === 'gray-600' ? 'text-gray-600 dark:text-gray-400' :
+                    'text-gray-500 dark:text-gray-400'
                   ) : ''
                 }`}>
                   {design.name}
@@ -179,9 +179,9 @@ export function NFTMinter() {
               </div>
               <div className={`text-xs px-3 py-1 rounded-full font-medium ${
                 design.rarity === 'Common' ? 'bg-gray-500/20 text-gray-600 dark:text-gray-400' :
-                design.rarity === 'Rare' ? 'bg-blue-500/20 text-blue-600' :
-                design.rarity === 'Epic' ? 'bg-purple-500/20 text-purple-600' :
-                'bg-yellow-500/20 text-yellow-600'
+                design.rarity === 'Rare' ? 'bg-gray-600/20 text-gray-600 dark:text-gray-400' :
+                design.rarity === 'Epic' ? 'bg-gray-700/20 text-gray-700 dark:text-gray-300' :
+                'bg-gray-500/20 text-gray-500 dark:text-gray-400'
               }`}>
                 {design.rarity}
               </div>
@@ -192,8 +192,8 @@ export function NFTMinter() {
                 <div className={`w-2 h-2 rounded-full animate-pulse ${
                   design.color === 'cyber-500' ? 'bg-cyber-500' :
                   design.color === 'primary-500' ? 'bg-primary-500' :
-                  design.color === 'purple-500' ? 'bg-purple-500' :
-                  'bg-yellow-500'
+                  design.color === 'gray-600' ? 'bg-gray-600' :
+                  'bg-gray-500'
                 }`}></div>
               </div>
             )}
@@ -208,8 +208,8 @@ export function NFTMinter() {
           <div className={`px-3 py-1 rounded-full text-sm font-medium ${
             nftDesigns[selectedDesign].color === 'cyber-500' ? 'bg-cyber-500/20 text-cyber-500' :
             nftDesigns[selectedDesign].color === 'primary-500' ? 'bg-primary-500/20 text-primary-500' :
-            nftDesigns[selectedDesign].color === 'purple-500' ? 'bg-purple-500/20 text-purple-500' :
-            'bg-yellow-500/20 text-yellow-500'
+            nftDesigns[selectedDesign].color === 'gray-600' ? 'bg-gray-600/20 text-gray-600 dark:text-gray-400' :
+            'bg-gray-500/20 text-gray-500 dark:text-gray-400'
           }`}>
             Free Mint
           </div>

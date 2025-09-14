@@ -52,15 +52,15 @@ export function Navbar() {
                 href={item.href}
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group ${
                   pathname === item.href
-                    ? 'text-cyber-500 bg-cyber-500/10'
-                    : 'text-foreground/80 hover:text-cyber-500 hover:bg-cyber-500/5'
+                    ? 'text-primary-500 bg-primary-500/10'
+                    : 'text-foreground/80 hover:text-primary-500 hover:bg-primary-500/5'
                 }`}
               >
                 {item.name}
                 {pathname === item.href && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-cyber-500 rounded-full"></div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-500 rounded-full"></div>
                 )}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyber-500 transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
             
@@ -72,7 +72,7 @@ export function Navbar() {
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative p-2 text-foreground hover:text-cyber-500 transition-colors duration-200"
+              className="relative p-2 text-foreground hover:text-primary-500 transition-colors duration-200"
               aria-label="Toggle mobile menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
@@ -93,8 +93,8 @@ export function Navbar() {
                 href={item.href}
                 className={`block px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   pathname === item.href
-                    ? 'text-cyber-500 bg-cyber-500/10 border-l-2 border-cyber-500'
-                    : 'text-foreground/80 hover:text-cyber-500 hover:bg-cyber-500/5'
+                    ? 'text-primary-500 bg-primary-500/10 border-l-2 border-primary-500'
+                    : 'text-foreground/80 hover:text-primary-500 hover:bg-primary-500/5'
                 }`}
                 onClick={() => setIsOpen(false)}
               >

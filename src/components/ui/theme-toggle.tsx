@@ -107,7 +107,7 @@ export function ThemeToggle() {
           {theme === 'system' ? (
             <div className="flex items-center justify-center">
               {currentOption.icon}
-              <div className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-blue-500 border border-white dark:border-gray-900" />
+              <div className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-gray-500 border border-white dark:border-gray-900" />
             </div>
           ) : (
             currentOption.icon

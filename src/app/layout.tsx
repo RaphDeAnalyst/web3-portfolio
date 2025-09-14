@@ -189,8 +189,8 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
 
         {/* Additional meta tags for better browser support */}
-        <meta name="msapplication-TileColor" content="#0ea5e9" />
-        <meta name="theme-color" content="#0ea5e9" />
+        <meta name="msapplication-TileColor" content="#666666" />
+        <meta name="theme-color" content="#666666" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>

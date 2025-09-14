@@ -134,7 +134,7 @@ export function ProfileAvatar({
 
         {/* Status Indicator */}
         {showStatus && (
-          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></div>
+          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gray-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></div>
         )}
       </div>
 

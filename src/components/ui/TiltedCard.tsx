@@ -94,7 +94,7 @@ export default function TiltedCard({
     <div className="relative inline-block">
       {/* Mobile Warning */}
       {showMobileWarning && isMobile && (
-        <div className="absolute top-0 left-0 right-0 bg-yellow-500/10 text-yellow-600 text-xs p-2 rounded-t-lg border border-yellow-500/20">
+        <div className="absolute top-0 left-0 right-0 bg-gray-500/10 text-gray-600 dark:text-gray-400 text-xs p-2 rounded-t-lg border border-gray-500/20">
           Best viewed on desktop for 3D effect
         </div>
       )}

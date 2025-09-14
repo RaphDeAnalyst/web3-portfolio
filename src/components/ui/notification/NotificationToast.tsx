@@ -17,23 +17,23 @@ const typeConfig: Record<NotificationType, {
 }> = {
   success: {
     icon: CheckCircle,
-    colorClasses: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300',
-    iconClasses: 'text-green-500'
+    colorClasses: 'bg-gray-100 dark:bg-gray-800/50 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200',
+    iconClasses: 'text-gray-600 dark:text-gray-400'
   },
   error: {
     icon: AlertCircle,
-    colorClasses: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
-    iconClasses: 'text-red-500'
+    colorClasses: 'bg-gray-100 dark:bg-gray-800/50 border-gray-400 dark:border-gray-600 text-gray-900 dark:text-gray-100',
+    iconClasses: 'text-gray-700 dark:text-gray-300'
   },
   warning: {
     icon: AlertTriangle,
-    colorClasses: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300',
-    iconClasses: 'text-yellow-500'
+    colorClasses: 'bg-gray-50 dark:bg-gray-900/20 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300',
+    iconClasses: 'text-gray-600 dark:text-gray-400'
   },
   info: {
     icon: Info,
-    colorClasses: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300',
-    iconClasses: 'text-blue-500'
+    colorClasses: 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200',
+    iconClasses: 'text-gray-500 dark:text-gray-400'
   },
   loading: {
     icon: Loader2,

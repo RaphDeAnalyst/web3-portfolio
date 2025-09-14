@@ -44,8 +44,8 @@ export default function About() {
       title: 'Web3 Analytics',
       description: 'Proficient • Active Projects',
       icon: '🔗',
-      color: 'cyber-500',
-      gradient: 'from-cyber-500/20 to-cyber-500/5',
+      color: 'primary-600',
+      gradient: 'from-primary-600/20 to-primary-600/5',
       level: 'Proficient' as const,
       progress: 70,
       skills: [
@@ -60,8 +60,8 @@ export default function About() {
       title: 'Visualization & Insight',
       description: 'Proficient • Applied Experience',
       icon: '📈',
-      color: 'purple-500',
-      gradient: 'from-purple-500/20 to-purple-500/5',
+      color: 'primary-400',
+      gradient: 'from-primary-400/20 to-primary-400/5',
       level: 'Proficient' as const,
       progress: 70,
       skills: [
@@ -107,9 +107,9 @@ export default function About() {
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-cyber-500/30 bg-cyber-500/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-cyber-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-cyber-500">About Me</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/30 bg-primary-500/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-primary-500">About Me</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
@@ -120,8 +120,8 @@ export default function About() {
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
             Leveraging my <span className="text-primary-500 font-medium">traditional data analytics</span> background to explore 
-            <span className="text-cyber-500 font-medium"> blockchain insights</span> and 
-            <span className="text-purple-500 font-medium"> decentralized finance</span>.
+            <span className="text-primary-600 font-medium"> blockchain insights</span> and
+            <span className="text-primary-500 font-medium"> decentralized finance</span>.
           </p>
         </div>
       </section>
@@ -154,8 +154,8 @@ export default function About() {
                           <p key={index} dangerouslySetInnerHTML={{ 
                             __html: paragraph
                               .replace(/Ethereum gas price dashboard/g, '<span class="text-primary-500 font-medium">Ethereum gas price dashboard</span>')
-                              .replace(/8 Dune Analytics dashboards/g, '<span class="text-cyber-500 font-medium">8 Dune Analytics dashboards</span>')
-                              .replace(/Web3 Data & AI Specialist/g, '<span class="text-purple-500 font-medium">Web3 Data & AI Specialist</span>')
+                              .replace(/8 Dune Analytics dashboards/g, '<span class="text-primary-600 font-medium">8 Dune Analytics dashboards</span>')
+                              .replace(/Web3 Data & AI Specialist/g, '<span class="text-primary-500 font-medium">Web3 Data & AI Specialist</span>')
                           }} />
                         ))
                       ) : (

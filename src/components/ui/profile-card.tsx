@@ -56,7 +56,7 @@ export function ProfileCard() {
               )
               break
             case 'Twitter':
-              color = 'blue-500'
+              color = 'gray-600'
               icon = (
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
@@ -64,7 +64,7 @@ export function ProfileCard() {
               )
               break
             case 'LinkedIn':
-              color = 'blue-600'
+              color = 'gray-700'
               icon = (
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clipRule="evenodd" />
@@ -72,7 +72,7 @@ export function ProfileCard() {
               )
               break
             case 'Website':
-              color = 'blue-400'
+              color = 'gray-500'
               icon = (
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.559-.499-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.559.499.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
@@ -106,7 +106,7 @@ export function ProfileCard() {
       >
         {/* Front Side */}
         <div className="absolute inset-0 backface-hidden">
-          <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/5 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
+          <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-500/10 via-gray-400/5 to-gray-600/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 cyber-grid opacity-10"></div>
             
@@ -193,7 +193,7 @@ export function ProfileCard() {
 
         {/* Back Side */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">
-          <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-purple-500/10 via-primary-500/5 to-cyber-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
+          <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-600/10 via-gray-500/5 to-gray-400/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 cyber-grid opacity-10"></div>
             
@@ -249,9 +249,9 @@ export function ProfileCard() {
                           rel="noopener noreferrer"
                           className={`flex items-center space-x-3 p-3 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-sm ${
                             link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
-                            link.color === 'blue-500' ? 'hover:bg-blue-500/10 hover:border-blue-500/30 text-blue-500' :
-                            link.color === 'blue-600' ? 'hover:bg-blue-600/10 hover:border-blue-600/30 text-blue-600' :
-                            'hover:bg-blue-400/10 hover:border-blue-400/30 text-blue-400'
+                            link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
+                            link.color === 'gray-700' ? 'hover:bg-gray-700/10 hover:border-gray-700/30 text-gray-700' :
+                            'hover:bg-gray-500/10 hover:border-gray-500/30 text-gray-500'
                           }`}
                         >
                           {link.icon}
