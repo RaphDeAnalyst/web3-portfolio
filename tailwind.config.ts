@@ -30,8 +30,7 @@ export default {
           hover: 'hsl(var(--card-hover))'
         },
         muted: 'hsl(var(--muted))',
-        accent: 'hsl(var(--accent))',
-        
+
         // Monochrome color palette - black & white only
         primary: {
           50: '#f9f9f9',   // Very light gray

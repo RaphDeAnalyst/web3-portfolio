@@ -7,7 +7,7 @@ interface SocialLink {
   name: string
   username: string
   url: string
-  icon: string
+  icon: React.ReactElement
   color: string
   description: string
 }

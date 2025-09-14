@@ -219,7 +219,7 @@ export function NFTMinter() {
           {/* NFT Card Preview */}
           <div className="aspect-square rounded-xl border border-gray-200/30 dark:border-gray-800/30 bg-gradient-to-br from-background to-gray-50 dark:to-gray-900 flex items-center justify-center">
             <div className="text-center space-y-4">
-              <div className="text-6xl">{nftDesigns[selectedDesign].image}</div>
+              <div className="text-6xl">{(nftDesigns[selectedDesign] as any).image || '🎨'}</div>
               <div className="space-y-2">
                 <div className="text-lg font-bold text-foreground">
                   {nftDesigns[selectedDesign].name}

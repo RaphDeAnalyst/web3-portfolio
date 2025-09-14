@@ -9,11 +9,15 @@
     "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "keep-alive": "node scripts/keep-alive.js",
+    "test:keep-alive": "node scripts/keep-alive.js",
+    "supabase:ping": "node scripts/keep-alive.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "autoprefixer": "^10.4.0",
+    "dotenv": "^16.4.5",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.263.1",
     "motion": "^12.23.12",

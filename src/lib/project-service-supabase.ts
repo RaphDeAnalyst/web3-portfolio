@@ -48,10 +48,10 @@ export class ProjectServiceSupabase {
       duneUrl: project.dune_url,
       blogPostSlug: project.blog_post_slug,
       image: project.image,
-      metrics: project.metrics || {},
-      features: project.features || [],
-      challenges: project.challenges || '',
-      learnings: project.learnings || '',
+      ...(project.metrics && { metrics: project.metrics }),
+      ...(project.features && { features: project.features }),
+      ...(project.challenges && { challenges: project.challenges }),
+      ...(project.learnings && { learnings: project.learnings }),
       links: {
         github: project.github_url,
         demo: project.demo_url
@@ -73,10 +73,10 @@ export class ProjectServiceSupabase {
       dune_url: project.duneUrl,
       blog_post_slug: project.blogPostSlug,
       image: project.image,
-      metrics: project.metrics,
-      features: project.features,
-      challenges: project.challenges,
-      learnings: project.learnings
+      metrics: (project as any).metrics,
+      features: (project as any).features,
+      challenges: (project as any).challenges,
+      learnings: (project as any).learnings
     }
   }
 

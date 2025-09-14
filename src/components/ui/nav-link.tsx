@@ -30,7 +30,7 @@ export function NavLink({
   // Determine if this link is active
   const isActive = exact
     ? pathname === href
-    : pathname.startsWith(href) && href !== '/' // Special case for root path
+    : pathname?.startsWith(href) && href !== '/' // Special case for root path
 
   // Define variant-specific styles
   const getVariantStyles = () => {

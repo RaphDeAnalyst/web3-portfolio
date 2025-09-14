@@ -228,7 +228,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                       <FileText className="w-3 h-3" />
                       <p className="font-medium text-foreground/80">Markdown Formatting:</p>
                     </div>
-                    <p>**bold**, *italic*, `code`, ## headers, > quotes, - lists</p>
+                    <p>**bold**, *italic*, `code`, ## headers, &gt; quotes, - lists</p>
                   </div>
                   <div>
                     <div className="flex items-center space-x-1 mb-1">

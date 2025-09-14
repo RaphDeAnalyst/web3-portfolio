@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
+import type { Project as ServiceProject } from '@/lib/project-service-supabase'
 import { useNotification } from '@/lib/notification-context'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import {
@@ -17,12 +18,12 @@ import {
 
 export default function ProjectsManagement() {
   const { error, success } = useNotification()
-  const [projectList, setProjectList] = useState<Project[]>([])
+  const [projectList, setProjectList] = useState<(Project | ServiceProject)[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
   const [filterFeatured, setFilterFeatured] = useState('all')
-  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; project: Project | null; index: number }>({
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; project: (Project | ServiceProject) | null; index: number }>({
     isOpen: false,
     project: null,
     index: -1
@@ -57,7 +58,7 @@ export default function ProjectsManagement() {
     return matchesSearch && matchesCategory && matchesFeatured
   })
 
-  const openDeleteDialog = (project: Project, index: number) => {
+  const openDeleteDialog = (project: Project | ServiceProject, index: number) => {
     setDeleteDialog({ isOpen: true, project, index })
   }
 

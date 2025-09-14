@@ -10,7 +10,8 @@
       "Bash(npm run dev:*)",
       "WebSearch",
       "Read(/C:\\Users\\rapha\\web3-portfolio\\src\\app\\admin\\activity/**)",
-      "WebFetch(domain:i.ibb.co)"
+      "WebFetch(domain:i.ibb.co)",
+      "Bash(npm run:*)"
     ],
     "deny": [],
     "ask": [],

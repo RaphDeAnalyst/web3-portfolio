@@ -147,16 +147,16 @@ export default function EnhancedMediaUpload() {
           })
         }, 2000)
 
-      } catch (error) {
-        console.error(`Error uploading ${file.name}:`, error)
+      } catch (uploadError) {
+        console.error(`Error uploading ${file.name}:`, uploadError)
         error(`Error uploading ${file.name}`)
         setUploadState(prev => ({
           ...prev,
           progress: { ...prev.progress, [fileKey]: -1 }
         }))
-        
+
         // Show error message to user
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        const errorMessage = uploadError instanceof Error ? uploadError.message : 'Unknown error'
         if (errorMessage.includes('timeout')) {
           console.error(`⚠ Upload timeout: ${file.name} - Try a smaller file or check your connection`)
           warning(`Upload timeout for ${file.name}. Try a smaller file or check your connection.`)

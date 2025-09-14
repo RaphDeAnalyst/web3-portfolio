@@ -186,21 +186,28 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                 // Grid View
                 <>
                   <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                    {file.file_type?.startsWith('image/') ? (
-                      <img
-                        src={file.url}
-                        alt={file.filename}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex justify-center">
-                        {file.file_type?.startsWith('video/') ? 
-                          <Video size={32} className="text-gray-400" /> : 
-                          <FileText size={32} className="text-gray-400" />
-                        }
-                      </div>
-                    )}
+                    {(() => {
+                      const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
+                      if (fileType.startsWith('image/')) {
+                        return (
+                          <img
+                            src={file.url}
+                            alt={file.filename}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        )
+                      } else {
+                        return (
+                          <div className="flex justify-center">
+                            {fileType.startsWith('video/') ?
+                              <Video size={32} className="text-gray-400" /> :
+                              <FileText size={32} className="text-gray-400" />
+                            }
+                          </div>
+                        )
+                      }
+                    })()}
                   </div>
                   
                   <div className="p-4">
@@ -208,7 +215,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                       {file.filename}
                     </h3>
                     <p className="text-xs text-gray-500 mb-2">
-                      {formatFileSize(file.file_size)} • {formatDate(file.created_at)}
+                      {formatFileSize((file as any).file_size || (file as any).size || 0)} • {formatDate((file as any).created_at || (file as any).createdAt || (file as any).uploadedAt)}
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded">
@@ -227,21 +234,28 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                 // List View  
                 <>
                   <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center mr-4">
-                    {file.file_type?.startsWith('image/') ? (
-                      <img
-                        src={file.url}
-                        alt={file.filename}
-                        className="w-full h-full object-cover rounded"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex justify-center">
-                        {file.file_type?.startsWith('video/') ? 
-                          <Video size={20} className="text-gray-400" /> : 
-                          <FileText size={20} className="text-gray-400" />
-                        }
-                      </div>
-                    )}
+                    {(() => {
+                      const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
+                      if (fileType.startsWith('image/')) {
+                        return (
+                          <img
+                            src={file.url}
+                            alt={file.filename}
+                            className="w-full h-full object-cover rounded"
+                            loading="lazy"
+                          />
+                        )
+                      } else {
+                        return (
+                          <div className="flex justify-center">
+                            {fileType.startsWith('video/') ?
+                              <Video size={20} className="text-gray-400" /> :
+                              <FileText size={20} className="text-gray-400" />
+                            }
+                          </div>
+                        )
+                      }
+                    })()}
                   </div>
                   
                   <div className="flex-grow min-w-0">
@@ -249,8 +263,8 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                       {file.filename}
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span>{formatFileSize(file.file_size)}</span>
-                      <span>{formatDate(file.created_at)}</span>
+                      <span>{formatFileSize((file as any).file_size || (file as any).size || 0)}</span>
+                      <span>{formatDate((file as any).created_at || (file as any).createdAt || (file as any).uploadedAt)}</span>
                       <span className="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded text-xs">
                         {file.storage_provider}
                       </span>
@@ -278,7 +292,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
             <div>Selected: <span className="font-medium text-foreground">{selectedFiles.size}</span></div>
             <div>
               Total Size: <span className="font-medium text-foreground">
-                {formatFileSize(filteredFiles.reduce((acc, file) => acc + (file.file_size || 0), 0))}
+                {formatFileSize(filteredFiles.reduce((acc, file) => acc + ((file as any).file_size || (file as any).size || 0), 0))}
               </span>
             </div>
           </div>

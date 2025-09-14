@@ -10,7 +10,7 @@ import { projectService } from '@/lib/service-switcher'
 export default function EditProject() {
   const router = useRouter()
   const params = useParams()
-  const id = parseInt(params.id as string)
+  const id = parseInt(params?.id as string)
   
   const [projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(true)

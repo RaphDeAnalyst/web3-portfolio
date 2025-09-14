@@ -21,7 +21,7 @@ interface AnalyticsTabProps {
 export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
   // Calculate analytics data
   const totalFiles = mediaFiles.length
-  const totalSize = mediaFiles.reduce((acc, file) => acc + (file.file_size || 0), 0)
+  const totalSize = mediaFiles.reduce((acc, file) => acc + ((file as any).file_size || (file as any).size || 0), 0)
   
   // Provider distribution
   const providerStats = mediaFiles.reduce((acc, file) => {
@@ -32,8 +32,9 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
 
   // File type distribution
   const typeStats = mediaFiles.reduce((acc, file) => {
-    if (file.file_type) {
-      const category = file.file_type.split('/')[0]
+    const fileType = (file as any).file_type || (file as any).type || (file as any).fileType
+    if (fileType) {
+      const category = fileType.split('/')[0]
       acc[category] = (acc[category] || 0) + 1
     }
     return acc
@@ -42,15 +43,16 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
   // Size distribution
   const sizeStats = mediaFiles.reduce((acc, file) => {
     const provider = file.storage_provider
-    acc[provider] = (acc[provider] || 0) + (file.file_size || 0)
+    acc[provider] = (acc[provider] || 0) + ((file as any).file_size || (file as any).size || 0)
     return acc
   }, {} as Record<string, number>)
 
   // Recent uploads (last 30 days)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-  const recentFiles = mediaFiles.filter(file => 
-    file.created_at && new Date(file.created_at) > thirtyDaysAgo
-  )
+  const recentFiles = mediaFiles.filter(file => {
+    const createdAt = (file as any).created_at || (file as any).createdAt || (file as any).uploadedAt
+    return createdAt && new Date(createdAt) > thirtyDaysAgo
+  })
 
   const formatFileSize = (bytes: number) => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
@@ -203,30 +205,41 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
               ) : (
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {recentFiles
-                    .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())
+                    .sort((a, b) => {
+                      const aDate = (a as any).created_at || (a as any).createdAt || (a as any).uploadedAt
+                      const bDate = (b as any).created_at || (b as any).createdAt || (b as any).uploadedAt
+                      return new Date(bDate).getTime() - new Date(aDate).getTime()
+                    })
                     .slice(0, 10)
                     .map((file) => (
                     <div key={file.id} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0 w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
-                          {file.file_type?.startsWith('image/') ? 
-                            <Image size={16} className="text-gray-500" /> : 
-                           file.file_type?.startsWith('video/') ? 
-                            <Video size={16} className="text-gray-500" /> : 
-                            <FileText size={16} className="text-gray-500" />
-                          }
+                          {(() => {
+                            const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
+                            if (fileType.startsWith('image/')) {
+                              return <Image size={16} className="text-gray-500" />
+                            } else if (fileType.startsWith('video/')) {
+                              return <Video size={16} className="text-gray-500" />
+                            } else {
+                              return <FileText size={16} className="text-gray-500" />
+                            }
+                          })()}
                         </div>
                         <div>
                           <p className="text-sm font-medium text-foreground truncate" style={{ maxWidth: '150px' }}>
                             {file.filename}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {file.created_at && new Date(file.created_at).toLocaleDateString()}
+                            {(() => {
+                              const createdAt = (file as any).created_at || (file as any).createdAt || (file as any).uploadedAt
+                              return createdAt ? new Date(createdAt).toLocaleDateString() : 'Unknown date'
+                            })()}
                           </p>
                         </div>
                       </div>
                       <div className="text-xs text-gray-500">
-                        {formatFileSize(file.file_size || 0)}
+                        {formatFileSize((file as any).file_size || (file as any).size || 0)}
                       </div>
                     </div>
                   ))}
@@ -246,13 +259,13 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
               <div>
                 <span className="text-gray-600">Largest file:</span>
                 <div className="font-medium text-foreground">
-                  {formatFileSize(Math.max(...mediaFiles.map(f => f.file_size || 0)))}
+                  {formatFileSize(Math.max(...mediaFiles.map(f => (f as any).file_size || (f as any).size || 0)))}
                 </div>
               </div>
               <div>
                 <span className="text-gray-600">Smallest file:</span>
                 <div className="font-medium text-foreground">
-                  {formatFileSize(Math.min(...mediaFiles.map(f => f.file_size || 0).filter(s => s > 0)))}
+                  {formatFileSize(Math.min(...mediaFiles.map(f => (f as any).file_size || (f as any).size || 0).filter(s => s > 0)))}
                 </div>
               </div>
               <div>

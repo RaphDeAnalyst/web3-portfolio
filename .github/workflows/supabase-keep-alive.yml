@@ -1,0 +1,83 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC (6 hours before Vercel cron)
+    # This provides redundancy in case Vercel cron fails
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Supabase Keep-Alive (Direct)
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          node -e "
+          const { createClient } = require('@supabase/supabase-js');
+
+          async function keepAlive() {
+            try {
+              const supabase = createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL,
+                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+              );
+
+              // Simple keep-alive query
+              const { data, error } = await supabase
+                .from('profiles')
+                .select('count')
+                .limit(1);
+
+              if (error) {
+                console.log('⚠️ Primary query failed, trying connection test...');
+                const { data: connectionTest, error: connectionError } = await supabase.auth.getSession();
+                if (connectionError) {
+                  throw new Error(\`Connection test failed: \${connectionError.message}\`);
+                }
+                console.log('✅ Supabase keep-alive successful (connection test)', new Date().toISOString());
+              } else {
+                console.log('✅ Supabase keep-alive successful', new Date().toISOString());
+              }
+            } catch (error) {
+              console.error('❌ Keep-alive failed:', error.message);
+              process.exit(1);
+            }
+          }
+
+          keepAlive();
+          "
+
+      - name: Test Vercel Endpoint (if deployed)
+        continue-on-error: true
+        run: |
+          # Try to hit the Vercel endpoint as a secondary check
+          VERCEL_URL="${{ secrets.VERCEL_DEPLOYMENT_URL || 'https://your-domain.vercel.app' }}"
+
+          echo "Testing Vercel keep-alive endpoint..."
+          curl -f -s -o /dev/null -w "HTTP Status: %{http_code}\n" \
+            "${VERCEL_URL}/api/keep-alive" || echo "Vercel endpoint test failed (expected if not deployed yet)"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "🚨 Supabase keep-alive failed!"
+          echo "Timestamp: $(date -u)"
+          echo "This indicates a potential issue with the database connection."
+          # You can add webhook notifications here if needed

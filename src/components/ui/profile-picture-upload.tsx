@@ -63,7 +63,7 @@ export function ProfilePictureUpload({
   }
 
   const resizeImage = (file: File, maxSize: number = 800): Promise<Blob> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')!
       const img = new Image()
@@ -93,7 +93,10 @@ export function ProfilePictureUpload({
         
         // Draw and compress
         ctx.drawImage(img, 0, 0, width, height)
-        canvas.toBlob(resolve, 'image/jpeg', 0.85)
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob)
+          else reject(new Error('Failed to create blob'))
+        }, 'image/jpeg', 0.85)
       }
       
       img.src = URL.createObjectURL(file)

@@ -236,7 +236,7 @@ export function ContactForm() {
                 disabled={isSubmitting}
               />
               <div className="text-center space-y-2">
-                <div className="text-2xl">{type.icon}</div>
+                <div className="text-2xl">{(type as any).icon || '📊'}</div>
                 <div className="text-xs font-medium">{type.label}</div>
               </div>
             </label>

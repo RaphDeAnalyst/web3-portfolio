@@ -4,12 +4,13 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { ProjectCard } from '@/components/ui/project-card'
 import { FilterTabs } from '@/components/ui/filter-tabs'
 import { projectCategories, Project } from '@/data/projects'
+import type { Project as ServiceProject } from '@/lib/project-service-supabase'
 import { projectService } from '@/lib/service-switcher'
 import Link from 'next/link'
 import { Search, X } from 'lucide-react'
 
 export default function Portfolio() {
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<(Project | ServiceProject)[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [activeCategory, setActiveCategory] = useState('All')
   const [sortBy, setSortBy] = useState('newest')
@@ -45,7 +46,7 @@ export default function Portfolio() {
       filtered = filtered.filter(project => 
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.tech.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
+        project.tech?.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     }
     
@@ -207,9 +208,10 @@ export default function Portfolio() {
                 : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
             }`}>
               {featuredProjects.map((project, index) => (
-                <ProjectCard 
-                  key={index} 
-                  {...project} 
+                <ProjectCard
+                  key={index}
+                  {...(project as any)}
+                  tech={(project as any).tech || (project as any).techStack || (project as any).tech_stack || []}
                   featuredCount={featuredProjects.length}
                 />
               ))}
@@ -233,7 +235,10 @@ export default function Portfolio() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {regularProjects.map((project, index) => (
                   <div key={index} className="h-full">
-                    <ProjectCard {...project} />
+                    <ProjectCard
+                      {...(project as any)}
+                      tech={(project as any).tech || (project as any).techStack || (project as any).tech_stack || []}
+                    />
                   </div>
                 ))}
               </div>

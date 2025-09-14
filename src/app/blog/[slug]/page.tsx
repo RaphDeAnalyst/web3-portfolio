@@ -22,7 +22,7 @@ export async function generateMetadata(
     }
 
     const title = `${post.title} | Matthew Raphael Web3 Data Analytics Blog`
-    const description = post.summary || post.description || `${post.title} - Web3 data analytics insights and blockchain research by Matthew Raphael`
+    const description = post.summary || `${post.title} - Web3 data analytics insights and blockchain research by Matthew Raphael`
     const keywords = [
       ...post.tags.map(tag => `${tag} Web3`),
       `${post.category} Analytics`,
@@ -44,8 +44,8 @@ export async function generateMetadata(
         description,
         url: `https://matthewraphael.xyz/blog/${params.slug}`,
         type: 'article',
-        publishedTime: post.date || post.createdAt,
-        modifiedTime: post.updatedAt || post.date || post.createdAt,
+        publishedTime: post.date || post.createdAt || new Date().toISOString(),
+        modifiedTime: post.updatedAt || post.date || post.createdAt || new Date().toISOString(),
         authors: [post.author?.name || 'Matthew Raphael'],
         tags: post.tags,
         images: post.featuredImage ? [
@@ -69,8 +69,8 @@ export async function generateMetadata(
       },
       other: {
         'article:author': post.author?.name || 'Matthew Raphael',
-        'article:published_time': post.date || post.createdAt,
-        'article:modified_time': post.updatedAt || post.date || post.createdAt,
+        'article:published_time': post.date || post.createdAt || new Date().toISOString(),
+        'article:modified_time': post.updatedAt || post.date || post.createdAt || new Date().toISOString(),
         'article:section': post.category,
         'article:tag': post.tags.join(', '),
       },

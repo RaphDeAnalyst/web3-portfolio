@@ -187,7 +187,7 @@ export class SmartUploadRouter {
     }
 
     // For collaborative documents, Google Drive might be better
-    if (options.metadata?.collaborative) {
+    if ((options as any).metadata?.collaborative) {
       return {
         provider: 'googledrive',
         reason: 'Collaborative document - Google Drive provides better sharing',

@@ -97,7 +97,8 @@ export class DataMigration {
 
     try {
       // Get existing projects from localStorage
-      const existingProjects = legacyProjectService.getAllProjects()
+      const legacyService = new legacyProjectService()
+      const existingProjects = legacyService.getAllProjects()
       
       if (existingProjects.length === 0) {
         console.log('No projects to migrate')
@@ -113,12 +114,12 @@ export class DataMigration {
             title: project.title,
             description: project.description,
             category: project.category,
-            tech_stack: project.techStack || [],
+            tech_stack: (project as any).techStack || (project as any).tech || [],
             status: project.status,
             featured: project.featured || false,
-            github_url: project.github,
-            demo_url: project.demo,
-            image: project.image
+            github_url: (project as any).github || (project as any).githubUrl,
+            demo_url: (project as any).demo || (project as any).demoUrl,
+            image: (project as any).image
           }
 
           // Check if project already exists

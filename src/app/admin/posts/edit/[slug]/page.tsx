@@ -12,7 +12,7 @@ import { FileText } from 'lucide-react'
 export default function EditBlogPost() {
   const router = useRouter()
   const params = useParams()
-  const id = params.slug as string // Using slug param but it's actually the post ID
+  const id = params?.slug as string // Using slug param but it's actually the post ID
   
   const [postData, setPostData] = useState<BlogPostData | null>(null)
   const [loading, setLoading] = useState(true)

@@ -42,7 +42,7 @@ export function BlogCard({
 }: BlogCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const [profileData, setProfileData] = useState(null)
+  const [profileData, setProfileData] = useState<any>(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [viewCount, setViewCount] = useState(0)
 

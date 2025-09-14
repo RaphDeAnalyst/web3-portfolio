@@ -304,10 +304,17 @@ export class MediaServiceHybrid {
   // Increment usage count
   async trackUsage(id: string): Promise<void> {
     try {
+      // First get current usage count
+      const { data: currentData } = await supabase
+        .from('media')
+        .select('usage_count')
+        .eq('id', id)
+        .single()
+
       const { error } = await supabase
         .from('media')
-        .update({ 
-          usage_count: supabase.raw('usage_count + 1'),
+        .update({
+          usage_count: (currentData?.usage_count || 0) + 1,
           last_accessed_at: new Date().toISOString()
         })
         .eq('id', id)
