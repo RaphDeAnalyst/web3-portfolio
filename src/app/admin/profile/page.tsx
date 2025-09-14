@@ -95,7 +95,7 @@ export default function ProfileManagement() {
         </div>
         <h1 className="text-2xl font-bold text-foreground">Profile Not Found</h1>
         <p className="text-foreground/70">Unable to load profile data.</p>
-        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg">
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20">
           Retry
         </button>
       </div>
@@ -122,7 +122,7 @@ export default function ProfileManagement() {
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
         >
           <span>{isLoading ? 'Saving...' : 'Save Changes'}</span>
         </button>
@@ -171,7 +171,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.name}
-                  onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, name: e.target.value } : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -183,7 +183,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.title}
-                  onChange={(e) => setProfile(prev => ({ ...prev, title: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, title: e.target.value } : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -195,7 +195,7 @@ export default function ProfileManagement() {
                 <input
                   type="email"
                   value={profile.email}
-                  onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, email: e.target.value } : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -207,7 +207,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.location}
-                  onChange={(e) => setProfile(prev => ({ ...prev, location: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, location: e.target.value } : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -219,7 +219,7 @@ export default function ProfileManagement() {
               </label>
               <textarea
                 value={profile.bio}
-                onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
+                onChange={(e) => setProfile(prev => prev ? { ...prev, bio: e.target.value } : null)}
                 rows={4}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 placeholder="Tell people about yourself..."
@@ -239,7 +239,7 @@ export default function ProfileManagement() {
                 <input
                   type="url"
                   value={profile.website}
-                  onChange={(e) => setProfile(prev => ({ ...prev, website: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, website: e.target.value } : null)}
                   placeholder="https://yourwebsite.com"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -252,7 +252,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.github}
-                  onChange={(e) => setProfile(prev => ({ ...prev, github: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, github: e.target.value } : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -265,7 +265,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.twitter}
-                  onChange={(e) => setProfile(prev => ({ ...prev, twitter: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, twitter: e.target.value } : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -278,7 +278,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.linkedin}
-                  onChange={(e) => setProfile(prev => ({ ...prev, linkedin: e.target.value }))}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, linkedin: e.target.value } : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />

@@ -84,7 +84,7 @@ export default function EditProject() {
         <p className="text-foreground/70">The project you're looking for doesn't exist.</p>
         <Link
           href="/admin/projects"
-          className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
+          className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
         >
           <span>←</span>
           <span>Back to Projects</span>

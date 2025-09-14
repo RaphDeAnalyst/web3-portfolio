@@ -4,6 +4,7 @@ import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { BlogPostClient } from '@/components/blog/BlogPostClient'
 import { StructuredData } from '@/components/seo/StructuredData'
 import { blogService, profileService } from '@/lib/service-switcher'
+import { calculateReadingTime } from '@/lib/reading-time'
 import Link from 'next/link'
 
 // Generate metadata for dynamic blog posts
@@ -111,7 +112,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-sm text-foreground/60 mb-8">
-              <Link href="/blog" className="hover:text-cyber-500 transition-colors duration-200">
+              <Link href="/blog" className="hover:text-foreground transition-colors duration-200">
                 Blog
               </Link>
               <span>›</span>
@@ -123,11 +124,11 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               {/* Category Badge */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground text-sm font-medium border border-gray-200 dark:border-gray-700">
                     {post.category}
                   </span>
                   <span className="text-sm text-foreground/60">
-                    {post.date} • {post.readTime}
+                    {post.date} • {post.readTime || calculateReadingTime(post.content || '')}
                   </span>
                 </div>
               </div>
@@ -143,7 +144,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   <img
                     src={post.featuredImage}
                     alt={`${post.title} - Web3 ${post.category} analysis by Matthew Raphael covering ${post.tags.slice(0, 3).join(', ')} blockchain analytics topics`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               )}
@@ -162,7 +163,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                     className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center text-background font-bold">
                     {post.author.name.charAt(0)}
                   </div>
                 )}
@@ -194,7 +195,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                 <Link
                   key={tag}
                   href={`/blog?search=${tag.toLowerCase()}`}
-                  className="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground/70 hover:bg-cyber-500/10 hover:text-cyber-500 transition-colors duration-200"
+                  className="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground/70 hover:bg-foreground/10 hover:text-foreground transition-colors duration-200"
                 >
                   #{tag}
                 </Link>
@@ -212,7 +213,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             <div className="flex flex-col sm:flex-row justify-between items-center p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm space-y-4 sm:space-y-0">
               <Link
                 href="/blog"
-                className="flex items-center space-x-2 text-foreground/70 hover:text-cyber-500 transition-colors duration-200"
+                className="flex items-center space-x-2 text-foreground/70 hover:text-foreground transition-colors duration-200"
               >
                 <span>←</span>
                 <span>Back to Blog</span>
@@ -220,7 +221,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
               <div className="flex items-center space-x-4">
                 <Link href="/contact">
-                  <button className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 transition-colors duration-200">
+                  <button className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-foreground hover:bg-foreground/5 transition-colors duration-200">
                     Subscribe
                   </button>
                 </Link>

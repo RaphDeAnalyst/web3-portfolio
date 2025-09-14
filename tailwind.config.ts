@@ -83,6 +83,25 @@ export default {
           'gray-700': '#222222',
           'gray-800': '#111111',
           black: '#000000',
+        },
+
+        // Selective accent colors (sparingly used)
+        accent: {
+          blue: {
+            DEFAULT: '#2563EB', // Soft blue for CTAs and highlights
+            light: '#3B82F6',
+            dark: '#1D4ED8',
+          },
+          green: {
+            DEFAULT: '#10B981', // Green for success states and availability
+            light: '#34D399',
+            dark: '#059669',
+          },
+          warning: {
+            DEFAULT: '#F59E0B', // Orange/yellow for caution states
+            light: '#FBBF24',
+            dark: '#D97706',
+          }
         }
       },
       backgroundImage: {

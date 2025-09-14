@@ -183,8 +183,8 @@ export default function AdminDashboard() {
           </Link>
           
           <Link href="/admin/projects/new">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/5 transition-colors group">
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-500 group-hover:bg-primary-500/20 transition-colors">
+            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-accent-blue hover:bg-accent-blue/5 transition-all duration-200 group shadow-lg shadow-accent-blue/20">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent-blue/10 flex items-center justify-center text-accent-blue group-hover:bg-accent-blue/20 transition-colors">
                 <Rocket size={20} />
               </div>
               <div className="text-left">

@@ -170,7 +170,7 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
           <button
             onClick={() => handleSave(false)}
             disabled={isSaving || !formData.title.trim() || !formData.description.trim()}
-            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none flex items-center space-x-2"
+            className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg shadow-lg shadow-accent-blue/20 transition-all duration-200 disabled:opacity-50 disabled:transform-none flex items-center space-x-2"
           >
             {isSaving ? (
               <>

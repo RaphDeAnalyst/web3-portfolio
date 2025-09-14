@@ -257,7 +257,7 @@ export function ProfilePictureUpload({
               }}
             />
           ) : showFallback ? (
-            <div className="w-full h-full bg-gradient-to-br from-primary-500 to-cyber-500 flex items-center justify-center text-white">
+            <div className="w-full h-full bg-accent-blue flex items-center justify-center text-white">
               <span className={`font-bold ${
                 size === 'sm' ? 'text-lg' : size === 'md' ? 'text-xl' : size === 'lg' ? 'text-2xl' : 'text-4xl'
               }`}>

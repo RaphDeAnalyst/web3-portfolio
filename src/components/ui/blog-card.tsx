@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
+import { calculateReadingTime } from '@/lib/reading-time'
 
 interface BlogCardProps {
   title: string
   summary: string
   date: string
-  readTime: string
+  readTime?: string
   tags: string[]
   slug: string
   featured?: boolean
@@ -21,27 +22,32 @@ interface BlogCardProps {
   image?: string
   category: string
   featuredCount?: number
+  content?: string
 }
 
-export function BlogCard({ 
-  title, 
-  summary, 
-  date, 
-  readTime, 
-  tags, 
-  slug, 
+export function BlogCard({
+  title,
+  summary,
+  date,
+  readTime,
+  tags,
+  slug,
   featured = false,
   author,
   featuredImage,
   image,
   category,
-  featuredCount = 0
+  featuredCount = 0,
+  content = ''
 }: BlogCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [profileData, setProfileData] = useState(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [viewCount, setViewCount] = useState(0)
+
+  // Calculate reading time if not provided
+  const calculatedReadTime = readTime || (content ? calculateReadingTime(content) : '5 min read')
 
   useEffect(() => {
     // Set hydrated state and update profile data when component mounts
@@ -131,9 +137,9 @@ export function BlogCard({
                 <img
                   src={featuredImage || image}
                   alt={`${title} - Web3 ${category} article by Matthew Raphael covering ${tags.slice(0, 3).join(', ')} blockchain analytics topics`}
-                  className={`w-full h-full object-cover transition-all duration-300 ${
+                  className={`w-full h-full object-contain transition-all duration-300 ${
                     imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-                  } ${isHovered ? 'scale-110' : ''}`}
+                  } ${isHovered ? 'scale-105' : ''}`}
                   onLoad={() => setImageLoaded(true)}
                 />
                 {!imageLoaded && (
@@ -175,7 +181,7 @@ export function BlogCard({
               <div className="flex items-center space-x-2 text-xs text-foreground/60">
                 <span>{date}</span>
                 <span>•</span>
-                <span>{readTime}</span>
+                <span>{calculatedReadTime}</span>
               </div>
             </div>
           </div>

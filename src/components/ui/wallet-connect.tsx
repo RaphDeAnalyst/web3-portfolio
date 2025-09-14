@@ -105,7 +105,7 @@ export function WalletConnect() {
           
           {/* Address/ENS */}
           <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-xs font-bold">
+            <div className="w-6 h-6 rounded-full bg-accent-blue flex items-center justify-center text-white text-xs font-bold">
               W
             </div>
             <span className="text-sm font-medium text-foreground">

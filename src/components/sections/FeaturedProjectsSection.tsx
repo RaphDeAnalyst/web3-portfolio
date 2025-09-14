@@ -16,9 +16,9 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/30 bg-primary-500/5 backdrop-blur-sm mb-6">
-            <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-primary-500">Featured Work</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-accent-blue/30 bg-accent-blue/5 backdrop-blur-sm mb-6">
+            <span className="w-2 h-2 bg-accent-blue rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-accent-blue">Featured Work</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Highlighted <span className="text-gradient">Projects</span>
@@ -59,7 +59,7 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
               Featured projects will appear here once they're selected in the admin panel.
             </p>
             <Link href="/portfolio">
-              <button className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+              <button className="px-6 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
                 View All Projects
               </button>
             </Link>
@@ -70,7 +70,7 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
         {featuredProjects.length > 0 && (
           <div className="text-center mt-16">
             <Link href="/portfolio">
-              <button className="px-10 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-2xl shadow-primary-500/20">
+              <button className="px-10 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-lg shadow-2xl shadow-accent-blue/20 transition-all duration-200">
                 View All Projects
               </button>
             </Link>

@@ -34,7 +34,7 @@ export function NewsletterSignup() {
       {/* Content */}
       <div className="relative z-10 p-12 text-center">
         {/* Icon */}
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-2xl">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent-blue flex items-center justify-center text-white text-2xl">
           <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
@@ -70,7 +70,7 @@ export function NewsletterSignup() {
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 isSubmitted 
                   ? 'bg-gray-600 text-white' 
-                  : 'bg-gradient-to-r from-primary-500 to-cyber-500 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
+                  : 'bg-accent-blue hover:bg-accent-blue-light text-white hover:scale-105 shadow-lg shadow-accent-blue/20'
               } ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
             >
               {isSubmitting && (

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { UtterancesComments, UtterancesSetupInstructions } from '@/components/ui/utterances-comments'
+import { UtterancesComments } from '@/components/ui/utterances-comments'
 import { viewTracker } from '@/lib/view-tracking'
 
 interface BlogPostClientProps {
@@ -49,8 +49,6 @@ export function BlogPostClient({ slug, title }: BlogPostClientProps) {
       {/* Comments Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* Setup Instructions (remove this after setting up utterances) */}
-          <UtterancesSetupInstructions />
 
           {/* Utterances Comments */}
           <UtterancesComments slug={slug} title={title} />
@@ -62,7 +60,7 @@ export function BlogPostClient({ slug, title }: BlogPostClientProps) {
         <div className="max-w-4xl mx-auto text-center">
           <button
             onClick={handleShare}
-            className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200"
+            className="px-6 py-3 rounded-full bg-foreground hover:bg-foreground/80 text-background font-medium shadow-lg shadow-foreground/20 transition-all duration-200"
           >
             Share Article
           </button>

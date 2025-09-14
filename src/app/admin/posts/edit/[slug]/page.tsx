@@ -70,7 +70,7 @@ export default function EditBlogPost() {
         <p className="text-foreground/70">The blog post you're looking for doesn't exist.</p>
         <Link
           href="/admin/posts"
-          className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
+          className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
         >
           <span>←</span>
           <span>Back to Posts</span>

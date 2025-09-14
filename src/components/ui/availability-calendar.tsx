@@ -274,13 +274,13 @@ export function AvailabilityCalendar() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'available':
-        return 'bg-cyber-500'
+        return 'bg-accent-green'
       case 'limited':
-        return 'bg-yellow-500'
+        return 'bg-accent-warning'
       case 'busy':
-        return 'bg-red-500'
+        return 'bg-primary-800'
       default:
-        return 'bg-gray-400'
+        return 'bg-primary-400'
     }
   }
 
@@ -302,7 +302,7 @@ export function AvailabilityCalendar() {
       if (availability.status === 'available') {
         classes += 'hover:bg-cyber-500/10 hover:border-cyber-500/50 '
       } else if (availability.status === 'limited') {
-        classes += 'hover:bg-yellow-500/10 hover:border-yellow-500/50 '
+        classes += 'hover:bg-accent-green/10 hover:border-accent-green/50 '
       } else if (availability.status === 'busy') {
         classes += 'hover:bg-red-500/10 hover:border-red-500/50 cursor-not-allowed '
       }
@@ -345,7 +345,7 @@ export function AvailabilityCalendar() {
           
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1.5 text-sm font-medium rounded border border-border hover:border-primary-500 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
+            className="px-3 py-1.5 text-sm font-medium rounded border border-border hover:border-accent-blue hover:bg-accent-blue/10 hover:text-accent-blue transition-all duration-200"
           >
             Today
           </button>
@@ -369,7 +369,7 @@ export function AvailabilityCalendar() {
           <span className="text-sm text-foreground/80">Available</span>
         </div>
         <div className="flex items-center space-x-1">
-          <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+          <div className="w-2 h-2 rounded-full bg-accent-green"></div>
           <span className="text-sm text-foreground/80">Limited</span>
         </div>
         <div className="flex items-center space-x-1">
@@ -508,10 +508,10 @@ export function AvailabilityCalendar() {
                   </div>
                   <div className="space-y-2">
                     {hoveredDate.day.slots.map((slot, index) => {
-                      const slotBgColor = status === 'limited' ? 'bg-yellow-500/5' : 'bg-cyber-500/5'
-                      const slotBorderColor = status === 'limited' ? 'border-yellow-500/20' : 'border-cyber-500/20'
-                      const slotTextColor = status === 'limited' ? 'text-yellow-500' : 'text-cyber-500'
-                      const hoverBgColor = status === 'limited' ? 'hover:bg-yellow-500/10' : 'hover:bg-cyber-500/10'
+                      const slotBgColor = status === 'limited' ? 'bg-accent-warning/5' : 'bg-accent-green/5'
+                      const slotBorderColor = status === 'limited' ? 'border-accent-warning/20' : 'border-accent-green/20'
+                      const slotTextColor = status === 'limited' ? 'text-accent-warning' : 'text-accent-green'
+                      const hoverBgColor = status === 'limited' ? 'hover:bg-accent-warning/10' : 'hover:bg-accent-green/10'
                       
                       // Create date object for this slot
                       const [year, month, day] = hoveredDate.day.date.split('-').map(Number)
@@ -591,7 +591,7 @@ export function AvailabilityCalendar() {
             </div>
             <div className="flex justify-between">
               <span>Saturday:</span>
-              <span className="text-yellow-500 font-medium">10:00 AM - 1:00 PM</span>
+              <span className="text-accent-warning font-medium">10:00 AM - 1:00 PM</span>
             </div>
             <div className="flex justify-between">
               <span>Sunday:</span>

@@ -171,7 +171,7 @@ export function ContactInfo() {
                     </button>
                     <button
                       onClick={() => handleCopy(method.value, method.id)}
-                      className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200 text-sm font-medium"
+                      className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200 text-sm font-medium shadow-lg shadow-accent-blue/20"
                     >
                       {copiedItem === method.id ? '✓ Copied!' : 'Copy'}
                     </button>
@@ -308,7 +308,7 @@ export function ContactInfo() {
         <div className="space-y-4">
           <button 
             onClick={() => window.open('https://calendly.com/matthewraphael-matthewraphael/30min', '_blank')}
-            className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-primary-500 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30"
+            className="px-6 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30"
           >
             Schedule Free Call
           </button>
@@ -339,7 +339,7 @@ export function ContactInfo() {
             }
           ].map((faq, index) => (
             <details key={index} className="group">
-              <summary className="cursor-pointer p-4 rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/50 hover:border-primary-500/50 transition-colors duration-200 font-medium text-foreground">
+              <summary className="cursor-pointer p-4 rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/50 hover:border-accent-blue/50 hover:bg-accent-blue/5 transition-all duration-200 font-medium text-foreground">
                 {faq.q}
               </summary>
               <div className="mt-2 p-4 rounded-lg bg-gray-50/50 dark:bg-gray-900/20 text-sm text-foreground/70">

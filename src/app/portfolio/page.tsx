@@ -258,14 +258,14 @@ export default function Portfolio() {
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery('')}
-                    className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-medium hover:scale-105 transition-transform duration-200"
+                    className="px-6 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
                   >
                     Clear Search
                   </button>
                 )}
                 <button 
                   onClick={() => setActiveCategory('All')}
-                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200"
+                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200"
                 >
                   View All Projects
                 </button>
@@ -288,12 +288,12 @@ export default function Portfolio() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-semibold hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+                <button className="px-8 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30">
                   Get In Touch
                 </button>
               </Link>
               <Link href="/about">
-                <button className="px-8 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground font-semibold hover:border-primary-500 hover:text-primary-500 transition-colors duration-200">
+                <button className="px-8 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground font-semibold hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200 shadow-lg shadow-accent-blue/20">
                   Learn About Me
                 </button>
               </Link>

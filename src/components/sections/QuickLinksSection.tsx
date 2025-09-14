@@ -125,7 +125,7 @@ export function QuickLinksSection() {
         <div className="text-center mt-20">
           <div className="inline-flex flex-col sm:flex-row gap-4">
             <Link href="/portfolio">
-              <button className="px-8 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+              <button className="px-8 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold shadow-lg shadow-accent-blue/20 transition-all duration-200">
                 View All Projects
               </button>
             </Link>

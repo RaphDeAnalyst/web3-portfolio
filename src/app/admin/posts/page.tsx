@@ -83,7 +83,7 @@ export default function PostsManagement() {
         </div>
         <Link
           href="/admin/posts/new"
-          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200 flex items-center space-x-2"
+          className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 flex items-center space-x-2"
         >
           <span>New Post</span>
         </Link>
@@ -302,7 +302,7 @@ Delete
             </p>
             <Link
               href="/admin/posts/new"
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg font-medium hover:scale-105 transition-transform duration-200"
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
             >
               <span>Create First Post</span>
             </Link>

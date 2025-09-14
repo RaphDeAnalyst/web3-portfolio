@@ -16,7 +16,7 @@ export function HeroErrorFallback() {
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="px-8 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200"
+          className="px-8 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200"
         >
           Refresh Page
         </button>
@@ -38,7 +38,7 @@ export function QuickLinksErrorFallback() {
           The navigation section is temporarily unavailable. You can still access pages directly:
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <a href="/about" className="px-6 py-2 rounded-lg border border-primary-500/30 text-primary-500 hover:bg-primary-500/10 transition-colors">
+          <a href="/about" className="px-6 py-2 rounded-lg border border-accent-blue/30 text-accent-blue hover:bg-accent-blue/10 transition-all duration-200 shadow-lg shadow-accent-blue/20">
             About
           </a>
           <a href="/portfolio" className="px-6 py-2 rounded-lg border border-cyber-500/30 text-cyber-500 hover:bg-cyber-500/10 transition-colors">
@@ -79,7 +79,7 @@ export function FeaturedProjectsErrorFallback() {
             </div>
           ))}
         </div>
-        <a href="/portfolio" className="px-8 py-3 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+        <a href="/portfolio" className="px-8 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
           View All Projects
         </a>
       </div>
@@ -118,7 +118,7 @@ export function BlogErrorFallback() {
             </div>
           ))}
         </div>
-        <a href="/blog" className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-primary-500 text-white font-medium hover:scale-105 transition-transform duration-200">
+        <a href="/blog" className="px-8 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
           View All Posts
         </a>
       </div>

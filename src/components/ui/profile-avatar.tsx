@@ -127,7 +127,7 @@ export function ProfileAvatar({
             />
           </div>
         ) : (
-          <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white font-bold ${textSizeClasses[size]} shadow-lg shadow-primary-500/20 transition-all duration-300 hover:shadow-primary-500/30 hover:scale-105`}>
+          <div className={`${sizeClasses[size]} rounded-full bg-accent-blue flex items-center justify-center text-white font-bold ${textSizeClasses[size]} shadow-lg shadow-accent-blue/20 transition-all duration-300 hover:shadow-accent-blue/30 hover:scale-105`}>
             {initials}
           </div>
         )}

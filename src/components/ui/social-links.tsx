@@ -201,7 +201,7 @@ export function SocialLinks() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center space-y-3 p-4 rounded-xl border border-gray-200/30 dark:border-gray-800/30 bg-background/30">
-            <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white">
+            <div className="w-12 h-12 mx-auto rounded-full bg-accent-blue flex items-center justify-center text-white">
               <MessageCircle className="w-6 h-6" />
             </div>
             <div>
@@ -232,7 +232,7 @@ export function SocialLinks() {
         </div>
 
         <div className="mt-6 text-center">
-          <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+          <button className="px-6 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
             Connect Wallet to Unlock
           </button>
         </div>

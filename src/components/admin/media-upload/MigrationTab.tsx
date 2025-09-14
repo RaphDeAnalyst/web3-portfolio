@@ -49,7 +49,7 @@ export function MigrationTab({ migrationStatus, onMigration }: MigrationTabProps
     
     switch (variant) {
       case 'primary':
-        return `${base} bg-primary-500 text-white hover:bg-primary-600 disabled:hover:bg-primary-500`
+        return `${base} bg-accent-blue text-white hover:bg-accent-blue-light disabled:hover:bg-accent-blue transition-all duration-200 shadow-lg shadow-accent-blue/20`
       case 'secondary':
         return `${base} bg-secondary-500 text-white hover:bg-secondary-600 disabled:hover:bg-secondary-500`
       case 'danger':

@@ -317,7 +317,7 @@ export function ContactForm() {
         className={`w-full px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
           isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-primary-600 to-primary-400 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
+            : 'bg-accent-blue hover:bg-accent-blue-light text-white hover:scale-105 shadow-lg shadow-accent-blue/30 transition-all duration-200'
         }`}
       >
         {isSubmitting && (

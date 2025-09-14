@@ -29,9 +29,9 @@ const SkillsSection = memo(function SkillsSection() {
     <section className="py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-gray-50/30 dark:via-gray-900/20 to-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 backdrop-blur-sm mb-6">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-green-500">Technical Arsenal</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-accent-blue/30 bg-accent-blue/5 backdrop-blur-sm mb-6">
+            <span className="w-2 h-2 bg-accent-blue rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-accent-blue">Technical Arsenal</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Skills & <span className="text-gradient">Expertise</span>
@@ -82,7 +82,7 @@ const SkillsSection = memo(function SkillsSection() {
         {/* CTA */}
         <div className="text-center mt-16">
           <Link href="/about">
-            <button className="px-10 py-4 rounded-full border-2 border-green-500/30 text-green-500 font-semibold text-lg hover:bg-green-500/10 hover:border-green-500 transition-all duration-200 backdrop-blur-sm">
+            <button className="px-10 py-4 rounded-full border-2 border-accent-blue/30 text-accent-blue font-semibold text-lg hover:bg-accent-blue/10 hover:border-accent-blue transition-all duration-200 backdrop-blur-sm">
               Learn More About My Journey
             </button>
           </Link>

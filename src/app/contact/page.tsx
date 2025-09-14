@@ -144,7 +144,7 @@ export default function Contact() {
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white">
+            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-accent-blue flex items-center justify-center text-white">
               <Send className="w-10 h-10" />
             </div>
             
@@ -160,7 +160,7 @@ export default function Contact() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
                 onClick={() => document.querySelector('form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30"
+                className="px-8 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-lg hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30"
               >
                 Start Your Project
               </button>

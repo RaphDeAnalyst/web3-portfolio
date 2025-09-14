@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-500/10 to-cyber-500/10 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/20 flex items-center justify-center">
         <div className="max-w-md w-full mx-4">
           <div className="bg-background/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-800/50 p-8 shadow-2xl">
             <div className="text-center mb-8">
@@ -76,7 +76,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               )}
               <button
                 type="submit"
-                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-medium hover:scale-105 transition-transform duration-200"
+                className="w-full px-4 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
               >
                 Login
               </button>

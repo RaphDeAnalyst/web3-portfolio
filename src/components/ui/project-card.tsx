@@ -95,7 +95,7 @@ export function ProjectCard({
 
   return (
     <div 
-      className={`group relative ${cardSize} rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover overflow-hidden ${
+      className={`group relative ${cardSize} rounded-2xl border border-gray-200/50 dark:border-gray-800/50 hover:border-accent-blue/50 hover:shadow-lg hover:shadow-accent-blue/20 bg-background/50 backdrop-blur-sm transition-all duration-300 overflow-hidden ${
         featured ? 'p-4 sm:p-8 min-h-[500px] sm:min-h-[600px]' : 'p-4 sm:p-6 min-h-[500px] sm:min-h-[600px]'
       } flex flex-col`}
       onMouseEnter={() => setIsHovered(true)}
@@ -270,7 +270,7 @@ export function ProjectCard({
               {/* Read More button */}
               {demoUrl && demoUrl !== '#' && demoUrl.trim() !== '' ? (
                 <Link href={demoUrl} target="_blank" className="w-full">
-                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-primary-600 to-primary-400 text-white font-medium hover:scale-105 transition-transform duration-200 shadow-lg text-center text-sm">
+                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 text-center text-sm">
                     Read More
                   </button>
                 </Link>
@@ -287,7 +287,7 @@ export function ProjectCard({
               {/* GitHub button */}
               {githubUrl && githubUrl !== '#' && githubUrl.trim() !== '' ? (
                 <Link href={githubUrl} target="_blank" className="w-full">
-                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200 flex items-center justify-center text-sm">
+                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 flex items-center justify-center text-sm">
                     <Github className="w-5 h-5" />
                   </button>
                 </Link>
@@ -307,14 +307,14 @@ export function ProjectCard({
               <div className="grid grid-cols-2 gap-3">
                 {duneUrl && duneUrl !== '#' && duneUrl.trim() !== '' && (
                   <Link href={duneUrl} target="_blank" className="w-full">
-                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200 text-sm font-medium text-center">
+                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 text-sm font-medium text-center">
                       Dashboard
                     </button>
                   </Link>
                 )}
                 {blogPostSlug && blogPostSlug.trim() !== '' && (
                   <Link href={`/blog/${blogPostSlug}`} className="w-full">
-                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200 text-sm font-medium text-center">
+                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 text-sm font-medium text-center">
                       Read Blog Post
                     </button>
                   </Link>

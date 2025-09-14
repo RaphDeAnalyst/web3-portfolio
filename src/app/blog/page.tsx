@@ -95,9 +95,9 @@ export default function Blog() {
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-600/30 bg-primary-600/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-primary-600 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-primary-600">Blog</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-foreground">Blog</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
@@ -107,9 +107,9 @@ export default function Blog() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Deep dives into <span className="text-primary-600 font-medium">blockchain analytics</span>,
-            <span className="text-primary-500 font-medium"> AI applications</span>, and
-            <span className="text-primary-600 font-medium"> Web3 development</span>
+            Deep dives into <span className="text-foreground font-medium">blockchain analytics</span>,
+            <span className="text-foreground font-medium"> AI applications</span>, and
+            <span className="text-foreground font-medium"> Web3 development</span>
           </p>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default function Blog() {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 text-sm sm:text-base"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10 transition-all duration-200 text-sm sm:text-base"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
                 <Search className="w-5 h-5" />
@@ -147,7 +147,6 @@ export default function Blog() {
             {categories.map((category) => {
               const isActive = selectedCategory === category
               const count = categoryCounts[category] || 0
-              const color = 'primary-500'
 
               return (
                 <button
@@ -155,12 +154,12 @@ export default function Blog() {
                   onClick={() => setSelectedCategory(category)}
                   className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
                     isActive
-                      ? 'bg-primary-500/20 text-primary-500 border-2 border-primary-500/40 shadow-lg shadow-primary-500/20'
+                      ? 'bg-foreground/10 text-foreground border-2 border-foreground/30 shadow-lg shadow-foreground/20'
                       : 'bg-background/50 text-foreground/70 border-2 border-border'
                   } backdrop-blur-sm`}
                 >
                   {/* Background glow effect - only for active */}
-                  <div className={`absolute inset-0 rounded-lg bg-primary-500/10 opacity-0 ${
+                  <div className={`absolute inset-0 rounded-lg bg-foreground/5 opacity-0 ${
                     isActive ? 'opacity-100' : ''
                   } transition-opacity duration-300`}></div>
 
@@ -171,7 +170,7 @@ export default function Blog() {
                     {/* Count badge */}
                     <div className={`ml-1 sm:ml-1.5 px-1 sm:px-1.5 py-0.5 rounded-full text-xs font-medium ${
                       isActive
-                        ? 'bg-primary-500/30 text-primary-500'
+                        ? 'bg-foreground/20 text-foreground'
                         : 'bg-muted text-foreground/60'
                     } transition-colors duration-300`}>
                       {count}
@@ -180,7 +179,7 @@ export default function Blog() {
 
                   {/* Active indicator */}
                   {isActive && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-foreground animate-pulse"></div>
                   )}
 
                 </button>
@@ -202,7 +201,7 @@ export default function Blog() {
                   onClick={() => setSortBy(option.value)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     sortBy === option.value
-                      ? 'bg-primary-500/20 text-primary-500'
+                      ? 'bg-foreground/10 text-foreground'
                       : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
@@ -262,15 +261,15 @@ export default function Blog() {
                 No articles match your search criteria. Try adjusting your search or category filter.
               </p>
               <div className="space-x-4">
-                <button 
+                <button
                   onClick={() => setSearchQuery('')}
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-medium hover:scale-105 transition-transform duration-200"
+                  className="px-6 py-3 rounded-full bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
                 >
                   Clear Search
                 </button>
                 <button
                   onClick={() => setSelectedCategory('All')}
-                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-primary-500 hover:text-primary-500 transition-colors duration-200"
+                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-foreground hover:text-foreground hover:bg-foreground/5 transition-all duration-200 shadow-lg shadow-foreground/20"
                 >
                   View All Articles
                 </button>
@@ -300,7 +299,7 @@ export default function Blog() {
               <button
                 key={tag}
                 onClick={() => setSearchQuery(tag.toLowerCase())}
-                className="px-4 py-2 rounded-full bg-background/80 border border-gray-200/50 dark:border-gray-800/50 text-foreground/70 hover:border-primary-500 hover:text-primary-500 transition-all duration-200 backdrop-blur-sm text-sm"
+                className="px-4 py-2 rounded-full bg-background/80 border border-gray-200/50 dark:border-gray-800/50 text-foreground/70 hover:border-foreground/50 hover:text-foreground hover:bg-foreground/5 transition-all duration-200 backdrop-blur-sm text-sm"
               >
                 #{tag}
               </button>

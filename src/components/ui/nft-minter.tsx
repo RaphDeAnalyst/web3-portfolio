@@ -268,7 +268,7 @@ export function NFTMinter() {
           className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
             isMinting
               ? 'bg-gray-400 cursor-not-allowed text-white'
-              : 'bg-gradient-to-r from-primary-500 to-cyber-500 text-white hover:scale-105 shadow-lg shadow-primary-500/30'
+              : 'bg-accent-blue hover:bg-accent-blue-light text-white shadow-lg shadow-accent-blue/20'
           }`}
         >
           {isMinting && (

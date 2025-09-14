@@ -90,7 +90,7 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
             href="https://github.com/utterance/utterances"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyber-500 hover:text-primary-500 underline"
+            className="text-foreground hover:text-foreground/80 underline"
           >
             Utterances
           </a>

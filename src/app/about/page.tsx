@@ -242,7 +242,7 @@ export default function About() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold text-lg hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30">
+                <button className="px-8 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-lg hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30">
                   Start a Project
                 </button>
               </Link>

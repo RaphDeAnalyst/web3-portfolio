@@ -123,7 +123,7 @@ export function ProfileCard() {
                     className="w-40 h-40 rounded-full object-cover shadow-2xl shadow-primary-500/30 border-4 border-gradient-to-r border-transparent bg-gradient-to-r from-primary-500 to-cyber-500"
                   />
                 ) : (
-                  <div className="w-40 h-40 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-6xl font-bold shadow-2xl shadow-primary-500/30">
+                  <div className="w-40 h-40 rounded-full bg-accent-blue flex items-center justify-center text-white text-6xl font-bold shadow-2xl shadow-accent-blue/30">
                     {profile?.name ? profile.name.charAt(0).toUpperCase() : 'MR'}
                   </div>
                 )}
@@ -169,7 +169,7 @@ export function ProfileCard() {
                 {/* Quick Actions */}
                 <div className="flex space-x-3">
                   <a href="/contact">
-                    <button className="px-6 py-2 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 text-white text-sm font-medium hover:scale-105 transition-transform duration-200">
+                    <button className="px-6 py-2 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white text-sm font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
                       Hire Me
                     </button>
                   </a>
@@ -265,9 +265,9 @@ export function ProfileCard() {
                 {/* Contact CTA */}
                 {profile?.email && (
                   <div>
-                    <a 
+                    <a
                       href={`mailto:${profile.email}`}
-                      className="w-full flex items-center justify-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-primary-500 to-cyber-500 text-white font-semibold hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary-500/30"
+                      className="w-full flex items-center justify-center space-x-3 p-4 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-semibold shadow-lg shadow-accent-blue/20 transition-all duration-200"
                     >
                       <span className="text-lg">📩</span>
                       <span>Hire Me</span>

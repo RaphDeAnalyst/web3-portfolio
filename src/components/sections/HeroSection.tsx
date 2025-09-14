@@ -36,13 +36,12 @@ export function HeroSection() {
           {/* Enhanced CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
             <Link href="/portfolio">
-              <button className="group relative px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white font-semibold text-base sm:text-lg hover:scale-105 transition-transform duration-200 shadow-2xl shadow-primary-500/30">
+              <button className="group relative px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-base sm:text-lg hover:scale-105 transition-all duration-200 shadow-2xl shadow-accent-blue/30">
                 <span className="relative z-10">View Portfolio</span>
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-700 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
               </button>
             </Link>
             <Link href="/contact">
-              <button className="px-8 sm:px-10 py-3 sm:py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground text-base sm:text-lg font-semibold hover:border-primary-500 hover:text-primary-500 hover:bg-primary-500/5 transition-all duration-200 backdrop-blur-sm">
+              <button className="px-8 sm:px-10 py-3 sm:py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground text-base sm:text-lg font-semibold hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200 backdrop-blur-sm">
                 Get In Touch
               </button>
             </Link>
