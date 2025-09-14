@@ -1,0 +1,35 @@
+{
+  "name": "Matthew Raphael - Web3 Data Analyst",
+  "short_name": "Matthew Raphael",
+  "description": "Portfolio of Matthew Raphael, Web3 Data Analyst skilled in SQL, Python, and Dune Analytics. Explore blockchain dashboards, DeFi analytics, wallet profiling, and on-chain data insights.",
+  "theme_color": "#0ea5e9",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon_dark-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon_dark-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon_light-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon_light-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

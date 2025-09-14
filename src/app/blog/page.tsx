@@ -5,6 +5,7 @@ import { BlogCard } from '@/components/ui/blog-card'
 import { NewsletterSignup } from '@/components/ui/newsletter-signup'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
+import { Search, X } from 'lucide-react'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -13,11 +14,7 @@ export default function Blog() {
   const [posts, setPosts] = useState<BlogPostData[]>([])
   const [categories, setCategories] = useState<string[]>(['All'])
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isFilterBarSticky, setIsFilterBarSticky] = useState(false)
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
-  const filterBarRef = useRef<HTMLDivElement>(null)
-  const filterBarPlaceholderRef = useRef<HTMLDivElement>(null)
-  const [stickyBarHeight, setStickyBarHeight] = useState(64)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,69 +43,6 @@ export default function Blog() {
     return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
-  // Handle sticky filter bar with Intersection Observer (Facebook/Meta approach)
-  useEffect(() => {
-    if (!filterBarPlaceholderRef.current || !filterBarRef.current || !isLoaded) return
-
-    // Measure actual sticky bar height dynamically
-    const measureHeight = () => {
-      if (filterBarRef.current) {
-        const height = filterBarRef.current.getBoundingClientRect().height
-        setStickyBarHeight(height)
-      }
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When the placeholder is not visible, the filter bar should be sticky
-        const shouldBeSticky = !entry.isIntersecting && entry.boundingClientRect.top < 0
-        
-        // Measure height before switching to sticky to prevent flash
-        if (shouldBeSticky && !isFilterBarSticky) {
-          measureHeight()
-        }
-        
-        // Small delay to prevent flicker
-        requestAnimationFrame(() => {
-          setIsFilterBarSticky(shouldBeSticky)
-        })
-      },
-      {
-        threshold: 0,
-        rootMargin: '-1px 0px 0px 0px' // Slightly offset to prevent flickering
-      }
-    )
-
-    // Initial height measurement
-    measureHeight()
-    
-    // Re-measure on window resize
-    const handleResize = () => measureHeight()
-    window.addEventListener('resize', handleResize)
-
-    observer.observe(filterBarPlaceholderRef.current)
-    
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [isLoaded, isFilterBarSticky])
-
-  // Smooth scroll when filter changes (prevents jarring content jumps)
-  useEffect(() => {
-    if (isFilterBarSticky && contentRef.current) {
-      // Small delay to ensure DOM has updated after filter change
-      const timer = setTimeout(() => {
-        const stickyBarBottom = stickyBarHeight + 16 // Add small buffer
-        window.scrollTo({
-          top: Math.max(0, contentRef.current!.getBoundingClientRect().top + window.pageYOffset - stickyBarBottom),
-          behavior: 'smooth'
-        })
-      }, 50)
-      
-      return () => clearTimeout(timer)
-    }
-  }, [selectedCategory, searchQuery, isFilterBarSticky, stickyBarHeight])
 
   // Filter and separate featured and regular posts
   const { featuredPosts, regularPosts } = useMemo(() => {
@@ -181,198 +115,102 @@ export default function Blog() {
       </section>
 
       {/* Controls Section */}
-      {/* Intersection Observer Target - positioned above the actual filter bar */}
-      <div ref={filterBarPlaceholderRef} className="h-px -mb-px"></div>
-      
-      {/* Dynamic Spacer - maintains exact space when filter bar goes sticky */}
-      {isFilterBarSticky && (
-        <div 
-          className="w-full transition-all duration-200"
-          style={{ 
-            height: `${stickyBarHeight}px`,
-            marginBottom: '4rem'
-          }}
-        ></div>
-      )}
-      
-      <section 
-        ref={filterBarRef}
-        className={`px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
-          isFilterBarSticky 
-            ? 'fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-lg' 
-            : 'mb-16'
-        }`}
-      >
-        <div className={`max-w-7xl mx-auto transition-all duration-200 ${
-          isFilterBarSticky ? 'py-2' : 'py-4'
-        }`}>
+      <section className="px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="max-w-7xl mx-auto py-4">
           
-          {!isFilterBarSticky ? (
-            /* Regular (Non-Sticky) Layout */
-            <>
-              {/* Search Bar */}
-              <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search articles..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 text-sm sm:text-base"
-                  />
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors duration-200"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
+              />
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
+                <Search className="w-5 h-5" />
               </div>
-              
-              {/* Category Filter */}
-              <div className="flex flex-wrap justify-center gap-3 mb-6">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-full font-medium transition-all duration-200 ${
-                      selectedCategory === category
-                        ? 'bg-purple-500/20 text-purple-500 border border-purple-500/30'
-                        : 'bg-background/50 text-foreground/70 border border-gray-200/50 dark:border-gray-800/50 hover:border-purple-500/30'
-                    } backdrop-blur-sm`}
-                  >
-                    <span className="flex items-center space-x-2">
-                      <span>{category}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        selectedCategory === category 
-                          ? 'bg-purple-500/30 text-purple-500'
-                          : 'bg-gray-100 dark:bg-gray-800 text-foreground/60'
-                      }`}>
-                        {categoryCounts[category] || 0}
-                      </span>
-                    </span>
-                  </button>
-                ))}
-              </div>
-              
-              {/* Sort Controls */}
-              <div className="flex justify-center mb-2">
-                <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-                  <span className="text-sm text-foreground/60 px-3">Sort by:</span>
-                  {[
-                    { label: 'Newest', value: 'newest' },
-                    { label: 'Featured', value: 'featured' },
-                    { label: 'Title', value: 'title' }
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                        sortBy === option.value
-                          ? 'bg-purple-500/20 text-purple-500'
-                          : 'text-foreground/60 hover:text-foreground'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            /* Compact Sticky Layout */
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-              {/* Left: Filter Categories */}
-              <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0 overflow-x-auto w-full sm:w-auto">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 ${
-                      selectedCategory === category
-                        ? 'bg-purple-500/20 text-purple-500 border border-purple-500/30'
-                        : 'bg-background/50 text-foreground/70 border border-gray-200/50 dark:border-gray-800/50 hover:border-purple-500/30'
-                    }`}
-                  >
-                    {category}
-                    {categoryCounts[category] > 0 && (
-                      <span className="ml-1 text-xs opacity-60">
-                        {categoryCounts[category]}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-              
-              {/* Right: Search + Sort */}
-              <div className="flex items-center gap-2">
-                {/* Collapsible Search */}
-                <div className="relative">
-                  {isSearchExpanded ? (
-                    <div className="flex items-center">
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-48 px-3 py-1.5 pl-8 text-xs rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/80 text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-purple-500"
-                        onBlur={() => !searchQuery && setIsSearchExpanded(false)}
-                        autoFocus
-                      />
-                      <button
-                        onClick={() => {
-                          setSearchQuery('')
-                          setIsSearchExpanded(false)
-                        }}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground"
-                      >
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setIsSearchExpanded(true)}
-                      className="p-1.5 rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/50 text-foreground/60 hover:text-purple-500 hover:border-purple-500/30 transition-colors duration-200"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-                
-                {/* Compact Sort */}
-                <div className="flex items-center gap-1">
-                  {[
-                    { label: 'New', value: 'newest' },
-                    { label: 'Featured', value: 'featured' },
-                    { label: 'Title', value: 'title' }
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className={`px-2 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                        sortBy === option.value
-                          ? 'bg-purple-500/20 text-purple-500'
-                          : 'text-foreground/60 hover:text-foreground hover:bg-background/50'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors duration-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 px-4 sm:px-0">
+            {categories.map((category) => {
+              const isActive = selectedCategory === category
+              const count = categoryCounts[category] || 0
+              const color = 'cyber-500'
+
+              return (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? `bg-${color}/20 text-${color} border-2 border-${color}/40 shadow-lg shadow-${color}/20`
+                      : 'bg-background/50 text-foreground/70 border-2 border-border'
+                  } backdrop-blur-sm`}
+                >
+                  {/* Background glow effect - only for active */}
+                  <div className={`absolute inset-0 rounded-lg bg-${color}/10 opacity-0 ${
+                    isActive ? 'opacity-100' : ''
+                  } transition-opacity duration-300`}></div>
+
+                  {/* Content */}
+                  <div className="relative z-10 flex items-center space-x-2">
+                    <span>{category}</span>
+
+                    {/* Count badge */}
+                    <div className={`ml-1 sm:ml-1.5 px-1 sm:px-1.5 py-0.5 rounded-full text-xs font-medium ${
+                      isActive
+                        ? `bg-${color}/30 text-${color}`
+                        : 'bg-muted text-foreground/60'
+                    } transition-colors duration-300`}>
+                      {count}
+                    </div>
+                  </div>
+
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-${color} animate-pulse`}></div>
+                  )}
+
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Sort Controls */}
+          <div className="flex justify-center mb-2">
+            <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+              <span className="text-sm text-foreground/60 px-3">Sort by:</span>
+              {[
+                { label: 'Newest', value: 'newest' },
+                { label: 'Featured', value: 'featured' },
+                { label: 'Title', value: 'title' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setSortBy(option.value)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    sortBy === option.value
+                      ? 'bg-cyber-500/20 text-cyber-500'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -430,9 +268,9 @@ export default function Blog() {
                 >
                   Clear Search
                 </button>
-                <button 
+                <button
                   onClick={() => setSelectedCategory('All')}
-                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 transition-colors duration-200"
+                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
                 >
                   View All Articles
                 </button>

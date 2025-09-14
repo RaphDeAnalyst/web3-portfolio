@@ -14,11 +14,7 @@ export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [sortBy, setSortBy] = useState('newest')
   const [searchQuery, setSearchQuery] = useState('')
-  const [isFilterBarSticky, setIsFilterBarSticky] = useState(false)
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
-  const filterBarRef = useRef<HTMLDivElement>(null)
-  const filterBarPlaceholderRef = useRef<HTMLDivElement>(null)
-  const [stickyBarHeight, setStickyBarHeight] = useState(64)
   const contentRef = useRef<HTMLDivElement>(null)
 
   // Load projects on component mount
@@ -37,66 +33,6 @@ export default function Portfolio() {
     loadProjects()
   }, [])
 
-  // Handle sticky filter bar with Intersection Observer (Facebook/Meta approach)
-  useEffect(() => {
-    if (!filterBarPlaceholderRef.current || !filterBarRef.current || !isLoaded) return
-
-    // Measure actual sticky bar height dynamically
-    const measureHeight = () => {
-      if (filterBarRef.current) {
-        const height = filterBarRef.current.getBoundingClientRect().height
-        setStickyBarHeight(height)
-      }
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When the placeholder is not visible, the filter bar should be sticky
-        const shouldBeSticky = !entry.isIntersecting && entry.boundingClientRect.top < 0
-        
-        // Measure height before switching to sticky to prevent flash
-        if (shouldBeSticky && !isFilterBarSticky) {
-          measureHeight()
-        }
-        
-        setIsFilterBarSticky(shouldBeSticky)
-      },
-      {
-        threshold: 0,
-        rootMargin: '-1px 0px 0px 0px' // Slightly offset to prevent flickering
-      }
-    )
-
-    // Initial height measurement
-    measureHeight()
-    
-    // Re-measure on window resize
-    const handleResize = () => measureHeight()
-    window.addEventListener('resize', handleResize)
-
-    observer.observe(filterBarPlaceholderRef.current)
-    
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [isLoaded, isFilterBarSticky])
-
-  // Smooth scroll when filter changes (prevents jarring content jumps)
-  useEffect(() => {
-    if (isFilterBarSticky && contentRef.current) {
-      // Small delay to ensure DOM has updated after filter change
-      const timer = setTimeout(() => {
-        const stickyBarBottom = stickyBarHeight + 16 // Add small buffer
-        window.scrollTo({
-          top: Math.max(0, contentRef.current!.getBoundingClientRect().top + window.pageYOffset - stickyBarBottom),
-          behavior: 'smooth'
-        })
-      }, 50)
-      
-      return () => clearTimeout(timer)
-    }
-  }, [activeCategory, searchQuery, isFilterBarSticky, stickyBarHeight])
 
   // Filter and separate featured and regular projects
   const { featuredProjects, regularProjects } = useMemo(() => {
@@ -197,174 +133,64 @@ export default function Portfolio() {
       </section>
 
       {/* Controls Section */}
-      {/* Intersection Observer Target - positioned above the actual filter bar */}
-      <div ref={filterBarPlaceholderRef} className="h-px -mb-px"></div>
-      
-      {/* Dynamic Spacer - maintains exact space when filter bar goes sticky */}
-      {isFilterBarSticky && (
-        <div 
-          className="w-full transition-all duration-200"
-          style={{ 
-            height: `${stickyBarHeight}px`,
-            marginBottom: '4rem'
-          }}
-        ></div>
-      )}
-      
-      <section 
-        ref={filterBarRef}
-        className={`px-4 sm:px-6 lg:px-8 transition-all duration-200 ${
-          isFilterBarSticky 
-            ? 'fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-lg' 
-            : 'mb-16'
-        }`}
-      >
-        <div className={`max-w-7xl mx-auto transition-all duration-300 ${
-          isFilterBarSticky ? 'py-2' : 'py-4'
-        }`}>
+      <section className="px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="max-w-7xl mx-auto py-4">
           
-          {!isFilterBarSticky ? (
-            /* Regular (Non-Sticky) Layout */
-            <>
-              {/* Search Bar */}
-              <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search projects..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
-                  />
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
-                    <Search className="w-5 h-5" />
-                  </div>
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors duration-200"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
-              </div>
-              
-              {/* Filter Tabs */}
-              <FilterTabs 
-                categories={projectCategories}
-                activeCategory={activeCategory}
-                onCategoryChange={setActiveCategory}
-                projectCounts={projectCounts}
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
               />
-              
-              {/* Sort Controls */}
-              <div className="flex justify-center mb-2">
-                <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-                  <span className="text-sm text-foreground/60 px-3">Sort by:</span>
-                  {[
-                    { label: 'Newest', value: 'newest' },
-                    { label: 'Featured', value: 'featured' },
-                    { label: 'Name', value: 'name' }
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                        sortBy === option.value
-                          ? 'bg-cyber-500/20 text-cyber-500'
-                          : 'text-foreground/60 hover:text-foreground'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
+                <Search className="w-5 h-5" />
               </div>
-            </>
-          ) : (
-            /* Compact Sticky Layout */
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-              {/* Left: Filter Categories */}
-              <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0 overflow-x-auto w-full sm:w-auto">
-                {projectCategories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setActiveCategory(category)}
-                    className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 ${
-                      activeCategory === category
-                        ? 'bg-cyber-500/20 text-cyber-500 border border-cyber-500/30'
-                        : 'bg-background/50 text-foreground/70 border border-gray-200/50 dark:border-gray-800/50 hover:border-cyber-500/30'
-                    }`}
-                  >
-                    {category}
-                    {projectCounts[category] > 0 && (
-                      <span className="ml-1 text-xs opacity-60">
-                        {projectCounts[category]}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-              
-              {/* Right: Search + Sort */}
-              <div className="flex items-center gap-2">
-                {/* Collapsible Search */}
-                <div className="relative">
-                  {isSearchExpanded ? (
-                    <div className="flex items-center">
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-48 px-3 py-1.5 pl-8 text-xs rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/80 text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500"
-                        onBlur={() => !searchQuery && setIsSearchExpanded(false)}
-                        autoFocus
-                      />
-                      <button
-                        onClick={() => {
-                          setSearchQuery('')
-                          setIsSearchExpanded(false)
-                        }}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground"
-                      >
-                        <Search className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setIsSearchExpanded(true)}
-                      className="p-1.5 rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/50 text-foreground/60 hover:text-cyber-500 hover:border-cyber-500/30 transition-colors duration-200"
-                    >
-                      <Search className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-                
-                {/* Compact Sort */}
-                <div className="flex items-center gap-1">
-                  {[
-                    { label: 'New', value: 'newest' },
-                    { label: 'Featured', value: 'featured' },
-                    { label: 'A-Z', value: 'name' }
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className={`px-2 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
-                        sortBy === option.value
-                          ? 'bg-cyber-500/20 text-cyber-500'
-                          : 'text-foreground/60 hover:text-foreground hover:bg-background/50'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors duration-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Filter Tabs */}
+          <FilterTabs
+            categories={projectCategories}
+            activeCategory={activeCategory}
+            onCategoryChange={setActiveCategory}
+            projectCounts={projectCounts}
+          />
+
+          {/* Sort Controls */}
+          <div className="flex justify-center mb-2">
+            <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+              <span className="text-sm text-foreground/60 px-3">Sort by:</span>
+              {[
+                { label: 'Newest', value: 'newest' },
+                { label: 'Featured', value: 'featured' },
+                { label: 'Name', value: 'name' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setSortBy(option.value)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    sortBy === option.value
+                      ? 'bg-cyber-500/20 text-cyber-500'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

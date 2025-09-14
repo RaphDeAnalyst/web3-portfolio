@@ -98,6 +98,102 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Light mode favicons (dark icons for light background) */}
+        <link
+          rel="icon"
+          type="image/x-icon"
+          href="/favicon_dark.ico"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon_dark-16x16.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon_dark-32x32.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/favicon_dark-192x192.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href="/favicon_dark-512x512.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/apple-touch-icon-dark.png"
+          media="(prefers-color-scheme: light)"
+        />
+
+        {/* Dark mode favicons (light icons for dark background) */}
+        <link
+          rel="icon"
+          type="image/x-icon"
+          href="/favicon_light.ico"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon_light-16x16.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon_light-32x32.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/favicon_light-192x192.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href="/favicon_light-512x512.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/apple-touch-icon-light.png"
+          media="(prefers-color-scheme: dark)"
+        />
+
+        {/* Fallback favicon (default to dark icons for light mode) */}
+        <link rel="icon" type="image/x-icon" href="/favicon_dark.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon-dark.png" />
+
+        {/* Web App Manifest */}
+        <link rel="manifest" href="/site.webmanifest" />
+
+        {/* Additional meta tags for better browser support */}
+        <meta name="msapplication-TileColor" content="#0ea5e9" />
+        <meta name="theme-color" content="#0ea5e9" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
