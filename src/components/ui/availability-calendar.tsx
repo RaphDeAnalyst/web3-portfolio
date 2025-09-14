@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 
 interface TimeSlot {
   start: string
@@ -20,12 +20,27 @@ interface TooltipData {
   day: DayAvailability
   x: number
   y: number
+  arrowPosition: 'left' | 'right'
 }
 
 export function AvailabilityCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [hoveredDate, setHoveredDate] = useState<TooltipData | null>(null)
   const [showTooltip, setShowTooltip] = useState(false)
+  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const showTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current)
+      }
+      if (showTimeoutRef.current) {
+        clearTimeout(showTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Your hardcoded weekly schedule
   const getAvailabilityForDate = (date: Date): DayAvailability => {
@@ -121,43 +136,99 @@ export function AvailabilityCalendar() {
     const newDate = new Date(currentDate)
     newDate.setMonth(newDate.getMonth() + (direction === 'next' ? 1 : -1))
     setCurrentDate(newDate)
+
+    // Clear tooltips and timeouts when navigating
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current)
+      hideTimeoutRef.current = null
+    }
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current)
+      showTimeoutRef.current = null
+    }
+    setShowTooltip(false)
     setHoveredDate(null)
   }
 
-  const handleDateMouseEnter = (day: Date, event: React.MouseEvent) => {
+  const handleDateMouseEnter = useCallback((day: Date, event: React.MouseEvent) => {
+    // Clear any pending hide timeout
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current)
+      hideTimeoutRef.current = null
+    }
+
+    // Clear any pending show timeout
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current)
+      showTimeoutRef.current = null
+    }
+
     const availability = getAvailabilityForDate(day)
     const rect = event.currentTarget.getBoundingClientRect()
     const tooltipWidth = 280
     const tooltipHeight = 180
-    
+
+    // Get the calendar container element (the parent div with max-w-sm)
+    const calendarContainer = event.currentTarget.closest('.max-w-sm')
+    if (!calendarContainer) return
+
+    const containerRect = calendarContainer.getBoundingClientRect()
+
+    // Default position: to the right of the date
     let x = rect.right + 10
     let y = rect.top + (rect.height / 2)
-    
-    // Keep tooltip within viewport bounds
-    if (x + tooltipWidth > window.innerWidth) {
+    let arrowPosition: 'left' | 'right' = 'left'
+
+    // Keep tooltip within calendar container bounds
+    // If tooltip would overflow on the right, position it to the left
+    if (x + tooltipWidth > containerRect.right) {
       x = rect.left - tooltipWidth - 10
+      arrowPosition = 'right'
+
+      // If still overflowing left, clamp to container left edge with padding
+      if (x < containerRect.left) {
+        x = containerRect.left + 10
+        arrowPosition = 'left'
+      }
     }
-    
-    if (y + tooltipHeight / 2 > window.innerHeight) {
-      y = window.innerHeight - tooltipHeight - 10
+
+    // Ensure tooltip doesn't overflow vertically
+    const tooltipTop = y - tooltipHeight / 2
+    const tooltipBottom = y + tooltipHeight / 2
+
+    if (tooltipTop < containerRect.top) {
+      y = containerRect.top + tooltipHeight / 2 + 10
+    } else if (tooltipBottom > containerRect.bottom) {
+      y = containerRect.bottom - tooltipHeight / 2 - 10
     }
-    
-    if (y - tooltipHeight / 2 < 0) {
-      y = tooltipHeight / 2 + 10
-    }
-    
+
+    // Update tooltip data immediately for smooth transition
     setHoveredDate({
       day: availability,
       x: x,
-      y: y
+      y: y,
+      arrowPosition: arrowPosition
     })
-    setShowTooltip(true)
-  }
 
-  const handleDateMouseLeave = () => {
-    setShowTooltip(false)
-    setHoveredDate(null)
-  }
+    // Show tooltip with slight delay to prevent rapid flickering
+    showTimeoutRef.current = setTimeout(() => {
+      setShowTooltip(true)
+    }, 50)
+  }, [])
+
+  const handleDateMouseLeave = useCallback(() => {
+    // Clear any pending show timeout
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current)
+      showTimeoutRef.current = null
+    }
+
+    // Delay hiding to allow smooth transition between adjacent tooltips
+    hideTimeoutRef.current = setTimeout(() => {
+      setShowTooltip(false)
+      setHoveredDate(null)
+    }, 150)
+  }, [])
 
   // Build Calendly URL with date pre-selection
   const buildCalendlyUrl = (baseUrl: string, selectedDate: Date, timeSlot?: TimeSlot): string => {
@@ -352,10 +423,28 @@ export function AvailabilityCalendar() {
             top: hoveredDate.y,
             transform: 'translateY(-50%)', // Center vertically with the date
           }}
+          onMouseEnter={() => {
+            // Keep tooltip visible when mouse enters tooltip area
+            if (hideTimeoutRef.current) {
+              clearTimeout(hideTimeoutRef.current)
+              hideTimeoutRef.current = null
+            }
+          }}
+          onMouseLeave={() => {
+            // Hide tooltip when mouse leaves tooltip area
+            hideTimeoutRef.current = setTimeout(() => {
+              setShowTooltip(false)
+              setHoveredDate(null)
+            }, 100)
+          }}
         >
           {/* Tooltip Arrow */}
-          <div 
-            className="absolute left-0 top-1/2 transform -translate-x-2 -translate-y-1/2 w-4 h-4 rotate-45 bg-card border-l border-b border-border"
+          <div
+            className={`absolute top-1/2 transform -translate-y-1/2 w-4 h-4 rotate-45 bg-card border-border ${
+              hoveredDate.arrowPosition === 'left'
+                ? 'left-0 -translate-x-2 border-l border-b'
+                : 'right-0 translate-x-2 border-r border-t'
+            }`}
             style={{ zIndex: -1 }}
           />
           
