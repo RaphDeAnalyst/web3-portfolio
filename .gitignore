@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# External service files (for reference only)
+cloudflare-worker-backup.js
+KEEP_ALIVE_SETUP.md

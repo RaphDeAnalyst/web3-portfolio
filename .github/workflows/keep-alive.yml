@@ -1,0 +1,132 @@
+name: Supabase Keep-Alive (Primary)
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC (adjust timezone as needed)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggering for testing
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Keep Supabase Active
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          echo "🚀 Starting Supabase keep-alive task..."
+
+          # Create a simple Node.js script to ping Supabase
+          cat << 'EOF' > keep-alive.js
+          const { createClient } = require('@supabase/supabase-js');
+
+          async function keepAlive() {
+            try {
+              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+              const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+              if (!supabaseUrl || !supabaseKey) {
+                throw new Error('Missing Supabase credentials');
+              }
+
+              console.log('📡 Connecting to Supabase...');
+              const supabase = createClient(supabaseUrl, supabaseKey);
+
+              // Method 1: Simple time query (lightweight)
+              console.log('⏰ Executing time query...');
+              const { data: timeData, error: timeError } = await supabase
+                .rpc('now')
+                .single();
+
+              if (timeError) {
+                console.log('⚠️ Time query failed, trying fallback...');
+
+                // Method 2: Fallback - Check if any table exists
+                const { data: tablesData, error: tablesError } = await supabase
+                  .from('profiles')
+                  .select('count')
+                  .limit(1);
+
+                if (tablesError) {
+                  throw new Error(`Fallback query failed: ${tablesError.message}`);
+                }
+
+                console.log('✅ Fallback query successful');
+              } else {
+                console.log('✅ Time query successful:', timeData);
+              }
+
+              console.log('🎉 Supabase keep-alive completed successfully');
+              return true;
+
+            } catch (error) {
+              console.error('❌ Keep-alive failed:', error.message);
+              process.exit(1);
+            }
+          }
+
+          keepAlive();
+          EOF
+
+          # Install Supabase client
+          npm install @supabase/supabase-js
+
+          # Run the keep-alive script with retry logic
+          for i in {1..3}; do
+            echo "📋 Attempt $i of 3..."
+            if node keep-alive.js; then
+              echo "✅ Keep-alive successful on attempt $i"
+              break
+            else
+              if [ $i -eq 3 ]; then
+                echo "❌ All keep-alive attempts failed"
+                exit 1
+              else
+                echo "⏳ Retrying in 30 seconds..."
+                sleep 30
+              fi
+            fi
+          done
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "🎉 GitHub Actions keep-alive completed successfully at $(date)"
+          echo "Next run scheduled for tomorrow at 6:00 AM UTC"
+
+      - name: Notify Failure
+        if: failure()
+        run: |
+          echo "❌ GitHub Actions keep-alive failed at $(date)"
+          echo "Cloudflare Workers backup should handle the keep-alive"
+
+  # Health check job to verify the workflow is working
+  health-check:
+    runs-on: ubuntu-latest
+    needs: keep-alive
+    if: always()
+
+    steps:
+      - name: Report Status
+        run: |
+          if [ "${{ needs.keep-alive.result }}" == "success" ]; then
+            echo "✅ Keep-alive job completed successfully"
+          else
+            echo "⚠️ Keep-alive job failed - relying on Cloudflare Workers backup"
+          fi
+
+          echo "📊 Workflow Summary:"
+          echo "- Job: keep-alive"
+          echo "- Status: ${{ needs.keep-alive.result }}"
+          echo "- Time: $(date)"
