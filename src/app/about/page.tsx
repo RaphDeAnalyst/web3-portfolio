@@ -107,9 +107,9 @@ export default function About() {
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/30 bg-primary-500/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-primary-500">About Me</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-foreground">About Me</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
@@ -119,9 +119,9 @@ export default function About() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Leveraging my <span className="text-primary-500 font-medium">traditional data analytics</span> background to explore 
-            <span className="text-primary-600 font-medium"> blockchain insights</span> and
-            <span className="text-primary-500 font-medium"> decentralized finance</span>.
+            Leveraging my <span className="text-foreground font-medium">traditional data analytics</span> background to explore
+            <span className="text-foreground font-medium"> blockchain insights</span> and
+            <span className="text-foreground font-medium"> decentralized finance</span>.
           </p>
         </div>
       </section>
@@ -151,11 +151,11 @@ export default function About() {
                     <div className="space-y-6 text-lg text-foreground/80 leading-relaxed">
                       {profile?.story ? (
                         profile.story.split('\n\n').map((paragraph: string, index: number) => (
-                          <p key={index} dangerouslySetInnerHTML={{ 
+                          <p key={index} dangerouslySetInnerHTML={{
                             __html: paragraph
-                              .replace(/Ethereum gas price dashboard/g, '<span class="text-primary-500 font-medium">Ethereum gas price dashboard</span>')
-                              .replace(/8 Dune Analytics dashboards/g, '<span class="text-primary-600 font-medium">8 Dune Analytics dashboards</span>')
-                              .replace(/Web3 Data & AI Specialist/g, '<span class="text-primary-500 font-medium">Web3 Data & AI Specialist</span>')
+                              .replace(/Ethereum gas price dashboard/g, '<span class="text-foreground font-semibold">Ethereum gas price dashboard</span>')
+                              .replace(/8 Dune Analytics dashboards/g, '<span class="text-foreground font-semibold">8 Dune Analytics dashboards</span>')
+                              .replace(/Web3 Data & AI Specialist/g, '<span class="text-foreground font-semibold">Web3 Data & AI Specialist</span>')
                           }} />
                         ))
                       ) : (
@@ -191,7 +191,7 @@ export default function About() {
       </section>
 
       {/* Journey Timeline */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50/50 dark:bg-gray-900/20">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card-light/30 dark:bg-card-dark/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
@@ -203,19 +203,19 @@ export default function About() {
           </div>
 
           <div className="relative">
-            <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-cyber-500 to-purple-500 rounded-full"></div>
+            <div className="divider-dots absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-current text-foreground/30 rounded-full"></div>
             
             <div className="space-y-8 sm:space-y-12">
               {journey.map((item, index) => (
                 <div key={index} className="relative flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:space-x-8">
-                  <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 mx-auto sm:mx-0 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 border-4 border-background shadow-lg">
+                  <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 mx-auto sm:mx-0 rounded-full bg-foreground border-4 border-background shadow-lg">
                   </div>
                   
                   <div className="flex-1 pb-6 sm:pb-8">
-                    <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover">
+                    <div className="p-6 rounded-2xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark hover:shadow-card-light-hover dark:hover:shadow-card-dark-hover hover:scale-105 transition-all duration-300 card-hover">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
-                        <span className="text-sm font-medium text-cyber-500 bg-cyber-500/10 px-3 py-1 rounded-full">
+                        <span className="text-sm font-medium text-foreground bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700">
                           {item.year}
                         </span>
                       </div>
@@ -232,7 +232,7 @@ export default function About() {
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="p-12 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+          <div className="p-12 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
               Ready to Build the Future?
             </h2>
@@ -248,14 +248,14 @@ export default function About() {
               </Link>
               {profile?.resume ? (
                 <a href={profile.resume} target="_blank" rel="noopener noreferrer">
-                  <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200">
+                  <button className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-foreground hover:bg-foreground/5 transition-all duration-200">
                     Download Resume
                   </button>
                 </a>
               ) : (
                 <button 
-                  disabled 
-                  className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground/50 font-semibold text-lg opacity-50 cursor-not-allowed"
+                  disabled
+                  className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 font-semibold text-lg opacity-50 cursor-not-allowed"
                 >
                   Resume Not Available
                 </button>

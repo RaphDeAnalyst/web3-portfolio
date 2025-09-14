@@ -155,7 +155,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               </p>
 
               {/* Author */}
-              <div className="flex items-center space-x-4 pt-6 border-t border-gray-200/30 dark:border-gray-800/30">
+              <div className="flex items-center space-x-4 pt-6 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
                 {profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
                   <img
                     src={profile.avatar}

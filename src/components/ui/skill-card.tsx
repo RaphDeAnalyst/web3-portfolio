@@ -87,7 +87,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
         </div>
 
         {/* Skill Level Indicator */}
-        <div className="pt-4 border-t border-gray-200/30 dark:border-gray-800/30">
+        <div className="pt-4 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-foreground/60">Expertise Level</span>
             <span className={`text-sm font-medium ${

@@ -198,7 +198,7 @@ export function BlogCard({
 
           {/* Author */}
           {author && (
-            <div className="flex items-center space-x-3 pt-4 border-t border-gray-200/30 dark:border-gray-800/30 mt-auto">
+            <div className="flex items-center space-x-3 pt-4 border-t border-text-light-primary/10 dark:border-text-dark-primary/10 mt-auto">
               {isHydrated && profileData?.avatar && profileData.avatar !== '/avatar.jpg' && profileData.avatar.startsWith('http') ? (
                 <img
                   src={profileData.avatar}

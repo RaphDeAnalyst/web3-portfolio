@@ -81,7 +81,7 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
   }, [utterancesTheme, slug]) // Re-run when theme or slug changes
 
   return (
-    <div className="mt-12 pt-8 border-t border-gray-200/50 dark:border-gray-800/50">
+    <div className="mt-12 pt-8 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
       <div className="mb-6">
         <h3 className="text-xl font-bold text-foreground mb-2">Comments</h3>
         <p className="text-sm text-foreground/60">

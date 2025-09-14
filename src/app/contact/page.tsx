@@ -12,9 +12,9 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-400/30 bg-primary-400/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-primary-400 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-primary-400">Let's Collaborate</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-foreground">Let's Collaborate</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
@@ -24,9 +24,9 @@ export default function Contact() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Whether you need <span className="text-primary-600 font-medium">analytics dashboards</span>,
-            <span className="text-primary-500 font-medium"> smart contracts</span>, or
-            <span className="text-primary-400 font-medium"> AI-powered solutions</span>, 
+            Whether you need <span className="text-foreground font-semibold">analytics dashboards</span>,
+            <span className="text-foreground font-semibold"> smart contracts</span>, or
+            <span className="text-foreground font-semibold"> AI-powered solutions</span>,
             let's bring your Web3 vision to life.
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Contact Form - Takes 2 columns */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
+              <div className="p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
                 <div className="mb-8">
                   <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
                     Start Your Project
@@ -52,15 +52,15 @@ export default function Contact() {
               </div>
 
               {/* Availability Calendar Section */}
-              <div className="p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm">
+              <div className="p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
                 <div className="mb-8">
                   <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
                     Check My <span className="text-gradient">Availability</span>
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
                     See my real-time availability and book a consultation call. 
-                    <span className="text-primary-600 font-medium"> Hover over any date</span> to see available time slots,
-                    or <span className="text-primary-500 font-medium"> click to book</span> directly.
+                    <span className="text-foreground font-semibold"> Hover over any date</span> to see available time slots,
+                    or <span className="text-foreground font-semibold"> click to book</span> directly.
                   </p>
                 </div>
                 <AvailabilityCalendar />
@@ -76,7 +76,7 @@ export default function Contact() {
       </section>
 
       {/* Social Links Section */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-20 bg-gray-50/50 dark:bg-gray-900/20">
+      <section className="px-4 sm:px-6 lg:px-8 mb-20 bg-card-light/30 dark:bg-card-dark/30">
         <div className="max-w-6xl mx-auto py-20">
           <SocialLinks />
         </div>
@@ -118,12 +118,12 @@ export default function Contact() {
                 example: "Building portfolio while mastering Solidity"
               }
             ].map((item, index) => (
-              <div key={index} className="group p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm hover:bg-background/70 transition-all duration-300">
+              <div key={index} className="group p-6 rounded-2xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark hover:shadow-card-light-hover dark:hover:shadow-card-dark-hover hover:scale-105 transition-all duration-300 card-hover">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
                     {item.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary-500 transition-colors duration-200">
+                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-foreground/80 transition-colors duration-200">
                     {item.title}
                   </h3>
                   <p className="text-foreground/70 leading-relaxed text-sm mb-4">
@@ -133,7 +133,7 @@ export default function Contact() {
                 
 
                 {/* Hover Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 rounded-2xl bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
@@ -143,8 +143,8 @@ export default function Contact() {
       {/* Final CTA */}
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-accent-blue flex items-center justify-center text-white">
+          <div className="text-center p-12 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
+            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-foreground flex items-center justify-center text-background">
               <Send className="w-10 h-10" />
             </div>
             
@@ -166,7 +166,7 @@ export default function Contact() {
               </button>
               <button 
                 onClick={() => window.open('https://calendly.com/your-link', '_blank')}
-                className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
+                className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-foreground hover:bg-foreground/5 transition-all duration-200"
               >
                 Schedule Call
               </button>

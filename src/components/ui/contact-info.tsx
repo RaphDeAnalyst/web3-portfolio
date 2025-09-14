@@ -100,7 +100,7 @@ export function ContactInfo() {
         </div>
         
         {/* Quick Bio */}
-        <p className="text-sm text-foreground/70 leading-relaxed border-t border-gray-200/30 dark:border-gray-800/30 pt-4">
+        <p className="text-sm text-foreground/70 leading-relaxed border-t border-text-light-primary/10 dark:border-text-dark-primary/10 pt-4">
           {profile?.bio || 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.'}
         </p>
       </div>

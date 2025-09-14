@@ -82,7 +82,7 @@ export function NewsletterSignup() {
         </form>
 
         {/* Features */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-200/30 dark:border-gray-800/30">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-8 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
           {[
             { 
               icon: (
