@@ -83,7 +83,7 @@ export default function PostsManagement() {
         </div>
         <Link
           href="/admin/posts/new"
-          className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 flex items-center space-x-2"
+          className="px-4 py-2 bg-foreground hover:bg-foreground/80 text-background rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20 flex items-center space-x-2"
         >
           <span>New Post</span>
         </Link>
@@ -97,8 +97,8 @@ export default function PostsManagement() {
               <p className="text-sm text-foreground/60">Total Posts</p>
               <p className="text-2xl font-bold text-foreground">{posts.length}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <FileText className="text-blue-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <FileText className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -111,8 +111,8 @@ export default function PostsManagement() {
                 {posts.filter(p => p.status === 'published').length}
               </p>
             </div>
-            <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-              <CheckCircle className="text-green-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <CheckCircle className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -125,8 +125,8 @@ export default function PostsManagement() {
                 {posts.filter(p => p.status === 'draft').length}
               </p>
             </div>
-            <div className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center">
-              <FileEdit className="text-yellow-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <FileEdit className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -139,8 +139,8 @@ export default function PostsManagement() {
                 {posts.filter(p => p.featured).length}
               </p>
             </div>
-            <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-              <Star className="text-purple-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <Star className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -154,14 +154,14 @@ export default function PostsManagement() {
             placeholder="Search posts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
           />
         </div>
         <div>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
           >
             <option value="all">All Categories</option>
             {categories.map(category => (

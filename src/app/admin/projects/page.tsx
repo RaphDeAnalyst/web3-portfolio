@@ -130,7 +130,7 @@ export default function ProjectsManagement() {
         </div>
         <Link
           href="/admin/projects/new"
-          className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 flex items-center space-x-2"
+          className="px-4 py-2 bg-foreground hover:bg-foreground/80 text-background rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20 flex items-center space-x-2"
         >
           <span>New Project</span>
         </Link>
@@ -144,8 +144,8 @@ export default function ProjectsManagement() {
               <p className="text-sm text-foreground/60">Total Projects</p>
               <p className="text-2xl font-bold text-foreground">{statsData.total}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <Rocket className="text-blue-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <Rocket className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -156,8 +156,8 @@ export default function ProjectsManagement() {
               <p className="text-sm text-foreground/60">Completed</p>
               <p className="text-2xl font-bold text-foreground">{statsData.completed}</p>
             </div>
-            <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-              <CheckCircle className="text-green-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <CheckCircle className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -168,8 +168,8 @@ export default function ProjectsManagement() {
               <p className="text-sm text-foreground/60">In Progress</p>
               <p className="text-2xl font-bold text-foreground">{statsData.inProgress}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <RefreshCw className="text-blue-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <RefreshCw className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -180,8 +180,8 @@ export default function ProjectsManagement() {
               <p className="text-sm text-foreground/60">Featured</p>
               <p className="text-2xl font-bold text-foreground">{statsData.featured}</p>
             </div>
-            <div className="w-10 h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
-              <Star className="text-primary-500" size={20} />
+            <div className="w-10 h-10 bg-foreground/10 rounded-lg flex items-center justify-center">
+              <Star className="text-foreground" size={20} />
             </div>
           </div>
         </div>
@@ -195,14 +195,14 @@ export default function ProjectsManagement() {
             placeholder="Search projects..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
           />
         </div>
         <div className="flex space-x-3">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
           >
             <option value="all">All Categories</option>
             {categories.map(category => (
@@ -213,7 +213,7 @@ export default function ProjectsManagement() {
           <select
             value={filterFeatured}
             onChange={(e) => setFilterFeatured(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
           >
             <option value="all">All Projects</option>
             <option value="featured">Featured Only</option>
@@ -253,7 +253,7 @@ export default function ProjectsManagement() {
                 {project.featured && (
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-foreground/60">Featured</span>
-                    <span className="text-xs text-primary-500 font-medium">Yes</span>
+                    <span className="text-xs text-foreground font-medium">Yes</span>
                   </div>
                 )}
               </div>
@@ -263,7 +263,7 @@ export default function ProjectsManagement() {
                 <div className="text-xs text-foreground/60 mb-2">Tech Stack</div>
                 <div className="flex flex-wrap gap-1">
                   {project.tech?.slice(0, 3).map((tech, index) => (
-                    <span key={index} className="px-2 py-1 bg-cyber-500/10 text-cyber-500 text-xs rounded">
+                    <span key={index} className="px-2 py-1 bg-foreground/10 text-foreground text-xs rounded">
                       {tech}
                     </span>
                   ))}
@@ -284,7 +284,7 @@ export default function ProjectsManagement() {
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors"
+                      className="p-2 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors"
                       title="View demo"
                     >
                       <ExternalLink size={16} />
@@ -306,7 +306,7 @@ export default function ProjectsManagement() {
                 <div className="flex space-x-2">
                   <Link
                     href={`/admin/projects/edit/${index}`}
-                    className="p-2 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors"
+                    className="p-2 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors"
                     title="Edit project"
                   >
 Edit
@@ -334,7 +334,7 @@ Delete
           </p>
           <Link
             href="/admin/projects/new"
-            className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-foreground hover:bg-foreground/80 text-background rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
           >
             <span>Add First Project</span>
           </Link>

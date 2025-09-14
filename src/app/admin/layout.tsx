@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { SidebarNavLink } from '@/components/ui/nav-link'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -67,7 +68,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter admin password"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10"
                   required
                 />
               </div>
@@ -76,7 +77,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               )}
               <button
                 type="submit"
-                className="w-full px-4 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
+                className="w-full px-4 py-3 rounded-lg bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
               >
                 Login
               </button>
@@ -134,17 +135,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex-1 p-4">
             <nav className="space-y-2">
               {navigation.map((item) => (
-                <Link
+                <SidebarNavLink
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                    pathname === item.href
-                      ? 'bg-cyber-500/10 text-cyber-500'
-                      : 'text-foreground/70 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground'
-                  }`}
                 >
                   <span>{item.name}</span>
-                </Link>
+                </SidebarNavLink>
               ))}
             </nav>
           </div>

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { NavbarAvatar } from '@/components/ui/profile-avatar'
+import { NavLink, MobileNavLink } from '@/components/ui/nav-link'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -47,21 +48,12 @@ export function Navbar() {
           {/* Desktop Navigation with Active States */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.name}
                 href={item.href}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group ${
-                  pathname === item.href
-                    ? 'text-primary-500 bg-primary-500/10'
-                    : 'text-foreground/80 hover:text-primary-500 hover:bg-primary-500/5'
-                }`}
               >
                 {item.name}
-                {pathname === item.href && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-500 rounded-full"></div>
-                )}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full" />
-              </Link>
+              </NavLink>
             ))}
             
             <ThemeToggle />
@@ -88,18 +80,13 @@ export function Navbar() {
         <div className={`md:hidden transition-all duration-300 ${isOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
           <div className="py-6 space-y-4 border-t border-gray-200 dark:border-gray-800 bg-background/95 backdrop-blur-md rounded-b-xl">
             {navItems.map((item) => (
-              <Link
+              <MobileNavLink
                 key={item.name}
                 href={item.href}
-                className={`block px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                  pathname === item.href
-                    ? 'text-primary-500 bg-primary-500/10 border-l-2 border-primary-500'
-                    : 'text-foreground/80 hover:text-primary-500 hover:bg-primary-500/5'
-                }`}
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
-              </Link>
+              </MobileNavLink>
             ))}
           </div>
         </div>
