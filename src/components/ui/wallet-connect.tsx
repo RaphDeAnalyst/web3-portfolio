@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useWeb3 } from '@/lib/web3-context'
+import { useNotification } from '@/lib/notification-context'
 
 interface WalletOption {
   name: string
@@ -12,6 +13,7 @@ interface WalletOption {
 
 export function WalletConnect() {
   const { isConnected, address, ensName, chainId, isConnecting, connect, disconnect, switchNetwork } = useWeb3()
+  const { error, success } = useNotification()
   const [showWallets, setShowWallets] = useState(false)
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
@@ -62,17 +64,22 @@ export function WalletConnect() {
     try {
       await connect()
       setShowWallets(false)
-    } catch (error) {
-      console.error('Connection failed:', error)
+      success('Wallet connected successfully!')
+    } catch (err) {
+      console.error('Connection failed:', err)
+      error('Failed to connect wallet. Please try again.')
     }
   }
 
   const handleNetworkSwitch = async (networkId: number) => {
+    const targetNetwork = networks.find(n => n.id === networkId)
     setIsSwitchingNetwork(true)
     try {
       await switchNetwork(networkId)
-    } catch (error) {
-      console.error('Network switch failed:', error)
+      success(`Switched to ${targetNetwork?.name || 'network'} successfully!`)
+    } catch (err) {
+      console.error('Network switch failed:', err)
+      error('Failed to switch network. Please try again.')
     } finally {
       setIsSwitchingNetwork(false)
     }

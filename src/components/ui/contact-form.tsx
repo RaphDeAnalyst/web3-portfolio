@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useNotification } from '@/lib/notification-context'
 
 interface FormData {
   name: string
@@ -13,6 +14,7 @@ interface FormData {
 }
 
 export function ContactForm() {
+  const { error, success } = useNotification()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -22,7 +24,7 @@ export function ContactForm() {
     timeline: '1-3-months',
     message: ''
   })
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [errors, setErrors] = useState<Partial<FormData>>({})
@@ -68,12 +70,13 @@ export function ContactForm() {
       
       if (response.ok) {
         setIsSubmitted(true)
+        success('Message sent successfully! I\'ll get back to you within 24 hours.')
       } else {
         throw new Error('Failed to send message')
       }
-    } catch (error) {
-      console.error('Error submitting form:', error)
-      alert('Failed to send message. Please try again or contact me directly at matthewraphael@matthewraphael.xyz')
+    } catch (err) {
+      console.error('Error submitting form:', err)
+      error('Failed to send message. Please try again or contact me directly at matthewraphael@matthewraphael.xyz')
     } finally {
       setIsSubmitting(false)
     }

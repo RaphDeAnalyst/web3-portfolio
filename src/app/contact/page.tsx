@@ -131,16 +131,6 @@ export default function Contact() {
                   </p>
                 </div>
                 
-                <div className="border-t border-gray-200/30 dark:border-gray-800/30 pt-4 space-y-3">
-                  <div>
-                    <div className="text-xs text-primary-500 font-medium uppercase tracking-wide">Approach</div>
-                    <div className="text-sm text-foreground/90 font-medium">{item.approach}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-cyber-500 font-medium uppercase tracking-wide">Example</div>
-                    <div className="text-sm text-foreground/80">{item.example}</div>
-                  </div>
-                </div>
 
                 {/* Hover Effect */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/5 to-cyber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

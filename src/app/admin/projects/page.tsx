@@ -4,21 +4,29 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
-import { 
-  Rocket, 
-  CheckCircle, 
-  RefreshCw, 
-  Star, 
-  ExternalLink, 
-  Github 
+import { useNotification } from '@/lib/notification-context'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import {
+  Rocket,
+  CheckCircle,
+  RefreshCw,
+  Star,
+  ExternalLink,
+  Github
 } from 'lucide-react'
 
 export default function ProjectsManagement() {
+  const { error, success } = useNotification()
   const [projectList, setProjectList] = useState<Project[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
   const [filterFeatured, setFilterFeatured] = useState('all')
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; project: Project | null; index: number }>({
+    isOpen: false,
+    project: null,
+    index: -1
+  })
 
   // Load projects on component mount
   useEffect(() => {
@@ -26,8 +34,9 @@ export default function ProjectsManagement() {
       try {
         const projects = await projectService.getAllProjects()
         setProjectList(projects)
-      } catch (error) {
-        console.error('Error loading projects:', error)
+      } catch (err) {
+        console.error('Error loading projects:', err)
+        error('Failed to load projects. Please refresh the page.')
       } finally {
         setIsLoaded(true)
       }
@@ -48,17 +57,27 @@ export default function ProjectsManagement() {
     return matchesSearch && matchesCategory && matchesFeatured
   })
 
-  const handleDeleteProject = async (index: number) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      try {
-        await projectService.deleteProject(index)
-        // Reload projects after deletion
-        const updatedProjects = await projectService.getAllProjects()
-        setProjectList(updatedProjects)
-      } catch (error) {
-        console.error('Error deleting project:', error)
-        alert('Error deleting project. Please try again.')
-      }
+  const openDeleteDialog = (project: Project, index: number) => {
+    setDeleteDialog({ isOpen: true, project, index })
+  }
+
+  const closeDeleteDialog = () => {
+    setDeleteDialog({ isOpen: false, project: null, index: -1 })
+  }
+
+  const handleDeleteProject = async () => {
+    if (!deleteDialog.project || deleteDialog.index === -1) return
+
+    const { title } = deleteDialog.project
+    try {
+      await projectService.deleteProject(deleteDialog.index)
+      // Reload projects after deletion
+      const updatedProjects = await projectService.getAllProjects()
+      setProjectList(updatedProjects)
+      success(`Project "${title}" deleted successfully`)
+    } catch (err) {
+      console.error('Error deleting project:', err)
+      error('Failed to delete project. Please try again.')
     }
   }
 
@@ -293,7 +312,7 @@ export default function ProjectsManagement() {
 Edit
                   </Link>
                   <button
-                    onClick={() => handleDeleteProject(index)}
+                    onClick={() => openDeleteDialog(project, index)}
                     className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                     title="Delete project"
                   >
@@ -321,6 +340,18 @@ Delete
           </Link>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={deleteDialog.isOpen}
+        onClose={closeDeleteDialog}
+        onConfirm={handleDeleteProject}
+        title="Delete Project"
+        message={`Are you sure you want to delete "${deleteDialog.project?.title}"? This action cannot be undone.`}
+        confirmText="Delete Project"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   )
 }

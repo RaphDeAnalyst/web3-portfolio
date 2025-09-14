@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useWeb3 } from '@/lib/web3-context'
+import { useNotification } from '@/lib/notification-context'
 
 interface NFTMetadata {
   name: string
@@ -15,6 +16,7 @@ interface NFTMetadata {
 
 export function NFTMinter() {
   const { isConnected, address, ensName } = useWeb3()
+  const { error, success } = useNotification()
   const [isMinting, setIsMinting] = useState(false)
   const [mintSuccess, setMintSuccess] = useState(false)
   const [selectedDesign, setSelectedDesign] = useState(0)
@@ -75,9 +77,11 @@ export function NFTMinter() {
 
       // Simulate successful mint
       setMintSuccess(true)
+      success(`${nftDesigns[selectedDesign].name} minted successfully! 🎉`)
       setTimeout(() => setMintSuccess(false), 5000)
-    } catch (error) {
-      console.error('Minting failed:', error)
+    } catch (err) {
+      console.error('Minting failed:', err)
+      error('Failed to mint NFT. Please try again.')
     } finally {
       setIsMinting(false)
     }

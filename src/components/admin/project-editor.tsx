@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Project } from '@/data/projects'
 import { RefreshCw, Rocket, Save } from 'lucide-react'
+import { useNotification } from '@/lib/notification-context'
 
 interface ProjectData extends Omit<Project, 'id'> {
   id?: string
@@ -14,6 +15,7 @@ interface ProjectEditorProps {
 }
 
 export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
+  const { error, success, info } = useNotification()
   const [formData, setFormData] = useState<ProjectData>({
     title: '',
     description: '',
@@ -109,13 +111,15 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
 
     // Track activity (activity service not implemented yet)
     if (!isDraft) {
-      console.log(`Project activity: ${formData.title} - ${!!initialData?.id ? 'updated' : 'created'}`)
+      info(`Project activity: ${formData.title} - ${!!initialData?.id ? 'updated' : 'created'}`)
     }
 
     try {
       await onSave(dataToSave, isDraft)
-    } catch (error) {
-      console.error('Failed to save project:', error)
+      success(isDraft ? 'Project draft saved successfully!' : 'Project saved successfully!')
+    } catch (err) {
+      console.error('Failed to save project:', err)
+      error('Failed to save project. Please try again.')
     } finally {
       setIsSaving(false)
     }

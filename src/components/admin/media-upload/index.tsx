@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react'
 import { mediaServiceHybrid, MediaFile, StorageProvider, UploadOptions } from '@/lib/media-service-hybrid'
 import { smartUploadRouter, RoutingDecision } from '@/lib/smart-upload-router'
 import { MediaMigration, quickMigration } from '@/lib/media-migration'
-import { 
-  Upload, 
-  FolderOpen, 
-  RotateCcw, 
-  BarChart3 
+import { useNotification } from '@/lib/notification-context'
+import {
+  Upload,
+  FolderOpen,
+  RotateCcw,
+  BarChart3
 } from 'lucide-react'
 
 import { UploadTab } from './UploadTab'
@@ -25,6 +26,7 @@ interface UploadState {
 type TabType = 'upload' | 'library' | 'migration' | 'analytics'
 
 export default function EnhancedMediaUpload() {
+  const { error, success, warning, info } = useNotification()
   // Core state
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([])
   const [uploadState, setUploadState] = useState<UploadState>({
@@ -60,8 +62,9 @@ export default function EnhancedMediaUpload() {
     try {
       const files = await mediaServiceHybrid.getAllMedia()
       setMediaFiles(files)
-    } catch (error) {
-      console.error('Error loading media files:', error)
+    } catch (err) {
+      console.error('Error loading media files:', err)
+      error('Failed to load media files. Please refresh and try again.')
     }
   }
 
@@ -77,7 +80,7 @@ export default function EnhancedMediaUpload() {
 
     // Get smart routing recommendations
     const recommendations = smartUploadRouter.getUploadRecommendations(fileArray)
-    console.log('Upload recommendations:', recommendations)
+    info(`Upload recommendations generated for ${fileArray.length} file(s)`)
 
     // Show routing decisions to user
     const decisions: Record<string, RoutingDecision> = {}
@@ -114,9 +117,9 @@ export default function EnhancedMediaUpload() {
           progress: { ...prev.progress, [fileKey]: 50 }
         }))
 
-        console.log(`🔄 Starting upload for ${file.name}`, fileUploadOptions)
+        info(`Starting upload for ${file.name}`)
         const uploadedFile = await mediaServiceHybrid.uploadFile(file, fileUploadOptions)
-        console.log(`📁 Upload result for ${file.name}:`, uploadedFile)
+        info(`Upload completed for ${file.name}`)
         
         if (uploadedFile) {
           setUploadState(prev => ({
@@ -127,9 +130,9 @@ export default function EnhancedMediaUpload() {
           // Refresh media list
           await loadMediaFiles()
           
-          console.log(`✓ Uploaded: ${file.name} to ${uploadedFile.storage_provider}`)
+          success(`Uploaded ${file.name} to ${uploadedFile.storage_provider}`)
         } else {
-          console.error(`✗ Failed to upload: ${file.name}`)
+          error(`Failed to upload: ${file.name}`)
           setUploadState(prev => ({
             ...prev,
             progress: { ...prev.progress, [fileKey]: -1 }
@@ -146,6 +149,7 @@ export default function EnhancedMediaUpload() {
 
       } catch (error) {
         console.error(`Error uploading ${file.name}:`, error)
+        error(`Error uploading ${file.name}`)
         setUploadState(prev => ({
           ...prev,
           progress: { ...prev.progress, [fileKey]: -1 }
@@ -155,10 +159,13 @@ export default function EnhancedMediaUpload() {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         if (errorMessage.includes('timeout')) {
           console.error(`⚠ Upload timeout: ${file.name} - Try a smaller file or check your connection`)
+          warning(`Upload timeout for ${file.name}. Try a smaller file or check your connection.`)
         } else if (errorMessage.includes('size')) {
           console.error(`⚠ File too large: ${file.name} - ${errorMessage}`)
+          error(`File too large: ${file.name}`)
         } else {
           console.error(`⚠ Upload error: ${file.name} - ${errorMessage}`)
+          error(`Upload error for ${file.name}`)
         }
       }
     }
@@ -173,16 +180,16 @@ export default function EnhancedMediaUpload() {
       
       if (result) {
         await loadMediaFiles()
-        console.log(`✓ Added external media: ${result.filename}`)
+        success(`Added external media: ${result.filename}`)
         return true
       } else {
         console.error('✗ Failed to add external media')
-        alert('Failed to add media. Please check the URL and try again.')
+        error('Failed to add media. Please check the URL and try again.')
         return false
       }
-    } catch (error) {
-      console.error('Error adding external media:', error)
-      alert(error instanceof Error ? error.message : 'Failed to add media. Please try again.')
+    } catch (err) {
+      console.error('Error adding external media:', err)
+      error(err instanceof Error ? err.message : 'Failed to add media. Please try again.')
       return false
     }
   }
@@ -206,8 +213,9 @@ export default function EnhancedMediaUpload() {
       
       setMigrationStatus({ inProgress: false, results })
       await loadMediaFiles() // Refresh after migration
-    } catch (error) {
-      console.error('Migration error:', error)
+    } catch (err) {
+      console.error('Migration error:', err)
+      error('Migration failed. Please try again.')
       setMigrationStatus({ inProgress: false })
     }
   }

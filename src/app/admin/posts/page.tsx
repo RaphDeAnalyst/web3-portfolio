@@ -4,18 +4,25 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
-import { 
-  FileText, 
-  CheckCircle, 
-  FileEdit, 
+import { useNotification } from '@/lib/notification-context'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import {
+  FileText,
+  CheckCircle,
+  FileEdit,
   Star,
   Plus
 } from 'lucide-react'
 
 export default function PostsManagement() {
+  const { success, error } = useNotification()
   const [posts, setPosts] = useState<BlogPostData[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; post: BlogPostData | null }>({
+    isOpen: false,
+    post: null
+  })
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -34,11 +41,26 @@ export default function PostsManagement() {
     return matchesSearch && matchesCategory
   })
 
-  const handleDeletePost = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      await blogService.deletePost(id)
+  const openDeleteDialog = (post: BlogPostData) => {
+    setDeleteDialog({ isOpen: true, post })
+  }
+
+  const closeDeleteDialog = () => {
+    setDeleteDialog({ isOpen: false, post: null })
+  }
+
+  const handleDeletePost = async () => {
+    if (!deleteDialog.post) return
+
+    const { id, title } = deleteDialog.post
+    try {
+      await blogService.deletePost(id!)
       const allPosts = await blogService.getAllPosts()
       setPosts(allPosts)
+      success(`Blog post "${title}" deleted successfully`)
+    } catch (err) {
+      console.error('Failed to delete post:', err)
+      error('Failed to delete blog post. Please try again.')
     }
   }
 
@@ -187,7 +209,7 @@ export default function PostsManagement() {
                       View
                     </Link>
                     <button
-                      onClick={() => handleDeletePost(post.id!)}
+                      onClick={() => openDeleteDialog(post)}
                       className="p-1 text-foreground/60 hover:text-red-500 transition-colors"
                     >
                       Delete
@@ -255,7 +277,7 @@ Edit
 View
                       </Link>
                       <button
-                        onClick={() => handleDeletePost(post.id!)}
+                        onClick={() => openDeleteDialog(post)}
                         className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                         title="Delete post"
                       >
@@ -287,6 +309,18 @@ Delete
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={deleteDialog.isOpen}
+        onClose={closeDeleteDialog}
+        onConfirm={handleDeletePost}
+        title="Delete Blog Post"
+        message={`Are you sure you want to delete "${deleteDialog.post?.title}"? This action cannot be undone.`}
+        confirmText="Delete Post"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   )
 }

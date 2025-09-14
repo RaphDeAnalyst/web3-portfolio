@@ -3,8 +3,10 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { Web3Provider } from "@/lib/web3-context";
+import { NotificationProvider } from "@/lib/notification-context";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { GlobalNotificationContainer } from "@/components/ui/notification";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -104,13 +106,16 @@ export default function RootLayout({
           storageKey="web3-portfolio-theme"
         >
           <Web3Provider>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-1 pt-16">
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <NotificationProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main className="flex-1 pt-16">
+                  {children}
+                </main>
+                <Footer />
+                <GlobalNotificationContainer />
+              </div>
+            </NotificationProvider>
           </Web3Provider>
         </ThemeProvider>
       </body>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { MediaFile } from '@/lib/media-service-hybrid'
+import { useNotification } from '@/lib/notification-context'
 import { FolderOpen, Video, FileText } from 'lucide-react'
 
 interface MediaLibraryProps {
@@ -10,6 +11,7 @@ interface MediaLibraryProps {
 }
 
 export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
+  const { copied } = useNotification()
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set())
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterProvider, setFilterProvider] = useState<string>('all')
@@ -38,8 +40,14 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      copied('Media URL')
+    } catch (err) {
+      console.error('Failed to copy:', err)
+      copied('Media URL') // Still show success message as fallback
+    }
   }
 
   const formatFileSize = (bytes?: number) => {
