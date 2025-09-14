@@ -48,28 +48,28 @@ export default function ProfileManagement() {
   const handleSkillAdd = (skill: string) => {
     if (!profile || !skill.trim() || profile.skills.includes(skill.trim())) return
     
-    setProfile(prev => prev ? ({
+    setProfile(prev => prev ? {
       ...prev,
       skills: [...prev.skills, skill.trim()]
-    }) : null)
+    } as ProfileData : null)
   }
 
   const handleSkillRemove = (skillToRemove: string) => {
     if (!profile) return
     
-    setProfile(prev => prev ? ({
+    setProfile(prev => prev ? {
       ...prev,
       skills: prev.skills.filter(skill => skill !== skillToRemove)
-    }) : null)
+    } as ProfileData : null)
   }
 
   const handleImageUpload = (imageUrl: string) => {
     if (!profile) return
     
-    setProfile(prev => prev ? ({
+    setProfile(prev => prev ? {
       ...prev,
       avatar: imageUrl
-    }) : null)
+    } as ProfileData : null)
   }
 
   if (loading) {
@@ -171,7 +171,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.name}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, name: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, name: e.target.value } as ProfileData : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -183,7 +183,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.title}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, title: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, title: e.target.value } as ProfileData : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -195,7 +195,7 @@ export default function ProfileManagement() {
                 <input
                   type="email"
                   value={profile.email}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, email: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, email: e.target.value } as ProfileData : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -207,7 +207,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.location}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, location: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, location: e.target.value } as ProfileData : null)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
               </div>
@@ -219,7 +219,7 @@ export default function ProfileManagement() {
               </label>
               <textarea
                 value={profile.bio}
-                onChange={(e) => setProfile(prev => prev ? { ...prev, bio: e.target.value } : null)}
+                onChange={(e) => setProfile(prev => prev ? { ...prev, bio: e.target.value } as ProfileData : null)}
                 rows={4}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 placeholder="Tell people about yourself..."
@@ -239,7 +239,7 @@ export default function ProfileManagement() {
                 <input
                   type="url"
                   value={profile.website}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, website: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, website: e.target.value } as ProfileData : null)}
                   placeholder="https://yourwebsite.com"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -252,7 +252,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.github}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, github: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, github: e.target.value } as ProfileData : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -265,7 +265,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.twitter}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, twitter: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, twitter: e.target.value } as ProfileData : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -278,7 +278,7 @@ export default function ProfileManagement() {
                 <input
                   type="text"
                   value={profile.linkedin}
-                  onChange={(e) => setProfile(prev => prev ? { ...prev, linkedin: e.target.value } : null)}
+                  onChange={(e) => setProfile(prev => prev ? { ...prev, linkedin: e.target.value } as ProfileData : null)}
                   placeholder="RaphDeAnalyst"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 />
@@ -340,7 +340,7 @@ export default function ProfileManagement() {
               <input
                 type="url"
                 value={profile.resume}
-                onChange={(e) => setProfile(prev => prev ? ({ ...prev, resume: e.target.value }) : null)}
+                onChange={(e) => setProfile(prev => prev ? { ...prev, resume: e.target.value } as ProfileData : null)}
                 placeholder="https://link-to-your-resume.pdf"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
               />
@@ -360,7 +360,7 @@ export default function ProfileManagement() {
               </label>
               <textarea
                 value={profile.story}
-                onChange={(e) => setProfile(prev => prev ? ({ ...prev, story: e.target.value }) : null)}
+                onChange={(e) => setProfile(prev => prev ? { ...prev, story: e.target.value } as ProfileData : null)}
                 rows={12}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
                 placeholder="Tell your story... Use double line breaks to separate paragraphs."
