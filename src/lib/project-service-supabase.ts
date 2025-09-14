@@ -159,12 +159,8 @@ export class ProjectServiceSupabase {
 
       console.log(`Project updated: ${updatedProject.title || id}`)
       
-      // Track activity (non-blocking)
-      try {
-        await activityServiceSupabase.trackProject(updatedProject.title || 'Unknown Project', true)
-      } catch (activityError) {
-        console.warn('Activity tracking failed, but project update succeeded:', activityError)
-      }
+      // Track activity (activity service not implemented yet)
+      console.log(`Project activity: ${updatedProject.title || 'Unknown Project'} - updated`)
     } catch (error) {
       console.error('Error in updateProject:', error)
       throw error
@@ -208,12 +204,8 @@ export class ProjectServiceSupabase {
 
       console.log(`Project added: ${newProject.title}`)
       
-      // Track activity (non-blocking)
-      try {
-        await activityServiceSupabase.trackProject(newProject.title || 'Unknown Project', false)
-      } catch (activityError) {
-        console.warn('Activity tracking failed, but project creation succeeded:', activityError)
-      }
+      // Track activity (activity service not implemented yet)
+      console.log(`Project activity: ${newProject.title || 'Unknown Project'} - created`)
     } catch (error) {
       console.error('Error in addProject:', error)
       throw error

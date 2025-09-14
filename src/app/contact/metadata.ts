@@ -1,11 +1,26 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
-export const contactMetadata: Metadata = {
-  title: "Contact | Hire Web3 Data Analyst for Blockchain Analytics Projects",
-  description: "Get in touch for Web3 data analytics projects: DeFi protocol analysis, Dune Analytics dashboards, on-chain data visualization, smart contract analysis, and blockchain statistical modeling. Available for freelance and full-time opportunities.",
-  keywords: ["Hire Web3 Data Analyst", "Blockchain Analytics Freelancer", "DeFi Analytics Consultant", "Dune Analytics Expert", "Contact Web3 Analyst", "Blockchain Data Consultant", "On-chain Analytics", "Smart Contract Analysis"],
+export const metadata: Metadata = {
+  title: "Contact Matthew Raphael | Web3 Data Analytics Consultation & Collaboration",
+  description: "Get in touch with Matthew Raphael for Web3 data analytics projects, blockchain dashboard development, DeFi research collaboration, and on-chain data analysis consulting. Schedule a consultation or start your project.",
+  keywords: [
+    "Contact Web3 Data Analyst", "Blockchain Analytics Consultation", "DeFi Analytics Collaboration",
+    "Hire Web3 Data Analyst", "Dune Analytics Developer", "Smart Contract Analysis Service",
+    "On-chain Data Consulting", "Cryptocurrency Research Services", "Web3 Project Collaboration",
+    "Blockchain Dashboard Development", "Data Analytics Freelancer", "Web3 Consultation"
+  ],
   openGraph: {
-    title: "Contact | Hire Web3 Data Analyst for Blockchain Analytics Projects",
-    description: "Get in touch for Web3 data analytics projects: DeFi protocol analysis, Dune Analytics dashboards, on-chain data visualization.",
+    title: "Contact Matthew Raphael | Web3 Data Analytics Consultation",
+    description: "Get in touch for Web3 data analytics projects, blockchain dashboard development, and DeFi research collaboration.",
+    url: "https://matthewraphael.xyz/contact",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact - Web3 Data Analytics Consultation",
+    description: "Ready for Web3 analytics projects? Let's collaborate on blockchain dashboards, DeFi research, and on-chain data analysis.",
+  },
+  alternates: {
+    canonical: "https://matthewraphael.xyz/contact",
   },
 }

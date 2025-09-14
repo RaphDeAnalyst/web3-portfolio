@@ -4,6 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
+import { 
+  FileText, 
+  CheckCircle, 
+  FileEdit, 
+  Star,
+  Plus
+} from 'lucide-react'
 
 export default function PostsManagement() {
   const [posts, setPosts] = useState<BlogPostData[]>([])
@@ -69,6 +76,7 @@ export default function PostsManagement() {
               <p className="text-2xl font-bold text-foreground">{posts.length}</p>
             </div>
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <FileText className="text-blue-500" size={20} />
             </div>
           </div>
         </div>
@@ -82,7 +90,7 @@ export default function PostsManagement() {
               </p>
             </div>
             <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-green-500 text-xl">✅</span>
+              <CheckCircle className="text-green-500" size={20} />
             </div>
           </div>
         </div>
@@ -96,7 +104,7 @@ export default function PostsManagement() {
               </p>
             </div>
             <div className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-yellow-500 text-xl">📄</span>
+              <FileEdit className="text-yellow-500" size={20} />
             </div>
           </div>
         </div>
@@ -104,10 +112,13 @@ export default function PostsManagement() {
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-foreground/60">Categories</p>
-              <p className="text-2xl font-bold text-foreground">{categories.length}</p>
+              <p className="text-sm text-foreground/60">Featured</p>
+              <p className="text-2xl font-bold text-foreground">
+                {posts.filter(p => p.featured).length}
+              </p>
             </div>
             <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+              <Star className="text-purple-500" size={20} />
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
 import { BlogPostData } from '@/lib/blog-service'
+import { Edit, Eye, RefreshCw, Rocket, FileText, Image, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
 
 interface BlogPostEditorProps {
   initialData?: Partial<BlogPostData>
@@ -107,23 +108,25 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
         <div className="flex items-center space-x-4">
           <button
             onClick={() => setShowPreview(false)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${
-              !showPreview 
-                ? 'bg-cyber-500 text-white' 
+            className={`px-3 py-1 text-sm rounded-md transition-colors flex items-center space-x-2 ${
+              !showPreview
+                ? 'bg-cyber-500 text-white'
                 : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >
-            ✏️ Edit
+            <Edit className="w-4 h-4" />
+            <span>Edit</span>
           </button>
           <button
             onClick={() => setShowPreview(true)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${
-              showPreview 
-                ? 'bg-cyber-500 text-white' 
+            className={`px-3 py-1 text-sm rounded-md transition-colors flex items-center space-x-2 ${
+              showPreview
+                ? 'bg-cyber-500 text-white'
                 : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >
-            👁️ Preview
+            <Eye className="w-4 h-4" />
+            <span>Preview</span>
           </button>
         </div>
         
@@ -131,16 +134,27 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
           <button
             onClick={() => handleSave(true)}
             disabled={isSaving || !formData.title.trim()}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center space-x-2"
           >
-            💾 Save Draft
+            <Save className="w-4 h-4" />
+            <span>Save Draft</span>
           </button>
           <button
             onClick={() => handleSave(false)}
             disabled={isSaving || !formData.title.trim() || !formData.content.trim()}
-            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none"
+            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none flex items-center space-x-2"
           >
-            {isSaving ? '🔄 Publishing...' : '🚀 Publish'}
+            {isSaving ? (
+              <>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>Publishing...</span>
+              </>
+            ) : (
+              <>
+                <Rocket className="w-4 h-4" />
+                <span>Publish</span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -210,31 +224,52 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                 />
                 <div className="text-xs text-foreground/60 space-y-2">
                   <div>
-                    <p className="font-medium text-foreground/80 mb-1">📝 Markdown Formatting:</p>
+                    <div className="flex items-center space-x-1 mb-1">
+                      <FileText className="w-3 h-3" />
+                      <p className="font-medium text-foreground/80">Markdown Formatting:</p>
+                    </div>
                     <p>**bold**, *italic*, `code`, ## headers, > quotes, - lists</p>
                   </div>
                   <div>
-                    <p className="font-medium text-foreground/80 mb-1">🖼️ Images:</p>
+                    <div className="flex items-center space-x-1 mb-1">
+                      <Image className="w-3 h-3" />
+                      <p className="font-medium text-foreground/80">Images:</p>
+                    </div>
                     <p>1. Upload via <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">Admin → Media</span> page</p>
                     <p>2. Copy URL and use: <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">![alt text](image-url)</span></p>
                     <p>3. Or drag & drop images below to auto-add to content</p>
                   </div>
                   <div>
-                    <p className="font-medium text-foreground/80 mb-1">🎥 Videos (YouTube):</p>
+                    <div className="flex items-center space-x-1 mb-1">
+                      <Video className="w-3 h-3" />
+                      <p className="font-medium text-foreground/80">Videos (YouTube):</p>
+                    </div>
                     <p>Paste YouTube URL on its own line: <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://youtube.com/watch?v=VIDEO_ID</span></p>
                     <p>Auto-embeds with responsive 16:9 player</p>
                   </div>
                   <div>
-                    <p className="font-medium text-foreground/80 mb-1">📄 Documents (Google Drive):</p>
+                    <div className="flex items-center space-x-1 mb-1">
+                      <File className="w-3 h-3" />
+                      <p className="font-medium text-foreground/80">Documents (Google Drive):</p>
+                    </div>
                     <p><strong>With custom title (recommended):</strong></p>
                     <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">[My Document Title](https://drive.google.com/file/d/FILE_ID/view)</span></p>
                     <p><strong>Or paste URL only:</strong></p>
                     <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://drive.google.com/file/d/FILE_ID/view</span></p>
-                    <p>📋 Setup: Upload to Google Drive → Set sharing to "Anyone with link" → Copy share URL</p>
-                    <p className="text-xs text-foreground/50">💡 Custom titles provide better SEO and faster loading</p>
+                    <div className="flex items-center space-x-1">
+                      <Clipboard className="w-3 h-3" />
+                      <p>Setup: Upload to Google Drive → Set sharing to "Anyone with link" → Copy share URL</p>
+                    </div>
+                    <div className="flex items-center space-x-1 text-xs text-foreground/50">
+                      <Lightbulb className="w-3 h-3" />
+                      <p>Custom titles provide better SEO and faster loading</p>
+                    </div>
                   </div>
                   <div className="pt-1 border-t border-gray-200 dark:border-gray-700">
-                    <p className="text-foreground/50">💡 Tip: Manage all media via <span className="font-mono">Admin → Media</span> for organized workflow</p>
+                    <div className="flex items-center space-x-1 text-foreground/50">
+                      <Lightbulb className="w-3 h-3" />
+                      <p>Tip: Manage all media via <span className="font-mono">Admin → Media</span> for organized workflow</p>
+                    </div>
                   </div>
                 </div>
                 

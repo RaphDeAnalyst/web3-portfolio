@@ -2,6 +2,7 @@
 
 import { useTheme } from '@/lib/theme-provider'
 import { useEffect, useState } from 'react'
+import { Sun, Moon, Monitor, Check } from 'lucide-react'
 
 type ThemeOption = {
   value: 'light' | 'dark' | 'system'
@@ -67,33 +68,19 @@ export function ThemeToggle() {
       value: 'light',
       label: 'Light',
       description: 'Use light theme',
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <circle cx="12" cy="12" r="5" />
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-        </svg>
-      ),
+      icon: <Sun className="w-4 h-4" />,
     },
     {
       value: 'dark',
       label: 'Dark',
       description: 'Use dark theme',
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      ),
+      icon: <Moon className="w-4 h-4" />,
     },
     {
       value: 'system',
       label: 'System',
       description: 'Use system preference',
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <rect x="2" y="4" width="20" height="16" rx="2" />
-          <path d="M2 8h20" />
-        </svg>
-      ),
+      icon: <Monitor className="w-4 h-4" />,
     },
   ]
 
@@ -161,9 +148,7 @@ export function ThemeToggle() {
                 </div>
                 {isActive && (
                   <div className="flex-shrink-0 w-4 h-4 text-cyber-500">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <Check className="w-4 h-4" />
                   </div>
                 )}
               </button>

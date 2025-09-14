@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ProfilePictureUpload } from '@/components/ui/profile-picture-upload'
 import { profileService } from '@/lib/service-switcher'
 import type { ProfileData } from '@/lib/profile-service-supabase'
+import { AlertTriangle } from 'lucide-react'
 
 export default function ProfileManagement() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -89,7 +90,9 @@ export default function ProfileManagement() {
   if (!profile) {
     return (
       <div className="max-w-4xl mx-auto space-y-8 text-center py-20">
-        <div className="text-6xl mb-4">⚠️</div>
+        <div className="flex justify-center mb-4">
+          <AlertTriangle className="w-16 h-16 text-orange-500" />
+        </div>
         <h1 className="text-2xl font-bold text-foreground">Profile Not Found</h1>
         <p className="text-foreground/70">Unable to load profile data.</p>
         <button onClick={() => window.location.reload()} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
 import type { ProfileData } from '@/lib/profile-service-supabase'
 import { ContactAvatar } from '@/components/ui/profile-avatar'
+import { Mail, Calendar, Globe, Zap, CheckCircle } from 'lucide-react'
 
 export function ContactInfo() {
   const [copiedItem, setCopiedItem] = useState<string | null>(null)
@@ -39,11 +40,7 @@ export function ContactInfo() {
       title: 'Email',
       value: 'matthewraphael@matthewraphael.xyz',
       description: 'Preferred for business inquiries',
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.9.732-1.636 1.636-1.636h.91L12 10.545l9.455-6.724h.909c.904 0 1.636.732 1.636 1.636z"/>
-        </svg>
-      ),
+      icon: <Mail className="w-5 h-5" />,
       color: 'cyber-500',
       action: 'mailto:matthewraphael@matthewraphael.xyz'
     },
@@ -52,11 +49,7 @@ export function ContactInfo() {
       title: 'Schedule Call',
       value: 'calendly.com/matthewraphael-matthewraphael/30min',
       description: '30-min strategy sessions available',
-      icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      ),
+      icon: <Calendar className="w-5 h-5" />,
       color: 'purple-500',
       action: 'https://calendly.com/matthewraphael-matthewraphael/30min'
     }
@@ -84,23 +77,15 @@ export function ContactInfo() {
   ]
 
   const responseTime = [
-    { 
-      type: 'Email', 
-      time: '< 24 hours', 
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      )
+    {
+      type: 'Email',
+      time: '< 24 hours',
+      icon: <Mail className="w-4 h-4" />
     },
-    { 
-      type: 'Emergency', 
-      time: '< 30 mins', 
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
-        </svg>
-      )
+    {
+      type: 'Emergency',
+      time: '< 30 mins',
+      icon: <Zap className="w-4 h-4" />
     }
   ]
 
@@ -202,9 +187,7 @@ export function ContactInfo() {
       <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-cyber-500/5 backdrop-blur-sm">
         <div className="flex items-center space-x-2 mb-6">
           <div className="w-6 h-6 text-primary-500">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <Globe className="w-6 h-6" />
           </div>
           <h4 className="text-lg font-bold text-foreground">Location & Availability</h4>
         </div>
@@ -291,9 +274,7 @@ export function ContactInfo() {
       <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/30 backdrop-blur-sm">
         <div className="flex items-center space-x-2 mb-6">
           <div className="w-6 h-6 text-cyber-500">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            <Zap className="w-6 h-6" />
           </div>
           <h4 className="text-lg font-bold text-foreground">Response Times</h4>
         </div>
@@ -312,9 +293,7 @@ export function ContactInfo() {
       {/* Consultation Offer */}
       <div className="p-8 rounded-2xl bg-gradient-to-br from-cyber-500/10 to-primary-500/10 border border-gray-200/50 dark:border-gray-800/50 text-center">
         <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white">
-          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-          </svg>
+          <CheckCircle className="w-8 h-8" />
         </div>
         
         <h4 className="text-xl font-bold text-foreground mb-4">

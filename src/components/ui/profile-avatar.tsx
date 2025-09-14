@@ -117,7 +117,7 @@ export function ProfileAvatar({
             {/* Actual Image */}
             <img
               src={profile?.avatar}
-              alt={`${profile?.name || 'Matthew Raphael'}'s profile picture`}
+              alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
               className={`${sizeClasses[size]} rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10 transition-all duration-300 hover:shadow-primary-500/20 hover:scale-105 ${
                 imageLoading ? 'opacity-0 absolute inset-0' : 'opacity-100'
               }`}

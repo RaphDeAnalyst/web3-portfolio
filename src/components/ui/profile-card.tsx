@@ -119,7 +119,7 @@ export function ProfileCard() {
                 ) : isHydrated && profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
                   <img
                     src={profile.avatar}
-                    alt={profile?.name || 'Matthew Raphael'}
+                    alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst specializing in blockchain analytics, DeFi research, and on-chain data analysis`}
                     className="w-40 h-40 rounded-full object-cover shadow-2xl shadow-primary-500/30 border-4 border-gradient-to-r border-transparent bg-gradient-to-r from-primary-500 to-cyber-500"
                   />
                 ) : (

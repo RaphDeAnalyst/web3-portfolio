@@ -6,6 +6,7 @@ import { FilterTabs } from '@/components/ui/filter-tabs'
 import { projectCategories, Project } from '@/data/projects'
 import { projectService } from '@/lib/service-switcher'
 import Link from 'next/link'
+import { Search, X } from 'lucide-react'
 
 export default function Portfolio() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -236,16 +237,14 @@ export default function Portfolio() {
                     className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200 text-sm sm:text-base"
                   />
                   <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <Search className="w-5 h-5" />
                   </div>
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors duration-200"
                     >
-                      ✕
+                      <X className="w-5 h-5" />
                     </button>
                   )}
                 </div>
@@ -330,9 +329,7 @@ export default function Portfolio() {
                         }}
                         className="absolute left-2 top-1/2 transform -translate-y-1/2 text-foreground/40 hover:text-foreground"
                       >
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+                        <Search className="w-3 h-3" />
                       </button>
                     </div>
                   ) : (
@@ -340,9 +337,7 @@ export default function Portfolio() {
                       onClick={() => setIsSearchExpanded(true)}
                       className="p-1.5 rounded-lg border border-gray-200/50 dark:border-gray-800/50 bg-background/50 text-foreground/60 hover:text-cyber-500 hover:border-cyber-500/30 transition-colors duration-200"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
+                      <Search className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -422,9 +417,7 @@ export default function Portfolio() {
           {totalFilteredProjects === 0 && (
             <div className="text-center py-20">
               <div className="w-16 h-16 mx-auto mb-4 text-foreground/40">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <Search className="w-16 h-16" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">No projects found</h3>
               <p className="text-foreground/60 mb-8">

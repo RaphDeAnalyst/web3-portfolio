@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
+import { 
+  Rocket, 
+  CheckCircle, 
+  RefreshCw, 
+  Star, 
+  ExternalLink, 
+  Github 
+} from 'lucide-react'
 
 export default function ProjectsManagement() {
   const [projectList, setProjectList] = useState<Project[]>([])
@@ -118,6 +126,7 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.total}</p>
             </div>
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <Rocket className="text-blue-500" size={20} />
             </div>
           </div>
         </div>
@@ -129,7 +138,7 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.completed}</p>
             </div>
             <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-green-500 text-xl">✅</span>
+              <CheckCircle className="text-green-500" size={20} />
             </div>
           </div>
         </div>
@@ -141,7 +150,7 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.inProgress}</p>
             </div>
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-blue-500 text-xl">🔄</span>
+              <RefreshCw className="text-blue-500" size={20} />
             </div>
           </div>
         </div>
@@ -153,6 +162,7 @@ export default function ProjectsManagement() {
               <p className="text-2xl font-bold text-foreground">{statsData.featured}</p>
             </div>
             <div className="w-10 h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
+              <Star className="text-primary-500" size={20} />
             </div>
           </div>
         </div>
@@ -258,7 +268,7 @@ export default function ProjectsManagement() {
                       className="p-2 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors"
                       title="View demo"
                     >
-                      🔗
+                      <ExternalLink size={16} />
                     </a>
                   )}
                   {project.githubUrl && (
@@ -269,7 +279,7 @@ export default function ProjectsManagement() {
                       className="p-2 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                       title="View code"
                     >
-                      📋
+                      <Github size={16} />
                     </a>
                   )}
                 </div>

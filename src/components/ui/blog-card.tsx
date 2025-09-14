@@ -128,9 +128,9 @@ export function BlogCard({
           <div className={`relative ${featured ? 'h-48 sm:h-64 mb-4 sm:mb-6' : 'h-40 sm:h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
             {(featuredImage || image) ? (
               <>
-                <img 
-                  src={featuredImage || image} 
-                  alt={title}
+                <img
+                  src={featuredImage || image}
+                  alt={`${title} - Web3 ${category} article by Matthew Raphael covering ${tags.slice(0, 3).join(', ')} blockchain analytics topics`}
                   className={`w-full h-full object-cover transition-all duration-300 ${
                     imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                   } ${isHovered ? 'scale-110' : ''}`}
@@ -196,7 +196,7 @@ export function BlogCard({
               {isHydrated && profileData?.avatar && profileData.avatar !== '/avatar.jpg' && profileData.avatar.startsWith('http') ? (
                 <img
                   src={profileData.avatar}
-                  alt={author.name}
+                  alt={`${author.name} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
                   className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
                 />
               ) : (

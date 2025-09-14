@@ -1,12 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
 import { profileService } from '@/lib/service-switcher'
-
 
 export default function About() {
   const [profile, setProfile] = useState<any>(null)
@@ -29,46 +27,49 @@ export default function About() {
     {
       title: 'Core Data Analytics',
       description: 'Advanced • 3+ Years Experience',
+      icon: '📊',
       color: 'primary-500',
       gradient: 'from-primary-500/20 to-primary-500/5',
       level: 'Advanced' as const,
       progress: 85,
       skills: [
-        'Python for Data Analysis (Advanced)',
-        'SQL Database Querying (Advanced)',
-        'Pandas & NumPy Libraries (Advanced)',
-        'Excel & Data Processing (Advanced)',
-        'Database Design & ETL (Proficient)'
+        'Python for Data Analysis',
+        'SQL Database Querying',
+        'Pandas & NumPy Libraries',
+        'Excel & Data Processing',
+        'Database Design & ETL'
       ]
     },
     {
       title: 'Web3 Analytics',
-      description: 'Learning • Active Projects',
+      description: 'Proficient • Active Projects',
+      icon: '🔗',
       color: 'cyber-500',
       gradient: 'from-cyber-500/20 to-cyber-500/5',
-      level: 'Learning' as const,
-      progress: 40,
+      level: 'Proficient' as const,
+      progress: 70,
       skills: [
-        'Dune Analytics Dashboards (Proficient)',
-        'On-chain Data Queries (Learning)',
-        'Solidity Basics (Learning)',
-        'Blockchain Data Structures (Learning)',
-        'DeFi Protocol Analysis (Learning)'
+        'Dune Analytics Dashboards',
+        'On-chain Data Queries',
+        'Solidity Basics',
+        'Blockchain Data Structures',
+        'DeFi Protocol Analysis'
       ]
     },
     {
       title: 'Visualization & Insight',
       description: 'Proficient • Applied Experience',
+      icon: '📈',
       color: 'purple-500',
       gradient: 'from-purple-500/20 to-purple-500/5',
       level: 'Proficient' as const,
       progress: 70,
       skills: [
-        'Dashboard Development (Advanced)',
-        'Tableau & PowerBI (Proficient)',
-        'Statistical Modeling (Proficient)',
-        'Business Intelligence (Proficient)',
-        'Data Storytelling (Advanced)'
+        'Dashboard Development',
+        'Tableau & PowerBI',
+        'Statistical Modeling',
+        'Business Intelligence',
+        'Data Storytelling'
       ]
     }
   ]

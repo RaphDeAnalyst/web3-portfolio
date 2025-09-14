@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
 import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
+import { FileText } from 'lucide-react'
 
 export default function EditBlogPost() {
   const router = useRouter()
@@ -62,7 +63,9 @@ export default function EditBlogPost() {
   if (!postData) {
     return (
       <div className="max-w-4xl mx-auto space-y-6 text-center py-20">
-        <div className="text-6xl mb-4">📝</div>
+        <div className="flex justify-center mb-4">
+          <FileText className="w-16 h-16 text-gray-400" />
+        </div>
         <h1 className="text-2xl font-bold text-foreground">Post Not Found</h1>
         <p className="text-foreground/70">The blog post you're looking for doesn't exist.</p>
         <Link

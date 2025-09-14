@@ -4,6 +4,7 @@ import { ContactForm } from '@/components/ui/contact-form'
 import { ContactInfo } from '@/components/ui/contact-info'
 import { SocialLinks } from '@/components/ui/social-links'
 import { AvailabilityCalendar } from '@/components/ui/availability-calendar'
+import { Send } from 'lucide-react'
 
 export default function Contact() {
   return (
@@ -153,10 +154,8 @@ export default function Contact() {
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-primary-500/10 via-cyber-500/10 to-purple-500/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white text-3xl">
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
+            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-500 to-cyber-500 flex items-center justify-center text-white">
+              <Send className="w-10 h-10" />
             </div>
             
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6">

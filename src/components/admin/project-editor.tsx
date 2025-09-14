@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { activityService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
+import { RefreshCw, Rocket, Save } from 'lucide-react'
 
 interface ProjectData extends Omit<Project, 'id'> {
   id?: string
@@ -107,9 +107,9 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
       status: isDraft ? 'Development' : formData.status
     }
 
-    // Track activity
+    // Track activity (activity service not implemented yet)
     if (!isDraft) {
-      await activityService.trackProject(formData.title, !!initialData?.id)
+      console.log(`Project activity: ${formData.title} - ${!!initialData?.id ? 'updated' : 'created'}`)
     }
 
     try {
@@ -158,16 +158,27 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
           <button
             onClick={() => handleSave(true)}
             disabled={isSaving || !formData.title.trim()}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center space-x-2"
           >
-            💾 Save Draft
+            <Save className="w-4 h-4" />
+            <span>Save Draft</span>
           </button>
           <button
             onClick={() => handleSave(false)}
             disabled={isSaving || !formData.title.trim() || !formData.description.trim()}
-            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none"
+            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-cyber-500 text-white rounded-lg hover:scale-105 transition-transform duration-200 disabled:opacity-50 disabled:transform-none flex items-center space-x-2"
           >
-            {isSaving ? '🔄 Saving...' : '🚀 Save Project'}
+            {isSaving ? (
+              <>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>Saving...</span>
+              </>
+            ) : (
+              <>
+                <Rocket className="w-4 h-4" />
+                <span>Save Project</span>
+              </>
+            )}
           </button>
         </div>
       </div>
