@@ -27,8 +27,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simple password protection - in production, use proper auth
-    if (password === 'admin123') {
+    // Get admin password from environment variable with fallback
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123'
+
+    if (password === adminPassword) {
       setIsAuthenticated(true)
       localStorage.setItem('admin-authenticated', 'true')
       setError('')
@@ -84,7 +86,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </form>
             
             <div className="mt-6 text-center text-xs text-foreground/50">
-              Default password: admin123
+              {process.env.NEXT_PUBLIC_ADMIN_PASSWORD ? 'Custom password configured' : 'Default password: admin123'}
             </div>
           </div>
         </div>

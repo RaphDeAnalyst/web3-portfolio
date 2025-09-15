@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { NavbarAvatar } from '@/components/ui/profile-avatar'
 import { NavLink, MobileNavLink } from '@/components/ui/nav-link'
@@ -10,7 +10,9 @@ import { NavLink, MobileNavLink } from '@/components/ui/nav-link'
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [showAdminHint, setShowAdminHint] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -28,12 +30,38 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Global keyboard shortcut for admin access
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl+Shift+A (Windows/Linux) or Cmd+Shift+A (Mac)
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'A') {
+        event.preventDefault()
+        setShowAdminHint(true)
+        setTimeout(() => setShowAdminHint(false), 2000)
+        router.push('/admin')
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [router])
+
+  // Handle Alt+Click on logo for discrete admin access
+  const handleLogoClick = (event: React.MouseEvent) => {
+    if (event.altKey) {
+      event.preventDefault()
+      setShowAdminHint(true)
+      setTimeout(() => setShowAdminHint(false), 2000)
+      router.push('/admin')
+    }
+  }
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-white dark:bg-background/95 dark:backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-header dark:shadow-lg dark:shadow-primary-500/10 transition-all duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200">
+          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200" onClick={handleLogoClick}>
             <NavbarAvatar />
             <div className="hidden xs:block">
               <div className="text-base sm:text-xl font-semibold text-storj-navy dark:text-white">Data Analytics</div>
@@ -91,6 +119,18 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Admin Access Notification */}
+      {showAdminHint && (
+        <div className="fixed top-24 right-4 z-50 animate-bounce-in">
+          <div className="bg-primary-600 text-white px-4 py-2 rounded-lg shadow-lg border border-primary-500">
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+              <span className="text-sm font-medium">Accessing Admin Panel...</span>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

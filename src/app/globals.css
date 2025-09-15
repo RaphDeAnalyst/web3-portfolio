@@ -247,6 +247,26 @@ select {
   border-color: hsl(var(--border-primary));
 }
 
+/* Admin shortcut animations */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 /* Monochrome themed utilities */
 .mono-grid {
   background-image:
