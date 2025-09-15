@@ -104,8 +104,12 @@ export function ProfilePictureUpload({
   }
 
   const uploadToImgBB = async (file: Blob): Promise<string> => {
-    const API_KEY = '3feb82a2e6ad9cc020876716282b7321'
-    
+    const API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY || ''
+
+    if (!API_KEY) {
+      throw new Error('ImgBB API key not configured')
+    }
+
     const formData = new FormData()
     formData.append('image', file)
     formData.append('key', API_KEY)
@@ -117,11 +121,13 @@ export function ProfilePictureUpload({
 
     if (!response.ok) {
       const errorData = await response.text()
+      console.error('ImgBB API Error:', response.status, errorData)
       throw new Error(`Upload failed: ${response.status} ${errorData}`)
     }
 
     const data = await response.json()
     if (!data.success) {
+      console.error('ImgBB Response Error:', data)
       throw new Error(data.error?.message || 'Upload failed')
     }
 

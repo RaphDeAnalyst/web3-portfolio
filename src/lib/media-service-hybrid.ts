@@ -37,7 +37,7 @@ export interface UploadOptions {
 }
 
 export class MediaServiceHybrid {
-  private readonly IMGBB_API_KEY = process.env.IMGBB_API_KEY || ''
+  private readonly IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY || ''
 
   // Configuration for smart routing
   private readonly config = {
@@ -167,6 +167,10 @@ export class MediaServiceHybrid {
     thumbnail_url?: string
     metadata?: Record<string, any>
   }> {
+    if (!this.IMGBB_API_KEY) {
+      throw new Error('ImgBB API key not configured')
+    }
+
     if (!file.type.startsWith('image/')) {
       throw new Error('ImgBB only supports image files')
     }
@@ -185,11 +189,14 @@ export class MediaServiceHybrid {
     })
 
     if (!response.ok) {
-      throw new Error(`ImgBB upload failed: ${response.status}`)
+      const errorText = await response.text()
+      console.error('ImgBB API Error:', response.status, errorText)
+      throw new Error(`ImgBB upload failed: ${response.status} ${errorText}`)
     }
 
     const data = await response.json()
     if (!data.success) {
+      console.error('ImgBB Response Error:', data)
       throw new Error(data.error?.message || 'ImgBB upload failed')
     }
 
