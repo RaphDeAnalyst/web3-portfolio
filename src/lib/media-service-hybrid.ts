@@ -37,7 +37,7 @@ export interface UploadOptions {
 }
 
 export class MediaServiceHybrid {
-  private readonly IMGBB_API_KEY = '3feb82a2e6ad9cc020876716282b7321'
+  private readonly IMGBB_API_KEY = process.env.IMGBB_API_KEY || ''
 
   // Configuration for smart routing
   private readonly config = {
