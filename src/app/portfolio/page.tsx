@@ -261,16 +261,16 @@ export default function Portfolio() {
               </p>
               <div className="space-x-4">
                 {searchQuery && (
-                  <button 
+                  <button
                     onClick={() => setSearchQuery('')}
-                    className="px-6 py-3 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"
+                    className="px-6 py-3 rounded-storj bg-storj-navy text-white font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200 shadow-storj"
                   >
                     Clear Search
                   </button>
                 )}
-                <button 
+                <button
                   onClick={() => setActiveCategory('All')}
-                  className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200"
+                  className="px-6 py-3 rounded-storj border border-gray-300 text-gray-700 hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200"
                 >
                   View All Projects
                 </button>
@@ -293,12 +293,12 @@ export default function Portfolio() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <button className="px-8 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30">
+                <button className="px-8 py-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg">
                   Get In Touch
                 </button>
               </Link>
               <Link href="/about">
-                <button className="px-8 py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground font-semibold hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200 shadow-lg shadow-accent-blue/20">
+                <button className="px-8 py-4 rounded-storj border-2 border-gray-300 text-gray-700 font-semibold hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200 shadow-storj">
                   Learn About Me
                 </button>
               </Link>

@@ -11,7 +11,9 @@
       "WebSearch",
       "Read(/C:\\Users\\rapha\\web3-portfolio\\src\\app\\admin\\activity/**)",
       "WebFetch(domain:i.ibb.co)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "WebFetch(domain:matthewraphael.xyz)",
+      "WebFetch(domain:www.storj.io)"
     ],
     "deny": [],
     "ask": [],

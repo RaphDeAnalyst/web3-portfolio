@@ -25,14 +25,10 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
             onClick={() => onCategoryChange(category)}
             className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
               isActive
-                ? 'bg-foreground/10 text-foreground border-2 border-foreground/30 shadow-lg shadow-foreground/20 font-bold'
-                : 'bg-background/50 text-foreground/70 border-2 border-border'
+                ? 'bg-transparent text-black dark:text-white border-2 border-black dark:border-white font-bold'
+                : 'bg-background/50 text-black/70 dark:text-white/70 border-2 border-border'
             } backdrop-blur-sm`}
           >
-            {/* Background glow effect - only for active */}
-            <div className={`absolute inset-0 rounded-lg bg-foreground/5 opacity-0 ${
-              isActive ? 'opacity-100' : ''
-            } transition-opacity duration-300`}></div>
             
             {/* Content */}
             <div className="relative z-10 flex items-center space-x-2">
@@ -41,8 +37,8 @@ export function FilterTabs({ categories, activeCategory, onCategoryChange, proje
               {/* Count badge */}
               <div className={`ml-1 sm:ml-1.5 px-1 sm:px-1.5 py-0.5 rounded-full text-xs font-medium ${
                 isActive
-                  ? 'bg-foreground/20 text-foreground'
-                  : 'bg-muted text-foreground/60'
+                  ? 'bg-gray-100 dark:bg-gray-800 text-black dark:text-white'
+                  : 'bg-muted text-black/60 dark:text-white/60'
               } transition-colors duration-300`}>
                 {count}
               </div>

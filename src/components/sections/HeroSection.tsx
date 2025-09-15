@@ -36,12 +36,12 @@ export function HeroSection() {
           {/* Enhanced CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
             <Link href="/portfolio">
-              <button className="group relative px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-base sm:text-lg hover:scale-105 transition-all duration-200 shadow-2xl shadow-accent-blue/30">
+              <button className="group relative px-8 sm:px-10 py-3 sm:py-4 rounded-storj bg-storj-navy text-white font-semibold text-base sm:text-lg hover:bg-storj-blue hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg">
                 <span className="relative z-10">View Portfolio</span>
               </button>
             </Link>
             <Link href="/contact">
-              <button className="px-8 sm:px-10 py-3 sm:py-4 rounded-full border-2 border-gray-300 dark:border-gray-700 text-foreground text-base sm:text-lg font-semibold hover:border-accent-blue hover:text-accent-blue hover:bg-accent-blue/5 transition-all duration-200 backdrop-blur-sm">
+              <button className="px-8 sm:px-10 py-3 sm:py-4 rounded-storj border-2 border-gray-300 text-gray-700 text-base sm:text-lg font-semibold hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200">
                 Get In Touch
               </button>
             </Link>

@@ -232,7 +232,7 @@ export function SocialLinks() {
         </div>
 
         <div className="mt-6 text-center">
-          <button className="px-6 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
+          <button className="px-6 py-3 rounded-storj bg-storj-navy text-white font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200">
             Connect Wallet to Unlock
           </button>
         </div>

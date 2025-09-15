@@ -3,35 +3,35 @@
 @tailwind utilities;
 
 :root {
-  /* Light theme colors - Clean and minimal */
-  --background: 0 0% 98%;
-  --background-secondary: 0 0% 95%;
-  --background-tertiary: 0 0% 92%;
-  --foreground: 0 0% 9%;
-  --foreground-secondary: 0 0% 15%;
-  --foreground-tertiary: 0 0% 25%;
-  
+  /* Storj.io light theme colors */
+  --background: 210 17% 96%; /* hsl(210, 17%, 96%) - Light gray background */
+  --background-secondary: 210 20% 98%; /* Slightly lighter */
+  --background-tertiary: 0 0% 100%; /* Pure white */
+  --foreground: 220 54% 8%; /* Very dark navy for text */
+  --foreground-secondary: 220 9% 46%; /* Muted text color */
+  --foreground-tertiary: 220 9% 56%; /* Lighter muted text */
+
   /* Semantic colors */
-  --border: 0 0% 88%;
-  --border-hover: 0 0% 75%;
-  --card: 0 0% 100%;
-  --card-hover: 0 0% 96%;
-  --muted: 0 0% 93%;
-  --accent: 0 0% 50%;
-  
-  /* Monochrome brand system - Light mode */
-  --primary: #000000;
-  --primary-hover: #333333;
-  --primary-light: #666666;
-  --primary-lighter: #999999;
-  --primary-dark: #000000;
-  
-  /* Monochrome system colors */
-  --secondary: #333333;
-  --secondary-hover: #000000;
-  --success: #000000;
-  --warning: #666666;
-  --error: #000000;
+  --border: 210 20% 92%;
+  --border-hover: 210 20% 88%;
+  --card: 0 0% 100%; /* Pure white cards */
+  --card-hover: 210 20% 98%;
+  --muted: 210 17% 96%;
+  --accent: 214 84% 56%; /* Storj blue */
+
+  /* Storj brand system - Light mode */
+  --primary: hsl(214, 84%, 56%); /* Storj blue */
+  --primary-hover: hsl(214, 84%, 50%);
+  --primary-light: hsl(214, 84%, 66%);
+  --primary-lighter: hsl(214, 84%, 76%);
+  --primary-dark: hsl(220, 54%, 23%); /* Storj navy */
+
+  /* System colors */
+  --secondary: hsl(220, 54%, 23%); /* Storj navy */
+  --secondary-hover: hsl(220, 54%, 18%);
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
   
   /* Consolidated Gray System - 4 main grays for clarity */
   --text-primary: 222 84% 5%;
@@ -121,11 +121,13 @@
 }
 
 body {
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   min-height: 100vh;
-  transition: 
-    background-color var(--theme-transition-duration) var(--theme-transition-timing) var(--theme-transition-delay),
-    color var(--theme-transition-duration) var(--theme-transition-timing) var(--theme-transition-delay);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
 /* Enhanced smooth transitions for premium theme switching */
@@ -172,43 +174,58 @@ select {
   }
 }
 
-/* Clean Monochrome Button System */
+/* Storj.io Button System */
 .btn-primary {
-  background: var(--primary);
+  background: hsl(214, 84%, 56%); /* Storj blue */
   color: white;
   border: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.3);
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 200ms ease;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: hsl(214, 84%, 50%);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
 }
 
 .btn-secondary {
-  background: var(--secondary);
+  background: hsl(220, 54%, 23%); /* Storj navy */
   color: white;
   border: none;
-  transition: all 0.2s ease;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 200ms ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary:hover {
-  background: var(--secondary-hover);
+  background: hsl(220, 54%, 18%);
   transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  transition: all 0.2s ease;
+  color: hsl(214, 84%, 56%);
+  border: 1px solid hsl(214, 84%, 56%);
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 200ms ease;
 }
 
 .btn-outline:hover {
-  background: var(--primary);
+  background: hsl(214, 84%, 56%);
   color: white;
+  transform: translateY(-1px);
 }
 
 .text-hierarchy-primary {

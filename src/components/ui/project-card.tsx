@@ -49,18 +49,18 @@ export function ProjectCard({
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const statusColors = {
-    'Live': 'bg-primary-600/20 text-primary-600 border-primary-600/30',
-    'Development': 'bg-primary-500/20 text-primary-500 border-primary-500/30',
-    'Beta': 'bg-primary-400/20 text-primary-400 border-primary-400/30',
-    'Completed': 'bg-primary-600/20 text-primary-600 border-primary-600/30',
-    'Learning': 'bg-primary-400/20 text-primary-400 border-primary-400/30',
-    'Complete': 'bg-primary-600/20 text-primary-600 border-primary-600/30'
+    'Live': 'bg-storj-blue/10 text-storj-blue border-storj-blue/20',
+    'Development': 'bg-storj-navy/10 text-storj-navy border-storj-navy/20',
+    'Beta': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+    'Completed': 'bg-storj-blue/10 text-storj-blue border-storj-blue/20',
+    'Learning': 'bg-gray-500/10 text-gray-500 border-gray-500/20',
+    'Complete': 'bg-storj-blue/10 text-storj-blue border-storj-blue/20'
   }
 
   const phaseColors = {
-    'Traditional Analytics': 'bg-primary-500/10 text-primary-500',
-    'Exploratory Phase': 'bg-primary-400/10 text-primary-400',
-    'Web3 Analytics': 'bg-primary-600/10 text-primary-600'
+    'Traditional Analytics': 'bg-gray-100 text-gray-600',
+    'Exploratory Phase': 'bg-blue-50 text-blue-600',
+    'Web3 Analytics': 'bg-storj-blue/10 text-storj-blue'
   }
 
   const categoryColors = {
@@ -94,16 +94,14 @@ export function ProjectCard({
   const cardSize = getCardSize()
 
   return (
-    <div 
-      className={`group relative ${cardSize} rounded-2xl border border-gray-200/50 dark:border-gray-800/50 hover:border-accent-blue/50 hover:shadow-lg hover:shadow-accent-blue/20 bg-background/50 backdrop-blur-sm transition-all duration-300 overflow-hidden ${
-        featured ? 'p-4 sm:p-8 min-h-[500px] sm:min-h-[600px]' : 'p-4 sm:p-6 min-h-[500px] sm:min-h-[600px]'
-      } flex flex-col`}
+    <div
+      className={`group relative ${cardSize} h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover overflow-hidden flex flex-col`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
+      {/* Hover Effect */}
+      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-50/50 dark:bg-gray-800/50"></div>
+
       {/* Featured Badge */}
       {featured && (
         <div className="absolute top-4 right-4 z-20">
@@ -183,7 +181,7 @@ export function ProjectCard({
                 </span>
               </div>
             )}
-            <h3 className={`${featured ? 'text-lg sm:text-2xl' : 'text-lg sm:text-xl'} font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200`}>
+            <h3 className={`${featured ? 'text-lg sm:text-2xl' : 'text-xl'} font-bold text-foreground group-hover:text-foreground/80 transition-colors duration-200`}>
               {title}
             </h3>
           </div>
@@ -191,7 +189,7 @@ export function ProjectCard({
 
         {/* Description */}
         <div className="flex-1 mb-4">
-          <p className={`text-foreground/70 leading-relaxed ${featured ? 'text-sm sm:text-base' : 'text-sm'}`}>
+          <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
             {description}
           </p>
         </div>
@@ -200,7 +198,7 @@ export function ProjectCard({
         <div className="mt-auto space-y-4">
           {/* Metrics (if provided) */}
           {metrics && (
-            <div className="grid grid-cols-2 gap-4 py-4 border-t border-gray-200/30 dark:border-gray-800/30">
+            <div className="grid grid-cols-2 gap-4 py-4 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
               {Object.entries(metrics).map(([key, value]) => (
                 <div key={key} className="text-center space-y-1">
                   <div className="text-primary-500 font-bold text-lg">
@@ -217,7 +215,7 @@ export function ProjectCard({
             {tech && tech.map((technology, index) => (
               <span
                 key={index}
-                className="text-xs px-3 py-1 rounded-full bg-muted text-foreground/70 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200 cursor-default"
+                className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-foreground/60 hover:bg-primary-500/10 hover:text-primary-500 transition-colors duration-200"
               >
                 {technology}
               </span>
@@ -237,7 +235,7 @@ export function ProjectCard({
                       {features.map((feature, index) => (
                         <div key={index} className="flex items-center space-x-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-primary-500"></div>
-                          <span className="text-xs text-foreground/80">{feature}</span>
+                          <span className="text-xs text-foreground/70">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -270,31 +268,31 @@ export function ProjectCard({
               {/* Read More button */}
               {demoUrl && demoUrl !== '#' && demoUrl.trim() !== '' ? (
                 <Link href={demoUrl} target="_blank" className="w-full">
-                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20 text-center text-sm">
+                  <button className="w-full px-6 py-3 bg-storj-navy text-white rounded-storj font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200 text-center text-sm">
                     Read More
                   </button>
                 </Link>
               ) : (
-                <button 
-                  disabled 
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium cursor-not-allowed opacity-60 text-center text-sm"
+                <button
+                  disabled
+                  className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-400 font-medium cursor-not-allowed opacity-60 text-center text-sm"
                   title="Demo URL not provided"
                 >
                   Read More
                 </button>
               )}
-              
+
               {/* GitHub button */}
               {githubUrl && githubUrl !== '#' && githubUrl.trim() !== '' ? (
                 <Link href={githubUrl} target="_blank" className="w-full">
-                  <button className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 flex items-center justify-center text-sm">
+                  <button className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-800 text-foreground hover:bg-gray-50 dark:hover:bg-gray-800 hover:transform hover:translate-y-[-1px] transition-all duration-200 flex items-center justify-center text-sm">
                     <Github className="w-5 h-5" />
                   </button>
                 </Link>
               ) : (
                 <button
                   disabled
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-60 flex items-center justify-center text-sm"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 cursor-not-allowed opacity-60 flex items-center justify-center text-sm"
                   title="GitHub URL not provided"
                 >
                   <Github className="w-5 h-5" />
@@ -307,14 +305,14 @@ export function ProjectCard({
               <div className="grid grid-cols-2 gap-3">
                 {duneUrl && duneUrl !== '#' && duneUrl.trim() !== '' && (
                   <Link href={duneUrl} target="_blank" className="w-full">
-                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 text-sm font-medium text-center">
+                    <button className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-800 text-foreground hover:bg-gray-50 dark:hover:bg-gray-800 hover:transform hover:translate-y-[-1px] transition-all duration-200 text-sm font-medium text-center">
                       Dashboard
                     </button>
                   </Link>
                 )}
                 {blogPostSlug && blogPostSlug.trim() !== '' && (
                   <Link href={`/blog/${blogPostSlug}`} className="w-full">
-                    <button className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-accent-blue hover:text-accent-blue transition-colors duration-200 text-sm font-medium text-center">
+                    <button className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-800 text-foreground hover:bg-gray-50 dark:hover:bg-gray-800 hover:transform hover:translate-y-[-1px] transition-all duration-200 text-sm font-medium text-center">
                       Read Blog Post
                     </button>
                   </Link>
@@ -325,8 +323,6 @@ export function ProjectCard({
         </div>
       </div>
 
-      {/* Corner Accent */}
-      <div className="absolute top-4 left-4 w-2 h-2 rounded-full bg-primary-500 opacity-60 group-hover:opacity-100 transition-opacity duration-200"></div>
     </div>
   )
 }

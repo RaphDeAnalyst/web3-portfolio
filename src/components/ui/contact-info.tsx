@@ -308,7 +308,7 @@ export function ContactInfo() {
         <div className="space-y-4">
           <button 
             onClick={() => window.open('https://calendly.com/matthewraphael-matthewraphael/30min', '_blank')}
-            className="px-6 py-3 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30"
+            className="px-6 py-3 rounded-storj bg-storj-navy text-white font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200 shadow-lg shadow-storj-navy/30"
           >
             Schedule Free Call
           </button>

@@ -152,7 +152,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
       {/* Basic Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -167,7 +167,7 @@ export function ContactForm() {
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.name ? 'border-primary-800' : 'border-border'
-            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200`}
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]`}
             placeholder="Your full name"
             disabled={isSubmitting}
           />
@@ -186,7 +186,7 @@ export function ContactForm() {
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.email ? 'border-primary-800' : 'border-border'
-            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200`}
+            } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]`}
             placeholder="your.email@example.com"
             disabled={isSubmitting}
           />
@@ -205,7 +205,7 @@ export function ContactForm() {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+          className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]"
           placeholder="Company (optional)"
           disabled={isSubmitting}
         />
@@ -216,7 +216,27 @@ export function ContactForm() {
         <label className="block text-sm font-medium text-foreground mb-4">
           Project Type *
         </label>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        {/* Mobile Dropdown */}
+        <div className="block md:hidden">
+          <select
+            id="projectType"
+            name="projectType"
+            value={formData.projectType}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]"
+            disabled={isSubmitting}
+          >
+            {projectTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Desktop Radio Buttons */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-3">
           {projectTypes.map((type) => (
             <label
               key={type.value}
@@ -235,8 +255,7 @@ export function ContactForm() {
                 className="sr-only"
                 disabled={isSubmitting}
               />
-              <div className="text-center space-y-2">
-                <div className="text-2xl">{(type as any).icon || '📊'}</div>
+              <div className="text-center">
                 <div className="text-xs font-medium">{type.label}</div>
               </div>
             </label>
@@ -255,7 +274,7 @@ export function ContactForm() {
             name="budget"
             value={formData.budget}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]"
             disabled={isSubmitting}
           >
             {budgetRanges.map((range) => (
@@ -275,7 +294,7 @@ export function ContactForm() {
             name="timeline"
             value={formData.timeline}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 relative z-10 min-h-[48px]"
             disabled={isSubmitting}
           >
             {timeframes.map((time) => (
@@ -300,7 +319,7 @@ export function ContactForm() {
           rows={6}
           className={`w-full px-4 py-3 rounded-lg border ${
             errors.message ? 'border-primary-800' : 'border-border'
-          } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 resize-none`}
+          } bg-card text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 resize-none relative z-10 min-h-[120px]`}
           placeholder="Tell me about your project..."
           disabled={isSubmitting}
         />
@@ -314,10 +333,10 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
+        className={`w-full px-8 py-4 rounded-storj font-semibold text-lg transition-all duration-200 ${
           isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-accent-blue hover:bg-accent-blue-light text-white hover:scale-105 shadow-lg shadow-accent-blue/30 transition-all duration-200'
+            : 'bg-storj-navy text-white hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/30 transition-all duration-200'
         }`}
       >
         {isSubmitting && (

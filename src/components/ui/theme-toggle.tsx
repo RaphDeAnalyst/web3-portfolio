@@ -98,11 +98,11 @@ export function ThemeToggle() {
       {/* Main Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-cyber-500 dark:hover:border-cyber-400 transition-all duration-200 flex items-center justify-center group bg-white dark:bg-gray-900 shadow-sm hover:shadow-md"
+        className="relative w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-storj-blue transition-all duration-200 flex items-center justify-center group bg-white dark:bg-gray-900 shadow-sm hover:shadow-md"
         aria-label={`Current theme: ${currentOption.label}. Click to change theme`}
         title={`${currentOption.label} theme (Alt+T)`}
       >
-        <div className="relative w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-cyber-500 dark:group-hover:text-cyber-400 transition-colors duration-200">
+        <div className="relative w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-storj-blue transition-colors duration-200">
           {/* Dynamic icon based on effective theme */}
           {theme === 'system' ? (
             <div className="flex items-center justify-center">
@@ -115,7 +115,7 @@ export function ThemeToggle() {
         </div>
         
         {/* Glow effect */}
-        <div className="absolute inset-0 rounded-lg bg-cyber-500 opacity-0 group-hover:opacity-10 transition-opacity duration-200" />
+        <div className="absolute inset-0 rounded-lg bg-storj-blue opacity-0 group-hover:opacity-10 transition-opacity duration-200" />
       </button>
 
       {/* Dropdown Menu */}
@@ -133,7 +133,7 @@ export function ThemeToggle() {
                   setIsOpen(false)
                 }}
                 className={`w-full px-3 py-2 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 ${
-                  isActive ? 'bg-cyber-500/5 text-cyber-600 dark:text-cyber-400' : 'text-gray-700 dark:text-gray-300'
+                  isActive ? 'bg-storj-blue/5 text-storj-blue' : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
                 <div className="flex-shrink-0 w-4 h-4">
@@ -147,7 +147,7 @@ export function ThemeToggle() {
                   </div>
                 </div>
                 {isActive && (
-                  <div className="flex-shrink-0 w-4 h-4 text-cyber-500">
+                  <div className="flex-shrink-0 w-4 h-4 text-storj-blue">
                     <Check className="w-4 h-4" />
                   </div>
                 )}

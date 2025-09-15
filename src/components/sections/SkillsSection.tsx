@@ -9,19 +9,19 @@ const SkillsSection = memo(function SkillsSection() {
       title: "Core Data Analytics",
       description: "Foundation skills from traditional analytics",
       skills: ["Python", "SQL", "Pandas", "Excel", "PowerBI", "Statistical Analysis"],
-      color: "primary-500"
+      color: "storj-blue"
     },
     {
       title: "Web3 Analytics",
       description: "Specialized blockchain and DeFi analysis tools",
       skills: ["Dune Analytics", "Flipside Crypto", "Web3.py", "Etherscan API", "DeFi Protocols"],
-      color: "cyber-500"
+      color: "storj-navy"
     },
     {
       title: "Visualization & Tools",
       description: "Creating compelling data stories and dashboards",
       skills: ["D3.js", "React", "Tableau", "Matplotlib", "Seaborn", "Git"],
-      color: "purple-500"
+      color: "gray-600"
     }
   ]
 
@@ -29,9 +29,9 @@ const SkillsSection = memo(function SkillsSection() {
     <section className="py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-gray-50/30 dark:via-gray-900/20 to-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-accent-blue/30 bg-accent-blue/5 backdrop-blur-sm mb-6">
-            <span className="w-2 h-2 bg-accent-blue rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-accent-blue">Technical Arsenal</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-storj border border-storj-blue/30 bg-storj-blue/5 mb-6">
+            <span className="w-2 h-2 bg-storj-blue rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-storj-blue">Technical Arsenal</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Skills & <span className="text-gradient">Expertise</span>
@@ -43,26 +43,26 @@ const SkillsSection = memo(function SkillsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => (
-            <div key={index} className="group relative p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300">
+            <div key={index} className="group storj-card-lg p-8">
               <div className="text-center mb-6">
-                <h3 className={`text-2xl font-bold mb-2 transition-colors duration-200 ${
-                  category.color === 'primary-500' ? 'text-foreground group-hover:text-primary-500' :
-                  category.color === 'cyber-500' ? 'text-foreground group-hover:text-cyber-500' :
-                  'text-foreground group-hover:text-purple-500'
+                <h3 className={`text-2xl font-semibold mb-2 transition-colors duration-200 ${
+                  category.color === 'storj-blue' ? 'text-gray-900 group-hover:text-storj-blue' :
+                  category.color === 'storj-navy' ? 'text-gray-900 group-hover:text-storj-navy' :
+                  'text-gray-900 group-hover:text-gray-600'
                 }`}>
                   {category.title}
                 </h3>
-                <p className="text-foreground/70 group-hover:text-foreground/90 transition-colors duration-200">
+                <p className="text-storj-muted group-hover:text-gray-700 transition-colors duration-200">
                   {category.description}
                 </p>
               </div>
-              
+
               <div className="flex flex-wrap gap-2 justify-center">
                 {category.skills.map((skill, skillIndex) => (
-                  <span key={skillIndex} className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                    category.color === 'primary-500' ? 'bg-primary-500/10 text-primary-500 group-hover:bg-primary-500/20' :
-                    category.color === 'cyber-500' ? 'bg-cyber-500/10 text-cyber-500 group-hover:bg-cyber-500/20' :
-                    'bg-purple-500/10 text-purple-500 group-hover:bg-purple-500/20'
+                  <span key={skillIndex} className={`px-3 py-1.5 rounded-storj text-sm font-medium transition-all duration-200 ${
+                    category.color === 'storj-blue' ? 'bg-storj-blue/10 text-storj-blue hover:bg-storj-blue/20' :
+                    category.color === 'storj-navy' ? 'bg-storj-navy/10 text-storj-navy hover:bg-storj-navy/20' :
+                    'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}>
                     {skill}
                   </span>

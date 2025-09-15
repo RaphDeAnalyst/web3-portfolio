@@ -158,15 +158,15 @@ export default function Contact() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
+              <button
                 onClick={() => document.querySelector('form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white font-semibold text-lg hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/30"
+                className="px-8 py-4 rounded-storj bg-storj-blue hover:bg-storj-navy text-white font-semibold text-lg hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg"
               >
                 Start Your Project
               </button>
-              <button 
+              <button
                 onClick={() => window.open('https://calendly.com/your-link', '_blank')}
-                className="px-8 py-4 rounded-full border border-gray-300 dark:border-gray-700 text-foreground font-semibold text-lg hover:border-foreground hover:bg-foreground/5 transition-all duration-200"
+                className="px-8 py-4 rounded-storj border border-gray-300 text-gray-700 font-semibold text-lg hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200"
               >
                 Schedule Call
               </button>

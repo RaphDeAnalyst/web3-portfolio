@@ -109,15 +109,13 @@ export function BlogCard({
 
   return (
     <Link href={`/blog/${slug}`} className={`${cardSize}`}>
-      <div 
-        className={`group relative rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm card-hover overflow-hidden ${
-          featured ? 'p-4 sm:p-8 min-h-[500px] sm:min-h-[600px]' : 'p-4 sm:p-6 min-h-[400px] sm:min-h-[500px]'
-        } flex flex-col cursor-pointer`}
+      <article
+        className="group h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        {/* Hover Effect */}
+        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-50/50 dark:bg-gray-800/50"></div>
         
         {/* Featured Badge */}
         {featured && (
@@ -187,12 +185,12 @@ export function BlogCard({
           </div>
 
           {/* Title */}
-          <h3 className={`${featured ? 'text-lg sm:text-2xl lg:text-3xl' : 'text-lg sm:text-xl'} font-bold text-foreground group-hover:text-primary-500 transition-colors duration-200 leading-tight`}>
+          <h3 className={`${featured ? 'text-lg sm:text-2xl lg:text-3xl' : 'text-xl'} font-bold text-foreground group-hover:text-foreground/80 transition-colors duration-200`}>
             {title}
           </h3>
 
           {/* Summary */}
-          <p className={`text-foreground/70 leading-relaxed ${featured ? 'text-sm sm:text-base' : 'text-sm'} line-clamp-3`}>
+          <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
             {summary}
           </p>
 
@@ -237,28 +235,18 @@ export function BlogCard({
             )}
           </div>
 
-          {/* Read More Indicator */}
+          {/* Read More */}
           <div className="flex items-center justify-between pt-4">
-            <div className="flex items-center space-x-2 text-sm text-foreground/60">
-              <span>Continue reading</span>
-              <span className="text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
-                →
-              </span>
-            </div>
-            
-            {/* Engagement metrics */}
-            <div className="flex items-center space-x-4 text-xs text-foreground/50">
-              <div className="flex items-center space-x-1">
-                <span className="text-sm">Views</span>
-                <span>{viewTracker.getFormattedViewCount(slug)}</span>
-              </div>
-            </div>
+            <span className="text-sm text-foreground/60">Continue reading</span>
+            <span className="font-medium text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-200">
+              Read More →
+            </span>
           </div>
         </div>
 
         {/* Corner Accent */}
         <div className="absolute top-4 left-4 w-2 h-2 rounded-full bg-primary-500 opacity-60 group-hover:opacity-100 transition-opacity duration-200"></div>
-      </div>
+      </article>
     </Link>
   )
 }

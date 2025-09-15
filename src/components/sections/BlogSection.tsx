@@ -92,7 +92,7 @@ const BlogSection = memo(function BlogSection({ featuredPosts = [], loading = fa
               Featured blog posts will appear here once they're selected in the admin panel.
             </p>
             <Link href="/blog">
-              <button className="px-6 py-3 rounded-full bg-foreground hover:bg-foreground/80 text-background font-medium shadow-lg shadow-foreground/20 transition-all duration-200">
+              <button className="px-6 py-3 bg-storj-navy text-white rounded-storj font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200">
                 View All Posts
               </button>
             </Link>
@@ -103,7 +103,7 @@ const BlogSection = memo(function BlogSection({ featuredPosts = [], loading = fa
         {featuredPosts.length > 0 && (
           <div className="text-center mt-16">
             <Link href="/blog">
-              <button className="px-10 py-4 rounded-full bg-foreground hover:bg-foreground/80 text-background font-semibold text-lg shadow-2xl shadow-foreground/20 transition-all duration-200">
+              <button className="px-10 py-4 bg-storj-navy text-white rounded-storj font-semibold text-lg hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200 shadow-storj-lg">
                 View All Posts
               </button>
             </Link>

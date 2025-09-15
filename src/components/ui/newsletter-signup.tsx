@@ -45,10 +45,6 @@ export function NewsletterSignup() {
           Stay Updated with <span className="text-gradient">Web3 Insights</span>
         </h3>
         
-        <p className="text-foreground/70 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Get the latest insights on Web3, AI, and blockchain analytics delivered to your inbox. 
-          Join <span className="text-cyber-500 font-medium">2,500+</span> developers and analysts who trust our content.
-        </p>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="max-w-md mx-auto">
@@ -67,10 +63,10 @@ export function NewsletterSignup() {
             <button
               type="submit"
               disabled={isSubmitting || isSubmitted}
-              className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+              className={`px-6 py-3 rounded-storj font-medium transition-all duration-200 ${
                 isSubmitted 
                   ? 'bg-gray-600 text-white' 
-                  : 'bg-accent-blue hover:bg-accent-blue-light text-white hover:scale-105 shadow-lg shadow-accent-blue/20'
+                  : 'bg-storj-navy text-white hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20'
               } ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
             >
               {isSubmitting && (

@@ -169,7 +169,7 @@ export function ProfileCard() {
                 {/* Quick Actions */}
                 <div className="flex space-x-3">
                   <a href="/contact">
-                    <button className="px-6 py-2 rounded-full bg-accent-blue hover:bg-accent-blue-light text-white text-sm font-medium shadow-lg shadow-accent-blue/20 transition-all duration-200">
+                    <button className="px-6 py-2 rounded-storj bg-storj-navy text-white text-sm font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200">
                       Hire Me
                     </button>
                   </a>
@@ -267,7 +267,7 @@ export function ProfileCard() {
                   <div>
                     <a
                       href={`mailto:${profile.email}`}
-                      className="w-full flex items-center justify-center space-x-3 p-4 rounded-lg bg-accent-blue hover:bg-accent-blue-light text-white font-semibold shadow-lg shadow-accent-blue/20 transition-all duration-200"
+                      className="w-full flex items-center justify-center space-x-3 p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
                     >
                       <span className="text-lg">📩</span>
                       <span>Hire Me</span>

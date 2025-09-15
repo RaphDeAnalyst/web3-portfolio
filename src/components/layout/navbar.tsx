@@ -29,34 +29,34 @@ export function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-background/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-lg shadow-primary-500/10' 
-        : 'bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="fixed top-0 w-full z-50 bg-white dark:bg-background/95 dark:backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-header dark:shadow-lg dark:shadow-primary-500/10 transition-all duration-200">
+      <div className="max-storj mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200">
             <NavbarAvatar />
             <div className="hidden sm:block">
-              <div className="text-xl font-bold text-gradient">Data Analytics</div>
-              <div className="text-xs text-foreground/60 -mt-1">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
+              <div className="text-xl font-semibold text-storj-navy">Data Analytics</div>
+              <div className="text-xs text-storj-muted -mt-1">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
             </div>
           </Link>
 
           {/* Desktop Navigation with Active States */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.name}
-                href={item.href}
-              >
-                {item.name}
-              </NavLink>
-            ))}
-            
-            <ThemeToggle />
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="flex items-center space-x-1">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  href={item.href}
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="flex items-center">
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* Enhanced Mobile menu button */}
@@ -64,7 +64,7 @@ export function Navbar() {
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative p-2 text-foreground hover:text-primary-500 transition-colors duration-200"
+              className="relative p-2 text-storj-navy hover:text-storj-blue transition-colors duration-200"
               aria-label="Toggle mobile menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
@@ -78,7 +78,7 @@ export function Navbar() {
 
         {/* Enhanced Mobile Navigation */}
         <div className={`md:hidden transition-all duration-300 ${isOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-          <div className="py-6 space-y-4 border-t border-gray-200 dark:border-gray-800 bg-background/95 backdrop-blur-md rounded-b-xl">
+          <div className="py-4 px-4 space-y-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-background/95 dark:backdrop-blur-md mx-4 rounded-b-lg shadow-lg">
             {navItems.map((item) => (
               <MobileNavLink
                 key={item.name}
