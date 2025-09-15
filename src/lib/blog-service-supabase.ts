@@ -1,4 +1,4 @@
-import { supabase, type Blog } from './supabase'
+import { supabase, isSupabaseAvailable, type Blog } from './supabase'
 
 // Transform Supabase Blog to legacy BlogPostData interface for compatibility
 export interface BlogPostData {
@@ -75,6 +75,10 @@ class BlogServiceSupabase {
 
   // Get all blog posts
   async getAllPosts(): Promise<BlogPostData[]> {
+    if (!isSupabaseAvailable()) {
+      throw new Error('Supabase not available')
+    }
+
     try {
       const { data, error } = await supabase
         .from('blogs')
@@ -86,7 +90,7 @@ class BlogServiceSupabase {
         return []
       }
 
-      return data.map(blog => this.transformToBlogPostData(blog))
+      return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
       console.error('Error in getAllPosts:', error)
       return []
@@ -107,7 +111,7 @@ class BlogServiceSupabase {
         return []
       }
 
-      return data.map(blog => this.transformToBlogPostData(blog))
+      return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
       console.error('Error in getPublishedPosts:', error)
       return []
@@ -236,7 +240,7 @@ class BlogServiceSupabase {
         return []
       }
 
-      return data.map(blog => this.transformToBlogPostData(blog))
+      return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
       console.error('Error in getFeaturedPosts:', error)
       return []
@@ -315,9 +319,9 @@ class BlogServiceSupabase {
         }
       }
 
-      const published = data.filter(p => p.status === 'published')
-      const drafts = data.filter(p => p.status === 'draft')
-      const categories = [...new Set(data.map(p => p.category))]
+      const published = data.filter((p: Blog) => p.status === 'published')
+      const drafts = data.filter((p: Blog) => p.status === 'draft')
+      const categories = [...new Set(data.map((p: Blog) => p.category))]
 
       return {
         total: data.length,
@@ -395,11 +399,11 @@ class BlogServiceSupabase {
       }
 
       // Filter by tags client-side since Supabase doesn't support array search easily
-      let results = data.map(blog => this.transformToBlogPostData(blog))
+      let results = data.map((blog: Blog) => this.transformToBlogPostData(blog))
       
       if (query) {
-        results = results.filter(post => 
-          post.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        results = results.filter((post: BlogPostData) =>
+          post.tags.some((tag: string) => tag.toLowerCase().includes(query.toLowerCase()))
         )
       }
 
@@ -422,7 +426,7 @@ class BlogServiceSupabase {
         return []
       }
 
-      const categories = [...new Set(data.map(p => p.category))]
+      const categories = [...new Set(data.map((p: Blog) => p.category))] as string[]
       return categories.sort()
     } catch (error) {
       console.error('Error in getCategories:', error)

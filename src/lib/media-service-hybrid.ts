@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase, type Media } from './supabase'
 
 // Enhanced MediaFile interface for hybrid system
 export interface MediaFile {
@@ -273,7 +273,7 @@ export class MediaServiceHybrid {
         return []
       }
 
-      return data.map(record => this.transformToMediaFile(record))
+      return data.map((record: Media) => this.transformToMediaFile(record))
     } catch (error) {
       console.error('Error in getAllMedia:', error)
       return []
@@ -294,7 +294,7 @@ export class MediaServiceHybrid {
         return []
       }
 
-      return data.map(record => this.transformToMediaFile(record))
+      return data.map((record: Media) => this.transformToMediaFile(record))
     } catch (error) {
       console.error('Error in getMediaByProvider:', error)
       return []
@@ -392,21 +392,21 @@ export class MediaServiceHybrid {
         }
       }
 
-      const byProvider = data.reduce((acc: Record<string, number>, media) => {
+      const byProvider = data.reduce((acc: Record<string, number>, media: any) => {
         acc[media.storage_provider] = (acc[media.storage_provider] || 0) + 1
         return acc
       }, {})
 
-      const byType = data.reduce((acc: Record<string, number>, media) => {
+      const byType = data.reduce((acc: Record<string, number>, media: any) => {
         const mainType = media.type.split('/')[0]
         acc[mainType] = (acc[mainType] || 0) + 1
         return acc
       }, {})
 
-      const totalSize = data.reduce((sum, media) => sum + (media.size || 0), 0)
-      const totalUsage = data.reduce((sum, media) => sum + (media.usage_count || 0), 0)
-      const publicCount = data.filter(media => media.is_public).length
-      const privateCount = data.filter(media => !media.is_public).length
+      const totalSize = data.reduce((sum: number, media: any) => sum + (media.size || 0), 0)
+      const totalUsage = data.reduce((sum: number, media: any) => sum + (media.usage_count || 0), 0)
+      const publicCount = data.filter((media: any) => media.is_public).length
+      const privateCount = data.filter((media: any) => !media.is_public).length
 
       return {
         total: data.length,

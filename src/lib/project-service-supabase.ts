@@ -1,4 +1,4 @@
-import { supabase, type Project as SupabaseProject } from './supabase'
+import { supabase, isSupabaseAvailable, type Project as SupabaseProject } from './supabase'
 
 // Legacy Project interface for compatibility
 export interface Project {
@@ -82,6 +82,10 @@ export class ProjectServiceSupabase {
 
   // Get all projects
   async getAllProjects(): Promise<Project[]> {
+    if (!isSupabaseAvailable()) {
+      throw new Error('Supabase not available')
+    }
+
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -93,7 +97,7 @@ export class ProjectServiceSupabase {
         return []
       }
 
-      return data.map(project => this.transformToLegacyProject(project))
+      return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
       console.error('Error in getAllProjects:', error)
       return []
@@ -268,7 +272,7 @@ export class ProjectServiceSupabase {
         return []
       }
 
-      return data.map(project => this.transformToLegacyProject(project))
+      return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
       console.error('Error in getFeaturedProjects:', error)
       return []
@@ -331,19 +335,19 @@ export class ProjectServiceSupabase {
         }
       }
 
-      const byStatus = data.reduce((acc: Record<string, number>, project) => {
+      const byStatus = data.reduce((acc: Record<string, number>, project: any) => {
         acc[project.status] = (acc[project.status] || 0) + 1
         return acc
       }, {})
 
-      const byCategory = data.reduce((acc: Record<string, number>, project) => {
+      const byCategory = data.reduce((acc: Record<string, number>, project: any) => {
         acc[project.category] = (acc[project.category] || 0) + 1
         return acc
       }, {})
 
       return {
         total: data.length,
-        featured: data.filter(p => p.featured).length,
+        featured: data.filter((p: any) => p.featured).length,
         byStatus,
         byCategory
       }
@@ -380,7 +384,7 @@ export class ProjectServiceSupabase {
         return []
       }
 
-      return data.map(project => this.transformToLegacyProject(project))
+      return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
       console.error('Error in searchProjects:', error)
       return []
@@ -399,7 +403,7 @@ export class ProjectServiceSupabase {
         return []
       }
 
-      const categories = [...new Set(data.map(p => p.category))]
+      const categories = [...new Set(data.map((p: any) => p.category))] as string[]
       return categories.sort()
     } catch (error) {
       console.error('Error in getCategories:', error)

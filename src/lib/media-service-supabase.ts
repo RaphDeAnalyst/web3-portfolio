@@ -37,7 +37,7 @@ export class MediaServiceSupabase {
         return []
       }
 
-      return data.map(media => this.transformToMediaFile(media))
+      return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
       console.error('Error in getAllMedia:', error)
       return []
@@ -154,7 +154,7 @@ export class MediaServiceSupabase {
         return []
       }
 
-      return data.map(media => this.transformToMediaFile(media))
+      return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
       console.error('Error in getMediaByType:', error)
       return []
@@ -175,7 +175,7 @@ export class MediaServiceSupabase {
         return []
       }
 
-      return data.map(media => this.transformToMediaFile(media))
+      return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
       console.error('Error in searchMedia:', error)
       return []
@@ -198,12 +198,12 @@ export class MediaServiceSupabase {
         }
       }
 
-      const byType = data.reduce((acc: Record<string, number>, media) => {
+      const byType = data.reduce((acc: Record<string, number>, media: any) => {
         acc[media.type] = (acc[media.type] || 0) + 1
         return acc
       }, {})
 
-      const totalSize = data.reduce((sum, media) => sum + media.size, 0)
+      const totalSize = data.reduce((sum: number, media: any) => sum + media.size, 0)
 
       return {
         total: data.length,

@@ -1,17 +1,27 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false // We'll handle auth later if needed
+// Create a defensive supabase client that handles missing environment variables gracefully
+export const supabase = (() => {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('Supabase environment variables not found, using fallback mode')
+    // Return a mock client that will cause service calls to fail gracefully
+    return null as any
   }
-})
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false // We'll handle auth later if needed
+    }
+  })
+})()
+
+// Helper function to check if Supabase is available
+export const isSupabaseAvailable = () => {
+  return supabase !== null && !!supabaseUrl && !!supabaseAnonKey
+}
 
 // Database type definitions
 export interface Blog {
