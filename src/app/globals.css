@@ -471,6 +471,240 @@ select {
   animation: bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
+/* Responsive Typography System - Meta/Facebook Standards */
+.text-responsive-xs {
+  @apply text-xs;
+}
+@screen sm {
+  .text-responsive-xs {
+    @apply text-sm;
+  }
+}
+
+.text-responsive-sm {
+  @apply text-sm;
+}
+@screen sm {
+  .text-responsive-sm {
+    @apply text-base;
+  }
+}
+
+.text-responsive-base {
+  @apply text-sm;
+}
+@screen sm {
+  .text-responsive-base {
+    @apply text-base;
+  }
+}
+@screen md {
+  .text-responsive-base {
+    @apply text-lg;
+  }
+}
+
+.text-responsive-lg {
+  @apply text-base;
+}
+@screen sm {
+  .text-responsive-lg {
+    @apply text-lg;
+  }
+}
+@screen md {
+  .text-responsive-lg {
+    @apply text-xl;
+  }
+}
+
+.text-responsive-xl {
+  @apply text-lg;
+}
+@screen sm {
+  .text-responsive-xl {
+    @apply text-xl;
+  }
+}
+@screen md {
+  .text-responsive-xl {
+    @apply text-2xl;
+  }
+}
+
+.text-responsive-2xl {
+  @apply text-xl;
+}
+@screen xs {
+  .text-responsive-2xl {
+    @apply text-2xl;
+  }
+}
+@screen sm {
+  .text-responsive-2xl {
+    @apply text-3xl;
+  }
+}
+@screen md {
+  .text-responsive-2xl {
+    @apply text-4xl;
+  }
+}
+
+.text-responsive-3xl {
+  @apply text-2xl;
+}
+@screen xs {
+  .text-responsive-3xl {
+    @apply text-3xl;
+  }
+}
+@screen sm {
+  .text-responsive-3xl {
+    @apply text-4xl;
+  }
+}
+@screen md {
+  .text-responsive-3xl {
+    @apply text-5xl;
+  }
+}
+@screen lg {
+  .text-responsive-3xl {
+    @apply text-6xl;
+  }
+}
+
+.text-responsive-hero {
+  @apply text-3xl;
+}
+@screen xs {
+  .text-responsive-hero {
+    @apply text-4xl;
+  }
+}
+@screen sm {
+  .text-responsive-hero {
+    @apply text-5xl;
+  }
+}
+@screen md {
+  .text-responsive-hero {
+    @apply text-6xl;
+  }
+}
+@screen lg {
+  .text-responsive-hero {
+    @apply text-7xl;
+  }
+}
+@screen xl {
+  .text-responsive-hero {
+    @apply text-8xl;
+  }
+}
+
+/* Touch Target Utilities - 44px minimum for accessibility */
+.touch-target {
+  @apply min-w-[44px] min-h-[44px];
+}
+
+.touch-target-sm {
+  @apply min-w-[36px] min-h-[36px];
+}
+
+.touch-target-lg {
+  @apply min-w-[48px] min-h-[48px];
+}
+
+/* Responsive Spacing Utilities */
+.spacing-responsive-xs {
+  @apply space-y-2;
+}
+@screen sm {
+  .spacing-responsive-xs {
+    @apply space-y-3;
+  }
+}
+
+.spacing-responsive-sm {
+  @apply space-y-3;
+}
+@screen sm {
+  .spacing-responsive-sm {
+    @apply space-y-4;
+  }
+}
+
+.spacing-responsive-md {
+  @apply space-y-4;
+}
+@screen sm {
+  .spacing-responsive-md {
+    @apply space-y-6;
+  }
+}
+
+.spacing-responsive-lg {
+  @apply space-y-6;
+}
+@screen sm {
+  .spacing-responsive-lg {
+    @apply space-y-8;
+  }
+}
+
+/* Responsive Padding Utilities */
+.padding-responsive {
+  @apply p-4;
+}
+@screen sm {
+  .padding-responsive {
+    @apply p-6;
+  }
+}
+@screen lg {
+  .padding-responsive {
+    @apply p-8;
+  }
+}
+
+.padding-responsive-sm {
+  @apply p-3;
+}
+@screen sm {
+  .padding-responsive-sm {
+    @apply p-4;
+  }
+}
+@screen lg {
+  .padding-responsive-sm {
+    @apply p-6;
+  }
+}
+
+/* Short screen adjustments - prevents navbar overlap */
+@media (max-height: 600px) {
+  .hero-section {
+    padding-top: 100px !important;
+    min-height: auto;
+  }
+}
+
+@media (max-height: 500px) {
+  .hero-section {
+    padding-top: 90px !important;
+    padding-bottom: 40px !important;
+  }
+}
+
+@media (max-height: 400px) {
+  .hero-section {
+    padding-top: 80px !important;
+    padding-bottom: 30px !important;
+  }
+}
+
 /* Web3 specific effects */
 .blockchain-node {
   position: relative;

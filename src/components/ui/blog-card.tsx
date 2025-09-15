@@ -110,7 +110,7 @@ export function BlogCard({
   return (
     <Link href={`/blog/${slug}`} className={`${cardSize}`}>
       <article
-        className="group h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover"
+        className="group h-full p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -119,17 +119,18 @@ export function BlogCard({
         
         {/* Featured Badge */}
         {featured && (
-          <div className="absolute top-4 right-4 z-20">
-            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              <span>Featured</span>
+          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
+            <div className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></span>
+              <span className="hidden sm:inline">Featured</span>
+              <span className="sm:hidden">★</span>
             </div>
           </div>
         )}
 
         {/* Article Image */}
         {(featuredImage || image || featured) && (
-          <div className={`relative ${featured ? 'h-48 sm:h-64 mb-4 sm:mb-6' : 'h-40 sm:h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
+          <div className={`relative ${featured ? 'h-32 sm:h-48 md:h-64 mb-3 sm:mb-4 md:mb-6' : 'h-28 sm:h-40 md:h-48 mb-3 sm:mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
             {(featuredImage || image) ? (
               <>
                 <img

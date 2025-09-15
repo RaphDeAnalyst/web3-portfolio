@@ -69,16 +69,16 @@ export function SocialLinks() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-foreground mb-4">
+        <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4 leading-tight">
           Connect with me <span className="text-gradient">across the Web3 ecosystem</span>
         </h3>
-        <p className="text-foreground/70">
+        <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
           Follow my journey, get updates on projects, or reach out directly
         </p>
       </div>
 
       {/* Social Links Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {socialLinks.map((link) => (
           <div
             key={link.name}
@@ -90,7 +90,7 @@ export function SocialLinks() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`block p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm transition-all duration-300 card-hover ${
+              className={`block p-4 sm:p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/50 backdrop-blur-sm transition-all duration-300 card-hover ${
                 link.color === 'gray-600' ? 'hover:border-gray-600/50 hover:shadow-lg hover:shadow-gray-600/20' :
                 link.color === 'gray-600' ? 'hover:border-gray-600/50 hover:shadow-lg hover:shadow-gray-600/20' :
                 link.color === 'gray-700' ? 'hover:border-gray-700/50 hover:shadow-lg hover:shadow-gray-700/20' :
@@ -108,10 +108,14 @@ export function SocialLinks() {
               }`}></div>
               
               {/* Content */}
-              <div className="relative z-10 space-y-4">
+              <div className="relative z-10 space-y-3 sm:space-y-4">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                  <div className="text-gray-600 dark:text-gray-300">{link.icon}</div>
+                  <div className="text-gray-600 dark:text-gray-300">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8">
+                      {link.icon}
+                    </div>
+                  </div>
                   <div className={`w-3 h-3 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-200 ${
                     link.color === 'gray-600' ? 'bg-gray-600' :
                     link.color === 'gray-600' ? 'bg-gray-600' :
@@ -123,7 +127,7 @@ export function SocialLinks() {
 
                 {/* Platform name */}
                 <div>
-                  <h4 className={`text-lg font-bold text-foreground transition-colors duration-200 ${
+                  <h4 className={`text-base sm:text-lg font-bold text-foreground transition-colors duration-200 leading-tight ${
                     link.color === 'gray-600' ? 'group-hover:text-gray-600' :
                     link.color === 'gray-600' ? 'group-hover:text-gray-600' :
                     link.color === 'gray-700' ? 'group-hover:text-gray-700' :
@@ -132,7 +136,7 @@ export function SocialLinks() {
                   }`}>
                     {link.name}
                   </h4>
-                  <p className={`text-sm font-medium mt-1 ${
+                  <p className={`text-xs sm:text-sm font-medium mt-1 ${
                     link.color === 'gray-600' ? 'text-gray-600/80' :
                     link.color === 'gray-600' ? 'text-gray-600/80' :
                     link.color === 'gray-700' ? 'text-gray-700/80' :
@@ -151,12 +155,12 @@ export function SocialLinks() {
 
                 {/* Action buttons */}
                 <div className="flex space-x-2">
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.preventDefault()
                       window.open(link.url, '_blank')
                     }}
-                    className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors duration-200 ${
+                    className={`flex-1 px-3 py-3 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-200 min-h-[44px] ${
                       link.color === 'gray-600' ? 'bg-gray-600/10 text-gray-600 hover:bg-gray-600/20' :
                       link.color === 'gray-600' ? 'bg-gray-600/10 text-gray-600 hover:bg-gray-600/20' :
                       link.color === 'gray-700' ? 'bg-gray-700/10 text-gray-700 hover:bg-gray-700/20' :
@@ -166,12 +170,12 @@ export function SocialLinks() {
                   >
                     Visit
                   </button>
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.preventDefault()
                       handleCopyToClipboard(link.username, link.name)
                     }}
-                    className="px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200"
+                    className="px-3 py-3 text-xs sm:text-sm font-medium rounded-lg border border-gray-300 dark:border-gray-700 text-foreground hover:border-cyber-500 hover:text-cyber-500 transition-colors duration-200 min-h-[44px] min-w-[80px]"
                   >
                     {copiedItem === link.name ? '✓ Copied!' : 'Copy'}
                   </button>
@@ -194,12 +198,12 @@ export function SocialLinks() {
       </div>
 
       {/* Web3-specific features */}
-      <div className="mt-12 p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-cyber-500/5 to-primary-500/5 backdrop-blur-sm">
-        <h4 className="text-lg font-bold text-foreground mb-6 text-center">
+      <div className="mt-8 sm:mt-12 p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-cyber-500/5 to-primary-500/5 backdrop-blur-sm">
+        <h4 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6 text-center leading-tight">
           Web3 Native Features <span className="text-sm font-normal text-foreground/60">(Coming Soon)</span>
         </h4>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           <div className="text-center space-y-3 p-4 rounded-xl border border-gray-200/30 dark:border-gray-800/30 bg-background/30">
             <div className="w-12 h-12 mx-auto rounded-full bg-accent-blue flex items-center justify-center text-white">
               <MessageCircle className="w-6 h-6" />
@@ -232,7 +236,7 @@ export function SocialLinks() {
         </div>
 
         <div className="mt-6 text-center">
-          <button className="px-6 py-3 rounded-storj bg-storj-navy text-white font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200">
+          <button className="w-full sm:w-auto px-6 py-3 rounded-storj bg-storj-navy text-white font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200 min-h-[48px]">
             Connect Wallet to Unlock
           </button>
         </div>

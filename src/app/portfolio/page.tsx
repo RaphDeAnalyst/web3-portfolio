@@ -119,13 +119,13 @@ export default function Portfolio() {
             <span className="text-sm font-medium text-primary-500">Portfolio</span>
           </div>
           
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
             <span className="text-gradient">Learning Projects</span>
             <br />
             <span className="text-foreground">& Case Studies</span>
           </h1>
-          
-          <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
             Explore how I apply <span className="text-primary-600 font-medium">traditional analytics skills</span> to
             <span className="text-primary-500 font-medium"> Web3 insights</span>, bridging the gap between established data methods and
             <span className="text-primary-600 font-medium"> decentralized ecosystems</span>
@@ -138,14 +138,14 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto py-4">
           
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
+          <div className="max-w-2xl mx-auto mb-6 px-0">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search projects..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 text-sm sm:text-base"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 text-sm sm:text-base min-h-[48px]"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
                 <Search className="w-5 h-5" />
@@ -171,8 +171,8 @@ export default function Portfolio() {
 
           {/* Sort Controls */}
           <div className="flex justify-center mb-2">
-            <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-              <span className="text-sm text-foreground/60 px-3">Sort by:</span>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-1 rounded-2xl sm:rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+              <span className="text-xs sm:text-sm text-foreground/60 px-2 sm:px-3">Sort by:</span>
               {[
                 { label: 'Newest', value: 'newest' },
                 { label: 'Featured', value: 'featured' },
@@ -181,7 +181,7 @@ export default function Portfolio() {
                 <button
                   key={option.value}
                   onClick={() => setSortBy(option.value)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 min-h-[36px] ${
                     sortBy === option.value
                       ? 'bg-primary-500/20 text-primary-500'
                       : 'text-foreground/60 hover:text-foreground'
@@ -200,12 +200,12 @@ export default function Portfolio() {
         <section ref={contentRef} className="px-4 sm:px-6 lg:px-8 mb-16">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold text-foreground mb-8 text-center">Featured Projects</h2>
-            <div className={`grid gap-8 ${
-              featuredProjects.length === 1 
-                ? 'grid-cols-1 lg:grid-cols-6' 
+            <div className={`grid gap-6 sm:gap-8 ${
+              featuredProjects.length === 1
+                ? 'grid-cols-1 max-w-4xl mx-auto'
                 : featuredProjects.length === 2
                 ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
+                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
             }`}>
               {featuredProjects.map((project, index) => (
                 <ProjectCard
@@ -232,7 +232,7 @@ export default function Portfolio() {
                 </span>
               </h2>
               {/* Equal height grid using flexbox approach */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {regularProjects.map((project, index) => (
                   <div key={index} className="h-full">
                     <ProjectCard
@@ -293,12 +293,12 @@ export default function Portfolio() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <button className="px-8 py-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg">
+                <button className="w-full sm:w-auto min-w-[160px] min-h-[48px] px-6 sm:px-8 py-3 sm:py-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg">
                   Get In Touch
                 </button>
               </Link>
               <Link href="/about">
-                <button className="px-8 py-4 rounded-storj border-2 border-gray-300 text-gray-700 font-semibold hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200 shadow-storj">
+                <button className="w-full sm:w-auto min-w-[160px] min-h-[48px] px-6 sm:px-8 py-3 sm:py-4 rounded-storj border-2 border-gray-300 text-gray-700 font-semibold hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200 shadow-storj">
                   Learn About Me
                 </button>
               </Link>

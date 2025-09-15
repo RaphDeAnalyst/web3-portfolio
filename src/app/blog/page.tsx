@@ -100,13 +100,13 @@ export default function Blog() {
             <span className="text-sm font-medium text-foreground">Blog</span>
           </div>
           
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
             <span className="text-gradient">Web3 Insights</span>
             <br />
             <span className="text-foreground">& Analysis</span>
           </h1>
-          
-          <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
             Deep dives into <span className="text-foreground font-medium">blockchain analytics</span>,
             <span className="text-foreground font-medium"> AI applications</span>, and
             <span className="text-foreground font-medium"> Web3 development</span>
@@ -119,14 +119,14 @@ export default function Blog() {
         <div className="max-w-7xl mx-auto py-4">
           
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-6 px-4 sm:px-0">
+          <div className="max-w-2xl mx-auto mb-6 px-0">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10 transition-all duration-200 text-sm sm:text-base"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-foreground/50 focus:ring-2 focus:ring-foreground/10 transition-all duration-200 text-sm sm:text-base min-h-[48px]"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/40">
                 <Search className="w-5 h-5" />
@@ -143,7 +143,7 @@ export default function Blog() {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 px-4 sm:px-0">
+          <div className="flex flex-wrap justify-center gap-2 mb-8 sm:mb-12">
             {categories.map((category) => {
               const isActive = selectedCategory === category
               const count = categoryCounts[category] || 0
@@ -152,7 +152,7 @@ export default function Blog() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
+                  className={`relative group px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 min-h-[36px] ${
                     isActive
                       ? 'bg-transparent text-black dark:text-white border-2 border-black dark:border-white font-bold'
                       : 'bg-background/50 text-black/70 dark:text-white/70 border-2 border-border'
@@ -185,8 +185,8 @@ export default function Blog() {
 
           {/* Sort Controls */}
           <div className="flex justify-center mb-2">
-            <div className="flex items-center space-x-4 p-1 rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
-              <span className="text-sm text-foreground/60 px-3">Sort by:</span>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-1 rounded-2xl sm:rounded-full bg-background/50 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+              <span className="text-xs sm:text-sm text-foreground/60 px-2 sm:px-3">Sort by:</span>
               {[
                 { label: 'Newest', value: 'newest' },
                 { label: 'Featured', value: 'featured' },
@@ -195,7 +195,7 @@ export default function Blog() {
                 <button
                   key={option.value}
                   onClick={() => setSortBy(option.value)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 min-h-[36px] ${
                     sortBy === option.value
                       ? 'bg-foreground/10 text-foreground'
                       : 'text-foreground/60 hover:text-foreground'

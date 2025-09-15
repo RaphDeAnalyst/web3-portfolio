@@ -154,7 +154,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
       {/* Basic Information */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
             Name *
@@ -240,7 +240,7 @@ export function ContactForm() {
           {projectTypes.map((type) => (
             <label
               key={type.value}
-              className={`relative cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
+              className={`relative cursor-pointer p-4 rounded-lg border transition-all duration-200 min-h-[48px] flex items-center justify-center ${
                 formData.projectType === type.value
                   ? 'border-primary-500 bg-primary-500/10 text-primary-500'
                   : 'border-border hover:border-border-hover'
@@ -264,7 +264,7 @@ export function ContactForm() {
       </div>
 
       {/* Budget and Timeline */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div>
           <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">
             Budget Range
@@ -333,7 +333,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full px-8 py-4 rounded-storj font-semibold text-lg transition-all duration-200 ${
+        className={`w-full min-h-[48px] px-6 sm:px-8 py-3 sm:py-4 rounded-storj font-semibold text-base sm:text-lg transition-all duration-200 ${
           isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
             : 'bg-storj-navy text-white hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/30 transition-all duration-200'

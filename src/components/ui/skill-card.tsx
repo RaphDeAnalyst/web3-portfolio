@@ -29,8 +29,8 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
   }
 
   return (
-    <div 
-      className={`group relative p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br ${gradient} card-hover backdrop-blur-sm transition-all duration-300`}
+    <div
+      className={`group relative p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br ${gradient} card-hover backdrop-blur-sm transition-all duration-300`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -42,44 +42,44 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
       }`}></div>
       
       {/* Content */}
-      <div className="relative z-10 space-y-6">
+      <div className="relative z-10 space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center space-x-4">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
+        <div className="flex items-start sm:items-center space-x-3 sm:space-x-4">
+          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg sm:text-2xl flex-shrink-0 ${
             color === 'cyber-500' ? 'bg-cyber-500/20' :
             color === 'primary-500' ? 'bg-primary-500/20' :
             'bg-gray-500/20'
           }`}>
             {icon}
           </div>
-          <div>
-            <h3 className={`text-xl font-bold text-foreground transition-colors duration-200 ${
+          <div className="min-w-0 flex-1">
+            <h3 className={`text-lg sm:text-xl font-bold text-foreground transition-colors duration-200 leading-tight ${
               color === 'cyber-500' ? 'group-hover:text-cyber-500' :
               color === 'primary-500' ? 'group-hover:text-primary-500' :
               'group-hover:text-gray-600 dark:group-hover:text-gray-400'
             }`}>
               {title}
             </h3>
-            <p className="text-sm text-foreground/60">{description}</p>
+            <p className="text-xs sm:text-sm text-foreground/60 mt-1 leading-relaxed">{description}</p>
           </div>
         </div>
 
         {/* Skills List */}
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {skills.map((skill, index) => (
             <div
               key={skill}
-              className={`flex items-center space-x-3 transition-all duration-300 ${
+              className={`flex items-center space-x-2 sm:space-x-3 transition-all duration-300 ${
                 isHovered ? 'animate-slide-in-left' : ''
               }`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`w-2 h-2 rounded-full opacity-60 ${
+              <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full opacity-60 flex-shrink-0 ${
                 color === 'cyber-500' ? 'bg-cyber-500' :
                 color === 'primary-500' ? 'bg-primary-500' :
                 'bg-gray-500'
               }`}></div>
-              <span className="text-foreground/80 group-hover:text-foreground transition-colors duration-200">
+              <span className="text-sm sm:text-base text-foreground/80 group-hover:text-foreground transition-colors duration-200 leading-tight">
                 {skill}
               </span>
             </div>
@@ -87,16 +87,16 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
         </div>
 
         {/* Skill Level Indicator */}
-        <div className="pt-4 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
+        <div className="pt-3 sm:pt-4 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-foreground/60">Expertise Level</span>
-            <span className={`text-sm font-medium ${
+            <span className="text-xs sm:text-sm text-foreground/60">Expertise Level</span>
+            <span className={`text-xs sm:text-sm font-medium ${
               color === 'cyber-500' ? 'text-cyber-500' :
               color === 'primary-500' ? 'text-primary-500' :
               'text-gray-600 dark:text-gray-400'
             }`}>{level}</span>
           </div>
-          <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+          <div className="h-1.5 sm:h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
             <div 
               className={`h-full rounded-full transition-all duration-1000 ${
                 isHovered ? getWidthClass(progress) : 'w-0'
@@ -111,7 +111,7 @@ export function SkillCard({ title, skills, icon, color, gradient, description, l
       </div>
 
       {/* Corner accent */}
-      <div className={`absolute top-4 right-4 w-3 h-3 rounded-full opacity-40 group-hover:opacity-80 transition-opacity duration-200 ${
+      <div className={`absolute top-3 right-3 sm:top-4 sm:right-4 w-2 h-2 sm:w-3 sm:h-3 rounded-full opacity-40 group-hover:opacity-80 transition-opacity duration-200 ${
         color === 'cyber-500' ? 'bg-cyber-500' :
         color === 'primary-500' ? 'bg-primary-500' :
         'bg-gray-500'

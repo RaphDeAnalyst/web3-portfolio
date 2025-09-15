@@ -95,7 +95,7 @@ export function ProjectCard({
 
   return (
     <div
-      className={`group relative ${cardSize} h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover overflow-hidden flex flex-col`}
+      className={`group relative ${cardSize} h-full p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover overflow-hidden flex flex-col`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -104,16 +104,17 @@ export function ProjectCard({
 
       {/* Featured Badge */}
       {featured && (
-        <div className="absolute top-4 right-4 z-20">
-          <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-            <span>Featured</span>
+        <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20">
+          <div className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
+            <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white rounded-full animate-pulse"></span>
+            <span className="hidden sm:inline">Featured</span>
+            <span className="sm:hidden">★</span>
           </div>
         </div>
       )}
 
       {/* Project Image/Preview */}
-      <div className={`relative ${featured ? 'h-48 sm:h-64 mb-4 sm:mb-6' : 'h-40 sm:h-48 mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
+      <div className={`relative ${featured ? 'h-32 sm:h-48 md:h-64 mb-3 sm:mb-4 md:mb-6' : 'h-28 sm:h-40 md:h-48 mb-3 sm:mb-4'} rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900`}>
         {image ? (
           <>
             <img
@@ -159,9 +160,9 @@ export function ProjectCard({
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-3 sm:mb-4">
           <div className="flex-1">
-            <div className="flex items-center space-x-2 mb-2 flex-wrap gap-y-1">
+            <div className="flex items-center space-x-1 sm:space-x-2 mb-2 flex-wrap gap-y-1 gap-x-1">
               <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary-500/10 text-primary-500">
                 {category}
               </span>
@@ -181,15 +182,15 @@ export function ProjectCard({
                 </span>
               </div>
             )}
-            <h3 className={`${featured ? 'text-lg sm:text-2xl' : 'text-xl'} font-bold text-foreground group-hover:text-foreground/80 transition-colors duration-200`}>
+            <h3 className={`${featured ? 'text-base sm:text-lg md:text-xl lg:text-2xl' : 'text-base sm:text-lg md:text-xl'} font-bold text-foreground group-hover:text-foreground/80 transition-colors duration-200 leading-tight`}>
               {title}
             </h3>
           </div>
         </div>
 
         {/* Description */}
-        <div className="flex-1 mb-4">
-          <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
+        <div className="flex-1 mb-3 sm:mb-4">
+          <p className="text-sm sm:text-base text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
             {description}
           </p>
         </div>

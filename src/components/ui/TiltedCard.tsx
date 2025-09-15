@@ -109,7 +109,7 @@ export default function TiltedCard({
         onClick={onClick}
       >
         {/* Card Content */}
-        <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background border border-gray-200/50 dark:border-gray-800/50 shadow-lg">
+        <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-lg">
           {/* Image */}
           {imageSrc && (
             <img
@@ -123,10 +123,10 @@ export default function TiltedCard({
               draggable={false}
             />
           )}
-          
+
           {/* Children Content */}
-          {children && (
-            <div className="absolute inset-0 flex items-center justify-center">
+          {children && !imageSrc && (
+            <div className="w-full h-full">
               {children}
             </div>
           )}
