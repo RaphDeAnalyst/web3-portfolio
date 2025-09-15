@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useEffect, useRef } from 'react'
-import { BlogCard } from '@/components/ui/blog-card'
+import { BlogListing } from '@/components/ui/blog-listing'
+import { MediumBlogFeed } from '@/components/ui/medium-blog-feed'
 import { NewsletterSignup } from '@/components/ui/newsletter-signup'
-import { blogService } from '@/lib/service-switcher'
+import { blogService, profileService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
 import { Search, X } from 'lucide-react'
 
@@ -14,29 +15,58 @@ export default function Blog() {
   const [posts, setPosts] = useState<BlogPostData[]>([])
   const [categories, setCategories] = useState<string[]>(['All'])
   const [isLoaded, setIsLoaded] = useState(false)
+  const [authorInfo, setAuthorInfo] = useState<{ name: string; avatar: string } | null>(null)
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const loadPosts = async () => {
+    const loadData = async () => {
       try {
+        // Load profile info for author data
+        const profile = await profileService.getProfile()
+        const currentAuthor = {
+          name: profile.name,
+          avatar: profile.avatar
+        }
+        setAuthorInfo(currentAuthor)
+
+        // Load blog posts
         const publishedPosts = await blogService.getPublishedPosts()
-        setPosts(publishedPosts)
-        
+
+        // Update posts with current profile info if needed
+        const updatedPosts = publishedPosts.map(post => ({
+          ...post,
+          author: {
+            name: currentAuthor.name,
+            avatar: currentAuthor.avatar || post.author.avatar
+          }
+        }))
+
+        setPosts(updatedPosts)
+
         const allCategories = ['All', ...await blogService.getCategories()]
         setCategories(allCategories)
       } catch (error) {
-        console.error('Error loading posts:', error)
+        console.error('Error loading blog data:', error)
+        // Fallback to original posts if profile loading fails
+        try {
+          const publishedPosts = await blogService.getPublishedPosts()
+          setPosts(publishedPosts)
+          const allCategories = ['All', ...await blogService.getCategories()]
+          setCategories(allCategories)
+        } catch (fallbackError) {
+          console.error('Error loading fallback posts:', fallbackError)
+        }
       } finally {
         setIsLoaded(true)
       }
     }
 
-    loadPosts()
+    loadData()
     
     // Listen for storage changes
     const handleStorageChange = async () => {
-      await loadPosts()
+      await loadData()
     }
     
     window.addEventListener('storage', handleStorageChange)
@@ -214,21 +244,13 @@ export default function Blog() {
         <section ref={contentRef} className="px-4 sm:px-6 lg:px-8 mb-16">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold text-foreground mb-8 text-center">Featured Articles</h2>
-            <div className={`grid gap-8 ${
-              featuredPosts.length === 1 
-                ? 'grid-cols-1 lg:grid-cols-6' 
-                : featuredPosts.length === 2
-                ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
-            }`}>
-              {featuredPosts.map((post) => (
-                <BlogCard 
-                  key={post.id || post.slug} 
-                  {...post} 
-                  featuredCount={featuredPosts.length}
-                />
-              ))}
-            </div>
+            <BlogListing
+              posts={featuredPosts}
+              layout={featuredPosts.length >= 3 ? "grid" : "single"}
+              showDividers={false}
+              highlightFeatured={true}
+              className="max-w-6xl mx-auto"
+            />
           </div>
         </section>
       )}
@@ -241,14 +263,13 @@ export default function Blog() {
               <h2 className="text-2xl font-bold text-foreground mb-8 text-center">
                 {featuredPosts.length > 0 ? 'All Articles' : 'Articles'}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {regularPosts.map((post) => (
-                  <BlogCard key={post.id || post.slug} {...post} />
-                ))}
-              </div>
+              <MediumBlogFeed
+                posts={regularPosts}
+                className="max-w-4xl mx-auto"
+              />
             </>
           )}
-          
+
           {totalFilteredPosts === 0 && (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📝</div>
