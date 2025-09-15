@@ -36,8 +36,8 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200">
             <NavbarAvatar />
             <div className="hidden xs:block">
-              <div className="text-base sm:text-xl font-semibold text-storj-navy">Data Analytics</div>
-              <div className="text-xs sm:text-xs text-storj-muted -mt-1 hidden sm:block">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
+              <div className="text-base sm:text-xl font-semibold text-storj-navy dark:text-white">Data Analytics</div>
+              <div className="text-xs sm:text-xs text-storj-muted dark:text-gray-300 -mt-1 hidden sm:block">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
             </div>
           </Link>
 
