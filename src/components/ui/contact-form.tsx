@@ -145,7 +145,7 @@ export function ContactForm() {
           Thanks for reaching out! I'll get back to you within 24 hours to discuss your project.
         </p>
         <div className="text-sm text-foreground/60">
-          Expect a response from: hello@web3portfolio.dev
+          Expect a response from: matthewraphael@matthewraphael.xyz
         </div>
       </div>
     )

@@ -170,7 +170,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 🆘 Support
 
 For questions and support:
-- **Email**: hello@web3portfolio.dev
+- **Email**: matthewraphael@matthewraphael.xyz
 - **Issues**: Create a GitHub issue
 - **Discussions**: Use GitHub Discussions for general questions
 
