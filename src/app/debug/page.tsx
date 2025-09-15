@@ -3,8 +3,18 @@
 import { useEffect, useState } from 'react'
 import { supabase, isSupabaseAvailable } from '../../lib/supabase'
 
+interface StatusType {
+  NEXT_PUBLIC_SUPABASE_URL?: string
+  NEXT_PUBLIC_SUPABASE_ANON_KEY?: string
+  NEXT_PUBLIC_USE_SUPABASE?: string
+  NEXT_PUBLIC_USE_SUPABASE_BLOG?: string
+  isSupabaseAvailable?: boolean
+  supabaseInstance?: boolean
+  connectionTest?: string
+}
+
 export default function DebugPage() {
-  const [status, setStatus] = useState<any>({})
+  const [status, setStatus] = useState<StatusType>({})
 
   useEffect(() => {
     const checkEnvironment = () => {
