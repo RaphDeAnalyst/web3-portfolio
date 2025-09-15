@@ -59,9 +59,9 @@ export function ProfileAvatar({
     xs: 'text-xs',
     sm: 'text-xs',
     md: 'text-xs',
-    lg: 'text-sm',
-    xl: 'text-sm',
-    '2xl': 'text-base'
+    lg: 'text-xs sm:text-sm',
+    xl: 'text-xs sm:text-sm',
+    '2xl': 'text-sm sm:text-base'
   }
 
   useEffect(() => {
@@ -140,18 +140,24 @@ export function ProfileAvatar({
 
       {/* Name and Title */}
       {(showName || showTitle) && (
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 overflow-hidden">
           {showName && (
             <div className={`font-bold text-foreground ${nameTextSizeClasses[size]} truncate`}>
               {profile?.name || 'Matthew Raphael'}
             </div>
           )}
           {showTitle && (
-            <div className={`text-foreground/60 ${titleTextSizeClasses[size]} truncate`}>
-              {profile?.name === 'Matthew Raphael' || !profile?.name ? 
-                'RaphdeAnalyst • Web3 Data & AI Specialist' : 
+            <div className={`text-foreground/60 ${titleTextSizeClasses[size]} truncate break-words`}>
+              {profile?.name === 'Matthew Raphael' || !profile?.name ?
+                <span className="sm:hidden">RaphdeAnalyst • Web3 Data & AI</span> :
                 (profile?.title || 'Web3 Data & AI Specialist')
               }
+              <span className="hidden sm:inline">
+                {profile?.name === 'Matthew Raphael' || !profile?.name ?
+                  'RaphdeAnalyst • Web3 Data & AI Specialist' :
+                  (profile?.title || 'Web3 Data & AI Specialist')
+                }
+              </span>
             </div>
           )}
         </div>

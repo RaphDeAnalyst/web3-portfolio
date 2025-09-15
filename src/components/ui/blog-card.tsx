@@ -210,9 +210,15 @@ export function BlogCard({
               )}
               <div>
                 <div className="text-sm font-medium text-foreground">{author.name}</div>
-                <div className="text-xs text-foreground/60">
-                  {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI Specialist' : 
-                   (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
+                <div className="text-xs text-foreground/60 truncate">
+                  <span className="sm:hidden">
+                    {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI' :
+                     (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
+                  </span>
+                  <span className="hidden sm:inline">
+                    {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI Specialist' :
+                     (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
+                  </span>
                 </div>
               </div>
             </div>

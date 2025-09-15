@@ -4,26 +4,10 @@ import { useState } from 'react'
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email) return
-
-    setIsSubmitting(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setEmail('')
-
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-    }, 3000)
+    // Form is disabled - no submission logic needed
   }
 
   return (
@@ -51,28 +35,20 @@ export function NewsletterSignup() {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <input
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-background/80 backdrop-blur-sm text-foreground focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20 transition-all duration-200"
-                disabled={isSubmitting || isSubmitted}
-                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-75"
+                disabled={true}
               />
             </div>
             <button
-              type="submit"
-              disabled={isSubmitting || isSubmitted}
-              className={`px-6 py-3 rounded-storj font-medium transition-all duration-200 ${
-                isSubmitted 
-                  ? 'bg-gray-600 text-white' 
-                  : 'bg-storj-navy text-white hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20'
-              } ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+              type="button"
+              disabled={true}
+              className="px-6 py-3 rounded-storj font-medium transition-all duration-200 bg-gray-400 dark:bg-gray-600 text-gray-600 dark:text-gray-400 cursor-not-allowed opacity-75"
             >
-              {isSubmitting && (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin inline-block mr-2"></div>
-              )}
-              {isSubmitted ? '✓ Subscribed!' : isSubmitting ? 'Subscribing...' : 'Subscribe'}
+              Coming Soon
             </button>
           </div>
         </form>
