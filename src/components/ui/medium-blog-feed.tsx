@@ -129,14 +129,6 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                       <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                         {post.readTime}
                       </span>
-                      {post.featured && (
-                        <>
-                          <span className="text-gray-400">·</span>
-                          <span className="text-xs sm:text-sm text-yellow-600 dark:text-yellow-400 font-medium">
-                            Featured
-                          </span>
-                        </>
-                      )}
                     </div>
 
                     {/* Actions */}

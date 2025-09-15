@@ -120,6 +120,48 @@ export default function Blog() {
   // Total filtered posts for display
   const totalFilteredPosts = featuredPosts.length + regularPosts.length
 
+  // Show loading state
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen py-16 sm:py-20">
+        {/* Hero Section Loading */}
+        <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded-full w-20 mx-auto mb-8 animate-pulse"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mx-auto mb-8 animate-pulse"></div>
+            <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-2/3 mx-auto animate-pulse"></div>
+          </div>
+        </section>
+
+        {/* Controls Loading */}
+        <section className="px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12 lg:mb-16">
+          <div className="max-w-7xl mx-auto py-4">
+            <div className="max-w-2xl mx-auto mb-4 sm:mb-6">
+              <div className="h-12 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2 mb-6 sm:mb-8 lg:mb-12">
+              {[1, 2, 3, 4, 5].map(i => (
+                <div key={i} className="h-10 w-20 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Content Loading */}
+        <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center py-20">
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-foreground/60 text-lg">Loading articles...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen py-16 sm:py-20" style={{ scrollBehavior: 'smooth' }}>
       {/* Hero Section */}
@@ -129,7 +171,7 @@ export default function Blog() {
             <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
             <span className="text-sm font-medium text-foreground">Blog</span>
           </div>
-          
+
           <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 leading-tight">
             <span className="text-gradient">Web3 Insights</span>
             <br />
@@ -269,18 +311,27 @@ export default function Blog() {
 
           {totalFilteredPosts === 0 && (
             <div className="text-center py-20">
-              <div className="text-6xl mb-4">📝</div>
+              <div className="w-16 h-16 mx-auto mb-4 text-foreground/40">
+                <Search className="w-16 h-16" />
+              </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">No articles found</h3>
               <p className="text-foreground/60 mb-6">
-                No articles match your search criteria. Try adjusting your search or category filter.
+                {searchQuery ? (
+                  <>No articles match "{searchQuery}". Try different keywords or </>
+                ) : (
+                  'No articles found in this category. Try '
+                )}
+                adjusting your search or category filter.
               </p>
               <div className="space-x-4">
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="px-6 py-3 rounded-full bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
-                >
-                  Clear Search
-                </button>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="px-6 py-3 rounded-full bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
+                  >
+                    Clear Search
+                  </button>
+                )}
                 <button
                   onClick={() => setSelectedCategory('All')}
                   className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-foreground hover:border-foreground hover:text-foreground hover:bg-foreground/5 transition-all duration-200 shadow-lg shadow-foreground/20"

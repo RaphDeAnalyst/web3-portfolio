@@ -48,8 +48,6 @@ export function ProjectCard({
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
 
-  // Debug: Log the tech array to see what's being passed
-  console.log('ProjectCard tech:', tech, 'Type:', typeof tech, 'Array?', Array.isArray(tech))
 
   const statusColors = {
     'Live': 'bg-accent-green/10 text-accent-green border-accent-green/20',
@@ -78,15 +76,6 @@ export function ProjectCard({
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" />
 
-      {/* Featured badge */}
-      {featured && (
-        <div className="absolute top-4 right-4 z-20">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg">
-            <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-            <span className="text-xs font-semibold tracking-wide">FEATURED</span>
-          </div>
-        </div>
-      )}
 
       {/* Project thumbnail/hero visual */}
       <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">

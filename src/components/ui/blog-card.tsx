@@ -117,16 +117,6 @@ export function BlogCard({
         {/* Hover Effect */}
         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-50/50 dark:bg-gray-800/50"></div>
         
-        {/* Featured Badge */}
-        {featured && (
-          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
-            <div className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 text-white text-xs font-medium">
-              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></span>
-              <span className="hidden sm:inline">Featured</span>
-              <span className="sm:hidden">★</span>
-            </div>
-          </div>
-        )}
 
         {/* Article Image */}
         {(featuredImage || image || featured) && (

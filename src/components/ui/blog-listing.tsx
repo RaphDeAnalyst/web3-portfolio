@@ -97,14 +97,6 @@ export function BlogListing({
                 onMouseEnter={() => setHoveredPost(post.slug)}
                 onMouseLeave={() => setHoveredPost(null)}
               >
-                {/* Featured Badge */}
-                {post.featured && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary-500/10 text-primary-600 dark:bg-primary-400/10 dark:text-primary-400">
-                      Featured
-                    </span>
-                  </div>
-                )}
 
                 {/* Mobile Layout: Image on top */}
                 <div className="block sm:hidden mb-4">
