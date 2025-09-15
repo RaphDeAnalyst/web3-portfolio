@@ -203,23 +203,38 @@ export default function About() {
           </div>
 
           <div className="relative">
-            <div className="divider-dots absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-current text-foreground/30 rounded-full"></div>
-            
-            <div className="space-y-8 sm:space-y-12">
+            {/* Timeline line - Hidden on mobile, visible on sm+ */}
+            <div className="hidden sm:block absolute left-8 top-0 bottom-0 w-0.5 bg-foreground/20 rounded-full"></div>
+
+            <div className="space-y-6 sm:space-y-12">
               {journey.map((item, index) => (
-                <div key={index} className="relative flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:space-x-8">
-                  <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 mx-auto sm:mx-0 rounded-full bg-foreground border-4 border-background shadow-lg">
-                  </div>
-                  
-                  <div className="flex-1 pb-6 sm:pb-8">
-                    <div className="p-6 rounded-2xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark hover:shadow-card-light-hover dark:hover:shadow-card-dark-hover hover:scale-105 transition-all duration-300 card-hover">
+                <div key={index} className="relative">
+                  {/* Mobile Layout */}
+                  <div className="sm:hidden">
+                    <div className="p-4 sm:p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-xl transition-all duration-300">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
-                        <span className="text-sm font-medium text-foreground bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700">
+                        <span className="text-sm font-bold text-white bg-primary-600 px-3 py-1 rounded-full">
                           {item.year}
                         </span>
                       </div>
-                      <p className="text-foreground/70 leading-relaxed">{item.description}</p>
+                      <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-sm text-foreground/70 leading-relaxed">{item.description}</p>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout */}
+                  <div className="hidden sm:flex items-start space-x-8">
+                    {/* Timeline dot */}
+                    <div className="flex-shrink-0 w-16 h-16 rounded-full bg-primary-600 border-4 border-background shadow-lg flex items-center justify-center relative z-10">
+                      <span className="text-white font-bold text-sm">{item.year}</span>
+                    </div>
+
+                    {/* Content card */}
+                    <div className="flex-1 pb-8">
+                      <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
+                        <p className="text-foreground/70 leading-relaxed">{item.description}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
