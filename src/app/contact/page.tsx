@@ -8,22 +8,22 @@ import { Send } from 'lucide-react'
 
 export default function Contact() {
   return (
-    <div className="min-h-screen py-20">
+    <div className="min-h-screen py-16 sm:py-20">
       {/* Hero Section */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-20">
+      <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
             <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
             <span className="text-sm font-medium text-foreground">Let's Collaborate</span>
           </div>
           
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8">
             <span className="text-gradient">Ready to Build</span>
             <br />
             <span className="text-foreground">Something Amazing?</span>
           </h1>
           
-          <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl lg:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
             Whether you need <span className="text-foreground font-semibold">analytics dashboards</span>,
             <span className="text-foreground font-semibold"> smart contracts</span>, or
             <span className="text-foreground font-semibold"> AI-powered solutions</span>,
@@ -33,14 +33,14 @@ export default function Contact() {
       </section>
 
       {/* Main Content */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-20">
+      <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Contact Form - Takes 2 columns */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
+              <div className="p-6 sm:p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
                 <div className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4">
                     Start Your Project
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
@@ -52,9 +52,9 @@ export default function Contact() {
               </div>
 
               {/* Availability Calendar Section */}
-              <div className="p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
+              <div className="p-6 sm:p-8 rounded-3xl bg-card-light dark:bg-card-dark border border-gray-200/30 dark:border-card-border shadow-card-light dark:shadow-card-dark">
                 <div className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4">
                     Check My <span className="text-gradient">Availability</span>
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
@@ -160,13 +160,13 @@ export default function Contact() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => document.querySelector('form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 rounded-storj bg-storj-blue hover:bg-storj-navy text-white font-semibold text-lg hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg"
+                className="px-6 sm:px-8 py-3 sm:py-4 rounded-storj bg-storj-blue hover:bg-storj-navy text-white font-semibold text-base sm:text-lg hover:transform hover:translate-y-[-2px] transition-all duration-200 shadow-storj-lg min-h-[44px]"
               >
                 Start Your Project
               </button>
               <button
                 onClick={() => window.open('https://calendly.com/your-link', '_blank')}
-                className="px-8 py-4 rounded-storj border border-gray-300 text-gray-700 font-semibold text-lg hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200"
+                className="px-6 sm:px-8 py-3 sm:py-4 rounded-storj border border-gray-300 text-gray-700 font-semibold text-base sm:text-lg hover:border-storj-blue hover:text-storj-blue hover:bg-storj-blue/5 transition-all duration-200 min-h-[44px]"
               >
                 Schedule Call
               </button>

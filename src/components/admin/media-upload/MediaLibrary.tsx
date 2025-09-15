@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { MediaFile } from '@/lib/media-service-hybrid'
+import { MediaFile, mediaServiceHybrid } from '@/lib/media-service-hybrid'
 import { useNotification } from '@/lib/notification-context'
-import { FolderOpen, Video, FileText } from 'lucide-react'
+import { FolderOpen, Video, FileText, Trash2, AlertTriangle } from 'lucide-react'
 
 interface MediaLibraryProps {
   mediaFiles: MediaFile[]
@@ -11,10 +11,12 @@ interface MediaLibraryProps {
 }
 
 export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
-  const { copied } = useNotification()
+  const { copied, error, success, warning } = useNotification()
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set())
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [filterProvider, setFilterProvider] = useState<string>('all')
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const filteredFiles = mediaFiles.filter(file => 
     filterProvider === 'all' || file.storage_provider === filterProvider
@@ -40,6 +42,45 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
     }
   }
 
+  const handleDeleteSelected = () => {
+    if (selectedFiles.size === 0) return
+    setShowDeleteConfirm(true)
+  }
+
+  const confirmDelete = async () => {
+    if (selectedFiles.size === 0) return
+
+    setIsDeleting(true)
+    setShowDeleteConfirm(false)
+
+    try {
+      const idsToDelete = Array.from(selectedFiles)
+      const result = await mediaServiceHybrid.deleteMultipleMedia(idsToDelete)
+
+      if (result.summary.successful > 0) {
+        success(`Successfully deleted ${result.summary.successful} file${result.summary.successful !== 1 ? 's' : ''}`)
+      }
+
+      if (result.summary.failed > 0) {
+        error(`Failed to delete ${result.summary.failed} file${result.summary.failed !== 1 ? 's' : ''}`)
+      }
+
+      // Clear selection and refresh
+      setSelectedFiles(new Set())
+      await onRefresh()
+
+    } catch (err) {
+      console.error('Error during bulk delete:', err)
+      error('Failed to delete selected files. Please try again.')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false)
+  }
+
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -63,16 +104,16 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
   }
 
   return (
-    <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+    <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h2 className="text-xl font-bold text-foreground mb-4 sm:mb-0">Media Library</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-0">Media Library</h2>
         
         <div className="flex flex-wrap items-center gap-3">
           {/* Provider Filter */}
           <select
             value={filterProvider}
             onChange={e => setFilterProvider(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-background text-foreground text-sm"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-background text-foreground text-sm min-h-[44px]"
           >
             <option value="all">All Providers</option>
             {providers.map(provider => (
@@ -84,9 +125,9 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
           <div className="flex border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden">
             <button
               onClick={() => setViewMode('grid')}
-              className={`px-3 py-2 text-sm ${
-                viewMode === 'grid' 
-                  ? 'bg-primary-500 text-white' 
+              className={`px-3 py-2 text-sm min-h-[44px] flex items-center justify-center ${
+                viewMode === 'grid'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-background text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >
@@ -94,9 +135,9 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-3 py-2 text-sm ${
-                viewMode === 'list' 
-                  ? 'bg-primary-500 text-white' 
+              className={`px-3 py-2 text-sm min-h-[44px] flex items-center justify-center ${
+                viewMode === 'list'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-background text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >
@@ -106,7 +147,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
 
           <button
             onClick={onRefresh}
-            className="px-4 py-2 bg-secondary-500 text-white rounded-md text-sm font-medium hover:bg-secondary-600 transition-colors"
+            className="px-4 py-2 bg-secondary-500 text-white rounded-md text-sm font-medium hover:bg-secondary-600 transition-colors min-h-[44px]"
           >
             Refresh
           </button>
@@ -115,7 +156,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
 
       {/* Selection Controls */}
       {filteredFiles.length > 0 && (
-        <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div className="flex items-center gap-3">
             <label className="flex items-center space-x-2">
               <input
@@ -124,15 +165,25 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                 onChange={handleSelectAll}
                 className="rounded border-gray-300 dark:border-gray-600"
               />
-              <span className="text-sm text-foreground">
+              <span className="text-xs sm:text-sm text-foreground">
                 Select All ({selectedFiles.size} selected)
               </span>
             </label>
           </div>
           
           {selectedFiles.size > 0 && (
-            <div className="text-sm text-gray-600">
-              {selectedFiles.size} file{selectedFiles.size !== 1 ? 's' : ''} selected
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleDeleteSelected}
+                disabled={isDeleting}
+                className="flex items-center gap-2 px-3 py-1.5 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <Trash2 size={16} />
+                {isDeleting ? 'Deleting...' : `Delete (${selectedFiles.size})`}
+              </button>
+              <div className="text-sm text-gray-600">
+                {selectedFiles.size} file{selectedFiles.size !== 1 ? 's' : ''} selected
+              </div>
             </div>
           )}
         </div>
@@ -294,6 +345,73 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
               Total Size: <span className="font-medium text-foreground">
                 {formatFileSize(filteredFiles.reduce((acc, file) => acc + ((file as any).file_size || (file as any).size || 0), 0))}
               </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background border border-gray-200 dark:border-gray-800 rounded-xl p-6 max-w-md w-full">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Confirm Deletion</h3>
+                <p className="text-sm text-gray-600">This action cannot be undone</p>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-foreground mb-3">
+                Are you sure you want to delete {selectedFiles.size} file{selectedFiles.size !== 1 ? 's' : ''}?
+              </p>
+
+              {selectedFiles.size <= 5 && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 space-y-1">
+                  {Array.from(selectedFiles).slice(0, 5).map(id => {
+                    const file = mediaFiles.find(f => f.id === id)
+                    return file ? (
+                      <div key={id} className="text-sm text-gray-600 truncate">
+                        • {file.filename}
+                      </div>
+                    ) : null
+                  })}
+                </div>
+              )}
+
+              {selectedFiles.size > 5 && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                  <div className="text-sm text-gray-600">
+                    {Array.from(selectedFiles).slice(0, 3).map(id => {
+                      const file = mediaFiles.find(f => f.id === id)
+                      return file ? (
+                        <div key={id} className="truncate">• {file.filename}</div>
+                      ) : null
+                    })}
+                    <div className="text-gray-500 mt-1">
+                      ... and {selectedFiles.size - 3} more files
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-foreground rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+              >
+                Delete {selectedFiles.size} File{selectedFiles.size !== 1 ? 's' : ''}
+              </button>
             </div>
           </div>
         </div>

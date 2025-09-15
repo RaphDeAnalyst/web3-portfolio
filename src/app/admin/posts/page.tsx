@@ -263,7 +263,7 @@ export default function PostsManagement() {
                     <div className="flex items-center space-x-2">
                       <Link
                         href={`/admin/posts/edit/${post.id}`}
-                        className="p-2 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors"
+                        className="p-3 text-foreground/60 hover:text-cyber-500 hover:bg-cyber-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                         title="Edit post"
                       >
 Edit
@@ -271,14 +271,14 @@ Edit
                       <Link
                         href={`/blog/${post.slug}`}
                         target="_blank"
-                        className="p-2 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors"
+                        className="p-3 text-foreground/60 hover:text-primary-500 hover:bg-primary-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                         title="View post"
                       >
 View
                       </Link>
                       <button
                         onClick={() => openDeleteDialog(post)}
-                        className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                        className="p-3 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                         title="Delete post"
                       >
 Delete

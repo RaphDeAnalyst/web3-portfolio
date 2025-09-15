@@ -36,11 +36,7 @@ export default function EnhancedMediaUpload() {
   })
   
   // Upload configuration
-  const [uploadOptions, setUploadOptions] = useState<UploadOptions>({
-    isPublic: true,
-    optimize: false,
-    generateThumbnail: false
-  })
+  const [uploadOptions, setUploadOptions] = useState<UploadOptions>({})
   const [selectedProvider, setSelectedProvider] = useState<StorageProvider | 'auto'>('auto')
   
   // UI state

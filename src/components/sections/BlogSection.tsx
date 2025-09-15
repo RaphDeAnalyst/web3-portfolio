@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { memo } from 'react'
+import { EnhancedMediumBlogCard } from '@/components/ui/enhanced-medium-blog-card'
 
 interface BlogSectionProps {
   featuredPosts?: any[]
@@ -28,62 +29,18 @@ const BlogSection = memo(function BlogSection({ featuredPosts = [], loading = fa
           </p>
         </div>
 
-        {/* Blog Posts Grid */}
+        {/* Featured Blog Posts */}
         {loading ? (
-          <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
             {[...Array(3)].map((_, index) => (
-              <div key={index} className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl animate-pulse"></div>
+              <div key={index} className="h-80 bg-gray-200 dark:bg-gray-800 rounded-xl animate-pulse"></div>
             ))}
           </div>
         ) : featuredPosts.length > 0 ? (
-          <div className={`grid gap-8 ${
-            featuredPosts.length === 1 
-              ? 'grid-cols-1 lg:grid-cols-6' 
-              : featuredPosts.length === 2
-              ? 'grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto'
-              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
-          }`}>
-            {featuredPosts.slice(0, 3).map((post, index) => {
-              return (
-                <Link key={post.id || index} href={`/blog/${post.slug}`}>
-                  <article className="group h-full p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover">
-                    {/* Post Header */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-foreground border border-gray-200 dark:border-gray-700">
-                        {post.category}
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm text-foreground/60">
-                        <span>{post.date}</span>
-                        <span>•</span>
-                        <span>{post.readTime || '5 min read'}</span>
-                      </div>
-                    </div>
-
-                    {/* Post Content */}
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-foreground/80 transition-colors duration-200">
-                        {post.title}
-                      </h3>
-                      <p className="text-foreground/70 leading-relaxed group-hover:text-foreground/90 transition-colors duration-200">
-                        {post.summary}
-                      </p>
-
-                      {/* Read More */}
-                      <div className="flex items-center justify-between pt-4">
-                        <span className="text-sm text-foreground/60">Continue reading</span>
-                        <span className="font-medium text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-200">
-                          Read More →
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Hover Effect */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-50/50 dark:bg-gray-800/50"></div>
-                  </article>
-                </Link>
-              )
-            })}
-          </div>
+          <EnhancedMediumBlogCard
+            posts={featuredPosts.slice(0, 3)}
+            className="max-w-6xl mx-auto"
+          />
         ) : (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📝</div>

@@ -134,7 +134,7 @@ export default function AdminDashboard() {
           <button
             onClick={handleRefreshStats}
             disabled={loading}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-foreground bg-background hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-foreground bg-background hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px]"
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Refreshing...' : 'Refresh Stats'}
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
           const IconComponent = stat.icon
           return (
             <Link key={index} href={stat.link}>
-              <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:border-primary-500/30 cursor-pointer group">
+              <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:border-primary-500/30 cursor-pointer group">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`w-12 h-12 rounded-lg ${stat.color} flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-200`}>
                     <IconComponent size={24} />
@@ -167,11 +167,11 @@ export default function AdminDashboard() {
 
 
       {/* Quick Actions */}
-      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-        <h2 className="text-xl font-bold text-foreground mb-6">Quick Actions</h2>
+      <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">Quick Actions</h2>
         <div className="space-y-3">
           <Link href="/admin/posts/new">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-cyber-500 hover:bg-cyber-500/5 transition-colors group">
+            <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-cyber-500 hover:bg-cyber-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-cyber-500/10 flex items-center justify-center text-cyber-500 group-hover:bg-cyber-500/20 transition-colors">
                 <Plus size={20} />
               </div>
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
           </Link>
           
           <Link href="/admin/projects/new">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-accent-blue hover:bg-accent-blue/5 transition-all duration-200 group shadow-lg shadow-accent-blue/20">
+            <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-accent-blue hover:bg-accent-blue/5 transition-all duration-200 group shadow-lg shadow-accent-blue/20 min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent-blue/10 flex items-center justify-center text-accent-blue group-hover:bg-accent-blue/20 transition-colors">
                 <Rocket size={20} />
               </div>
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
           </Link>
           
           <Link href="/admin/media">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-purple-500 hover:bg-purple-500/5 transition-colors group">
+            <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-purple-500 hover:bg-purple-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500/20 transition-colors">
                 <Upload size={20} />
               </div>
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
           </Link>
           
           <Link href="/admin/availability">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-500/5 transition-colors group">
+            <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500/20 transition-colors">
                 <Calendar size={20} />
               </div>
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
           </Link>
           
           <Link href="/admin/profile">
-            <button className="w-full flex items-center space-x-3 p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-green-500 hover:bg-green-500/5 transition-colors group">
+            <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-green-500 hover:bg-green-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/20 transition-colors">
                 <User size={20} />
               </div>

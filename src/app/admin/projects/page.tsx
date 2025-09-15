@@ -285,7 +285,7 @@ export default function ProjectsManagement() {
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors"
+                      className="p-3 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                       title="View demo"
                     >
                       <ExternalLink size={16} />
@@ -296,7 +296,7 @@ export default function ProjectsManagement() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                      className="p-3 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                       title="View code"
                     >
                       <Github size={16} />
@@ -307,14 +307,14 @@ export default function ProjectsManagement() {
                 <div className="flex space-x-2">
                   <Link
                     href={`/admin/projects/edit/${index}`}
-                    className="p-2 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors"
+                    className="p-3 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                     title="Edit project"
                   >
 Edit
                   </Link>
                   <button
                     onClick={() => openDeleteDialog(project, index)}
-                    className="p-2 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                    className="p-3 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                     title="Delete project"
                   >
 Delete

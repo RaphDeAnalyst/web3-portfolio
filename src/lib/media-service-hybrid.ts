@@ -30,10 +30,7 @@ export type StorageProvider = 'supabase' | 'imgbb' | 'youtube' | 'googledrive'
 
 export interface UploadOptions {
   provider?: StorageProvider
-  isPublic?: boolean
   alt_text?: string
-  optimize?: boolean
-  generateThumbnail?: boolean
 }
 
 export class MediaServiceHybrid {
@@ -377,6 +374,41 @@ export class MediaServiceHybrid {
       console.error('Error in deleteMedia:', error)
       return false
     }
+  }
+
+  // Bulk delete multiple media files
+  async deleteMultipleMedia(ids: string[]): Promise<{
+    success: string[]
+    failed: Array<{ id: string, error: string }>
+    summary: { total: number, successful: number, failed: number }
+  }> {
+    const results = {
+      success: [] as string[],
+      failed: [] as Array<{ id: string, error: string }>,
+      summary: { total: ids.length, successful: 0, failed: 0 }
+    }
+
+    for (const id of ids) {
+      try {
+        const deleted = await this.deleteMedia(id)
+        if (deleted) {
+          results.success.push(id)
+          results.summary.successful++
+        } else {
+          results.failed.push({ id, error: 'Deletion failed' })
+          results.summary.failed++
+        }
+      } catch (error) {
+        results.failed.push({
+          id,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+        results.summary.failed++
+      }
+    }
+
+    console.log(`Bulk deletion completed: ${results.summary.successful} successful, ${results.summary.failed} failed`)
+    return results
   }
 
   // Get media statistics

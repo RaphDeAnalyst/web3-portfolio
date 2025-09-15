@@ -57,50 +57,18 @@ export function UploadTab({
       <h2 className="text-xl font-bold text-foreground mb-6">Upload Media</h2>
       
       {/* Upload Options */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-foreground">Upload Options</h3>
-          <button
-            onClick={() => onAdvancedToggle(!showAdvanced)}
-            className="text-primary-500 hover:text-primary-600 text-sm"
-          >
-            {showAdvanced ? 'Hide' : 'Show'} Advanced
-          </button>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={uploadOptions.isPublic}
-              onChange={e => onOptionsChange({ ...uploadOptions, isPublic: e.target.checked })}
-              className="rounded border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-sm text-foreground">Public</span>
-          </label>
-          
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={uploadOptions.optimize}
-              onChange={e => onOptionsChange({ ...uploadOptions, optimize: e.target.checked })}
-              className="rounded border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-sm text-foreground">Optimize</span>
-          </label>
-          
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={uploadOptions.generateThumbnail}
-              onChange={e => onOptionsChange({ ...uploadOptions, generateThumbnail: e.target.checked })}
-              className="rounded border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-sm text-foreground">Thumbnail</span>
-          </label>
-        </div>
+      {showAdvanced && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium text-foreground">Advanced Options</h3>
+            <button
+              onClick={() => onAdvancedToggle(!showAdvanced)}
+              className="text-primary-500 hover:text-primary-600 text-sm"
+            >
+              Hide Advanced
+            </button>
+          </div>
 
-        {showAdvanced && (
           <div className="mb-4">
             <label className="block text-sm font-medium text-foreground mb-2">
               Storage Provider
@@ -113,11 +81,21 @@ export function UploadTab({
               <option value="auto">Auto-select (Recommended)</option>
               <option value="supabase">Supabase</option>
               <option value="imgbb">ImgBB</option>
-              <option value="cloudinary">Cloudinary</option>
             </select>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {!showAdvanced && (
+        <div className="mb-4 text-center">
+          <button
+            onClick={() => onAdvancedToggle(true)}
+            className="text-primary-500 hover:text-primary-600 text-sm"
+          >
+            Show Advanced Options
+          </button>
+        </div>
+      )}
 
       {/* File Upload Area */}
       <div

@@ -98,7 +98,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 rounded-lg bg-background border border-gray-200 dark:border-gray-800 shadow-lg"
+          className="p-3 rounded-lg bg-background border border-gray-200 dark:border-gray-800 shadow-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
         >
           <div className="w-6 h-6 flex flex-col justify-center space-y-1">
             <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />

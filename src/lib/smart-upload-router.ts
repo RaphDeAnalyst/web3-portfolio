@@ -82,15 +82,6 @@ export class SmartUploadRouter {
    */
   private routeImage(file: File, options: UploadOptions): RoutingDecision {
     const warnings: string[] = []
-    
-    // Private images always go to Supabase for access control
-    if (!options.isPublic) {
-      return {
-        provider: 'supabase',
-        reason: 'Private images require access control',
-        backup: 'imgbb'
-      }
-    }
 
     // Large images might exceed ImgBB limits
     if (file.size > this.limits.imgbb.maxFileSize) {
@@ -102,18 +93,9 @@ export class SmartUploadRouter {
       }
     }
 
-    // For public images, consider preferences and optimization needs
-    if (options.optimize || options.generateThumbnail) {
-      return {
-        provider: 'supabase',
-        reason: 'Image optimization and thumbnail generation requested',
-        backup: 'imgbb'
-      }
-    }
-
     // Use configured default, with intelligent fallback
     const preferredProvider = this.config.defaultImageProvider
-    
+
     if (preferredProvider === 'imgbb' && this.config.preferFreeServices) {
       return {
         provider: 'imgbb',
@@ -131,26 +113,17 @@ export class SmartUploadRouter {
   }
 
   /**
-   * Video routing logic  
+   * Video routing logic
    */
   private routeVideo(file: File, options: UploadOptions): RoutingDecision {
     const warnings: string[] = []
 
-    // Private videos always go to Supabase
-    if (!options.isPublic) {
-      return {
-        provider: 'supabase',
-        reason: 'Private videos require access control',
-        warnings: file.size > 100 * 1024 * 1024 ? ['Large video files may have slower upload/playback'] : undefined
-      }
-    }
-
     // For public videos, YouTube is often better for SEO and performance
-    if (options.isPublic && this.config.defaultVideoProvider === 'youtube') {
+    if (this.config.defaultVideoProvider === 'youtube') {
       warnings.push('YouTube upload requires manual process - consider direct Supabase upload for automation')
       return {
         provider: 'supabase', // Auto-upload to Supabase, user can manually add to YouTube later
-        reason: 'Public video uploaded to Supabase for immediate availability',
+        reason: 'Video uploaded to Supabase for immediate availability',
         backup: 'youtube',
         warnings
       }

@@ -24,8 +24,27 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // Add your projects here
-  // Use the template below or create through the admin panel
+  // Test project to verify tech stack display
+  {
+    title: "Sample Analytics Dashboard",
+    description: "A comprehensive analytics dashboard built with React and TypeScript, featuring real-time data visualization and interactive charts for tracking key performance metrics.",
+    tech: ["React", "TypeScript", "Chart.js", "Tailwind CSS", "Next.js", "Supabase"],
+    category: "Analytics",
+    status: "Live",
+    demoUrl: "#",
+    githubUrl: "#",
+    metrics: {
+      "Users": "1K+",
+      "Accuracy": "95%",
+      "Performance": "Fast",
+      "Uptime": "99.9%"
+    },
+    challenges: "Building real-time charts that could handle large datasets while maintaining smooth performance.",
+    learnings: "Learned advanced React optimization techniques and efficient data handling patterns.",
+    featured: true,
+    timeline: "2024",
+    phase: "Web3 Analytics"
+  }
 ]
 
 // Available categories for projects
