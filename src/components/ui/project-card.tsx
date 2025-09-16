@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Github, ExternalLink, BarChart3, FileText } from 'lucide-react'
+import { ImageViewer } from '@/components/ui/image-viewer'
 
 interface ProjectCardProps {
   title: string
@@ -23,6 +24,7 @@ interface ProjectCardProps {
   timeline?: '2022-2023' | '2024' | '2025'
   phase?: 'Traditional Analytics' | 'Exploratory Phase' | 'Web3 Analytics'
   featuredCount?: number
+  onImageClick?: () => void
 }
 
 export function ProjectCard({
@@ -47,6 +49,7 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [showImageViewer, setShowImageViewer] = useState(false)
 
 
   const statusColors = {
@@ -68,11 +71,12 @@ export function ProjectCard({
   const hasValidUrl = (url?: string) => url && url !== '#' && url.trim() !== ''
 
   return (
-    <article
-      className="group relative h-full rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div>
+      <article
+        className="group relative h-full rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" />
 
@@ -84,10 +88,15 @@ export function ProjectCard({
             <img
               src={image}
               alt={`${title} project screenshot`}
-              className={`w-full h-full object-cover transition-all duration-700 ${
+              className={`w-full h-full object-cover transition-all duration-700 cursor-pointer ${
                 imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
               } ${isHovered ? 'scale-110' : 'scale-100'}`}
               onLoad={() => setImageLoaded(true)}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setShowImageViewer(true)
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {!imageLoaded && (
@@ -97,19 +106,11 @@ export function ProjectCard({
             )}
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-600/10" />
-            <div className="relative text-center">
-              <div className="flex items-center justify-center gap-1 mb-2">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"
-                    style={{ animationDelay: `${i * 200}ms` }}
-                  />
-                ))}
-              </div>
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400">Preview Coming Soon</div>
+          <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: '#2a7fc9' }}>
+            <div className="text-center">
+              <h3 className="text-white font-bold text-lg sm:text-xl md:text-2xl leading-tight text-center break-words max-w-full">
+                {title}
+              </h3>
             </div>
           </div>
         )}
@@ -231,6 +232,17 @@ export function ProjectCard({
           )}
         </div>
       </div>
-    </article>
+      </article>
+
+      {/* Image Viewer Modal */}
+      {image && (
+        <ImageViewer
+          src={image}
+          alt={`${title} project screenshot`}
+          isOpen={showImageViewer}
+          onClose={() => setShowImageViewer(false)}
+        />
+      )}
+    </div>
   )
 }

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import Link from 'next/link'
 import { MoreHorizontal, Bookmark, Check } from 'lucide-react'
+import { ImageViewer } from '@/components/ui/image-viewer'
 
 interface BlogPost {
   id?: string
@@ -35,6 +36,11 @@ interface MediumBlogFeedProps {
 
 export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
   const [bookmarkedPosts, setBookmarkedPosts] = useState<Set<string>>(new Set())
+  const [imageViewer, setImageViewer] = useState<{ src: string; alt: string; isOpen: boolean }>({
+    src: '',
+    alt: '',
+    isOpen: false
+  })
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
@@ -70,6 +76,7 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
   }
 
   return (
+    <Fragment>
     <div className={`max-w-3xl mx-auto px-4 sm:px-0 ${className}`}>
       <div className="divide-y divide-gray-100 dark:divide-gray-800">
         {posts.map((post, index) => (
@@ -164,8 +171,17 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                     <img
                       src={post.featuredImage}
                       alt={post.title}
-                      className="w-full h-full object-cover rounded-sm"
+                      className="w-full h-full object-cover rounded-sm cursor-pointer"
                       loading="lazy"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setImageViewer({
+                          src: post.featuredImage!,
+                          alt: post.title,
+                          isOpen: true
+                        })
+                      }}
                     />
                   </div>
                 ) : (
@@ -200,5 +216,14 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
         </div>
       )}
     </div>
+
+    {/* Image Viewer Modal */}
+    <ImageViewer
+      src={imageViewer.src}
+      alt={imageViewer.alt}
+      isOpen={imageViewer.isOpen}
+      onClose={() => setImageViewer({ src: '', alt: '', isOpen: false })}
+    />
+    </Fragment>
   )
 }

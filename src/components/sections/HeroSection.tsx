@@ -5,7 +5,7 @@ import { ParticleBackground } from '@/components/ui/particle-background'
 
 export function HeroSection() {
   return (
-    <section className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-20 bg-background">
+    <section className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28 bg-background">
       {/* Minimal Background - Clean and Professional */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background-secondary" />
       <ParticleBackground />
@@ -58,9 +58,9 @@ export function HeroSection() {
           <div className="pt-12 sm:pt-16 lg:pt-20">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 lg:gap-20">
               {[
-                { value: '15+', label: 'Analysis Projects' },
-                { value: '500K+', label: 'Records Analyzed' },
-                { value: '5+', label: 'Statistical Models' }
+                { value: '5+', label: 'Tools' },
+                { value: '100%', label: 'Data-Driven Approach' },
+                { value: '24/7', label: 'Research' }
               ].map((stat, index) => (
                 <div key={index} className="group relative p-6 sm:p-8 lg:p-10 bg-card border border-border hover:border-border-hover transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
                   <div className="text-center space-y-3 sm:space-y-4">

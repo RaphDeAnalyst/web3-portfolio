@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { Web3Provider } from "@/lib/web3-context";
 import { NotificationProvider } from "@/lib/notification-context";
-import { Navbar } from "@/components/layout/navbar";
+import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GlobalNotificationContainer } from "@/components/ui/notification";
 import { Analytics } from '@vercel/analytics/next';
@@ -100,91 +100,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Light mode favicons (dark icons for light background) */}
-        <link
-          rel="icon"
-          type="image/x-icon"
-          href="/favicon_dark.ico"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon_dark-16x16.png"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon_dark-32x32.png"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="192x192"
-          href="/favicon_dark-192x192.png"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="512x512"
-          href="/favicon_dark-512x512.png"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="apple-touch-icon"
-          href="/apple-touch-icon-dark.png"
-          media="(prefers-color-scheme: light)"
-        />
+        {/* Standard favicon - Google's preferred format */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon_dark-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon_dark-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon-dark.png" sizes="180x180" />
 
-        {/* Dark mode favicons (light icons for dark background) */}
-        <link
-          rel="icon"
-          type="image/x-icon"
-          href="/favicon_light.ico"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon_light-16x16.png"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon_light-32x32.png"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="192x192"
-          href="/favicon_light-192x192.png"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="512x512"
-          href="/favicon_light-512x512.png"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="apple-touch-icon"
-          href="/apple-touch-icon-light.png"
-          media="(prefers-color-scheme: dark)"
-        />
-
-        {/* Fallback favicon (default to dark icons for light mode) */}
-        <link rel="icon" type="image/x-icon" href="/favicon_dark.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon-dark.png" />
+        {/* High-res icons for various devices */}
+        <link rel="icon" href="/favicon_dark-192x192.png" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/favicon_dark-512x512.png" type="image/png" sizes="512x512" />
 
         {/* Web App Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
@@ -206,7 +130,7 @@ export default function RootLayout({
             <NotificationProvider>
               <div className="min-h-screen flex flex-col">
                 <Navbar />
-                <main className="flex-1 pt-16">
+                <main className="flex-1">
                   {children}
                 </main>
                 <Footer />

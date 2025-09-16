@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import React from 'react'
-import { vi } from 'vitest'
+import { vi, beforeAll, afterAll } from 'vitest'
 
 // Mock Next.js router
 vi.mock('next/router', () => ({
@@ -50,6 +50,21 @@ Object.defineProperty(window, 'location', {
     reload: vi.fn(),
   },
   writable: true,
+})
+
+// Mock window.matchMedia for next-themes
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
 })
 
 // Suppress console errors in tests unless they're expected

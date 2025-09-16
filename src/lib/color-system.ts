@@ -94,12 +94,12 @@ export const navigationColors: Record<string, SectionColors> = {
     primary: '#8b5cf6', // Purple
     primaryHover: '#a78bfa',
     primaryActive: '#7c3aed',
-    gradient: 'from-indigo-500/10 to-pink-600/10',
-    hoverGradient: 'from-indigo-500/20 to-pink-600/20',
+    gradient: 'from-purple-500/10 to-pink-600/10',
+    hoverGradient: 'from-purple-500/20 to-pink-600/20',
     bgClass: 'bg-purple-500/10',
     textClass: 'text-purple-500',
     borderClass: 'border-purple-500',
-    cardGradient: 'from-indigo-500 to-pink-600'
+    cardGradient: 'from-purple-500 to-pink-600'
   }
 }
 

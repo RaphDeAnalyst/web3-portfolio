@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import Link from 'next/link'
 import { Clock, Eye, MessageCircle, Tag, Calendar } from 'lucide-react'
+import { ImageViewer } from '@/components/ui/image-viewer'
 
 interface BlogPost {
   id?: string
@@ -44,6 +45,11 @@ export function BlogListing({
   className = ''
 }: BlogListingProps) {
   const [hoveredPost, setHoveredPost] = useState<string | null>(null)
+  const [imageViewer, setImageViewer] = useState<{ src: string; alt: string; isOpen: boolean }>({
+    src: '',
+    alt: '',
+    isOpen: false
+  })
 
   const formatViews = (views: number): string => {
     if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`
@@ -77,6 +83,7 @@ export function BlogListing({
   }
 
   return (
+    <Fragment>
     <div className={`max-w-4xl mx-auto ${className}`}>
       <div className={`grid gap-6 ${
         layout === 'double'
@@ -105,8 +112,17 @@ export function BlogListing({
                       <img
                         src={post.featuredImage}
                         alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 cursor-pointer"
                         loading="lazy"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setImageViewer({
+                            src: post.featuredImage!,
+                            alt: post.title,
+                            isOpen: true
+                          })
+                        }}
                       />
                     </div>
                   ) : (
@@ -197,8 +213,17 @@ export function BlogListing({
                         <img
                           src={post.featuredImage}
                           alt={post.title}
-                          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 cursor-pointer"
                           loading="lazy"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setImageViewer({
+                              src: post.featuredImage!,
+                              alt: post.title,
+                              isOpen: true
+                            })
+                          }}
                         />
                       </div>
                     ) : (
@@ -238,5 +263,14 @@ export function BlogListing({
         </div>
       )}
     </div>
+
+    {/* Image Viewer Modal */}
+    <ImageViewer
+      src={imageViewer.src}
+      alt={imageViewer.alt}
+      isOpen={imageViewer.isOpen}
+      onClose={() => setImageViewer({ src: '', alt: '', isOpen: false })}
+    />
+    </Fragment>
   )
 }

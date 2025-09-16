@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { blogService, projectService } from '@/lib/service-switcher'
+import dynamic from 'next/dynamic'
 import { 
   FileText, 
   Rocket, 
@@ -29,6 +29,8 @@ export default function AdminDashboard() {
     // Load stats using the service switcher
     const loadStats = async () => {
       try {
+        // Dynamic import to avoid SSR issues
+        const { blogService, projectService } = await import('@/lib/service-switcher')
         const [blogPosts, projects] = await Promise.all([
           blogService.getAllPosts(),
           projectService.getAllProjects()
@@ -58,6 +60,8 @@ export default function AdminDashboard() {
   const handleRefreshStats = async () => {
     setLoading(true)
     try {
+      // Dynamic import to avoid SSR issues
+      const { blogService, projectService } = await import('@/lib/service-switcher')
       const [blogPosts, projects] = await Promise.all([
         blogService.getAllPosts(),
         projectService.getAllProjects()

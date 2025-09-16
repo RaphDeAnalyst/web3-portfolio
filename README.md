@@ -1,39 +1,42 @@
-# Web3 Portfolio - Data & AI Specialist
+# Web3 Portfolio - Personal Portfolio Website
 
-A modern, responsive portfolio website showcasing Web3 expertise, built with Next.js 15, TypeScript, and Tailwind CSS. Features advanced animations, wallet integration, and NFT minting capabilities.
+A modern, responsive portfolio website built with Next.js 14, TypeScript, and Tailwind CSS. Features a comprehensive blog system, project showcase, admin dashboard, and contact functionality.
 
 ## 🚀 Features
 
 ### Core Functionality
 - **Responsive Design** - Mobile-first approach with smooth animations
-- **Dark/Light Mode** - System preference detection with manual toggle
-- **Web3 Integration** - Wallet connection with multiple provider support
-- **NFT Minting** - Free collectible badges for portfolio visitors
-- **Blog System** - Markdown-based articles with search and filtering
-- **Contact System** - Professional inquiry form with project scoping
+- **Dark/Light Mode** - Theme switching with next-themes
+- **Blog System** - Full CMS with admin dashboard for creating and editing posts
+- **Project Portfolio** - Showcase of projects with detailed descriptions
+- **Contact System** - Professional contact form
+- **Admin Dashboard** - Complete content management system
 
 ### Technical Highlights
-- **Next.js 15** with App Router and TypeScript
-- **Tailwind CSS v4** with custom Web3 color palette
+- **Next.js 14** with App Router and TypeScript
+- **Tailwind CSS** with custom styling and animations
+- **Supabase Integration** - Backend database and services
 - **Performance Optimized** with lazy loading and image optimization
-- **SEO Ready** with metadata, sitemap, and structured data
-- **Security Headers** for enhanced protection
-- **Accessibility** compliant with WCAG guidelines
+- **SEO Ready** - Sitemap, metadata, and structured data
+- **Testing Setup** - Vitest with React Testing Library
+- **Analytics** - Vercel Analytics integration
 
-### Web3 Features
-- **Multi-Wallet Support** - MetaMask, WalletConnect, Coinbase, Rainbow
-- **Network Switching** - Ethereum, Polygon, BSC, Arbitrum, Optimism
-- **ENS Integration** - Display ENS names in navbar when connected
-- **NFT Collection** - 4 unique designs with rarity system
-- **Mock Implementation** - Demo-ready without blockchain dependencies
+### Admin Features
+- **Blog Management** - Create, edit, and publish blog posts
+- **Project Management** - Add and manage portfolio projects
+- **Media Management** - Upload and organize media files
+- **Profile Management** - Update personal information and settings
 
 ## 📦 Tech Stack
 
-- **Frontend**: Next.js 15, React 18, TypeScript
-- **Styling**: Tailwind CSS v4, Custom CSS animations
-- **Web3**: Custom context provider (mock implementation)
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Custom CSS animations
+- **Backend**: Supabase (database, auth, storage)
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **Testing**: Vitest, React Testing Library
+- **Analytics**: Vercel Analytics
 - **Deployment**: Vercel-ready with optimizations
-- **Performance**: Image optimization, lazy loading, code splitting
 
 ## 🛠 Installation & Setup
 
@@ -91,17 +94,28 @@ npm start
 web3-portfolio/
 ├── src/
 │   ├── app/                 # Next.js App Router pages
-│   │   ├── about/          # About page
+│   │   ├── admin/          # Admin dashboard
+│   │   │   ├── posts/      # Blog post management
+│   │   │   ├── projects/   # Project management
+│   │   │   ├── media/      # Media management
+│   │   │   └── profile/    # Profile settings
 │   │   ├── blog/           # Blog section
-│   │   ├── contact/        # Contact page  
+│   │   │   └── [slug]/     # Individual blog posts
+│   │   ├── contact/        # Contact page
 │   │   ├── portfolio/      # Portfolio showcase
+│   │   ├── about/          # About page
 │   │   ├── globals.css     # Global styles
 │   │   └── layout.tsx      # Root layout
 │   ├── components/         # Reusable components
+│   │   ├── admin/          # Admin-specific components
+│   │   ├── sections/       # Page sections
 │   │   ├── layout/         # Layout components
-│   │   └── ui/            # UI components
-│   └── lib/               # Utility functions
+│   │   ├── ui/            # UI components
+│   │   ├── seo/           # SEO components
+│   │   └── error/         # Error handling components
+│   └── lib/               # Utility functions and services
 ├── public/                # Static assets
+├── scripts/               # Utility scripts
 ├── tailwind.config.ts     # Tailwind configuration
 ├── next.config.ts         # Next.js configuration
 └── package.json          # Dependencies
@@ -123,15 +137,16 @@ colors: {
 ```
 
 ### Content Updates
-- **Personal Info**: Update `src/app/about/page.tsx`
-- **Projects**: Modify project data in `src/app/portfolio/page.tsx`
-- **Blog Posts**: Add markdown files or update blog data
-- **Contact Details**: Update `src/components/ui/contact-info.tsx`
+- **Personal Info**: Use the admin dashboard at `/admin/profile`
+- **Projects**: Manage projects through `/admin/projects`
+- **Blog Posts**: Create and edit posts at `/admin/posts`
+- **Media Files**: Upload and manage media at `/admin/media`
 
-### Web3 Configuration
-For production Web3 integration, replace mock providers in:
-- `src/lib/web3-context.tsx` - Wallet connection logic
-- `src/components/ui/nft-minter.tsx` - NFT minting functionality
+### Supabase Configuration
+Set up your Supabase project and update environment variables:
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
+- Configure database tables for posts, projects, and profile data
 
 ## 📈 Performance Optimizations
 
@@ -139,7 +154,7 @@ For production Web3 integration, replace mock providers in:
 - **Code Splitting** - Automatic route-based splitting
 - **Lazy Loading** - Components loaded on demand
 - **Caching** - Static generation with ISR support
-- **Bundle Analysis** - Use `npm run analyze` to inspect
+- **Testing** - Run `npm test` for unit tests
 
 ## 🔒 Security
 
@@ -178,9 +193,9 @@ For questions and support:
 
 - **Next.js Team** for the amazing framework
 - **Tailwind CSS** for the utility-first styling approach
+- **Supabase** for the backend infrastructure
 - **Vercel** for seamless deployment experience
-- **Web3 Community** for inspiration and best practices
 
 ---
 
-**Built with ❤️ for the Web3 community**
+**Built with ❤️ by Matthew Raphael**

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import { profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
 import { calculateReadingTime } from '@/lib/reading-time'
+import { ImageViewer } from '@/components/ui/image-viewer'
 
 interface BlogCardProps {
   title: string
@@ -45,6 +46,7 @@ export function BlogCard({
   const [profileData, setProfileData] = useState<any>(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [viewCount, setViewCount] = useState(0)
+  const [showImageViewer, setShowImageViewer] = useState(false)
 
   // Calculate reading time if not provided
   const calculatedReadTime = readTime || (content ? calculateReadingTime(content) : '5 min read')
@@ -108,6 +110,7 @@ export function BlogCard({
   const cardSize = getCardSize()
 
   return (
+    <Fragment>
     <Link href={`/blog/${slug}`} className={`${cardSize}`}>
       <article
         className="group h-full p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-300 card-hover"
@@ -126,10 +129,15 @@ export function BlogCard({
                 <img
                   src={featuredImage || image}
                   alt={`${title} - Web3 ${category} article by Matthew Raphael covering ${tags.slice(0, 3).join(', ')} blockchain analytics topics`}
-                  className={`w-full h-full object-contain transition-all duration-300 ${
+                  className={`w-full h-full object-contain transition-all duration-300 cursor-pointer ${
                     imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                   } ${isHovered ? 'scale-105' : ''}`}
                   onLoad={() => setImageLoaded(true)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setShowImageViewer(true)
+                  }}
                 />
                 {!imageLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -244,5 +252,16 @@ export function BlogCard({
         <div className="absolute top-4 left-4 w-2 h-2 rounded-full bg-primary-500 opacity-60 group-hover:opacity-100 transition-opacity duration-200"></div>
       </article>
     </Link>
+
+    {/* Image Viewer Modal */}
+    {(featuredImage || image) && (
+      <ImageViewer
+        src={featuredImage || image!}
+        alt={`${title} - Web3 ${category} article`}
+        isOpen={showImageViewer}
+        onClose={() => setShowImageViewer(false)}
+      />
+    )}
+  </Fragment>
   )
 }

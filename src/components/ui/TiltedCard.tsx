@@ -44,50 +44,90 @@ export default function TiltedCard({
   const [rotateY, setRotateY] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const boundsRef = useRef<DOMRect | null>(null)
+  const animationFrameRef = useRef<number>()
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
+
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      // Clean up animation frame on unmount
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
   }, [])
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || isMobile) return
+  const updateRotation = (clientX: number, clientY: number) => {
+    if (!boundsRef.current) return
 
-    const rect = cardRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    
-    const rotateXValue = ((e.clientY - centerY) / rect.height) * -rotateAmplitude
-    const rotateYValue = ((e.clientX - centerX) / rect.width) * rotateAmplitude
-    
-    setRotateX(rotateXValue)
-    setRotateY(rotateYValue)
+    const centerX = boundsRef.current.left + boundsRef.current.width / 2
+    const centerY = boundsRef.current.top + boundsRef.current.height / 2
+
+    // Improved calculation with better sensitivity
+    const rotateXValue = ((clientY - centerY) / boundsRef.current.height) * -rotateAmplitude * 1.2
+    const rotateYValue = ((clientX - centerX) / boundsRef.current.width) * rotateAmplitude * 1.2
+
+    // Clamp values to prevent over-rotation
+    const clampedRotateX = Math.max(-rotateAmplitude, Math.min(rotateAmplitude, rotateXValue))
+    const clampedRotateY = Math.max(-rotateAmplitude, Math.min(rotateAmplitude, rotateYValue))
+
+    setRotateX(clampedRotateX)
+    setRotateY(clampedRotateY)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return
+
+    // Cancel previous animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+    }
+
+    // Use requestAnimationFrame for smooth performance
+    animationFrameRef.current = requestAnimationFrame(() => {
+      updateRotation(e.clientX, e.clientY)
+    })
   }
 
   const handleMouseEnter = () => {
     setIsHovered(true)
+    // Cache the bounding rect on mouse enter for performance
+    if (cardRef.current) {
+      boundsRef.current = cardRef.current.getBoundingClientRect()
+    }
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
     setRotateX(0)
     setRotateY(0)
+    boundsRef.current = null
+
+    // Clean up animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+    }
   }
 
   const cardStyle = {
     height: containerHeight,
     width: containerWidth,
-    transform: isMobile 
-      ? `scale(${isHovered ? scaleOnHover : 1})` 
+    transform: isMobile
+      ? `scale(${isHovered ? scaleOnHover : 1})`
       : `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${isHovered ? scaleOnHover : 1})`,
-    transition: 'transform 0.1s ease-out',
+    transition: isHovered && !isMobile
+      ? 'transform 0.03s ease-out' // Fast transition for smooth real-time tracking
+      : 'transform 0.3s ease-out', // Smooth transition for enter/leave
     transformStyle: 'preserve-3d' as const,
+    transformOrigin: 'center center',
+    willChange: 'transform', // GPU acceleration hint
   }
 
   return (
@@ -109,7 +149,14 @@ export default function TiltedCard({
         onClick={onClick}
       >
         {/* Card Content */}
-        <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-lg">
+        <div
+          className="relative w-full h-full rounded-2xl overflow-hidden shadow-lg"
+          style={{
+            boxShadow: isHovered && !isMobile
+              ? `${rotateY * 0.5}px ${Math.abs(rotateX) * 0.5 + 10}px ${Math.abs(rotateX) + Math.abs(rotateY) + 15}px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.1)`
+              : undefined
+          }}
+        >
           {/* Image */}
           {imageSrc && (
             <img

@@ -53,11 +53,11 @@ export function QuickLinksSection() {
                 <TiltedCard
                   containerHeight="320px"
                   containerWidth="100%"
-                  rotateAmplitude={8}
-                  scaleOnHover={1.05}
+                  rotateAmplitude={15}
+                  scaleOnHover={1.08}
                   showTooltip={false}
                   displayOverlayContent={false}
-                  className="transition-all duration-500 w-full max-w-[280px] min-h-[320px] group"
+                  className="w-full max-w-[280px] min-h-[320px] group"
                 >
                   <div className={`relative w-full h-full bg-gradient-to-br ${item.gradient} hover:bg-gradient-to-br hover:${item.hoverGradient} backdrop-blur-sm border border-white/10 p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-${item.iconColor.split('-')[1]}-500/20`}>
 

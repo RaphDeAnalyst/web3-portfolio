@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import Link from 'next/link'
 import { Clock, Eye, Calendar, Tag } from 'lucide-react'
+import { ImageViewer } from '@/components/ui/image-viewer'
 
 interface BlogPost {
   id?: string
@@ -35,6 +36,11 @@ interface EnhancedMediumBlogCardProps {
 
 export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMediumBlogCardProps) {
   const [hoveredPost, setHoveredPost] = useState<string | null>(null)
+  const [imageViewer, setImageViewer] = useState<{ src: string; alt: string; isOpen: boolean }>({
+    src: '',
+    alt: '',
+    isOpen: false
+  })
 
   const formatViews = (views: number): string => {
     if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`
@@ -68,6 +74,7 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
   }
 
   return (
+    <Fragment>
     <div className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 ${className}`}>
       {posts.map((post) => (
         <Link key={post.slug} href={`/blog/${post.slug}`}>
@@ -87,8 +94,17 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
                 <img
                   src={post.featuredImage}
                   alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 cursor-pointer"
                   loading="lazy"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setImageViewer({
+                      src: post.featuredImage!,
+                      alt: post.title,
+                      isOpen: true
+                    })
+                  }}
                 />
               </div>
             ) : (
@@ -170,5 +186,14 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
         </Link>
       ))}
     </div>
+
+    {/* Image Viewer Modal */}
+    <ImageViewer
+      src={imageViewer.src}
+      alt={imageViewer.alt}
+      isOpen={imageViewer.isOpen}
+      onClose={() => setImageViewer({ src: '', alt: '', isOpen: false })}
+    />
+    </Fragment>
   )
 }
