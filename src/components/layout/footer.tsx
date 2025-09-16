@@ -32,12 +32,12 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-background border-t border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <footer className="bg-background-secondary border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
         <div className="flex flex-col space-y-6 sm:space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
           {/* Brand */}
           <div className="flex items-center justify-center md:justify-start space-x-2">
-            <span className="text-sm sm:text-base font-medium text-foreground/80 text-center md:text-left">
+            <span className="text-sm sm:text-base font-medium text-foreground/90 text-center md:text-left">
               Matthew Raphael - Web3 Analytics
             </span>
           </div>
@@ -50,31 +50,31 @@ export function Footer() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-foreground/60 hover:text-cyber-500 transition-colors duration-200 group"
+                  className="text-foreground/60 hover:text-primary transition-colors duration-200 group"
                   aria-label={link.name}
                 >
-                  <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center group-hover:border-cyber-500 group-hover:bg-cyber-500/10 transition-all duration-200 min-w-[36px] min-h-[36px]">
-                    <div className="text-foreground/60">{link.icon}</div>
+                  <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/10 transition-all duration-200 min-w-[36px] min-h-[36px]">
+                    <div className="text-foreground/60 group-hover:text-primary">{link.icon}</div>
                   </div>
                 </a>
               ))}
             </div>
             
             {/* Theme Toggle */}
-            <div className="sm:border-l sm:border-gray-200 sm:dark:border-gray-800 sm:pl-4 flex justify-center">
+            <div className="sm:border-l sm:border-border sm:pl-4 flex justify-center">
               <ThemeToggle />
             </div>
           </div>
 
           {/* Copyright */}
-          <div className="text-sm text-foreground/60 text-center md:text-right order-last md:order-none">
+          <div className="text-sm text-foreground/70 text-center md:text-right order-last md:order-none">
             © {currentYear} Built for Web3
           </div>
         </div>
 
         {/* Web3 tagline */}
-        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p className="text-xs text-foreground/50">
+        <div className="mt-6 pt-6 border-t border-border text-center">
+          <p className="text-xs text-foreground/60">
             Decentralized • Transparent • Future-Ready
           </p>
         </div>

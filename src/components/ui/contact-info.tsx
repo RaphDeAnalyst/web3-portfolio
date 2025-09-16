@@ -183,88 +183,30 @@ export function ContactInfo() {
         </div>
       </div>
 
-      {/* Location & Availability */}
-      <div className="p-6 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 bg-gradient-to-br from-primary-500/5 to-primary-500/5 backdrop-blur-sm">
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-6 h-6 text-primary-500">
-            <Globe className="w-6 h-6" />
-          </div>
+      {/* Location & Availability - Simplified */}
+      <div className="p-6 bg-card border border-border rounded-2xl">
+        <div className="flex items-center space-x-3 mb-4">
+          <Globe className="w-5 h-5 text-primary" />
           <h4 className="text-lg font-bold text-foreground">Location & Availability</h4>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Location */}
+
+        <div className="space-y-4">
           <div>
-            <h5 className="font-semibold text-foreground mb-3">Working Globally</h5>
-            <p className="text-sm text-foreground/70 mb-4">
-              Collaborating with clients worldwide across all time zones. Fluent in English with 
-              extensive experience in remote Web3 project delivery.
-            </p>
-            <div className="flex items-center space-x-2 text-sm">
-              {(() => {
-                const now = new Date()
-                const dayOfWeek = now.getDay() // 0=Sunday, 1=Monday, ..., 6=Saturday
-                const currentHour = now.getHours()
-                const currentMinute = now.getMinutes()
-                const currentTime = currentHour * 60 + currentMinute // Convert to minutes
-                
-                let status = 'Unavailable'
-                let color = 'primary-300'
-                let animate = false
-                
-                if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-                  // Monday-Friday: 9:00 AM - 5:00 PM (540-1020 minutes)
-                  if (currentTime >= 540 && currentTime <= 1020) {
-                    status = 'Currently Available'
-                    color = 'primary-600'
-                    animate = true
-                  } else {
-                    status = 'Available Today (9 AM - 5 PM)'
-                    color = 'primary-600'
-                  }
-                } else if (dayOfWeek === 6) {
-                  // Saturday: 10:00 AM - 1:00 PM (600-780 minutes)
-                  if (currentTime >= 600 && currentTime <= 780) {
-                    status = 'Currently Available'
-                    color = 'primary-400'
-                    animate = true
-                  } else {
-                    status = 'Limited Today (10 AM - 1 PM)'
-                    color = 'primary-400'
-                  }
-                } else {
-                  // Sunday
-                  status = 'Unavailable Today'
-                  color = 'primary-300'
-                }
-                
-                return (
-                  <>
-                    <div className={`w-2 h-2 rounded-full bg-${color} ${animate ? 'animate-pulse' : ''}`}></div>
-                    <span className={`text-${color} font-medium`}>{status}</span>
-                  </>
-                )
-              })()}
-            </div>
+            <p className="text-foreground-secondary text-sm">Working globally with clients across all time zones</p>
           </div>
 
-          {/* Timezone Availability */}
-          <div>
-            <h5 className="font-semibold text-foreground mb-3">Working Hours</h5>
-            <div className="space-y-2">
-              {availability.map((zone, index) => (
-                <div key={index} className="flex items-center text-sm">
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-2 h-2 rounded-full ${
-                      zone.color === 'primary-600' ? 'bg-primary-600' :
-                      zone.color === 'primary-400' ? 'bg-primary-400' :
-                      zone.color === 'primary-300' ? 'bg-primary-300' :
-                      'bg-primary-400'
-                    }`}></div>
-                    <span className="text-foreground/80">{zone.timezone}: {zone.hours}</span>
-                  </div>
-                </div>
-              ))}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-foreground">WAT (West Africa)</span>
+              <span className="text-foreground-secondary text-sm">Mon-Fri: 9:00 AM - 5:00 PM</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-foreground">Saturday</span>
+              <span className="text-foreground-secondary text-sm">10:00 AM - 1:00 PM</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-foreground">Sunday</span>
+              <span className="text-foreground-secondary text-sm">Unavailable</span>
             </div>
           </div>
         </div>

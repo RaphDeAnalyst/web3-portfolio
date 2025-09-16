@@ -114,12 +114,12 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                   )}
 
                   {/* Title */}
-                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white leading-tight mb-2 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-150">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight mb-2 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-150">
                     {post.title}
                   </h2>
 
                   {/* Summary */}
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-4 line-clamp-2 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors duration-150">
+                  <p className="text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed mb-4 line-clamp-2 group-hover:text-gray-500 dark:group-hover:text-gray-300 transition-colors duration-150">
                     {post.summary}
                   </p>
 
@@ -159,7 +159,7 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                 </div>
 
                 {/* Image */}
-                {post.featuredImage && (
+                {post.featuredImage ? (
                   <div className="w-full h-36 sm:w-24 sm:h-24 md:w-28 md:h-20 lg:w-32 lg:h-24 xl:w-40 xl:h-28 flex-shrink-0 order-first sm:order-last">
                     <img
                       src={post.featuredImage}
@@ -167,6 +167,14 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                       className="w-full h-full object-cover rounded-sm"
                       loading="lazy"
                     />
+                  </div>
+                ) : (
+                  <div className="w-full h-36 sm:w-24 sm:h-24 md:w-28 md:h-20 lg:w-32 lg:h-24 xl:w-40 xl:h-28 flex items-center justify-center flex-shrink-0 order-first sm:order-last rounded-sm p-2" style={{ backgroundColor: '#2a7fc9' }}>
+                    <div className="text-center">
+                      <h3 className="text-white font-bold text-xs sm:text-xs md:text-sm leading-tight text-center break-words max-w-full">
+                        {post.title}
+                      </h3>
+                    </div>
                   </div>
                 )}
               </div>

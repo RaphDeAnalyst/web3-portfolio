@@ -89,18 +89,18 @@ export function BlogListing({
           <div key={post.slug} className="relative">
             <Link href={`/blog/${post.slug}`}>
               <article
-                className={`group relative p-6 sm:p-8 transition-all duration-200 cursor-pointer ${
+                className={`group relative p-6 sm:p-8 transition-all duration-300 cursor-pointer shadow-sm ${
                   hoveredPost === post.slug
-                    ? 'transform -translate-y-1 shadow-lg shadow-black/10 dark:shadow-black/20'
-                    : 'hover:transform hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/20'
-                } bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800`}
+                    ? 'transform -translate-y-1 scale-[1.01] shadow-xl shadow-primary-500/15 dark:shadow-primary-400/15 border-primary-200 dark:border-primary-700'
+                    : 'hover:transform hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:shadow-primary-500/15 dark:hover:shadow-primary-400/15 hover:border-primary-200 dark:hover:border-primary-700'
+                } bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700`}
                 onMouseEnter={() => setHoveredPost(post.slug)}
                 onMouseLeave={() => setHoveredPost(null)}
               >
 
                 {/* Mobile Layout: Image on top */}
                 <div className="block sm:hidden mb-4">
-                  {post.featuredImage && (
+                  {post.featuredImage ? (
                     <div className="w-full h-48 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img
                         src={post.featuredImage}
@@ -108,6 +108,14 @@ export function BlogListing({
                         className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                         loading="lazy"
                       />
+                    </div>
+                  ) : (
+                    <div className="w-full h-48 flex items-center justify-center rounded-lg p-4" style={{ backgroundColor: '#2a7fc9' }}>
+                      <div className="text-center">
+                        <h3 className="text-white font-bold text-lg leading-tight text-center break-words max-w-full">
+                          {post.title}
+                        </h3>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -127,12 +135,12 @@ export function BlogListing({
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white leading-tight mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
                       {post.title}
                     </h2>
 
                     {/* Summary */}
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed mb-4 line-clamp-2">
                       {post.summary}
                     </p>
 
@@ -156,7 +164,7 @@ export function BlogListing({
                           )}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                             {post.author.name}
                           </p>
                         </div>
@@ -184,7 +192,7 @@ export function BlogListing({
 
                   {/* Desktop Image */}
                   <div className="hidden sm:block flex-shrink-0">
-                    {post.featuredImage && (
+                    {post.featuredImage ? (
                       <div className="w-32 h-24 lg:w-40 lg:h-28 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                           src={post.featuredImage}
@@ -192,6 +200,14 @@ export function BlogListing({
                           className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                           loading="lazy"
                         />
+                      </div>
+                    ) : (
+                      <div className="w-32 h-24 lg:w-40 lg:h-28 flex items-center justify-center rounded-lg p-2" style={{ backgroundColor: '#2a7fc9' }}>
+                        <div className="text-center">
+                          <h3 className="text-white font-bold text-xs lg:text-sm leading-tight text-center break-words max-w-full">
+                            {post.title}
+                          </h3>
+                        </div>
                       </div>
                     )}
                   </div>

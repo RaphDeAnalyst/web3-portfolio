@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
 import { profileService } from '@/lib/service-switcher'
+import { BarChart3, Link2, TrendingUp } from 'lucide-react'
 
 export default function About() {
   const [profile, setProfile] = useState<any>(null)
@@ -27,7 +28,7 @@ export default function About() {
     {
       title: 'Core Data Analytics',
       description: 'Advanced • 3+ Years Experience',
-      icon: '📊',
+      icon: <BarChart3 className="w-full h-full" />,
       color: 'primary-500',
       gradient: 'from-primary-500/20 to-primary-500/5',
       level: 'Advanced' as const,
@@ -43,7 +44,7 @@ export default function About() {
     {
       title: 'Web3 Analytics',
       description: 'Proficient • Active Projects',
-      icon: '🔗',
+      icon: <Link2 className="w-full h-full" />,
       color: 'primary-600',
       gradient: 'from-primary-600/20 to-primary-600/5',
       level: 'Proficient' as const,
@@ -59,7 +60,7 @@ export default function About() {
     {
       title: 'Visualization & Insight',
       description: 'Proficient • Applied Experience',
-      icon: '📈',
+      icon: <TrendingUp className="w-full h-full" />,
       color: 'primary-400',
       gradient: 'from-primary-400/20 to-primary-400/5',
       level: 'Proficient' as const,

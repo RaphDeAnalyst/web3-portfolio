@@ -72,10 +72,10 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
       {posts.map((post) => (
         <Link key={post.slug} href={`/blog/${post.slug}`}>
           <article
-            className={`group relative bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-200 cursor-pointer h-full flex flex-col min-h-[320px] sm:min-h-[360px] ${
+            className={`group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 cursor-pointer h-full flex flex-col min-h-[320px] sm:min-h-[360px] shadow-sm ${
               hoveredPost === post.slug
-                ? 'transform -translate-y-1 shadow-lg shadow-black/10 dark:shadow-black/20'
-                : 'hover:transform hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/20'
+                ? 'transform -translate-y-2 scale-[1.02] shadow-xl shadow-primary-500/20 dark:shadow-primary-400/20 border-primary-200 dark:border-primary-700'
+                : 'hover:transform hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary-500/20 dark:hover:shadow-primary-400/20 hover:border-primary-200 dark:hover:border-primary-700'
             }`}
             onMouseEnter={() => setHoveredPost(post.slug)}
             onMouseLeave={() => setHoveredPost(null)}
@@ -92,10 +92,11 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
                 />
               </div>
             ) : (
-              <div className="w-full h-36 sm:h-44 md:h-48 bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center flex-shrink-0">
-                <div className="text-center text-white">
-                  <div className="text-4xl mb-2">{getCategoryIcon(post.category)}</div>
-                  <p className="text-sm font-medium opacity-90">{post.category}</p>
+              <div className="w-full h-36 sm:h-44 md:h-48 flex items-center justify-center flex-shrink-0 p-4" style={{ backgroundColor: '#2a7fc9' }}>
+                <div className="text-center">
+                  <h3 className="text-white font-bold text-sm sm:text-base md:text-lg leading-tight text-center break-words max-w-full">
+                    {post.title}
+                  </h3>
                 </div>
               </div>
             )}
@@ -113,12 +114,12 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
               </div>
 
               {/* Title */}
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight mb-2 sm:mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 leading-tight mb-2 sm:mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
                 {post.title}
               </h2>
 
               {/* Summary */}
-              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4 sm:mb-6 line-clamp-3 flex-1">
+              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed mb-4 sm:mb-6 line-clamp-3 flex-1">
                 {post.summary}
               </p>
 
@@ -142,10 +143,10 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
                     )}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {post.author.name}
                     </p>
-                    <div className="flex items-center space-x-2 sm:space-x-3 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="flex items-center space-x-2 sm:space-x-3 text-xs text-gray-600 dark:text-gray-300 mt-1">
                       <div className="flex items-center space-x-1">
                         <Calendar className="w-3 h-3" />
                         <span>{formatDate(post.date)}</span>

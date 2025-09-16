@@ -3,42 +3,42 @@
 @tailwind utilities;
 
 :root {
-  /* Storj.io light theme colors */
-  --background: 210 17% 96%; /* hsl(210, 17%, 96%) - Light gray background */
-  --background-secondary: 210 20% 98%; /* Slightly lighter */
+  /* Light mode colors - Based on websitedemos.net reference */
+  --background: 0 0% 96.5%; /* #f6f8fa - Light gray background */
+  --background-secondary: 0 0% 98%; /* Slightly lighter */
   --background-tertiary: 0 0% 100%; /* Pure white */
-  --foreground: 220 54% 8%; /* Very dark navy for text */
-  --foreground-secondary: 220 9% 46%; /* Muted text color */
+  --foreground: 0 0% 0%; /* #000000 - Black headings */
+  --foreground-secondary: 220 9% 46%; /* #758398 - Gray body text */
   --foreground-tertiary: 220 9% 56%; /* Lighter muted text */
 
   /* Semantic colors */
-  --border: 210 20% 92%;
-  --border-hover: 210 20% 88%;
+  --border: 0 0% 92%;
+  --border-hover: 0 0% 88%;
   --card: 0 0% 100%; /* Pure white cards */
-  --card-hover: 210 20% 98%;
-  --muted: 210 17% 96%;
-  --accent: 214 84% 56%; /* Storj blue */
+  --card-hover: 0 0% 98%;
+  --muted: 0 0% 96.5%;
+  --accent: 195 100% 44%; /* #009bdf - Reference blue */
 
-  /* Storj brand system - Light mode */
-  --primary: hsl(214, 84%, 56%); /* Storj blue */
-  --primary-hover: hsl(214, 84%, 50%);
-  --primary-light: hsl(214, 84%, 66%);
-  --primary-lighter: hsl(214, 84%, 76%);
-  --primary-dark: hsl(220, 54%, 23%); /* Storj navy */
+  /* Reference-based color system - Light mode */
+  --primary: #2a7fc9; /* Updated blue */
+  --primary-hover: #0087c7;
+  --primary-light: #1aa6e4;
+  --primary-lighter: #33b1e8;
+  --primary-dark: #007bb3;
 
   /* System colors */
-  --secondary: hsl(220, 54%, 23%); /* Storj navy */
-  --secondary-hover: hsl(220, 54%, 18%);
+  --secondary: #000000; /* Black for headings */
+  --secondary-hover: #333333;
   --success: #10B981;
   --warning: #F59E0B;
   --error: #EF4444;
-  
-  /* Consolidated Gray System - 4 main grays for clarity */
-  --text-primary: 222 84% 5%;
-  --text-secondary: 215 25% 27%;
-  --text-muted: 215 14% 34%;
-  --border-primary: 214 32% 91%;
-  
+
+  /* Text hierarchy - Reference-based */
+  --text-primary: 0 0% 0%; /* Black headings */
+  --text-secondary: 220 9% 46%; /* #758398 - Gray body text */
+  --text-muted: 220 9% 56%; /* Lighter gray */
+  --border-primary: 0 0% 92%;
+
   /* Theme transition properties - Enhanced for smoother switching */
   --theme-transition-duration: 300ms;
   --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,27 +46,28 @@
 }
 
 .light {
-  --background: 0 0% 98%;
-  --background-secondary: 0 0% 95%;
-  --background-tertiary: 0 0% 92%;
-  --foreground: 0 0% 9%;
-  --foreground-secondary: 0 0% 15%;
-  --foreground-tertiary: 0 0% 25%;
-  --border: 0 0% 88%;
-  --border-hover: 0 0% 75%;
-  --card: 0 0% 100%;
-  --card-hover: 0 0% 96%;
-  --muted: 0 0% 93%;
-  
-  /* Light mode text hierarchy */
-  --text-primary: 0 0% 9%;
-  --text-secondary: 0 0% 15%;
-  --text-muted: 0 0% 25%;
-  --border-primary: 0 0% 88%;
-  
-  /* Light mode monochrome accent */
-  --primary: #000000;
-  --primary-hover: #333333;
+  /* Override with reference light mode colors */
+  --background: 0 0% 96.5%; /* #f6f8fa */
+  --background-secondary: 0 0% 98%;
+  --background-tertiary: 0 0% 100%;
+  --foreground: 0 0% 0%; /* Black headings */
+  --foreground-secondary: 220 9% 46%; /* #758398 - Gray body text */
+  --foreground-tertiary: 220 9% 56%;
+  --border: 0 0% 92%;
+  --border-hover: 0 0% 88%;
+  --card: 0 0% 100%; /* Pure white cards */
+  --card-hover: 0 0% 98%;
+  --muted: 0 0% 96.5%;
+
+  /* Light mode text hierarchy - Reference-based */
+  --text-primary: 0 0% 0%; /* Black headings */
+  --text-secondary: 220 9% 46%; /* #758398 - Gray body text */
+  --text-muted: 220 9% 56%;
+  --border-primary: 0 0% 92%;
+
+  /* Light mode accent - Reference blue */
+  --primary: #2a7fc9;
+  --primary-hover: #0087c7;
 }
 
 @layer base {
@@ -80,44 +81,44 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark theme - Inspired by reference design */
-    --background: 0 0% 3%;
-    --background-secondary: 0 0% 6%;
-    --background-tertiary: 0 0% 9%;
-    --foreground: 0 0% 98%;
-    --foreground-secondary: 0 0% 85%;
-    --foreground-tertiary: 0 0% 70%;
-    --border: 0 0% 12%;
-    --border-hover: 0 0% 20%;
-    --card: 0 0% 5%;
-    --card-hover: 0 0% 8%;
-    --muted: 0 0% 7%;
+    /* Dark theme - Professional and impactful */
+    --background: 0 0% 7%; /* Dark gray background */
+    --background-secondary: 0 0% 10%;
+    --background-tertiary: 0 0% 13%;
+    --foreground: 0 0% 98%; /* High contrast white text */
+    --foreground-secondary: 0 0% 80%; /* Light gray text */
+    --foreground-tertiary: 0 0% 65%;
+    --border: 0 0% 15%;
+    --border-hover: 0 0% 25%;
+    --card: 0 0% 9%; /* Dark cards */
+    --card-hover: 0 0% 12%;
+    --muted: 0 0% 8%;
   }
 }
 
 .dark {
-  /* Dark theme - Matching reference design aesthetic */
-  --background: 0 0% 3%;
-  --background-secondary: 0 0% 6%;
-  --background-tertiary: 0 0% 9%;
-  --foreground: 0 0% 98%;
-  --foreground-secondary: 0 0% 85%;
-  --foreground-tertiary: 0 0% 70%;
-  --border: 0 0% 12%;
-  --border-hover: 0 0% 20%;
-  --card: 0 0% 5%;
-  --card-hover: 0 0% 8%;
-  --muted: 0 0% 7%;
-  
-  /* Dark mode text hierarchy - Clean and minimal */
-  --text-primary: 0 0% 98%;
-  --text-secondary: 0 0% 85%;
-  --text-muted: 0 0% 70%;
-  --border-primary: 0 0% 12%;
-  
-  /* Dark mode monochrome accent - Bright and prominent */
-  --primary: #ffffff;
-  --primary-hover: #cccccc;
+  /* Dark theme - Professional and impactful design */
+  --background: 0 0% 7%; /* Dark gray background */
+  --background-secondary: 0 0% 10%;
+  --background-tertiary: 0 0% 13%;
+  --foreground: 0 0% 98%; /* High contrast white text */
+  --foreground-secondary: 0 0% 80%; /* Light gray text */
+  --foreground-tertiary: 0 0% 65%;
+  --border: 0 0% 15%;
+  --border-hover: 0 0% 25%;
+  --card: 0 0% 9%; /* Dark cards */
+  --card-hover: 0 0% 12%;
+  --muted: 0 0% 8%;
+
+  /* Dark mode text hierarchy - High contrast */
+  --text-primary: 0 0% 98%; /* White headings */
+  --text-secondary: 0 0% 80%; /* Light gray body text */
+  --text-muted: 0 0% 65%;
+  --border-primary: 0 0% 15%;
+
+  /* Dark mode accent - Bright blue for contrast */
+  --primary: #1aa6e4; /* Brighter blue for dark mode */
+  --primary-hover: #33b1e8;
 }
 
 body {
@@ -174,58 +175,62 @@ select {
   }
 }
 
-/* Storj.io Button System */
+/* Reference-based Button System - Minimal and Clean */
 .btn-primary {
-  background: hsl(214, 84%, 56%); /* Storj blue */
+  background: var(--primary); /* Reference blue */
   color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
+  border: 2px solid var(--primary);
+  padding: 12px 24px;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   transition: all 200ms ease;
-  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
+  box-shadow: none;
 }
 
 .btn-primary:hover {
-  background: hsl(214, 84%, 50%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
+  background: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-secondary {
-  background: hsl(220, 54%, 23%); /* Storj navy */
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
+  background: transparent;
+  color: hsl(var(--foreground));
+  border: 2px solid hsl(var(--foreground));
+  padding: 12px 24px;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   transition: all 200ms ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .btn-secondary:hover {
-  background: hsl(220, 54%, 18%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
 }
 
 .btn-outline {
   background: transparent;
-  color: hsl(214, 84%, 56%);
-  border: 1px solid hsl(214, 84%, 56%);
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 12px 24px;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   transition: all 200ms ease;
 }
 
 .btn-outline:hover {
-  background: hsl(214, 84%, 56%);
+  background: var(--primary);
   color: white;
-  transform: translateY(-1px);
 }
 
 .text-hierarchy-primary {

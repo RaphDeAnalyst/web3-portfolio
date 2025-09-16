@@ -138,12 +138,11 @@ export function BlogCard({
                 )}
               </>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-xl bg-gradient-to-r from-primary-500 to-primary-400 flex items-center justify-center text-white text-sm font-bold">
-                    {category.slice(0, 3).toUpperCase()}
-                  </div>
-                  <div className="text-sm text-foreground/60">Blog Post</div>
+              <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: '#2a7fc9' }}>
+                <div className="text-center">
+                  <h3 className="text-white font-bold text-sm sm:text-base md:text-lg leading-tight text-center break-words max-w-full">
+                    {title}
+                  </h3>
                 </div>
               </div>
             )}

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { NavbarAvatar } from '@/components/ui/profile-avatar'
 import { NavLink, MobileNavLink } from '@/components/ui/nav-link'
+import { getAllNavigationItems } from '@/lib/color-system'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,12 +15,10 @@ export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
 
+  // Get navigation items from shared color system, plus Home
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'About', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
+    ...getAllNavigationItems()
   ]
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export function Navbar() {
             <div className="flex items-center space-x-1">
               {navItems.map((item) => (
                 <NavLink
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                 >
                   {item.name}
@@ -109,7 +108,7 @@ export function Navbar() {
           <div className="py-4 px-4 space-y-2 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-background/95 dark:backdrop-blur-md mx-4 rounded-b-lg shadow-lg">
             {navItems.map((item) => (
               <MobileNavLink
-                key={item.name}
+                key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
               >

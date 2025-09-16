@@ -26,55 +26,41 @@ const SkillsSection = memo(function SkillsSection() {
   ]
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-gray-50/30 dark:via-gray-900/20 to-background">
+    <section className="py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-background-secondary to-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-storj border border-storj-blue/30 bg-storj-blue/5 mb-6">
-            <span className="w-2 h-2 bg-storj-blue rounded-full mr-3 animate-pulse"></span>
-            <span className="text-xs sm:text-sm font-medium text-storj-blue">Technical Arsenal</span>
+          <div className="inline-flex items-center px-3 sm:px-4 py-2 border border-primary/30 bg-primary/5 mb-6">
+            <span className="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+            <span className="text-xs sm:text-sm font-medium text-primary">Technical Arsenal</span>
           </div>
           <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
-            Skills & <span className="text-gradient">Expertise</span>
+            Skills & <span className="text-primary">Expertise</span>
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-foreground-secondary max-w-3xl mx-auto leading-relaxed">
             A comprehensive toolkit built through hands-on experience in both traditional and blockchain analytics
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {skillCategories.map((category, index) => (
-            <div key={index} className="group storj-card-lg p-4 sm:p-6 lg:p-8">
+            <div key={index} className="group bg-card border border-border hover:border-border-hover p-4 sm:p-6 lg:p-8 rounded-2xl transition-all duration-300">
               <div className="text-center mb-4 sm:mb-6">
-                <h3 className={`text-lg sm:text-xl lg:text-2xl font-semibold mb-2 transition-colors duration-200 leading-tight ${
-                  category.color === 'storj-blue' ? 'text-gray-900 group-hover:text-storj-blue' :
-                  category.color === 'storj-navy' ? 'text-gray-900 group-hover:text-storj-navy' :
-                  'text-gray-900 group-hover:text-gray-600'
-                }`}>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors duration-200 leading-tight">
                   {category.title}
                 </h3>
-                <p className="text-sm sm:text-base text-storj-muted group-hover:text-gray-700 transition-colors duration-200 leading-relaxed">
+                <p className="text-sm sm:text-base text-foreground-secondary transition-colors duration-200 leading-relaxed">
                   {category.description}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-2 justify-center">
                 {category.skills.map((skill, skillIndex) => (
-                  <span key={skillIndex} className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-storj text-xs sm:text-sm font-medium transition-all duration-200 ${
-                    category.color === 'storj-blue' ? 'bg-storj-blue/10 text-storj-blue hover:bg-storj-blue/20' :
-                    category.color === 'storj-navy' ? 'bg-storj-navy/10 text-storj-navy hover:bg-storj-navy/20' :
-                    'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}>
+                  <span key={skillIndex} className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-200 rounded">
                     {skill}
                   </span>
                 ))}
               </div>
 
-              {/* Hover Effect */}
-              <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                category.color === 'primary-500' ? 'bg-primary-500/5' :
-                category.color === 'cyber-500' ? 'bg-cyber-500/5' :
-                'bg-purple-500/5'
-              }`}></div>
             </div>
           ))}
         </div>
@@ -82,7 +68,7 @@ const SkillsSection = memo(function SkillsSection() {
         {/* CTA */}
         <div className="text-center mt-12 sm:mt-16">
           <Link href="/about">
-            <button className="w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 rounded-full border-2 border-accent-blue/30 text-accent-blue font-semibold text-base sm:text-lg hover:bg-accent-blue/10 hover:border-accent-blue transition-all duration-200 backdrop-blur-sm min-h-[48px]">
+            <button className="btn-outline w-full sm:w-auto min-h-[48px]">
               Learn More About My Journey
             </button>
           </Link>
