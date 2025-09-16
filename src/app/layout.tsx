@@ -7,6 +7,7 @@ import { NotificationProvider } from "@/lib/notification-context";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GlobalNotificationContainer } from "@/components/ui/notification";
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -214,6 +215,7 @@ export default function RootLayout({
             </NotificationProvider>
           </Web3Provider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
