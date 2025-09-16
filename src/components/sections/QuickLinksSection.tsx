@@ -94,14 +94,14 @@ export function QuickLinksSection() {
 
                       {/* Animated Progress Bar */}
                       <div className="w-full h-1 bg-white/10 dark:bg-black/10 rounded-full overflow-hidden">
-                        <div className={`h-full bg-gradient-to-r ${item.color} w-0 group-hover:w-full transition-all duration-700 delay-200 rounded-full`}></div>
+                        <div className={`h-full bg-current w-0 group-hover:w-full transition-all duration-700 delay-200 rounded-full ${item.iconColor}`}></div>
                       </div>
                     </div>
 
                     {/* Floating Orbs for extra visual interest */}
                     <div className="absolute inset-0 pointer-events-none">
-                      <div className={`absolute top-1/4 left-1/4 w-2 h-2 bg-gradient-to-br ${item.color} rounded-full opacity-0 group-hover:opacity-60 group-hover:animate-pulse transition-all duration-500 delay-300`}></div>
-                      <div className={`absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-gradient-to-br ${item.color} rounded-full opacity-0 group-hover:opacity-40 group-hover:animate-pulse transition-all duration-500 delay-500`}></div>
+                      <div className={`absolute top-1/4 left-1/4 w-2 h-2 bg-current rounded-full opacity-0 group-hover:opacity-60 group-hover:animate-pulse transition-all duration-500 delay-300 ${item.iconColor}`}></div>
+                      <div className={`absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-current rounded-full opacity-0 group-hover:opacity-40 group-hover:animate-pulse transition-all duration-500 delay-500 ${item.iconColor}`}></div>
                     </div>
                   </div>
                 </TiltedCard>

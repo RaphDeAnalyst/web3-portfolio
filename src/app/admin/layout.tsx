@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { SidebarNavLink } from '@/components/ui/nav-link'
+import { useRouter } from 'next/navigation'
+import AdminDock from '@/components/ui/admin-dock'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -13,8 +12,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
   const router = useRouter()
 
   useEffect(() => {
@@ -44,14 +41,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     localStorage.removeItem('admin-authenticated')
     router.push('/admin')
   }
-
-  const navigation = [
-    { name: 'Dashboard', href: '/admin' },
-    { name: 'Blog Posts', href: '/admin/posts' },
-    { name: 'Projects', href: '/admin/projects' },
-    { name: 'Profile', href: '/admin/profile' },
-    { name: 'Media', href: '/admin/media' },
-  ]
 
   if (!isAuthenticated) {
     return (
@@ -96,75 +85,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-3 rounded-lg bg-background border border-gray-200 dark:border-gray-800 shadow-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
-        >
-          <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-full h-0.5 bg-foreground transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
-          </div>
-        </button>
+      {/* Main Content - Full Width */}
+      <div className="min-h-screen p-4 lg:p-8 pt-20 lg:pt-24 pb-40">
+        {children}
       </div>
-      
-      {/* Mobile overlay */}
-      {isMobileMenuOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40" 
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-      
-      {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 w-64 bg-background border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 z-40 ${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0`}>
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-800">
-            <div className="flex items-center space-x-3">
-              <div>
-                <h2 className="font-bold text-foreground">Admin Panel</h2>
-                <p className="text-xs text-foreground/60">Content Management</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* Navigation */}
-          <div className="flex-1 p-4">
-            <nav className="space-y-2">
-              {navigation.map((item) => (
-                <SidebarNavLink
-                  key={item.name}
-                  href={item.href}
-                >
-                  <span>{item.name}</span>
-                </SidebarNavLink>
-              ))}
-            </nav>
-          </div>
-          
-          {/* Footer */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-sm text-foreground/70 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-colors duration-200"
-            >
-              <span>Logout</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Main Content */}
-      <div className="lg:ml-64">
-        <div className="min-h-screen p-4 lg:p-8 pt-16 lg:pt-8">
-          {children}
-        </div>
-      </div>
+
+      {/* Bottom Dock Navigation */}
+      <AdminDock onLogout={handleLogout} />
     </div>
   )
 }

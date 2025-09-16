@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { ReactNode } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { ReactNode, useState } from 'react'
 import { getColorsForRoute } from '@/lib/color-system'
 
 interface NavLinkProps {
@@ -27,6 +27,8 @@ export function NavLink({
   onClick,
 }: NavLinkProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [isNavigating, setIsNavigating] = useState(false)
 
   // Determine if this link is active
   const isActive = exact
@@ -35,6 +37,30 @@ export function NavLink({
 
   // Get dynamic colors for this route
   const routeColors = getColorsForRoute(href)
+
+  // Handle navigation with loading state and callback
+  const handleNavigation = async (e: React.MouseEvent) => {
+    // Don't handle if already on this page
+    if (isActive) {
+      e.preventDefault()
+      return
+    }
+
+    // Set loading state immediately for visual feedback
+    setIsNavigating(true)
+
+    // Call the onClick callback immediately (for sidebar close, etc.)
+    if (onClick) {
+      onClick()
+    }
+
+    // Small delay to show loading state before navigation
+    setTimeout(() => {
+      router.push(href)
+      // Reset loading state after navigation starts
+      setTimeout(() => setIsNavigating(false), 100)
+    }, 50)
+  }
 
   // Define variant-specific styles with dynamic colors
   const getVariantStyles = () => {
@@ -101,9 +127,18 @@ export function NavLink({
       href={href}
       className={finalClassName}
       style={dynamicStyle}
-      onClick={onClick}
+      onClick={handleNavigation}
     >
-      {children}
+      <div className="flex items-center justify-between w-full">
+        <span className={isNavigating ? 'opacity-70' : ''}>{children}</span>
+
+        {/* Loading indicator */}
+        {isNavigating && (
+          <div className="flex items-center">
+            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60" />
+          </div>
+        )}
+      </div>
 
       {/* Active indicator for default variant - dynamic color */}
       {variant === 'default' && isActive && (

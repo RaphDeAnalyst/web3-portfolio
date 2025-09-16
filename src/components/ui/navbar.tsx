@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
@@ -32,10 +32,17 @@ export function Navbar() {
   // State management
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [tapCount, setTapCount] = useState(0)
+  const [showAdminLink, setShowAdminLink] = useState(false)
 
   // Hooks
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const { theme } = useTheme()
+
+  // Refs for admin access
+  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Refs for focus management
   const hamburgerRef = useRef<HTMLButtonElement>(null)
@@ -55,6 +62,17 @@ export function Navbar() {
   /**
    * Handle scroll effect for navbar background
    */
+  /**
+   * Check for admin URL parameter
+   */
+  useEffect(() => {
+    const adminParam = searchParams?.get('admin') === 'true' || searchParams?.get('dev') === 'true'
+    setShowAdminLink(adminParam)
+  }, [searchParams])
+
+  /**
+   * Handle scroll effect for navbar background
+   */
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -62,6 +80,17 @@ export function Navbar() {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  /**
+   * Cleanup tap timeout on unmount
+   */
+  useEffect(() => {
+    return () => {
+      if (tapTimeoutRef.current) {
+        clearTimeout(tapTimeoutRef.current)
+      }
+    }
   }, [])
 
   /**
@@ -168,6 +197,69 @@ export function Navbar() {
     return pathname.startsWith(href)
   }
 
+  /**
+   * Handle logo tap for admin access (5 taps in 3 seconds)
+   */
+  const handleLogoTap = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    // Only process on mobile devices
+    const isMobile = window.innerWidth < 768
+    const isTouch = 'touches' in e
+
+    console.log('Admin gesture: Event triggered', {
+      isMobile,
+      isTouch,
+      eventType: e.type,
+      currentTapCount: tapCount
+    })
+
+    if (!isMobile) {
+      console.log('Admin gesture: Desktop detected, skipping tap detection')
+      return
+    }
+
+    // Clear existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current)
+    }
+
+    const newCount = tapCount + 1
+    console.log('Admin gesture: Processing tap', { newCount, totalNeeded: 5 })
+    setTapCount(newCount)
+
+    // Check if we've reached 5 taps
+    if (newCount >= 5) {
+      console.log('Admin gesture: 5 taps reached! Navigating to admin')
+
+      // Haptic feedback if available
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate([100, 50, 100, 50, 100])
+        console.log('Admin gesture: Haptic feedback triggered')
+      }
+
+      // Navigate to admin
+      router.push('/admin')
+      setTapCount(0)
+      return
+    }
+
+    // Navigate to home page after a short delay if less than 5 taps
+    setTimeout(() => {
+      if (tapCount < 4) {
+        console.log('Admin gesture: Normal navigation to home')
+        router.push('/')
+      }
+    }, 150)
+
+    // Reset tap count after 3 seconds of no activity
+    tapTimeoutRef.current = setTimeout(() => {
+      console.log('Admin gesture: Timeout reached, resetting tap count')
+      setTapCount(0)
+    }, 3000)
+  }, [tapCount, router])
+
   // Animation variants
   const mobileMenuVariants = {
     closed: {
@@ -219,8 +311,27 @@ export function Navbar() {
             href="/"
             className="flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
             aria-label="Navigate to homepage"
+            onClick={(e) => {
+              // Handle navigation for desktop only
+              if (window.innerWidth >= 768) {
+                // Normal desktop navigation
+                router.push('/')
+              } else {
+                // Mobile - let touch handler manage everything
+                e.preventDefault()
+              }
+            }}
+            onTouchStart={handleLogoTap}
           >
-            <NavbarAvatar />
+            <div className="relative">
+              <NavbarAvatar />
+              {/* Tap counter indicator for mobile admin access */}
+              {tapCount > 0 && tapCount < 5 && (
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse md:hidden">
+                  {tapCount}
+                </div>
+              )}
+            </div>
             <div className="hidden xs:block">
               <div className="text-base sm:text-xl font-semibold text-gray-900 dark:text-white">
                 Data Analytics
@@ -348,6 +459,25 @@ export function Navbar() {
                     </motion.div>
                   )
                 })}
+
+                {/* Admin Link - Only shown when URL parameter is present */}
+                {showAdminLink && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    transition={{ delay: navItems.length * 0.05 }}
+                  >
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                      <Link
+                        href="/admin"
+                        onClick={closeMobileMenu}
+                        className="block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border-l-4 border-red-500"
+                        role="menuitem"
+                      >
+                        🔒 Admin Panel
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           )}
