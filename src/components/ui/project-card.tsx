@@ -119,29 +119,6 @@ export function ProjectCard({
       <div className="relative flex-1 p-6 flex flex-col">
         {/* Header section */}
         <div className="mb-4">
-          {/* Status badges */}
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
-            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400">
-              {category}
-            </span>
-            <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${statusColors[status]}`}>
-              {status}
-            </span>
-            {timeline && (
-              <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
-                {timeline}
-              </span>
-            )}
-          </div>
-
-          {/* Phase badge */}
-          {phase && (
-            <div className="mb-3">
-              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${phaseColors[phase as keyof typeof phaseColors]}`}>
-                {phase}
-              </span>
-            </div>
-          )}
 
           {/* Project title */}
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
@@ -187,26 +164,6 @@ export function ProjectCard({
           </div>
         )}
 
-        {/* Tech stack badges */}
-        {tech && tech.length > 0 && (
-          <div className="mb-6">
-            <div className="flex flex-wrap gap-1.5">
-              {tech.slice(0, 6).map((technology, index) => (
-                <span
-                  key={index}
-                  className="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
-                >
-                  {technology}
-                </span>
-              ))}
-              {tech.length > 6 && (
-                <span className="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-500">
-                  +{tech.length - 6} more
-                </span>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Action buttons */}
         <div className="mt-auto space-y-3">
