@@ -10,8 +10,13 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showAuthForm, setShowAuthForm] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [tapCount, setTapCount] = useState(0)
+  const [lastTapTime, setLastTapTime] = useState(0)
+  const [keySequence, setKeySequence] = useState<string[]>([])
+  const [showProgress, setShowProgress] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -20,7 +25,72 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     if (adminAuth === 'true') {
       setIsAuthenticated(true)
     }
-  }, [])
+
+    // Secret trigger listeners
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Desktop secret: Ctrl+Shift+L
+      if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        e.preventDefault()
+        triggerAuthForm()
+        return
+      }
+
+      // Alternative sequence: A-D-M-I-N
+      const newSequence = [...keySequence, e.key.toUpperCase()]
+      if (newSequence.length > 5) {
+        newSequence.shift()
+      }
+      setKeySequence(newSequence)
+
+      if (newSequence.join('') === 'ADMIN') {
+        triggerAuthForm()
+        setKeySequence([])
+      }
+    }
+
+    const handleTripleTap = (e: TouchEvent | MouseEvent) => {
+      const now = Date.now()
+
+      if (now - lastTapTime < 500) { // Within 500ms
+        setTapCount(prev => {
+          const newCount = prev + 1
+          if (newCount >= 3) {
+            triggerAuthForm()
+            return 0
+          }
+          return newCount
+        })
+      } else {
+        setTapCount(1)
+      }
+
+      setLastTapTime(now)
+    }
+
+    const triggerAuthForm = () => {
+      setShowProgress(true)
+      setTimeout(() => {
+        setShowAuthForm(true)
+        setShowProgress(false)
+      }, 800)
+    }
+
+    // Reset tap count after 2 seconds
+    const resetTapCount = setTimeout(() => {
+      setTapCount(0)
+    }, 2000)
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('click', handleTripleTap)
+    window.addEventListener('touchstart', handleTripleTap)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('click', handleTripleTap)
+      window.removeEventListener('touchstart', handleTripleTap)
+      clearTimeout(resetTapCount)
+    }
+  }, [keySequence, lastTapTime])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,8 +108,28 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    setShowAuthForm(false)
     localStorage.removeItem('admin-authenticated')
     router.push('/admin')
+  }
+
+  // Handle redirect to /lost page or show auth form
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const shouldShowAuth = urlParams.get('auth') === 'true'
+
+    if (!isAuthenticated && !showAuthForm) {
+      if (shouldShowAuth) {
+        setShowAuthForm(true)
+      } else {
+        router.push('/lost')
+      }
+    }
+  }, [isAuthenticated, showAuthForm, router])
+
+  // Show nothing while redirecting
+  if (!isAuthenticated && !showAuthForm) {
+    return null
   }
 
   if (!isAuthenticated) {

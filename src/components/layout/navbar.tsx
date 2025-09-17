@@ -57,6 +57,11 @@ export function Navbar() {
     }
   }
 
+  // Prevent context menu on logo
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault()
+  }
+
   // Handle long press on logo for mobile admin access
   const handleLongPressStart = () => {
     setIsLongPressing(true)
@@ -93,10 +98,11 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className={`flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none relative ${
+            className={`flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none relative touch-none ${
               isLongPressing ? 'scale-110 brightness-110' : ''
             }`}
             onClick={handleLogoClick}
+            onContextMenu={handleContextMenu}
             onTouchStart={handleLongPressStart}
             onTouchEnd={handleLongPressEnd}
             onTouchCancel={handleLongPressEnd}
