@@ -62,7 +62,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
         "Smart Contract Analysis", "DeFi Research", "On-chain Analytics"
       ],
       "sameAs": [
-        `https://github.com/${profile.github || 'RaphDeAnalayst'}`,
+        `https://github.com/${profile.github || 'RaphDeAnalyst'}`,
         `https://twitter.com/${profile.twitter || 'matthew_nnamani'}`,
         `https://linkedin.com/in/${profile.linkedin || 'matthew-nnamani'}`,
         "https://dune.com/raphdeanalyst"

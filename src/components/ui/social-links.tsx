@@ -19,8 +19,8 @@ export function SocialLinks() {
   const socialLinks: SocialLink[] = [
     {
       name: 'GitHub',
-      username: 'RaphDeAnalayst',
-      url: 'https://github.com/RaphDeAnalayst',
+      username: 'RaphDeAnalyst',
+      url: 'https://github.com/RaphDeAnalyst',
       icon: <Github className="w-8 h-8" />,
       color: 'gray-600',
       description: 'Open source projects and contributions'

@@ -7,7 +7,7 @@ export function Footer() {
   const socialLinks = [
     {
       name: 'GitHub',
-      href: 'https://github.com/RaphDeAnalayst',
+      href: 'https://github.com/RaphDeAnalyst',
       icon: <Github className="w-4 h-4" />
     },
     {
