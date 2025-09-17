@@ -12,6 +12,8 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [showAdminHint, setShowAdminHint] = useState(false)
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null)
+  const [isLongPressing, setIsLongPressing] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
 
@@ -45,7 +47,7 @@ export function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [router])
 
-  // Handle Alt+Click on logo for discrete admin access
+  // Handle Alt+Click on logo for discrete admin access (Desktop)
   const handleLogoClick = (event: React.MouseEvent) => {
     if (event.altKey) {
       event.preventDefault()
@@ -55,17 +57,67 @@ export function Navbar() {
     }
   }
 
+  // Handle long press on logo for mobile admin access
+  const handleLongPressStart = () => {
+    setIsLongPressing(true)
+    const timer = setTimeout(() => {
+      setIsLongPressing(false)
+      setShowAdminHint(true)
+      setTimeout(() => setShowAdminHint(false), 2000)
+      router.push('/admin')
+    }, 2000) // 2 second long press
+    setLongPressTimer(timer)
+  }
+
+  const handleLongPressEnd = () => {
+    setIsLongPressing(false)
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      setLongPressTimer(null)
+    }
+  }
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer)
+      }
+    }
+  }, [longPressTimer])
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-white dark:bg-background/95 dark:backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-header dark:shadow-lg dark:shadow-primary-500/10 transition-all duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200 focus:outline-none" onClick={handleLogoClick}>
+          <Link
+            href="/"
+            className={`flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none relative ${
+              isLongPressing ? 'scale-110 brightness-110' : ''
+            }`}
+            onClick={handleLogoClick}
+            onTouchStart={handleLongPressStart}
+            onTouchEnd={handleLongPressEnd}
+            onTouchCancel={handleLongPressEnd}
+            onMouseDown={handleLongPressStart}
+            onMouseUp={handleLongPressEnd}
+            onMouseLeave={handleLongPressEnd}
+          >
             <NavbarAvatar />
             <div className="hidden xs:block">
               <div className="text-base sm:text-xl font-semibold text-storj-navy dark:text-white">Data Analytics</div>
               <div className="text-xs sm:text-xs text-storj-muted dark:text-gray-300 -mt-1 hidden sm:block">Web3 Data Analyst | Turning Blockchain Data into Insights</div>
             </div>
+
+            {/* Long Press Progress Indicator */}
+            {isLongPressing && (
+              <div className="absolute -bottom-1 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div className="h-full bg-primary-600 rounded-full animate-pulse" style={{
+                  animation: 'longPressProgress 2s linear forwards'
+                }}></div>
+              </div>
+            )}
           </Link>
 
           {/* Desktop Navigation with Active States */}
@@ -127,6 +179,15 @@ export function Navbar() {
               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
               <span className="text-sm font-medium">Accessing Admin Panel...</span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Long Press Hint for Mobile */}
+      {isLongPressing && (
+        <div className="fixed top-24 left-4 z-50">
+          <div className="bg-gray-800 text-white px-3 py-2 rounded-lg shadow-lg text-xs">
+            Hold to access admin...
           </div>
         </div>
       )}

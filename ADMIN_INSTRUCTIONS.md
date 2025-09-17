@@ -9,7 +9,18 @@ Quick reference guide for accessing the admin panel on all devices.
 https://matthewraphael.xyz/admin
 ```
 
-### Method 2: URL Parameter 🔗
+### Method 2: Keyboard Shortcut ⌨️
+```
+Ctrl + Shift + A (Windows/Linux)
+Cmd + Shift + A (Mac)
+```
+
+### Method 3: Alt + Click Logo 🖱️
+```
+Hold Alt key + Click logo/avatar
+```
+
+### Method 4: URL Parameter 🔗
 Add to any page:
 ```
 ?admin=true
@@ -24,20 +35,14 @@ or
 
 ## 📱 Mobile Access
 
-### Method 1: 5-Tap Logo Gesture 👆
+### Method 1: Long Press Logo (Recommended) 👆
 1. Open website on mobile browser
-2. **Tap the logo/avatar 5 times quickly** (within 3 seconds)
-3. Look for counter badge (1, 2, 3, 4)
-4. Feel haptic vibration on success
-5. Auto-redirects to admin panel
+2. **Press and hold the logo/avatar for 2 seconds**
+3. Watch the progress bar fill up
+4. See "Hold to access admin..." hint
+5. Auto-redirects to admin panel when complete
 
-### Method 2: URL Parameter Menu 📝
-1. Visit: `https://matthewraphael.xyz/?admin=true`
-2. Tap hamburger menu (☰)
-3. Look for red "🔒 Admin Panel" link at bottom
-4. Tap to access admin
-
-### Method 3: Direct Mobile URL 🔗
+### Method 2: Direct Mobile URL 🔗
 ```
 https://matthewraphael.xyz/admin
 ```
@@ -46,18 +51,16 @@ https://matthewraphael.xyz/admin
 
 ## 📲 PWA (App) Access
 
-### Method 1: App Shortcut (Android) 🚀
+### Method 1: Long Press Logo (Recommended) 👆
+1. Open PWA app
+2. **Press and hold the logo/avatar for 2 seconds**
+3. Watch the progress bar fill up
+4. Auto-redirects to admin panel when complete
+
+### Method 2: App Shortcut (Android) 🚀
 1. **Long press** the PWA app icon
 2. Select **"Admin Panel"** from shortcuts menu
 3. Opens directly to admin panel
-
-### Method 2: Chrome App Menu (Android) ⚙️
-1. Open PWA app
-2. Tap **⋮** (three dots) in corner
-3. Select **"App shortcuts"** → **"Admin Panel"**
-
-### Method 3: Within PWA 📱
-Use any mobile method above while in the PWA
 
 ---
 
@@ -98,20 +101,21 @@ https://matthewraphael.xyz/admin-test
 - Use only for development/testing
 - Remove in production for security
 
-### 5-Tap Gesture (Recommended)
+### Long Press Gesture (Recommended)
 - ✅ Completely discrete
-- ✅ No visible indicators
+- ✅ Visual progress feedback
 - ✅ Production-safe
-- ✅ Mobile-optimized
+- ✅ Cross-platform (mobile + desktop)
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Logo Tap Not Working
-- ✅ Must be on mobile (screen < 768px)
-- ✅ Tap exactly 5 times within 3 seconds
-- ✅ Look for counter badge (1-4)
+### Logo Long Press Not Working
+- ✅ Hold for full 2 seconds (don't release early)
+- ✅ Look for progress bar at bottom of logo
+- ✅ Watch for "Hold to access admin..." hint
+- ✅ Works on all devices (mobile + desktop)
 - ✅ Try refreshing page
 
 ### Admin Link Not Showing
@@ -126,11 +130,11 @@ https://matthewraphael.xyz/admin-test
 - ✅ Check device supports shortcuts (Android)
 - ✅ Try Chrome/Edge browsers
 
-### No Haptic Feedback
-- ✅ Check device supports vibration
-- ✅ Enable vibration in browser settings
-- ✅ Try different mobile browser
-- ✅ Test on different device
+### No Visual Progress Bar
+- ✅ Make sure to hold down continuously
+- ✅ Check if CSS animations are enabled
+- ✅ Try different browser
+- ✅ Clear browser cache
 
 ---
 
@@ -140,9 +144,10 @@ https://matthewraphael.xyz/admin-test
 |--------|---------|--------|-----|-----|---------|
 | Direct URL | ✅ | ✅ | ✅ | ✅ | ✅ |
 | URL Parameter | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 5-Tap Gesture | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Long Press Logo | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Keyboard Shortcut | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Alt + Click Logo | ✅ | ❌ | ❌ | ❌ | ❌ |
 | PWA Shortcut | ❌ | ✅ | ✅ | ⚠️ Limited | ✅ |
-| Haptic Feedback | ❌ | ✅ | ✅ | ✅ | ✅ |
 
 **Legend:**
 - ✅ Full support
@@ -160,7 +165,12 @@ https://matthewraphael.xyz/admin
 
 **Mobile Quick Access:**
 ```
-Tap logo 5 times → Admin panel
+Hold logo for 2 seconds → Admin panel
+```
+
+**Desktop Quick Access:**
+```
+Ctrl/Cmd + Shift + A → Admin panel
 ```
 
 **Parameter Access:**
@@ -181,5 +191,5 @@ https://matthewraphael.xyz/admin-test
 ---
 
 **Created**: September 2025
-**Version**: 1.0
+**Version**: 2.0 - Updated for Long Press Method
 **Author**: Matthew Raphael

@@ -936,3 +936,13 @@ select {
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(102, 102, 102, 0.5);
 }
+
+/* Long Press Progress Animation */
+@keyframes longPressProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
