@@ -318,7 +318,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
+            className="flex items-center space-x-3 group hover:scale-105 transition-all duration-200 focus:outline-none rounded-lg p-1"
             aria-label="Navigate to homepage"
             onClick={(e) => {
               // Handle navigation for desktop only
@@ -360,7 +360,7 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group focus:outline-none ${
                       isActive
                         ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
                         : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -395,7 +395,7 @@ export function Navbar() {
             <button
               ref={hamburgerRef}
               onClick={toggleMobileMenu}
-              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
               aria-label={isOpen ? 'Close mobile menu' : 'Open mobile menu'}
@@ -455,7 +455,7 @@ export function Navbar() {
                         ref={index === 0 ? firstLinkRef : index === navItems.length - 1 ? lastLinkRef : undefined}
                         href={item.href}
                         onClick={closeMobileMenu}
-                        className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                        className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none ${
                           isActive
                             ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-600 dark:border-primary-400'
                             : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -479,7 +479,7 @@ export function Navbar() {
                       <Link
                         href="/admin"
                         onClick={closeMobileMenu}
-                        className="block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border-l-4 border-red-500"
+                        className="block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border-l-4 border-red-500"
                         role="menuitem"
                       >
                         🔒 Admin Panel

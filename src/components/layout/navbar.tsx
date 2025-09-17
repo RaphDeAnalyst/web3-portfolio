@@ -60,7 +60,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200" onClick={handleLogoClick}>
+          <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200 focus:outline-none" onClick={handleLogoClick}>
             <NavbarAvatar />
             <div className="hidden xs:block">
               <div className="text-base sm:text-xl font-semibold text-storj-navy dark:text-white">Data Analytics</div>
@@ -91,7 +91,7 @@ export function Navbar() {
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative p-3 text-storj-navy hover:text-storj-blue transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="relative p-3 text-storj-navy hover:text-storj-blue transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none"
               aria-label="Toggle mobile menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">

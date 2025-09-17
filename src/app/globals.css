@@ -77,6 +77,45 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Remove focus outlines on navigation links and buttons */
+  a:focus,
+  button:focus,
+  [role="button"]:focus,
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Remove focus ring on Next.js Link components */
+  a[data-focus-visible-added],
+  a[data-focus-visible="true"] {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Aggressive focus removal for any element */
+  *:focus,
+  *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Specific navigation focus removal */
+  nav *:focus,
+  nav *:focus-visible,
+  nav a:focus,
+  nav a:focus-visible,
+  nav button:focus,
+  nav button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

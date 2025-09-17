@@ -67,7 +67,7 @@ export function NavLink({
     switch (variant) {
       case 'sidebar':
         return {
-          base: 'flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full',
+          base: 'flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full focus:outline-none',
           active: routeColors
             ? `font-bold border-l-2`
             : 'bg-foreground/10 text-foreground font-bold border-l-2 border-foreground',
@@ -75,7 +75,7 @@ export function NavLink({
         }
       case 'mobile':
         return {
-          base: 'block px-4 py-3 rounded-lg font-medium transition-all duration-200 w-full',
+          base: 'block px-4 py-3 rounded-lg font-medium transition-all duration-200 w-full focus:outline-none',
           active: routeColors
             ? `font-bold border-l-2`
             : 'text-foreground bg-foreground/10 border-l-2 border-foreground font-bold',
@@ -83,7 +83,7 @@ export function NavLink({
         }
       case 'tab':
         return {
-          base: 'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative',
+          base: 'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative focus:outline-none',
           active: routeColors
             ? `font-bold`
             : 'bg-foreground/10 text-foreground font-bold',
@@ -91,7 +91,7 @@ export function NavLink({
         }
       default:
         return {
-          base: 'px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group',
+          base: 'px-4 py-2 rounded-lg font-medium transition-all duration-200 relative group focus:outline-none',
           active: routeColors
             ? `font-bold`
             : 'text-foreground bg-foreground/10 font-bold',
@@ -125,8 +125,8 @@ export function NavLink({
   return (
     <Link
       href={href}
-      className={finalClassName}
-      style={dynamicStyle}
+      className={`${finalClassName} focus:outline-none focus:ring-0`}
+      style={{...dynamicStyle, outline: 'none'}}
       onClick={handleNavigation}
     >
       <div className="flex items-center justify-between w-full">

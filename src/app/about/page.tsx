@@ -104,13 +104,13 @@ export default function About() {
   ]
 
   return (
-    <div className="min-h-screen py-20">
+    <div className="min-h-screen pt-28 pb-20 sm:pt-32">
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-foreground">About Me</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-blue-500">About Me</span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8">

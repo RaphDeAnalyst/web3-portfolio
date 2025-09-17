@@ -110,13 +110,13 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen py-20" style={{ scrollBehavior: 'smooth' }}>
+    <div className="min-h-screen pt-28 pb-20 sm:pt-32" style={{ scrollBehavior: 'smooth' }}>
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/30 bg-primary-500/5 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-primary-500">Portfolio</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-green-500">Portfolio</span>
           </div>
           
           <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
@@ -126,9 +126,9 @@ export default function Portfolio() {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Explore how I apply <span className="text-primary-600 font-medium">traditional analytics skills</span> to
-            <span className="text-primary-500 font-medium"> Web3 insights</span>, bridging the gap between established data methods and
-            <span className="text-primary-600 font-medium"> decentralized ecosystems</span>
+            Explore how I apply <span className="text-foreground font-medium">traditional analytics skills</span> to
+            <span className="text-foreground font-medium"> Web3 insights</span>, bridging the gap between established data methods and
+            <span className="text-foreground font-medium"> decentralized ecosystems</span>
           </p>
         </div>
       </section>

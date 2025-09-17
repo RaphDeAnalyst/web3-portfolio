@@ -8,13 +8,13 @@ import { Send } from 'lucide-react'
 
 export default function Contact() {
   return (
-    <div className="min-h-screen py-16 sm:py-20">
+    <div className="min-h-screen pt-28 pb-16 sm:pt-32 sm:pb-20">
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-foreground">Let's Collaborate</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full backdrop-blur-sm mb-8" style={{ border: '1px solid #8b5cf6', backgroundColor: '#8b5cf630' }}>
+            <span className="w-2 h-2 rounded-full mr-3 animate-pulse" style={{ backgroundColor: '#8b5cf6' }}></span>
+            <span className="text-sm font-medium" style={{ color: '#8b5cf6' }}>Let's Collaborate</span>
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8">

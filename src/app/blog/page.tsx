@@ -163,13 +163,13 @@ export default function Blog() {
   }
 
   return (
-    <div className="min-h-screen py-16 sm:py-20" style={{ scrollBehavior: 'smooth' }}>
+    <div className="min-h-screen pt-28 pb-16 sm:pt-32 sm:pb-20" style={{ scrollBehavior: 'smooth' }}>
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 bg-foreground rounded-full mr-3 animate-pulse"></span>
-            <span className="text-sm font-medium text-foreground">Blog</span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full border border-orange-500/30 bg-orange-500/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 bg-orange-500 rounded-full mr-3 animate-pulse"></span>
+            <span className="text-sm font-medium text-orange-500">Blog</span>
           </div>
 
           <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 leading-tight">
