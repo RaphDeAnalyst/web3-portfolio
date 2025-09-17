@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -15,6 +15,20 @@ import { NavbarAvatar } from '@/components/ui/profile-avatar'
 interface NavItem {
   name: string
   href: string
+}
+
+/**
+ * Component that handles admin link detection using searchParams
+ */
+function AdminLinkDetector({ onAdminDetected }: { onAdminDetected: (show: boolean) => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const adminParam = searchParams?.get('admin') === 'true' || searchParams?.get('dev') === 'true'
+    onAdminDetected(adminParam)
+  }, [searchParams, onAdminDetected])
+
+  return null
 }
 
 /**
@@ -37,7 +51,6 @@ export function Navbar() {
 
   // Hooks
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const router = useRouter()
   const { theme } = useTheme()
 
@@ -60,15 +73,11 @@ export function Navbar() {
   ]
 
   /**
-   * Handle scroll effect for navbar background
+   * Handle admin link detection
    */
-  /**
-   * Check for admin URL parameter
-   */
-  useEffect(() => {
-    const adminParam = searchParams?.get('admin') === 'true' || searchParams?.get('dev') === 'true'
-    setShowAdminLink(adminParam)
-  }, [searchParams])
+  const handleAdminDetected = useCallback((show: boolean) => {
+    setShowAdminLink(show)
+  }, [])
 
   /**
    * Handle scroll effect for navbar background
@@ -483,6 +492,11 @@ export function Navbar() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Admin Link Detection with Suspense Boundary */}
+      <Suspense fallback={null}>
+        <AdminLinkDetector onAdminDetected={handleAdminDetected} />
+      </Suspense>
     </nav>
   )
 }

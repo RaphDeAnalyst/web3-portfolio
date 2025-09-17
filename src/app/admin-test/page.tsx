@@ -1,11 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Copy, Smartphone, Monitor, AppWindow } from 'lucide-react'
 
 export default function AdminTestPage() {
   const [copied, setCopied] = useState<string | null>(null)
+  const [origin, setOrigin] = useState('')
+
+  // Get origin on client side to avoid SSR issues
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin)
+    }
+  }, [])
 
   const copyToClipboard = async (text: string, label: string) => {
     try {
@@ -20,17 +28,17 @@ export default function AdminTestPage() {
   const testUrls = [
     {
       label: 'Home with Admin Parameter',
-      url: `${window.location.origin}/?admin=true`,
+      url: `${origin}/?admin=true`,
       description: 'Shows admin link in mobile menu'
     },
     {
       label: 'About with Dev Parameter',
-      url: `${window.location.origin}/about?dev=true`,
+      url: `${origin}/about?dev=true`,
       description: 'Alternative parameter for admin access'
     },
     {
       label: 'Direct Admin Access',
-      url: `${window.location.origin}/admin`,
+      url: `${origin}/admin`,
       description: 'Direct link to admin panel'
     }
   ]
