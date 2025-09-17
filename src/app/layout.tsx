@@ -8,6 +8,7 @@ import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GlobalNotificationContainer } from "@/components/ui/notification";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -140,6 +141,7 @@ export default function RootLayout({
           </Web3Provider>
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
