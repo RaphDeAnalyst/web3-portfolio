@@ -2,13 +2,15 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://matthewraphael.xyz'
-  
+
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/_next/'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/_next/', '/admin/', '/admin-test/'],
+      }
+    ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
   }

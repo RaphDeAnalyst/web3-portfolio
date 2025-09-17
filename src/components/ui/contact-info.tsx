@@ -146,11 +146,11 @@ export function ContactInfo() {
                     }`}></div>
                   </div>
                   
-                  <p className={`font-medium mb-1 ${
+                  <p className={`font-medium mb-1 break-all text-sm sm:text-base ${
                     method.color === 'primary-500' ? 'text-primary-500' :
                     method.color === 'primary-400' ? 'text-primary-400' :
                     'text-primary-600'
-                  }`}>
+                  }`} style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}>
                     {method.value}
                   </p>
                   

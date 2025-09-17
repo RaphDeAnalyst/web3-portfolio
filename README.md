@@ -1,6 +1,33 @@
 # Web3 Portfolio - Personal Portfolio Website
 
-A modern, responsive portfolio website built with Next.js 14, TypeScript, and Tailwind CSS. Features a comprehensive blog system, project showcase, admin dashboard, and contact functionality.
+<div align="center">
+
+![Web3 Portfolio](https://img.shields.io/badge/Portfolio-Live-brightgreen?style=for-the-badge&logo=vercel)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
+**🌐 [Live Demo](https://matthewraphael.xyz) | 📊 [View Analytics Projects](https://dune.com/raphdeanalyst)**
+
+</div>
+
+A modern, responsive Web3 analytics portfolio showcasing blockchain data analysis, DeFi dashboards, and on-chain insights. Built with Next.js 14, featuring a comprehensive blog system, project showcase, admin dashboard, and professional contact functionality.
+
+## 🎯 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/RaphDeAnalyst/web3-portfolio.git
+cd web3-portfolio
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio locally.
 
 ## 🚀 Features
 
