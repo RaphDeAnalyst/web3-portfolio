@@ -16,7 +16,8 @@
       "WebFetch(domain:www.storj.io)",
       "WebFetch(domain:websitedemos.net)",
       "WebFetch(domain:preview.colorlib.com)",
-      "WebFetch(domain:technext.github.io)"
+      "WebFetch(domain:technext.github.io)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": [],

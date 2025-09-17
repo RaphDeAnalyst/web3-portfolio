@@ -101,8 +101,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Standard favicon - Google's preferred format */}
+        {/* Primary favicon - ICO format for best compatibility */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="icon" href="/favicon_dark-32x32.png" type="image/png" sizes="32x32" />
         <link rel="icon" href="/favicon_dark-16x16.png" type="image/png" sizes="16x16" />
         <link rel="apple-touch-icon" href="/apple-touch-icon-dark.png" sizes="180x180" />
