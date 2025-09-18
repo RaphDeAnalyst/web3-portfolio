@@ -22,8 +22,23 @@ export function ProfileCard() {
         setLoading(false)
       }
     }
-    
-    loadProfile()
+
+    // Use requestIdleCallback to defer profile loading
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleCallback = window.requestIdleCallback(() => {
+        loadProfile()
+      }, { timeout: 2000 })
+
+      return () => {
+        if (idleCallback) {
+          window.cancelIdleCallback(idleCallback)
+        }
+      }
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      const timeoutId = setTimeout(loadProfile, 100)
+      return () => clearTimeout(timeoutId)
+    }
   }, [])
 
   const aboutInfo = {
@@ -43,7 +58,7 @@ export function ProfileCard() {
     const loadSocialLinks = async () => {
       try {
         const links = await profileService.getSocialLinks()
-        const formattedLinks = links.map(link => {
+        const formattedLinks = links.map((link: any) => {
           let color = 'gray-600'
           let icon = null
 
@@ -94,8 +109,23 @@ export function ProfileCard() {
         logger.error('Error loading social links:', error)
       }
     }
-    
-    loadSocialLinks()
+
+    // Use requestIdleCallback to defer social links loading
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleCallback = window.requestIdleCallback(() => {
+        loadSocialLinks()
+      }, { timeout: 3000 })
+
+      return () => {
+        if (idleCallback) {
+          window.cancelIdleCallback(idleCallback)
+        }
+      }
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      const timeoutId = setTimeout(loadSocialLinks, 200)
+      return () => clearTimeout(timeoutId)
+    }
   }, [])
 
   return (
@@ -121,6 +151,7 @@ export function ProfileCard() {
                   <img
                     src={profile.avatar}
                     alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst specializing in blockchain analytics, DeFi research, and on-chain data analysis`}
+                    loading="lazy"
                     className="w-40 h-40 rounded-full object-cover shadow-2xl shadow-primary-500/30 border-4 border-gradient-to-r border-transparent bg-gradient-to-r from-primary-500 to-cyber-500"
                   />
                 ) : (

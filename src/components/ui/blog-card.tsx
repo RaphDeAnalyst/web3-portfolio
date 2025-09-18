@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, memo } from 'react'
 import Link from 'next/link'
 import { profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
@@ -27,7 +27,7 @@ interface BlogCardProps {
   content?: string
 }
 
-export function BlogCard({
+export const BlogCard = memo(function BlogCard({
   title,
   summary,
   date,
@@ -130,6 +130,7 @@ export function BlogCard({
                 <img
                   src={featuredImage || image}
                   alt={`${title} - Web3 ${category} article by Matthew Raphael covering ${tags.slice(0, 3).join(', ')} blockchain analytics topics`}
+                  loading="lazy"
                   className={`w-full h-full object-contain transition-all duration-300 cursor-pointer ${
                     imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                   } ${isHovered ? 'scale-105' : ''}`}
@@ -200,6 +201,7 @@ export function BlogCard({
                 <img
                   src={profileData.avatar}
                   alt={`${author.name} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
+                  loading="lazy"
                   className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
                 />
               ) : (
@@ -265,4 +267,4 @@ export function BlogCard({
     )}
   </Fragment>
   )
-}
+})

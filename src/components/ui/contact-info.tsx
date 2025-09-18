@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
-import type { ProfileData } from '@/lib/profile-service-supabase'
+import type { ProfileData } from '@/types/shared'
 import { ContactAvatar } from '@/components/ui/profile-avatar'
 import { Mail, Calendar, Globe, Zap, CheckCircle } from 'lucide-react'
 import { logger } from '@/lib/logger'

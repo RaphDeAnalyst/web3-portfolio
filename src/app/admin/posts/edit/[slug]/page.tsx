@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
 import { blogService } from '@/lib/service-switcher'
-import { BlogPostData } from '@/lib/blog-service'
+import { BlogPostData } from '@/types/shared'
 import { FileText } from 'lucide-react'
 import { logger } from '@/lib/logger'
 

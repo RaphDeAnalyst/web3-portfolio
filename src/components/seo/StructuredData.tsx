@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { logger } from '@/lib/logger'
 import { profileService } from '@/lib/service-switcher'
-import type { ProfileData } from '@/lib/profile-service-supabase'
+import type { ProfileData } from '@/types/shared'
 
 interface StructuredDataProps {
   type?: 'person' | 'website' | 'project' | 'blog'

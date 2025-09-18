@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
-import { BlogPostData } from '@/lib/blog-service'
+import { BlogPostData } from '@/types/shared'
 import { Edit, Eye, RefreshCw, Rocket, FileText, Image, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
 import { logger } from '@/lib/logger'
 

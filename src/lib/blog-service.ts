@@ -1,30 +1,7 @@
 import { logger } from './logger'
+import { BlogPostData } from '@/types/shared'
 // Blog Post Management Service
 // Handles CRUD operations for blog posts using localStorage for persistence
-
-export interface BlogPostData {
-  id?: string
-  title: string
-  slug: string
-  summary: string
-  content: string
-  category: string
-  tags: string[]
-  author: {
-    name: string
-    avatar?: string
-  }
-  date: string
-  readTime: string
-  status: 'draft' | 'published'
-  featured?: boolean
-  featuredImage?: string
-  views?: number
-  lastViewedAt?: string
-  createdAt?: string
-  updatedAt?: string
-  origin?: 'default' | 'user' // Track whether post is default or user-created
-}
 
 class BlogService {
   private readonly STORAGE_KEY = 'blog_posts'

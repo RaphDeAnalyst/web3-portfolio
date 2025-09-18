@@ -19,7 +19,8 @@
       "WebFetch(domain:technext.github.io)",
       "Bash(rm:*)",
       "Bash(npx eslint:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npx @next/bundle-analyzer:*)"
     ],
     "deny": [],
     "ask": [],

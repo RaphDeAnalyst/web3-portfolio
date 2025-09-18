@@ -2,8 +2,14 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import AdminDock from '@/components/ui/admin-dock'
+import dynamic from 'next/dynamic'
 import { logger } from '@/lib/logger'
+
+// Lazy load AdminDock for better performance
+const AdminDock = dynamic(() => import('@/components/ui/admin-dock'), {
+  loading: () => <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-96 h-16 bg-card rounded-full animate-pulse" />,
+  ssr: false
+})
 
 interface AdminLayoutProps {
   children: React.ReactNode

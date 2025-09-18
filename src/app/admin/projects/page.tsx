@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
-import type { Project as ServiceProject } from '@/lib/project-service-supabase'
+import type { Project as ServiceProject } from '@/types/shared'
 import { useNotification } from '@/lib/notification-context'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import {

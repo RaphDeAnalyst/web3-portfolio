@@ -98,10 +98,7 @@ export function ThemeProvider({
     body.classList.add(themeToApply)
 
     // Update CSS custom properties for smooth transitions
-    root.style.setProperty('--theme-transition-duration', '200ms')
-    root.style.setProperty('--theme-transition-timing', 'cubic-bezier(0.4, 0, 0.2, 1)')
-
-    // Set color scheme for browser chrome
+    root.style.setProperty('--theme', themeToApply)
     root.style.colorScheme = themeToApply
   }, [effectiveTheme, mounted, disableTransitionOnChange])
 

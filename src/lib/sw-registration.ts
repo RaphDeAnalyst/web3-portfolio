@@ -200,22 +200,46 @@ export const serviceWorkerManager: ServiceWorkerManager = new ServiceWorkerManag
 
 // Auto-register when module is imported (only in browser)
 if (typeof window !== 'undefined') {
-  // Wait for page load to avoid blocking initial render
-  window.addEventListener('load', () => {
-    serviceWorkerManager.register()
-  })
+  // Use requestIdleCallback for non-blocking registration
+  const registerWhenIdle = () => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => {
+        serviceWorkerManager.register()
+      }, { timeout: 2000 })
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        serviceWorkerManager.register()
+      }, 100)
+    }
+  }
+
+  // Wait for page load then register during idle time
+  if (document.readyState === 'complete') {
+    registerWhenIdle()
+  } else {
+    window.addEventListener('load', registerWhenIdle)
+  }
 }
 
 // Listen for app updates
 if (typeof window !== 'undefined') {
   window.addEventListener('sw-update-available', (event: any) => {
-    // You can customize this notification
-    const updateConfirmed = window.confirm(
-      'A new version of the app is available. Would you like to refresh to get the latest features?'
-    )
+    // Use requestIdleCallback to avoid blocking user interactions
+    const handleUpdate = () => {
+      const updateConfirmed = window.confirm(
+        'A new version of the app is available. Would you like to refresh to get the latest features?'
+      )
 
-    if (updateConfirmed && serviceWorkerManager instanceof ServiceWorkerManagerImpl) {
-      ;(serviceWorkerManager as any).activateWaitingWorker()
+      if (updateConfirmed && serviceWorkerManager instanceof ServiceWorkerManagerImpl) {
+        ;(serviceWorkerManager as any).activateWaitingWorker()
+      }
+    }
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(handleUpdate, { timeout: 1000 })
+    } else {
+      setTimeout(handleUpdate, 50)
     }
   })
 }

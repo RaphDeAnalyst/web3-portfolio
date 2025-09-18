@@ -3,18 +3,20 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import {
-  FileText,
-  Rocket,
-  Star,
-  Award,
-  RefreshCw,
-  Plus,
-  Upload,
-  Calendar,
-  User
-} from 'lucide-react'
 import { logger } from '@/lib/logger'
+
+// Lazy load icons for better performance
+const Icons = {
+  FileText: dynamic(() => import('lucide-react').then(mod => ({ default: mod.FileText })), { ssr: false }),
+  Rocket: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Rocket })), { ssr: false }),
+  Star: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Star })), { ssr: false }),
+  Award: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Award })), { ssr: false }),
+  RefreshCw: dynamic(() => import('lucide-react').then(mod => ({ default: mod.RefreshCw })), { ssr: false }),
+  Plus: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Plus })), { ssr: false }),
+  Upload: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Upload })), { ssr: false }),
+  Calendar: dynamic(() => import('lucide-react').then(mod => ({ default: mod.Calendar })), { ssr: false }),
+  User: dynamic(() => import('lucide-react').then(mod => ({ default: mod.User })), { ssr: false })
+}
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -38,8 +40,8 @@ export default function AdminDashboard() {
         ])
         
         // Count featured items
-        const featuredPosts = blogPosts.filter(post => post.featured).length
-        const featuredProjects = projects.filter(project => project.featured).length
+        const featuredPosts = blogPosts.filter((post: any) => post.featured).length
+        const featuredProjects = projects.filter((project: any) => project.featured).length
         
         setStats({
           totalPosts: blogPosts.length,
@@ -69,8 +71,8 @@ export default function AdminDashboard() {
       ])
       
       // Count featured items
-      const featuredPosts = blogPosts.filter(post => post.featured).length
-      const featuredProjects = projects.filter(project => project.featured).length
+      const featuredPosts = blogPosts.filter((post: any) => post.featured).length
+      const featuredProjects = projects.filter((project: any) => project.featured).length
       
       setStats({
         totalPosts: blogPosts.length,
@@ -90,7 +92,7 @@ export default function AdminDashboard() {
     {
       title: 'Total Blog Posts',
       value: stats.totalPosts,
-      icon: FileText,
+      icon: Icons.FileText,
       color: 'bg-blue-500',
       change: 'published content',
       link: '/admin/posts'
@@ -98,7 +100,7 @@ export default function AdminDashboard() {
     {
       title: 'Total Projects',
       value: stats.totalProjects,
-      icon: Rocket,
+      icon: Icons.Rocket,
       color: 'bg-green-500',
       change: 'portfolio items',
       link: '/admin/projects'
@@ -106,7 +108,7 @@ export default function AdminDashboard() {
     {
       title: 'Featured Posts',
       value: stats.featuredPosts,
-      icon: Star,
+      icon: Icons.Star,
       color: 'bg-purple-500',
       change: 'featured on homepage',
       link: '/admin/posts'
@@ -114,7 +116,7 @@ export default function AdminDashboard() {
     {
       title: 'Featured Projects',
       value: stats.featuredProjects,
-      icon: Award,
+      icon: Icons.Award,
       color: 'bg-yellow-500',
       change: 'highlighted work',
       link: '/admin/projects'
@@ -141,7 +143,7 @@ export default function AdminDashboard() {
             disabled={loading}
             className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-foreground bg-background hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px]"
           >
-            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <Icons.RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Refreshing...' : 'Refresh Stats'}
           </button>
         </div>
@@ -178,7 +180,7 @@ export default function AdminDashboard() {
           <Link href="/admin/posts/new">
             <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-cyber-500 hover:bg-cyber-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-cyber-500/10 flex items-center justify-center text-cyber-500 group-hover:bg-cyber-500/20 transition-colors">
-                <Plus size={20} />
+                <Icons.Plus size={20} />
               </div>
               <div className="text-left">
                 <div className="font-medium text-foreground">Create New Post</div>
@@ -190,7 +192,7 @@ export default function AdminDashboard() {
           <Link href="/admin/projects/new">
             <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-accent-blue hover:bg-accent-blue/5 transition-all duration-200 group shadow-lg shadow-accent-blue/20 min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent-blue/10 flex items-center justify-center text-accent-blue group-hover:bg-accent-blue/20 transition-colors">
-                <Rocket size={20} />
+                <Icons.Rocket size={20} />
               </div>
               <div className="text-left">
                 <div className="font-medium text-foreground">Add New Project</div>
@@ -202,7 +204,7 @@ export default function AdminDashboard() {
           <Link href="/admin/media">
             <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-purple-500 hover:bg-purple-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500/20 transition-colors">
-                <Upload size={20} />
+                <Icons.Upload size={20} />
               </div>
               <div className="text-left">
                 <div className="font-medium text-foreground">Upload Media</div>
@@ -214,7 +216,7 @@ export default function AdminDashboard() {
           <Link href="/admin/availability">
             <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500/20 transition-colors">
-                <Calendar size={20} />
+                <Icons.Calendar size={20} />
               </div>
               <div className="text-left">
                 <div className="font-medium text-foreground">Manage Availability</div>
@@ -226,7 +228,7 @@ export default function AdminDashboard() {
           <Link href="/admin/profile">
             <button className="w-full flex items-center space-x-3 p-3 sm:p-4 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-green-500 hover:bg-green-500/5 transition-colors group min-h-[64px]">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/20 transition-colors">
-                <User size={20} />
+                <Icons.User size={20} />
               </div>
               <div className="text-left">
                 <div className="font-medium text-foreground">Manage Profile</div>

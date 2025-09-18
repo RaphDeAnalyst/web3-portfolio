@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import { memo } from 'react'
 import TiltedCard from '@/components/ui/TiltedCard'
 import { ArrowUpRight } from 'lucide-react'
 import { getAllNavigationItems } from '@/lib/color-system'
 
-export function QuickLinksSection() {
+export const QuickLinksSection = memo(function QuickLinksSection() {
   // Get navigation items from shared color system
   const quickLinks = getAllNavigationItems().map(item => ({
     title: item.name,
@@ -128,4 +129,4 @@ export function QuickLinksSection() {
       </div>
     </section>
   )
-}
+})

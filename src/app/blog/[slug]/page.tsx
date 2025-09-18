@@ -25,7 +25,7 @@ export async function generateMetadata(
     const title = `${post.title} | Matthew Raphael Web3 Data Analytics Blog`
     const description = post.summary || `${post.title} - Web3 data analytics insights and blockchain research by Matthew Raphael`
     const keywords = [
-      ...post.tags.map(tag => `${tag} Web3`),
+      ...post.tags.map((tag: string) => `${tag} Web3`),
       `${post.category} Analytics`,
       'Matthew Raphael Blog',
       'Web3 Data Analysis',
@@ -192,7 +192,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <section className="px-4 sm:px-6 lg:px-8 mb-16">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap gap-3">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: string) => (
                 <Link
                   key={tag}
                   href={`/blog?search=${tag.toLowerCase()}`}
