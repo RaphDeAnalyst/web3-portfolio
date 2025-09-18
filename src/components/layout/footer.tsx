@@ -94,9 +94,13 @@ export function Footer() {
               <span className="text-[0.8rem] text-[#9CA3AF] group-hover:text-[#6B7280] transition-colors duration-200">Curious?</span>
             </button>
           ) : (
-            <div className="inline-flex items-center space-x-2 text-[0.8rem] animate-in fade-in slide-in-from-bottom duration-700">
+            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2 text-[0.8rem] animate-in fade-in slide-in-from-bottom duration-700">
               <span className="text-xl animate-bounce">🐣</span>
-              <span className="text-[#6B7280] font-medium">Built smarter, not harder. Thanks Claude ✨</span>
+              <div className="text-center sm:text-left">
+                <span className="text-[#6B7280] font-medium">This website was built smarter, not harder.</span>
+                <br className="sm:hidden" />
+                <span className="text-[#6B7280] font-medium sm:ml-1">Thanks Claude ✨</span>
+              </div>
             </div>
           )}
         </div>
