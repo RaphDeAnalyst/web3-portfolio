@@ -5,6 +5,7 @@ import { logger } from '@/lib/logger'
 import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
+import { StructuredData } from '@/components/seo/StructuredData'
 import { profileService } from '@/lib/service-switcher'
 import { BarChart3, Link2, TrendingUp } from 'lucide-react'
 
@@ -104,7 +105,33 @@ export default function About() {
     }
   ]
 
+  const faqData = [
+    {
+      question: "What is your background in data analytics?",
+      answer: "I have 3+ years of experience in traditional data analytics with expertise in Python, SQL, Excel, and data visualization tools like Power BI and Tableau. I've worked on various projects involving database design, ETL processes, and statistical modeling."
+    },
+    {
+      question: "How did you transition into Web3 analytics?",
+      answer: "After mastering traditional analytics, I began studying blockchain fundamentals, DeFi mechanics, and tokenomics in 2024. I've since built multiple Dune Analytics dashboards and am actively analyzing on-chain data for DeFi protocols and wallet behaviors."
+    },
+    {
+      question: "What Web3 analytics tools do you use?",
+      answer: "I primarily use Dune Analytics for on-chain data analysis, along with Flipside Crypto for additional blockchain insights. I combine these with my Python and SQL skills to create comprehensive analytics solutions for Web3 projects."
+    },
+    {
+      question: "Do you offer consultation services?",
+      answer: "Yes, I provide Web3 data analytics consultation, custom dashboard development using Dune Analytics, DeFi protocol analysis, and blockchain data insights. I work with both individual projects and organizations looking to understand their on-chain metrics."
+    },
+    {
+      question: "What types of projects do you work on?",
+      answer: "I specialize in DeFi protocol analysis, wallet behavior tracking, token economics research, NFT market analytics, and creating data-driven insights for Web3 projects. Each project includes custom dashboards and detailed analytical reports."
+    }
+  ]
+
   return (
+    <>
+      <StructuredData type="faq" data={faqData} />
+      <StructuredData type="localbusiness" />
     <div className="min-h-screen pt-28 pb-20 sm:pt-32">
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-20">
@@ -282,5 +309,6 @@ export default function About() {
         </div>
       </section>
     </div>
+    </>
   )
 }

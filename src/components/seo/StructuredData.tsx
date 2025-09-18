@@ -6,7 +6,7 @@ import { profileService } from '@/lib/service-switcher'
 import type { ProfileData } from '@/types/shared'
 
 interface StructuredDataProps {
-  type?: 'person' | 'website' | 'project' | 'blog'
+  type?: 'person' | 'website' | 'project' | 'blog' | 'faq' | 'localbusiness'
   data?: any
 }
 
@@ -130,6 +130,9 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
   const generateBlogSchema = () => {
     if (!data) return null
 
+    const wordCount = data.content?.split(/\s+/).filter((word: string) => word.length > 0).length || 500
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200)) // Average 200 words per minute
+
     return {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -153,7 +156,86 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       },
       "keywords": data.tags?.join(', ') || "Web3, Blockchain Analytics, DeFi",
       "articleSection": data.category || "Web3 Analytics",
-      "wordCount": data.content?.split(' ').length || 500
+      "wordCount": wordCount,
+      "timeRequired": `PT${readingTime}M`,
+      "inLanguage": "en-US",
+      "isAccessibleForFree": true
+    }
+  }
+
+  const generateFAQSchema = () => {
+    if (!data || !Array.isArray(data)) return null
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": data.map((faq: { question: string; answer: string }) => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
+  }
+
+  const generateLocalBusinessSchema = () => {
+    if (!profile) return null
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Matthew Raphael - Web3 Data Analytics",
+      "alternateName": "RaphDeAnalyst",
+      "description": "Professional Web3 data analytics consultation and blockchain dashboard development services.",
+      "url": "https://matthewraphael.xyz",
+      "telephone": profile.phone || "+1-XXX-XXX-XXXX",
+      "email": profile.email || "matthewraphael@matthewraphael.xyz",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": profile.location || "Remote",
+        "addressCountry": "US"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Matthew Raphael"
+      },
+      "serviceArea": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Web3 Analytics Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Blockchain Data Analysis",
+              "description": "Custom blockchain analytics and on-chain data insights"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "DeFi Protocol Analysis",
+              "description": "In-depth analysis of DeFi protocols and smart contracts"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Dune Analytics Dashboards",
+              "description": "Custom dashboard development using Dune Analytics"
+            }
+          }
+        ]
+      },
+      "priceRange": "$$"
     }
   }
 
@@ -167,6 +249,10 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
         return generateProjectSchema()
       case 'blog':
         return generateBlogSchema()
+      case 'faq':
+        return generateFAQSchema()
+      case 'localbusiness':
+        return generateLocalBusinessSchema()
       default:
         return null
     }

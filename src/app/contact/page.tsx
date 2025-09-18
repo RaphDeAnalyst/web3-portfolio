@@ -1,13 +1,17 @@
 'use client'
 
+import Link from 'next/link'
 import { ContactForm } from '@/components/ui/contact-form'
 import { ContactInfo } from '@/components/ui/contact-info'
 import { SocialLinks } from '@/components/ui/social-links'
 import { AvailabilityCalendar } from '@/components/ui/availability-calendar'
+import { StructuredData } from '@/components/seo/StructuredData'
 import { Send } from 'lucide-react'
 
 export default function Contact() {
   return (
+    <>
+      <StructuredData type="localbusiness" />
     <div className="min-h-screen pt-28 pb-16 sm:pt-32 sm:pb-20">
       {/* Hero Section */}
       <section className="px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 lg:mb-20">
@@ -153,8 +157,14 @@ export default function Contact() {
             </h2>
             
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-              Ready to transform your Web3 idea into reality? I'm here to help you navigate 
+              Ready to transform your Web3 idea into reality? I'm here to help you navigate
               the technical challenges and build something extraordinary.
+              <Link href="/about" className="text-primary-600 hover:text-primary-700 underline">
+                Learn more about my background
+              </Link> or
+              <Link href="/portfolio" className="text-primary-600 hover:text-primary-700 underline">
+                view my recent projects
+              </Link>.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -175,5 +185,6 @@ export default function Contact() {
         </div>
       </section>
     </div>
+    </>
   )
 }
