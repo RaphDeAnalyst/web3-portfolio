@@ -110,7 +110,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     setIsAuthenticated(false)
     setShowAuthForm(false)
     localStorage.removeItem('admin-authenticated')
-    router.push('/admin')
+    router.push('/')
   }
 
   // Handle redirect to /lost page or show auth form
@@ -118,18 +118,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const urlParams = new URLSearchParams(window.location.search)
     const shouldShowAuth = urlParams.get('auth') === 'true'
 
-    if (!isAuthenticated && !showAuthForm) {
+    if (!isAuthenticated) {
       if (shouldShowAuth) {
         setShowAuthForm(true)
-      } else {
-        router.push('/lost')
+      } else if (!showAuthForm) {
+        // Immediate redirect to prevent flash
+        router.replace('/lost')
+        return
       }
     }
   }, [isAuthenticated, showAuthForm, router])
 
-  // Show nothing while redirecting
+  // Show nothing while redirecting - prevent any flash
   if (!isAuthenticated && !showAuthForm) {
-    return null
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      </div>
+    )
   }
 
   if (!isAuthenticated) {
