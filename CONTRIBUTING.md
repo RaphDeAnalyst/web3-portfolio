@@ -79,7 +79,19 @@ Documentation improvements are always appreciated:
    ```bash
    # Copy the example environment file
    cp .env.example .env.local
-   # Edit .env.local with your values
+   # Edit .env.local with your secure values
+   ```
+
+   **IMPORTANT**: For security, you must set these environment variables:
+   ```bash
+   # .env.local
+   JWT_SECRET=your-super-secure-random-jwt-secret-key-minimum-32-characters
+   ADMIN_PASSWORD=your-secure-admin-password
+   ```
+
+   Generate a strong JWT secret (you can use online generators or this command):
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    ```
 
 4. **Start development server**
@@ -89,6 +101,15 @@ Documentation improvements are always appreciated:
 
 5. **Open in browser**
    Visit `http://localhost:3000`
+
+## 🛠 Admin Dashboard
+
+This portfolio includes an admin dashboard for content management. Admin access is restricted and protected by authentication.
+
+**For Contributors:**
+- Admin features are secured and require authorization
+- Contact the repository owner at matthewraphael@matthewraphael.xyz for access if you need to work on admin-related features
+- All admin routes are protected by authentication middleware
 
 ## 🔄 Development Workflow
 

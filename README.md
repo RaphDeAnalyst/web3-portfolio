@@ -190,6 +190,21 @@ Set up your Supabase project and update environment variables:
 - **Input Validation** on forms
 - **Safe External Links** with proper rel attributes
 
+## 🛠 Developer Features
+
+### Admin Dashboard
+This portfolio includes a secure admin dashboard for content management:
+
+- **Blog Management** - Create, edit, and publish blog posts
+- **Project Management** - Add and manage portfolio projects
+- **Media Management** - Upload and organize media files
+- **Profile Management** - Update personal information and settings
+
+**For Authorized Users:**
+- Admin dashboard provides full content management capabilities
+- Authentication system protects administrative functions
+- Contact the repository owner for access credentials if you're a legitimate contributor
+
 ## 📝 SEO Features
 
 - **Meta Tags** - Comprehensive Open Graph and Twitter cards

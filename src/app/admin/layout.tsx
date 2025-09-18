@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import AdminDock from '@/components/ui/admin-dock'
 
 interface AdminLayoutProps {
@@ -10,127 +10,98 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [showAuthForm, setShowAuthForm] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [tapCount, setTapCount] = useState(0)
-  const [lastTapTime, setLastTapTime] = useState(0)
-  const [keySequence, setKeySequence] = useState<string[]>([])
-  const [showProgress, setShowProgress] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Check if admin is already authenticated
-    const adminAuth = localStorage.getItem('admin-authenticated')
-    if (adminAuth === 'true') {
-      setIsAuthenticated(true)
-    }
-
-    // Secret trigger listeners
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Desktop secret: Ctrl+Shift+L
-      if (e.ctrlKey && e.shiftKey && e.key === 'L') {
-        e.preventDefault()
-        triggerAuthForm()
-        return
-      }
-
-      // Alternative sequence: A-D-M-I-N
-      const newSequence = [...keySequence, e.key.toUpperCase()]
-      if (newSequence.length > 5) {
-        newSequence.shift()
-      }
-      setKeySequence(newSequence)
-
-      if (newSequence.join('') === 'ADMIN') {
-        triggerAuthForm()
-        setKeySequence([])
-      }
-    }
-
-    const handleTripleTap = (e: TouchEvent | MouseEvent) => {
-      const now = Date.now()
-
-      if (now - lastTapTime < 500) { // Within 500ms
-        setTapCount(prev => {
-          const newCount = prev + 1
-          if (newCount >= 3) {
-            triggerAuthForm()
-            return 0
-          }
-          return newCount
+    const checkAuthentication = async () => {
+      try {
+        const response = await fetch('/api/admin/auth', {
+          method: 'GET',
+          credentials: 'include'
         })
-      } else {
-        setTapCount(1)
+
+        if (response.ok) {
+          const data = await response.json()
+          setIsAuthenticated(data.authenticated)
+        } else {
+          setIsAuthenticated(false)
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error)
+        setIsAuthenticated(false)
+      } finally {
+        setIsLoading(false)
       }
-
-      setLastTapTime(now)
     }
 
-    const triggerAuthForm = () => {
-      setShowProgress(true)
-      setTimeout(() => {
-        setShowAuthForm(true)
-        setShowProgress(false)
-      }, 800)
-    }
+    checkAuthentication()
+  }, [])
 
-    // Reset tap count after 2 seconds
-    const resetTapCount = setTimeout(() => {
-      setTapCount(0)
-    }, 2000)
-
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('click', handleTripleTap)
-    window.addEventListener('touchstart', handleTripleTap)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('click', handleTripleTap)
-      window.removeEventListener('touchstart', handleTripleTap)
-      clearTimeout(resetTapCount)
-    }
-  }, [keySequence, lastTapTime])
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Get admin password from environment variable with fallback
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123'
+    setIsSubmitting(true)
+    setError('')
 
-    if (password === adminPassword) {
-      setIsAuthenticated(true)
-      localStorage.setItem('admin-authenticated', 'true')
-      setError('')
-    } else {
-      setError('Invalid password')
+    try {
+      const response = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ password }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setIsAuthenticated(true)
+        setShowAuthForm(false)
+        setPassword('')
+        // Redirect to admin dashboard
+        router.push('/admin')
+      } else {
+        setError(data.error || 'Authentication failed')
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('Network error. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/auth', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+
     setIsAuthenticated(false)
     setShowAuthForm(false)
-    localStorage.removeItem('admin-authenticated')
     router.push('/')
   }
 
-  // Handle redirect to /lost page or show auth form
+  // Handle authentication form display
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const shouldShowAuth = urlParams.get('auth') === 'true'
-
-    if (!isAuthenticated) {
-      if (shouldShowAuth) {
-        setShowAuthForm(true)
-      } else if (!showAuthForm) {
-        // Immediate redirect to prevent flash
-        router.replace('/lost')
-        return
-      }
+    if (!isLoading && !isAuthenticated) {
+      const shouldShowAuth = searchParams?.get('auth') === 'true'
+      setShowAuthForm(shouldShowAuth)
     }
-  }, [isAuthenticated, showAuthForm, router])
+  }, [isLoading, isAuthenticated, searchParams])
 
-  // Show nothing while redirecting - prevent any flash
-  if (!isAuthenticated && !showAuthForm) {
+  // Show loading while checking authentication
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
@@ -164,14 +135,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               )}
               <button
                 type="submit"
-                className="w-full px-4 py-3 rounded-lg bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20"
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 rounded-lg bg-foreground hover:bg-foreground/80 text-background font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-foreground/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Login
+                {isSubmitting ? 'Logging in...' : 'Login'}
               </button>
             </form>
             
             <div className="mt-6 text-center text-xs text-foreground/50">
-              {process.env.NEXT_PUBLIC_ADMIN_PASSWORD ? 'Custom password configured' : 'Default password: admin123'}
+              Secure authentication enabled
             </div>
           </div>
         </div>
