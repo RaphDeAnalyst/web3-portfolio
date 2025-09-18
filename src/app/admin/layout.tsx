@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AdminDock from '@/components/ui/admin-dock'
 
@@ -8,7 +8,7 @@ interface AdminLayoutProps {
   children: React.ReactNode
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+function AdminLayoutContent({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [showAuthForm, setShowAuthForm] = useState(false)
@@ -161,5 +161,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Bottom Dock Navigation */}
       <AdminDock onLogout={handleLogout} />
     </div>
+  )
+}
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      </div>
+    }>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </Suspense>
   )
 }
