@@ -1,8 +1,18 @@
+'use client'
+
+import { useState } from 'react'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { Github, Twitter, Linkedin, Sparkles } from 'lucide-react'
+import { Github, Twitter, Linkedin } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const [isEggBroken, setIsEggBroken] = useState(false)
+
+  const handleEggClick = () => {
+    if (!isEggBroken) {
+      setIsEggBroken(true)
+    }
+  }
 
   const socialLinks = [
     {
@@ -72,15 +82,23 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Easter Egg */}
+        {/* Interactive Easter Egg */}
         <div className="mt-4 text-center">
-          <span
-            className="inline-flex items-center space-x-1 text-[0.8rem] text-[#9CA3AF] hover:text-[#6B7280] transition-colors duration-200 cursor-default group"
-            title="Built smarter, not harder. Thanks Claude ✨"
-          >
-            <Sparkles className="w-3 h-3 group-hover:animate-pulse" />
-            <span>Curious?</span>
-          </span>
+          {!isEggBroken ? (
+            <button
+              onClick={handleEggClick}
+              className="group relative inline-flex items-center justify-center space-x-2 p-3 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 focus:ring-offset-background"
+              aria-label="Click to reveal Easter egg message"
+            >
+              <span className="text-xl group-hover:animate-bounce group-active:scale-110 transition-transform duration-200">🥚</span>
+              <span className="text-[0.8rem] text-[#9CA3AF] group-hover:text-[#6B7280] transition-colors duration-200">Curious?</span>
+            </button>
+          ) : (
+            <div className="inline-flex items-center space-x-2 text-[0.8rem] animate-in fade-in slide-in-from-bottom duration-700">
+              <span className="text-xl animate-bounce">🐣</span>
+              <span className="text-[#6B7280] font-medium">Built smarter, not harder. Thanks Claude ✨</span>
+            </div>
+          )}
         </div>
 
         {/* Web3 tagline */}
