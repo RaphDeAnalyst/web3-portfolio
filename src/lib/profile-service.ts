@@ -1,3 +1,5 @@
+import { logger } from './logger'
+
 export interface ProfileData {
   name: string
   title: string
@@ -62,7 +64,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(profileData))
     } catch (error) {
-      console.error('Failed to save profile:', error)
+      logger.error('Failed to save profile:', error)
       throw new Error('Failed to save profile data')
     }
   }
@@ -168,7 +170,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
         }
       }
     } catch (error) {
-      console.error('Error refreshing profile:', error)
+      logger.error('Error refreshing profile:', error)
     }
   }
 

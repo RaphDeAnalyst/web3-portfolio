@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Github, Twitter, Linkedin, MessageCircle, CreditCard, Award } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 interface SocialLink {
   name: string
@@ -61,7 +62,7 @@ export function SocialLinks() {
       setCopiedItem(name)
       setTimeout(() => setCopiedItem(null), 2000)
     } catch (err) {
-      console.error('Failed to copy:', err)
+      logger.error('Failed to copy:', err)
     }
   }
 

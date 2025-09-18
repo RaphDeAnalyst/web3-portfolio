@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react'
+import { logger } from './logger'
 
 interface Web3State {
   isConnected: boolean
@@ -60,14 +61,15 @@ export function Web3Provider({ children }: Web3ProviderProps) {
           }
         }
       } catch (error) {
-        console.error('Error checking wallet connection:', error)
+        logger.error('Error checking wallet connection:', error)
       }
     }
 
     checkConnection()
   }, [])
 
-  const connect = async (): Promise<void> => {
+  // Memoize functions to prevent unnecessary re-renders
+  const connect = useCallback(async (): Promise<void> => {
     setState(prev => ({ ...prev, isConnecting: true }))
 
     try {
@@ -99,13 +101,13 @@ export function Web3Provider({ children }: Web3ProviderProps) {
         isConnecting: false
       }))
     } catch (error) {
-      console.error('Failed to connect wallet:', error)
+      logger.error('Failed to connect wallet:', error)
       setState(prev => ({ ...prev, isConnecting: false }))
       throw error
     }
-  }
+  }, [])
 
-  const disconnect = (): void => {
+  const disconnect = useCallback((): void => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('web3-connection')
     }
@@ -116,15 +118,15 @@ export function Web3Provider({ children }: Web3ProviderProps) {
       chainId: null,
       isConnecting: false
     })
-  }
+  }, [])
 
-  const switchNetwork = async (chainId: number): Promise<void> => {
+  const switchNetwork = useCallback(async (chainId: number): Promise<void> => {
     try {
       // Simulate network switching
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
+
       setState(prev => ({ ...prev, chainId }))
-      
+
       // Update localStorage
       if (typeof window !== 'undefined') {
         const savedConnection = localStorage.getItem('web3-connection')
@@ -135,17 +137,18 @@ export function Web3Provider({ children }: Web3ProviderProps) {
         }
       }
     } catch (error) {
-      console.error('Failed to switch network:', error)
+      logger.error('Failed to switch network:', error)
       throw error
     }
-  }
+  }, [])
 
-  const value: Web3ContextType = {
+  // Memoize the context value to prevent unnecessary re-renders
+  const value = useMemo((): Web3ContextType => ({
     ...state,
     connect,
     disconnect,
     switchNetwork
-  }
+  }), [state, connect, disconnect, switchNetwork])
 
   return (
     <Web3Context.Provider value={value}>

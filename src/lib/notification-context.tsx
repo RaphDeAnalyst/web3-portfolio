@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react'
 import type { Notification, NotificationContextType } from '@/types/notification'
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
@@ -94,7 +94,8 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     return success(`${item} created successfully`, { duration: 4000 })
   }, [success])
 
-  const value: NotificationContextType = {
+  // Memoize the context value to prevent unnecessary re-renders
+  const value = useMemo((): NotificationContextType => ({
     notifications,
     addNotification,
     removeNotification,
@@ -109,7 +110,22 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     updated,
     saved,
     created
-  }
+  }), [
+    notifications,
+    addNotification,
+    removeNotification,
+    clearAllNotifications,
+    success,
+    error,
+    warning,
+    info,
+    loading,
+    copied,
+    deleted,
+    updated,
+    saved,
+    created
+  ])
 
   return (
     <NotificationContext.Provider value={value}>

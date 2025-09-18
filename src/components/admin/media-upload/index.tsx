@@ -11,6 +11,7 @@ import {
   RotateCcw,
   BarChart3
 } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 import { UploadTab } from './UploadTab'
 import { MediaLibrary } from './MediaLibrary'
@@ -59,7 +60,7 @@ export default function EnhancedMediaUpload() {
       const files = await mediaServiceHybrid.getAllMedia()
       setMediaFiles(files)
     } catch (err) {
-      console.error('Error loading media files:', err)
+      logger.error('Error loading media files:', err)
       error('Failed to load media files. Please refresh and try again.')
     }
   }
@@ -144,7 +145,7 @@ export default function EnhancedMediaUpload() {
         }, 2000)
 
       } catch (uploadError) {
-        console.error(`Error uploading ${file.name}:`, uploadError)
+        logger.error(`Error uploading ${file.name}:`, uploadError)
         error(`Error uploading ${file.name}`)
         setUploadState(prev => ({
           ...prev,
@@ -154,13 +155,13 @@ export default function EnhancedMediaUpload() {
         // Show error message to user
         const errorMessage = uploadError instanceof Error ? uploadError.message : 'Unknown error'
         if (errorMessage.includes('timeout')) {
-          console.error(`⚠ Upload timeout: ${file.name} - Try a smaller file or check your connection`)
+          logger.error(`⚠ Upload timeout: ${file.name} - Try a smaller file or check your connection`)
           warning(`Upload timeout for ${file.name}. Try a smaller file or check your connection.`)
         } else if (errorMessage.includes('size')) {
-          console.error(`⚠ File too large: ${file.name} - ${errorMessage}`)
+          logger.error(`⚠ File too large: ${file.name} - ${errorMessage}`)
           error(`File too large: ${file.name}`)
         } else {
-          console.error(`⚠ Upload error: ${file.name} - ${errorMessage}`)
+          logger.error(`⚠ Upload error: ${file.name} - ${errorMessage}`)
           error(`Upload error for ${file.name}`)
         }
       }
@@ -179,12 +180,12 @@ export default function EnhancedMediaUpload() {
         success(`Added external media: ${result.filename}`)
         return true
       } else {
-        console.error('✗ Failed to add external media')
+        logger.error('✗ Failed to add external media')
         error('Failed to add media. Please check the URL and try again.')
         return false
       }
     } catch (err) {
-      console.error('Error adding external media:', err)
+      logger.error('Error adding external media:', err)
       error(err instanceof Error ? err.message : 'Failed to add media. Please try again.')
       return false
     }
@@ -210,7 +211,7 @@ export default function EnhancedMediaUpload() {
       setMigrationStatus({ inProgress: false, results })
       await loadMediaFiles() // Refresh after migration
     } catch (err) {
-      console.error('Migration error:', err)
+      logger.error('Migration error:', err)
       error('Migration failed. Please try again.')
       setMigrationStatus({ inProgress: false })
     }

@@ -1,4 +1,5 @@
 import { supabase, isSupabaseAvailable, type Blog } from './supabase'
+import { logger } from './logger'
 
 // Transform Supabase Blog to legacy BlogPostData interface for compatibility
 export interface BlogPostData {
@@ -86,13 +87,13 @@ class BlogServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching blogs from Supabase:', error)
+        logger.error('Error fetching blogs from Supabase', error)
         return []
       }
 
       return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
-      console.error('Error in getAllPosts:', error)
+      logger.error('Error in getAllPosts', error)
       return []
     }
   }
@@ -107,13 +108,13 @@ class BlogServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching published blogs:', error)
+        logger.error('Error fetching published blogs', error)
         return []
       }
 
       return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
-      console.error('Error in getPublishedPosts:', error)
+      logger.error('Error in getPublishedPosts', error)
       return []
     }
   }
@@ -132,13 +133,13 @@ class BlogServiceSupabase {
           // No rows returned
           return null
         }
-        console.error('Error fetching blog by slug:', error)
+        logger.error('Error fetching blog by slug', error, { slug })
         return null
       }
 
       return this.transformToBlogPostData(data)
     } catch (error) {
-      console.error('Error in getPostBySlug:', error)
+      logger.error('Error in getPostBySlug', error, { slug })
       return null
     }
   }
@@ -156,13 +157,13 @@ class BlogServiceSupabase {
         if (error.code === 'PGRST116') {
           return null
         }
-        console.error('Error fetching blog by ID:', error)
+        logger.error('Error fetching blog by ID', error, { id })
         return null
       }
 
       return this.transformToBlogPostData(data)
     } catch (error) {
-      console.error('Error in getPostById:', error)
+      logger.error('Error in getPostById', error, { id })
       return null
     }
   }
@@ -198,7 +199,7 @@ class BlogServiceSupabase {
           .single()
 
         if (error) {
-          console.error('Error updating blog:', error)
+          logger.error('Error updating blog', error, { id: existingId })
           return null
         }
         result = data
@@ -211,7 +212,7 @@ class BlogServiceSupabase {
           .single()
 
         if (error) {
-          console.error('Error creating blog:', error)
+          logger.error('Error creating blog', error, { title: blogData.title })
           return null
         }
         result = data
@@ -219,7 +220,7 @@ class BlogServiceSupabase {
 
       return this.transformToBlogPostData(result)
     } catch (error) {
-      console.error('Error in savePost:', error)
+      logger.error('Error in savePost', error)
       return null
     }
   }
@@ -236,13 +237,13 @@ class BlogServiceSupabase {
         .limit(3)
 
       if (error) {
-        console.error('Error fetching featured posts:', error)
+        logger.error('Error fetching featured posts', error)
         return []
       }
 
       return data.map((blog: Blog) => this.transformToBlogPostData(blog))
     } catch (error) {
-      console.error('Error in getFeaturedPosts:', error)
+      logger.error('Error in getFeaturedPosts', error)
       return []
     }
   }

@@ -1,4 +1,5 @@
 import { supabase, type Profile as SupabaseProfile } from './supabase'
+import { logger } from './logger'
 
 export interface ProfileData {
   name: string
@@ -77,7 +78,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
 
   // Get profile data
   static async getProfile(): Promise<ProfileData> {
-    console.log('🔍 Attempting to fetch profile from Supabase...')
+    logger.info('🔍 Attempting to fetch profile from Supabase...')
     try {
       // Try to get profile from Supabase first
       const { data, error } = await supabase
@@ -85,14 +86,14 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
         .select('*')
         .single()
 
-      console.log('📊 Supabase response:', { data, error })
+      logger.info('📊 Supabase response:', { data, error })
 
       if (error) {
         if (error.code === 'PGRST116') {
-          console.log('⚠️ No profile exists, creating default one...')
+          logger.info('⚠️ No profile exists, creating default one...')
           // No profile exists, create default one
           const profileToInsert = this.transformToSupabaseProfile(this.defaultProfile)
-          console.log('📝 Profile to insert:', profileToInsert)
+          logger.info('📝 Profile to insert:', profileToInsert)
           
           const { data: newProfile, error: insertError } = await supabase
             .from('profile')
@@ -101,25 +102,25 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
             .single()
 
           if (insertError) {
-            console.error('❌ Error creating default profile:', insertError)
-            console.log('🔙 Falling back to default profile')
+            logger.error('❌ Error creating default profile:', insertError)
+            logger.info('🔙 Falling back to default profile')
             return this.defaultProfile
           }
 
-          console.log('✅ Successfully created profile:', newProfile)
+          logger.info('✅ Successfully created profile:', newProfile)
           return this.transformToProfileData(newProfile)
         }
         
-        console.error('❌ Error fetching profile from Supabase:', error)
-        console.log('🔙 Falling back to default profile')
+        logger.error('❌ Error fetching profile from Supabase:', error)
+        logger.info('🔙 Falling back to default profile')
         return this.defaultProfile
       }
 
-      console.log('✅ Successfully fetched profile from Supabase')
+      logger.info('✅ Successfully fetched profile from Supabase')
       return this.transformToProfileData(data)
     } catch (error) {
-      console.error('💥 Exception in getProfile:', error)
-      console.log('🔙 Falling back to default profile')
+      logger.error('💥 Exception in getProfile:', error)
+      logger.info('🔙 Falling back to default profile')
       return this.defaultProfile
     }
   }
@@ -143,7 +144,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
           .eq('id', existing.id)
 
         if (error) {
-          console.error('Error updating profile:', error)
+          logger.error('Error updating profile:', error)
           throw new Error('Failed to save profile data')
         }
       } else {
@@ -153,14 +154,14 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
           .insert([supabaseProfile])
 
         if (error) {
-          console.error('Error inserting profile:', error)
+          logger.error('Error inserting profile:', error)
           throw new Error('Failed to save profile data')
         }
       }
 
-      console.log('Profile saved successfully')
+      logger.info('Profile saved successfully')
     } catch (error) {
-      console.error('Error in saveProfile:', error)
+      logger.error('Error in saveProfile:', error)
       throw new Error('Failed to save profile data')
     }
   }
@@ -175,7 +176,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       profile[field] = value
       await this.saveProfile(profile)
     } catch (error) {
-      console.error('Error updating profile field:', error)
+      logger.error('Error updating profile field:', error)
       throw error
     }
   }
@@ -229,7 +230,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
 
       return links
     } catch (error) {
-      console.error('Error getting social links:', error)
+      logger.error('Error getting social links:', error)
       return []
     }
   }
@@ -246,7 +247,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
         avatar: profile.avatar
       }
     } catch (error) {
-      console.error('Error getting author info:', error)
+      logger.error('Error getting author info:', error)
       return {
         name: this.defaultProfile.name,
         avatar: this.defaultProfile.avatar
@@ -259,9 +260,9 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
     try {
       const existing = await this.getProfile()
       // This will create default profile if none exists
-      console.log('Profile initialized:', existing.name)
+      logger.info('Profile initialized', { name: existing.name })
     } catch (error) {
-      console.error('Error initializing profile:', error)
+      logger.error('Error initializing profile:', error)
     }
   }
 
@@ -271,7 +272,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       const profile = await this.getProfile()
       return JSON.stringify(profile, null, 2)
     } catch (error) {
-      console.error('Error exporting profile:', error)
+      logger.error('Error exporting profile:', error)
       return JSON.stringify(this.defaultProfile, null, 2)
     }
   }
@@ -286,7 +287,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       }
       await this.saveProfile({ ...this.defaultProfile, ...profileData })
     } catch (error) {
-      console.error('Error importing profile:', error)
+      logger.error('Error importing profile:', error)
       throw new Error('Failed to import profile data')
     }
   }
@@ -299,12 +300,12 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       const stored = localStorage.getItem('portfolio-profile')
       if (stored) {
         const localProfile = JSON.parse(stored) as ProfileData
-        console.log('Migrating profile from localStorage to Supabase...')
+        logger.info('Migrating profile from localStorage to Supabase...')
         await this.saveProfile(localProfile)
-        console.log('Profile migration completed')
+        logger.info('Profile migration completed')
       }
     } catch (error) {
-      console.error('Error migrating profile from localStorage:', error)
+      logger.error('Error migrating profile from localStorage:', error)
     }
   }
 }

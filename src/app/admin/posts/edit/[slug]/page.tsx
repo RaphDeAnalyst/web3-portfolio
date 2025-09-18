@@ -6,8 +6,9 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
 import { blogService } from '@/lib/service-switcher'
-import { BlogPostData } from '@/lib/blog-service'
+import { BlogPostData } from '@/types/shared'
 import { FileText } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function EditBlogPost() {
   const router = useRouter()
@@ -40,7 +41,7 @@ export default function EditBlogPost() {
       // Redirect back to posts list
       router.push('/admin/posts')
     } catch (error) {
-      console.error('Failed to save post:', error)
+      logger.error('Failed to save post:', error)
       alert('Failed to save post. Please try again.')
     }
   }

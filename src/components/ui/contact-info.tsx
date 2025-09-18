@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
-import type { ProfileData } from '@/lib/profile-service-supabase'
+import type { ProfileData } from '@/types/shared'
 import { ContactAvatar } from '@/components/ui/profile-avatar'
 import { Mail, Calendar, Globe, Zap, CheckCircle } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export function ContactInfo() {
   const [copiedItem, setCopiedItem] = useState<string | null>(null)
@@ -18,7 +19,7 @@ export function ContactInfo() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
       }
     }
     loadProfile()
@@ -30,7 +31,7 @@ export function ContactInfo() {
       setCopiedItem(item)
       setTimeout(() => setCopiedItem(null), 2000)
     } catch (err) {
-      console.error('Failed to copy:', err)
+      logger.error('Failed to copy:', err)
     }
   }
 

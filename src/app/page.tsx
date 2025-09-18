@@ -1,14 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import dynamic from 'next/dynamic'
+import { logger } from '@/lib/logger'
 import { blogService, projectService, profileService } from '@/lib/service-switcher'
 
-// Import section components
+// Import critical above-the-fold components immediately
 import { HeroSection } from '@/components/sections/HeroSection'
-import { QuickLinksSection } from '@/components/sections/QuickLinksSection'
-import { FeaturedProjectsSection } from '@/components/sections/FeaturedProjectsSection'
-import { BlogSection } from '@/components/sections/BlogSection'
-import { SkillsSection } from '@/components/sections/SkillsSection'
 import { ErrorBoundary } from '@/components/error/ErrorBoundary'
 import {
   HeroErrorFallback,
@@ -17,7 +15,31 @@ import {
   BlogErrorFallback,
   SkillsErrorFallback
 } from '@/components/error/SectionErrorFallbacks'
-import { StructuredData } from '@/components/seo/StructuredData'
+
+// Lazy load below-the-fold components for better performance
+const QuickLinksSection = dynamic(() => import('@/components/sections/QuickLinksSection').then(mod => ({ default: mod.QuickLinksSection })), {
+  loading: () => <div className="w-full h-32 bg-card animate-pulse" />,
+  ssr: true
+})
+
+const FeaturedProjectsSection = dynamic(() => import('@/components/sections/FeaturedProjectsSection').then(mod => ({ default: mod.FeaturedProjectsSection })), {
+  loading: () => <div className="w-full h-96 bg-card animate-pulse" />,
+  ssr: true
+})
+
+const BlogSection = dynamic(() => import('@/components/sections/BlogSection').then(mod => ({ default: mod.BlogSection })), {
+  loading: () => <div className="w-full h-96 bg-card animate-pulse" />,
+  ssr: true
+})
+
+const SkillsSection = dynamic(() => import('@/components/sections/SkillsSection').then(mod => ({ default: mod.SkillsSection })), {
+  loading: () => <div className="w-full h-64 bg-card animate-pulse" />,
+  ssr: true
+})
+
+const StructuredData = dynamic(() => import('@/components/seo/StructuredData').then(mod => ({ default: mod.StructuredData })), {
+  ssr: false
+})
 
 export default function Home() {
   const [featuredProjects, setFeaturedProjects] = useState<any[]>([])
@@ -39,7 +61,7 @@ export default function Home() {
           avatar: profile.avatar
         }
 
-        const updatedPosts = posts.map(post => ({
+        const updatedPosts = posts.map((post: any) => ({
           ...post,
           author: {
             name: currentAuthor.name,
@@ -50,7 +72,7 @@ export default function Home() {
         setFeaturedProjects(projects)
         setFeaturedPosts(updatedPosts)
       } catch (error) {
-        console.error('Error loading featured content:', error)
+        logger.error('Error loading featured content', error)
         // Fallback to original posts if profile loading fails
         try {
           const [projects, posts] = await Promise.all([
@@ -60,14 +82,29 @@ export default function Home() {
           setFeaturedProjects(projects)
           setFeaturedPosts(posts)
         } catch (fallbackError) {
-          console.error('Error loading fallback content:', fallbackError)
+          logger.error('Error loading fallback content', fallbackError)
         }
       } finally {
         setLoading(false)
       }
     }
-    
-    loadFeaturedContent()
+
+    // Use requestIdleCallback to defer heavy loading after initial render
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleCallback = window.requestIdleCallback(() => {
+        loadFeaturedContent()
+      }, { timeout: 5000 })
+
+      return () => {
+        if (idleCallback) {
+          window.cancelIdleCallback(idleCallback)
+        }
+      }
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      const timeoutId = setTimeout(loadFeaturedContent, 100)
+      return () => clearTimeout(timeoutId)
+    }
   }, [])
   
   return (
@@ -80,28 +117,36 @@ export default function Home() {
         <ErrorBoundary section="Hero" fallback={<HeroErrorFallback />}>
           <HeroSection />
         </ErrorBoundary>
-        
-        <ErrorBoundary section="Quick Links" fallback={<QuickLinksErrorFallback />}>
-          <QuickLinksSection />
-        </ErrorBoundary>
-        
-        <ErrorBoundary section="Featured Projects" fallback={<FeaturedProjectsErrorFallback />}>
-          <FeaturedProjectsSection 
-            featuredProjects={featuredProjects} 
-            loading={loading} 
-          />
-        </ErrorBoundary>
-        
-        <ErrorBoundary section="Blog" fallback={<BlogErrorFallback />}>
-          <BlogSection 
-            featuredPosts={featuredPosts} 
-            loading={loading} 
-          />
-        </ErrorBoundary>
-        
-        <ErrorBoundary section="Skills" fallback={<SkillsErrorFallback />}>
-          <SkillsSection />
-        </ErrorBoundary>
+
+        <Suspense fallback={<div className="w-full h-32 bg-card animate-pulse" />}>
+          <ErrorBoundary section="Quick Links" fallback={<QuickLinksErrorFallback />}>
+            <QuickLinksSection />
+          </ErrorBoundary>
+        </Suspense>
+
+        <Suspense fallback={<div className="w-full h-96 bg-card animate-pulse" />}>
+          <ErrorBoundary section="Featured Projects" fallback={<FeaturedProjectsErrorFallback />}>
+            <FeaturedProjectsSection
+              featuredProjects={featuredProjects}
+              loading={loading}
+            />
+          </ErrorBoundary>
+        </Suspense>
+
+        <Suspense fallback={<div className="w-full h-96 bg-card animate-pulse" />}>
+          <ErrorBoundary section="Blog" fallback={<BlogErrorFallback />}>
+            <BlogSection
+              featuredPosts={featuredPosts}
+              loading={loading}
+            />
+          </ErrorBoundary>
+        </Suspense>
+
+        <Suspense fallback={<div className="w-full h-64 bg-card animate-pulse" />}>
+          <ErrorBoundary section="Skills" fallback={<SkillsErrorFallback />}>
+            <SkillsSection />
+          </ErrorBoundary>
+        </Suspense>
       </div>
     </>
   )

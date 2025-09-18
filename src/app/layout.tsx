@@ -7,13 +7,20 @@ import { NotificationProvider } from "@/lib/notification-context";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GlobalNotificationContainer } from "@/components/ui/notification";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import dynamic from 'next/dynamic';
+
+// Deferred analytics loading for better performance
+const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics').then(mod => ({ default: mod.DeferredAnalytics })), {
+  ssr: false
+});
+import '@/lib/sw-registration';
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
@@ -21,6 +28,8 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false, // Only preload primary font
+  adjustFontFallback: true,
   fallback: ["Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
 });
 
@@ -101,6 +110,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Resource hints for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://vercel.live" />
+        <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
+
         {/* Primary favicon - ICO format for best compatibility */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/favicon.ico" />
@@ -120,6 +136,24 @@ export default function RootLayout({
         <meta name="theme-color" content="#666666" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+        {/* No-flash script for theme - prevents FOUC */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var theme = localStorage.getItem('web3-portfolio-theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.colorScheme = 'dark';
+                } else {
+                  document.documentElement.classList.add('light');
+                  document.documentElement.style.colorScheme = 'light';
+                }
+              } catch (e) {}
+            })();
+          `
+        }} />
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
@@ -141,8 +175,7 @@ export default function RootLayout({
             </NotificationProvider>
           </Web3Provider>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+        <DeferredAnalytics />
       </body>
     </html>
   );

@@ -5,8 +5,9 @@ import { EnhancedMediumBlogCard } from '@/components/ui/enhanced-medium-blog-car
 import { MediumBlogFeed } from '@/components/ui/medium-blog-feed'
 import { NewsletterSignup } from '@/components/ui/newsletter-signup'
 import { blogService, profileService } from '@/lib/service-switcher'
-import { BlogPostData } from '@/lib/blog-service'
+import { BlogPostData } from '@/types/shared'
 import { Search, X } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -34,7 +35,7 @@ export default function Blog() {
         const publishedPosts = await blogService.getPublishedPosts()
 
         // Update posts with current profile info if needed
-        const updatedPosts = publishedPosts.map(post => ({
+        const updatedPosts = publishedPosts.map((post: any) => ({
           ...post,
           author: {
             name: currentAuthor.name,
@@ -47,7 +48,7 @@ export default function Blog() {
         const allCategories = ['All', ...await blogService.getCategories()]
         setCategories(allCategories)
       } catch (error) {
-        console.error('Error loading blog data:', error)
+        logger.error('Error loading blog data:', error)
         // Fallback to original posts if profile loading fails
         try {
           const publishedPosts = await blogService.getPublishedPosts()
@@ -55,14 +56,32 @@ export default function Blog() {
           const allCategories = ['All', ...await blogService.getCategories()]
           setCategories(allCategories)
         } catch (fallbackError) {
-          console.error('Error loading fallback posts:', fallbackError)
+          logger.error('Error loading fallback posts:', fallbackError)
         }
       } finally {
         setIsLoaded(true)
       }
     }
 
-    loadData()
+    // Use requestIdleCallback to defer heavy loading after initial render
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleCallback = window.requestIdleCallback(() => {
+        loadData()
+      }, { timeout: 3000 })
+
+      // Store the callback for cleanup
+      const cleanup = () => {
+        if (idleCallback) {
+          window.cancelIdleCallback(idleCallback)
+        }
+      }
+
+      return cleanup
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      const timeoutId = setTimeout(loadData, 50)
+      return () => clearTimeout(timeoutId)
+    }
     
     // Listen for storage changes
     const handleStorageChange = async () => {

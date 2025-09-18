@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
+import { logger } from '@/lib/logger'
 import type { ProfileData } from '@/lib/profile-service'
 
 interface ProfileAvatarProps {
@@ -71,7 +72,7 @@ export function ProfileAvatar({
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
       }
     }
     
@@ -178,7 +179,7 @@ export function useProfile() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
       }
     }
     

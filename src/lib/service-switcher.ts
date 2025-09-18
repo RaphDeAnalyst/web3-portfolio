@@ -2,11 +2,38 @@
 // This enables gradual migration and rollback capabilities
 
 import { blogService as legacyBlogService } from './blog-service'
-import { blogServiceSupabase } from './blog-service-supabase'
 import { projectService as legacyProjectService } from './project-service'
-import { projectServiceSupabase } from './project-service-supabase'
 import { ProfileService as legacyProfileService } from './profile-service'
-import { profileServiceSupabase } from './profile-service-supabase'
+
+// Dynamic import cache for Supabase services to prevent multiple imports
+let blogServiceSupabaseCache: any = null
+let projectServiceSupabaseCache: any = null
+let profileServiceSupabaseCache: any = null
+
+// Lazy loading functions for Supabase services
+async function getBlogServiceSupabase() {
+  if (!blogServiceSupabaseCache) {
+    const module = await import('./blog-service-supabase')
+    blogServiceSupabaseCache = module.blogServiceSupabase
+  }
+  return blogServiceSupabaseCache
+}
+
+async function getProjectServiceSupabase() {
+  if (!projectServiceSupabaseCache) {
+    const module = await import('./project-service-supabase')
+    projectServiceSupabaseCache = module.projectServiceSupabase
+  }
+  return projectServiceSupabaseCache
+}
+
+async function getProfileServiceSupabase() {
+  if (!profileServiceSupabaseCache) {
+    const module = await import('./profile-service-supabase')
+    profileServiceSupabaseCache = module.profileServiceSupabase
+  }
+  return profileServiceSupabaseCache
+}
 
 // Configuration for which services to use
 export const SERVICE_CONFIG = {
@@ -20,84 +47,96 @@ export const SERVICE_CONFIG = {
 export const blogService = {
   async getAllPosts() {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getAllPosts()
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getAllPosts()
     }
     return legacyBlogService.getAllPosts()
   },
 
   async getPublishedPosts() {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getPublishedPosts()
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getPublishedPosts()
     }
     return legacyBlogService.getPublishedPosts()
   },
 
   async getPostBySlug(slug: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getPostBySlug(slug)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getPostBySlug(slug)
     }
     return legacyBlogService.getPostBySlug(slug)
   },
 
   async getPostById(id: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getPostById(id)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getPostById(id)
     }
     return legacyBlogService.getPostById(id)
   },
 
   async savePost(postData: any, existingId?: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.savePost(postData, existingId)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.savePost(postData, existingId)
     }
     return legacyBlogService.savePost(postData, existingId)
   },
 
   async updatePostFields(id: string, updates: any) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.updatePostFields(id, updates)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.updatePostFields(id, updates)
     }
     return legacyBlogService.updatePostFields(id, updates)
   },
 
   async deletePost(id: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.deletePost(id)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.deletePost(id)
     }
     return legacyBlogService.deletePost(id)
   },
 
   async getStats() {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getStats()
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getStats()
     }
     return legacyBlogService.getStats()
   },
 
   async generateSlug(title: string, existingId?: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.generateSlug(title, existingId)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.generateSlug(title, existingId)
     }
     return legacyBlogService.generateSlug(title, existingId)
   },
 
   async searchPosts(query: string, category?: string) {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.searchPosts(query, category)
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.searchPosts(query, category)
     }
     return legacyBlogService.searchPosts(query, category)
   },
 
   async getCategories() {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getCategories()
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getCategories()
     }
     return legacyBlogService.getCategories()
   },
 
   async getFeaturedPosts() {
     if (SERVICE_CONFIG.BLOG_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await blogServiceSupabase.getFeaturedPosts()
+      const supabaseService = await getBlogServiceSupabase()
+      return await supabaseService.getFeaturedPosts()
     }
     return legacyBlogService.getFeaturedPosts()
   }
@@ -107,24 +146,27 @@ export const blogService = {
 export const projectService = {
   async getAllProjects() {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await projectServiceSupabase.getAllProjects()
+      const supabaseService = await getProjectServiceSupabase()
+      return await supabaseService.getAllProjects()
     }
     return legacyProjectService.getAllProjects()
   },
 
   async getProjectByIndex(index: number) {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await projectServiceSupabase.getProjectByIndex(index)
+      const supabaseService = await getProjectServiceSupabase()
+      return await supabaseService.getProjectByIndex(index)
     }
     return legacyProjectService.getProjectByIndex(index)
   },
 
   async updateProject(indexOrId: number | string, updatedProject: any) {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getProjectServiceSupabase()
       if (typeof indexOrId === 'string') {
-        return await projectServiceSupabase.updateProject(indexOrId, updatedProject)
+        return await supabaseService.updateProject(indexOrId, updatedProject)
       } else {
-        return await projectServiceSupabase.updateProjectByIndex(indexOrId, updatedProject)
+        return await supabaseService.updateProjectByIndex(indexOrId, updatedProject)
       }
     }
     if (typeof indexOrId === 'number') {
@@ -135,17 +177,19 @@ export const projectService = {
 
   async addProject(newProject: any) {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await projectServiceSupabase.addProject(newProject)
+      const supabaseService = await getProjectServiceSupabase()
+      return await supabaseService.addProject(newProject)
     }
     return legacyProjectService.addProject(newProject)
   },
 
   async deleteProject(indexOrId: number | string) {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getProjectServiceSupabase()
       if (typeof indexOrId === 'string') {
-        return await projectServiceSupabase.deleteProject(indexOrId)
+        return await supabaseService.deleteProject(indexOrId)
       } else {
-        return await projectServiceSupabase.deleteProjectByIndex(indexOrId)
+        return await supabaseService.deleteProjectByIndex(indexOrId)
       }
     }
     if (typeof indexOrId === 'number') {
@@ -156,17 +200,19 @@ export const projectService = {
 
   async getFeaturedProjects() {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await projectServiceSupabase.getFeaturedProjects()
+      const supabaseService = await getProjectServiceSupabase()
+      return await supabaseService.getFeaturedProjects()
     }
     return legacyProjectService.getFeaturedProjects()
   },
 
   async setFeaturedStatus(indexOrId: number | string, featured: boolean) {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getProjectServiceSupabase()
       if (typeof indexOrId === 'string') {
-        return await projectServiceSupabase.setFeaturedStatus(indexOrId, featured)
+        return await supabaseService.setFeaturedStatus(indexOrId, featured)
       } else {
-        return await projectServiceSupabase.setFeaturedStatusByIndex(indexOrId, featured)
+        return await supabaseService.setFeaturedStatusByIndex(indexOrId, featured)
       }
     }
     if (typeof indexOrId === 'number') {
@@ -177,7 +223,8 @@ export const projectService = {
 
   async getProjectStats() {
     if (SERVICE_CONFIG.PROJECT_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await projectServiceSupabase.getProjectStats()
+      const supabaseService = await getProjectServiceSupabase()
+      return await supabaseService.getProjectStats()
     }
     return legacyProjectService.getProjectStats()
   }
@@ -187,56 +234,64 @@ export const projectService = {
 export const profileService = {
   async getProfile() {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.getProfile()
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.getProfile()
     }
     return legacyProfileService.getProfile()
   },
 
   async saveProfile(profileData: any) {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.saveProfile(profileData)
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.saveProfile(profileData)
     }
     return legacyProfileService.saveProfile(profileData)
   },
 
   async updateProfileField(field: any, value: any) {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.updateProfileField(field, value)
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.updateProfileField(field, value)
     }
     return legacyProfileService.updateProfileField(field, value)
   },
 
   async getSocialLinks() {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.getSocialLinks()
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.getSocialLinks()
     }
     return legacyProfileService.getSocialLinks()
   },
 
   async getAuthorInfo() {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.getAuthorInfo()
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.getAuthorInfo()
     }
     return legacyProfileService.getAuthorInfo()
   },
 
   async initializeProfile() {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.initializeProfile()
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.initializeProfile()
     }
     return legacyProfileService.initializeProfile()
   },
 
   async exportProfile() {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.exportProfile()
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.exportProfile()
     }
     return legacyProfileService.exportProfile()
   },
 
   async importProfile(profileJson: string) {
     if (SERVICE_CONFIG.PROFILE_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
-      return await profileServiceSupabase.importProfile(profileJson)
+      const supabaseService = await getProfileServiceSupabase()
+      return await supabaseService.importProfile(profileJson)
     }
     return legacyProfileService.importProfile(profileJson)
   }

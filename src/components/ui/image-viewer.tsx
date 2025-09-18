@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { X, ZoomIn, ZoomOut, Download } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 interface ImageViewerProps {
   src: string
@@ -64,7 +65,7 @@ export function ImageViewer({ src, alt, isOpen, onClose }: ImageViewerProps) {
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url)
     } catch (error) {
-      console.error('Failed to download image:', error)
+      logger.error('Failed to download image:', error)
     }
   }
 

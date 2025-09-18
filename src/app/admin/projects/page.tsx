@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { projectService } from '@/lib/service-switcher'
 import { Project } from '@/data/projects'
-import type { Project as ServiceProject } from '@/lib/project-service-supabase'
+import type { Project as ServiceProject } from '@/types/shared'
 import { useNotification } from '@/lib/notification-context'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import {
@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Github
 } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function ProjectsManagement() {
   const { error, success } = useNotification()
@@ -36,7 +37,7 @@ export default function ProjectsManagement() {
         const projects = await projectService.getAllProjects()
         setProjectList(projects)
       } catch (err) {
-        console.error('Error loading projects:', err)
+        logger.error('Error loading projects:', err)
         error('Failed to load projects. Please refresh the page.')
       } finally {
         setIsLoaded(true)
@@ -77,7 +78,7 @@ export default function ProjectsManagement() {
       setProjectList(updatedProjects)
       success(`Project "${title}" deleted successfully`)
     } catch (err) {
-      console.error('Error deleting project:', err)
+      logger.error('Error deleting project:', err)
       error('Failed to delete project. Please try again.')
     }
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import Link from 'next/link'
 import { Github, ExternalLink, BarChart3, FileText } from 'lucide-react'
 import { ImageViewer } from '@/components/ui/image-viewer'
@@ -27,7 +27,7 @@ interface ProjectCardProps {
   onImageClick?: () => void
 }
 
-export function ProjectCard({
+export const ProjectCard = memo(function ProjectCard({
   title,
   description,
   image,
@@ -88,6 +88,7 @@ export function ProjectCard({
             <img
               src={image}
               alt={`${title} project screenshot`}
+              loading="lazy"
               className={`w-full h-full object-cover transition-all duration-700 cursor-pointer ${
                 imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
               } ${isHovered ? 'scale-110' : 'scale-100'}`}
@@ -172,10 +173,10 @@ export function ProjectCard({
           <div className="grid grid-cols-2 gap-3">
             {/* Read More button */}
             {hasValidUrl(demoUrl) ? (
-              <Link href={demoUrl!} target="_blank" className="w-full">
+              <Link href={demoUrl!} target="_blank" rel="noopener noreferrer" className="w-full" aria-label={`View live demo of ${title}`}>
                 <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 hover:shadow-lg min-h-[44px]">
                   <ExternalLink className="w-4 h-4" />
-                  <span>Read More</span>
+                  <span>View Demo</span>
                 </button>
               </Link>
             ) : (
@@ -191,7 +192,7 @@ export function ProjectCard({
 
             {/* GitHub button */}
             {hasValidUrl(githubUrl) ? (
-              <Link href={githubUrl!} target="_blank" className="w-full">
+              <Link href={githubUrl!} target="_blank" rel="noopener noreferrer" className="w-full" aria-label={`View source code for ${title} on GitHub`}>
                 <button className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 hover:shadow-lg min-h-[44px]">
                   <Github className="w-4 h-4" />
                   <span>GitHub</span>
@@ -245,4 +246,4 @@ export function ProjectCard({
       )}
     </div>
   )
-}
+})

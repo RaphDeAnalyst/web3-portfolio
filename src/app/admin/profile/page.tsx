@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ProfilePictureUpload } from '@/components/ui/profile-picture-upload'
 import { profileService } from '@/lib/service-switcher'
-import type { ProfileData } from '@/lib/profile-service-supabase'
+import type { ProfileData } from '@/types/shared'
 import { AlertTriangle } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function ProfileManagement() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -19,7 +20,7 @@ export default function ProfileManagement() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
         setMessage({ type: 'error', text: 'Failed to load profile data.' })
       } finally {
         setLoading(false)
@@ -37,7 +38,7 @@ export default function ProfileManagement() {
       setMessage({ type: 'success', text: 'Profile updated successfully!' })
       setTimeout(() => setMessage(null), 3000)
     } catch (error) {
-      console.error('Error saving profile:', error)
+      logger.error('Error saving profile:', error)
       setMessage({ type: 'error', text: 'Failed to save profile. Please try again.' })
       setTimeout(() => setMessage(null), 3000)
     } finally {
@@ -46,20 +47,20 @@ export default function ProfileManagement() {
   }
 
   const handleSkillAdd = (skill: string) => {
-    if (!profile || !skill.trim() || profile.skills.includes(skill.trim())) return
-    
+    if (!profile || !skill.trim() || profile.skills?.includes(skill.trim())) return
+
     setProfile(prev => prev ? {
       ...prev,
-      skills: [...prev.skills, skill.trim()]
+      skills: [...(prev.skills || []), skill.trim()]
     } as ProfileData : null)
   }
 
   const handleSkillRemove = (skillToRemove: string) => {
     if (!profile) return
-    
+
     setProfile(prev => prev ? {
       ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
+      skills: (prev.skills || []).filter(skill => skill !== skillToRemove)
     } as ProfileData : null)
   }
 
@@ -293,7 +294,7 @@ export default function ProfileManagement() {
             <div className="space-y-4">
               {/* Current Skills */}
               <div className="flex flex-wrap gap-2">
-                {profile.skills.map((skill, index) => (
+                {(profile.skills || []).map((skill, index) => (
                   <span
                     key={index}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"

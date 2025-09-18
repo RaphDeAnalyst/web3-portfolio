@@ -3,11 +3,12 @@
 import Link from 'next/link'
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+// Removed framer-motion for performance optimization
 import { Menu, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { NavbarAvatar } from '@/components/ui/profile-avatar'
+import { logger } from '@/lib/logger'
 
 /**
  * Navigation item interface
@@ -225,7 +226,7 @@ export function Navbar() {
     })
 
     if (!isMobile) {
-      console.log('Admin gesture: Desktop detected, skipping tap detection')
+      logger.info('Admin gesture: Desktop detected, skipping tap detection')
       return
     }
 
@@ -235,17 +236,17 @@ export function Navbar() {
     }
 
     const newCount = tapCount + 1
-    console.log('Admin gesture: Processing tap', { newCount, totalNeeded: 5 })
+    logger.info('Admin gesture: Processing tap', { newCount, totalNeeded: 5 })
     setTapCount(newCount)
 
     // Check if we've reached 5 taps
     if (newCount >= 5) {
-      console.log('Admin gesture: 5 taps reached! Navigating to admin')
+      logger.info('Admin gesture: 5 taps reached! Navigating to admin')
 
       // Haptic feedback if available
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
         navigator.vibrate([100, 50, 100, 50, 100])
-        console.log('Admin gesture: Haptic feedback triggered')
+        logger.info('Admin gesture: Haptic feedback triggered')
       }
 
       // Navigate to admin
@@ -257,52 +258,22 @@ export function Navbar() {
     // Navigate to home page after a short delay if less than 5 taps
     setTimeout(() => {
       if (tapCount < 4) {
-        console.log('Admin gesture: Normal navigation to home')
+        logger.info('Admin gesture: Normal navigation to home')
         router.push('/')
       }
     }, 150)
 
     // Reset tap count after 3 seconds of no activity
     tapTimeoutRef.current = setTimeout(() => {
-      console.log('Admin gesture: Timeout reached, resetting tap count')
+      logger.info('Admin gesture: Timeout reached, resetting tap count')
       setTapCount(0)
     }, 3000)
   }, [tapCount, router])
 
-  // Animation variants
-  const mobileMenuVariants = {
-    closed: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        duration: 0.3,
-        ease: [0.4, 0.0, 0.2, 1],
-        when: "afterChildren"
-      }
-    },
-    open: {
-      opacity: 1,
-      height: "auto",
-      transition: {
-        duration: 0.3,
-        ease: [0.4, 0.0, 0.2, 1],
-        when: "beforeChildren"
-      }
-    }
-  }
-
-  const mobileMenuItemVariants = {
-    closed: {
-      opacity: 0,
-      x: -20,
-      transition: { duration: 0.2 }
-    },
-    open: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.2 }
-    }
-  }
+  // CSS animation classes for mobile menu
+  const mobileMenuClass = isOpen
+    ? 'navbar-mobile-menu-open'
+    : 'navbar-mobile-menu-closed'
 
   return (
     <nav
@@ -369,10 +340,8 @@ export function Navbar() {
                   >
                     {item.name}
                     {isActive && (
-                      <motion.div
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400"
-                        layoutId="activeIndicator"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      <div
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 animate-slide-in"
                       />
                     )}
                     <span
@@ -400,97 +369,76 @@ export function Navbar() {
               aria-expanded={isOpen}
               aria-label={isOpen ? 'Close mobile menu' : 'Open mobile menu'}
             >
-              <AnimatePresence mode="wait" initial={false}>
+              <div className={`transition-all duration-200 ${isOpen ? 'rotate-0 opacity-100' : 'rotate-0 opacity-100'}`}>
                 {isOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: 0, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="w-6 h-6" />
-                  </motion.div>
+                  <X className="w-6 h-6" />
                 ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 0, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="w-6 h-6" />
-                  </motion.div>
+                  <Menu className="w-6 h-6" />
                 )}
-              </AnimatePresence>
+              </div>
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              ref={mobileMenuRef}
-              id="mobile-menu"
-              variants={mobileMenuVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="md:hidden overflow-hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="mobile-menu-button"
-            >
-              <div className="px-4 py-6 space-y-2">
-                {navItems.map((item, index) => {
-                  const isActive = isActiveRoute(item.href)
-                  return (
-                    <motion.div
-                      key={item.href}
-                      variants={mobileMenuItemVariants}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Link
-                        ref={index === 0 ? firstLinkRef : index === navItems.length - 1 ? lastLinkRef : undefined}
-                        href={item.href}
-                        onClick={closeMobileMenu}
-                        className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none ${
-                          isActive
-                            ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-600 dark:border-primary-400'
-                            : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                        }`}
-                        role="menuitem"
-                        aria-current={isActive ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  )
-                })}
-
-                {/* Admin Link - Only shown when URL parameter is present */}
-                {showAdminLink && (
-                  <motion.div
-                    variants={mobileMenuItemVariants}
-                    transition={{ delay: navItems.length * 0.05 }}
+        <div
+          ref={mobileMenuRef}
+          id="mobile-menu"
+          className={`md:hidden overflow-hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out ${
+            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="mobile-menu-button"
+        >
+          <div className={`px-4 py-6 space-y-2 transition-all duration-300 ${
+            isOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
+          }`}>
+            {navItems.map((item, index) => {
+              const isActive = isActiveRoute(item.href)
+              return (
+                <div
+                  key={item.href}
+                  className={`transition-all duration-200 ${isOpen ? 'animate-slide-in-left' : ''}`}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <Link
+                    ref={index === 0 ? firstLinkRef : index === navItems.length - 1 ? lastLinkRef : undefined}
+                    href={item.href}
+                    onClick={closeMobileMenu}
+                    className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none ${
+                      isActive
+                        ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-600 dark:border-primary-400'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
+                    role="menuitem"
+                    aria-current={isActive ? 'page' : undefined}
                   >
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                      <Link
-                        href="/admin"
-                        onClick={closeMobileMenu}
-                        className="block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border-l-4 border-red-500"
-                        role="menuitem"
-                      >
-                        🔒 Admin Panel
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
+                    {item.name}
+                  </Link>
+                </div>
+              )
+            })}
+
+            {/* Admin Link - Only shown when URL parameter is present */}
+            {showAdminLink && (
+              <div className={`transition-all duration-200 ${isOpen ? 'animate-slide-in-left' : ''}`}
+                style={{ animationDelay: `${navItems.length * 50}ms` }}
+              >
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                  <Link
+                    href="/admin"
+                    onClick={closeMobileMenu}
+                    className="block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border-l-4 border-red-500"
+                    role="menuitem"
+                  >
+                    🔒 Admin Panel
+                  </Link>
+                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Admin Link Detection with Suspense Boundary */}

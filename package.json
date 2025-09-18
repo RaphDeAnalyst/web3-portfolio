@@ -10,6 +10,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "analyze": "ANALYZE=true npm run build",
     "keep-alive": "node scripts/keep-alive.js",
     "test:keep-alive": "node scripts/keep-alive.js",
     "supabase:ping": "node scripts/keep-alive.js"
@@ -21,10 +22,8 @@
     "autoprefixer": "^10.4.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
-    "framer-motion": "^10.16.0",
     "jose": "^6.1.0",
     "lucide-react": "^0.263.1",
-    "motion": "^12.23.12",
     "next": "^14.0.0",
     "next-themes": "^0.2.1",
     "postcss": "^8.4.0",
@@ -34,6 +33,7 @@
     "tailwindcss": "^3.3.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.5.3",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
@@ -43,6 +43,7 @@
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "jsdom": "^22.0.0",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"

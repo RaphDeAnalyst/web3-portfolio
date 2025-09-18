@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { logger } from '@/lib/logger'
 import Link from 'next/link'
 import { ProfileCard } from '@/components/ui/profile-card'
 import { SkillCard } from '@/components/ui/skill-card'
@@ -17,7 +18,7 @@ export default function About() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile', error)
       } finally {
         setLoading(false)
       }

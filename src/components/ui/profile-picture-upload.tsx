@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
+import { logger } from '@/lib/logger'
 
 interface ProfilePictureUploadProps {
   onImageSelect: (imageUrl: string) => void
@@ -121,13 +122,13 @@ export function ProfilePictureUpload({
 
     if (!response.ok) {
       const errorData = await response.text()
-      console.error('ImgBB API Error:', response.status, errorData)
+      logger.error('ImgBB API Error:', response.status)
       throw new Error(`Upload failed: ${response.status} ${errorData}`)
     }
 
     const data = await response.json()
     if (!data.success) {
-      console.error('ImgBB Response Error:', data)
+      logger.error('ImgBB Response Error:', data)
       throw new Error(data.error?.message || 'Upload failed')
     }
 
@@ -172,7 +173,7 @@ export function ProfilePictureUpload({
       }, 500)
 
     } catch (error) {
-      console.error('Upload error:', error)
+      logger.error('Upload error:', error)
       setError(error instanceof Error ? error.message : 'Upload failed')
       setUploading(false)
       setUploadProgress(0)
@@ -221,7 +222,7 @@ export function ProfilePictureUpload({
         const data = await profileService.getProfile()
         setProfileData(data)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
       }
     }
     loadProfile()

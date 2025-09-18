@@ -1,7 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { ParticleBackground } from '@/components/ui/particle-background'
+import dynamic from 'next/dynamic'
+
+// Lazy load ParticleBackground for better performance
+const ParticleBackground = dynamic(() => import('@/components/ui/particle-background').then(mod => ({ default: mod.ParticleBackground })), {
+  ssr: false,
+  loading: () => null
+})
 
 export function HeroSection() {
   return (
@@ -46,8 +52,8 @@ export function HeroSection() {
             </Link>
           </div>
 
-          {/* Scroll Indicator - moved to better position */}
-          <div className="flex flex-col items-center space-y-2 text-foreground/40 mt-8 mb-8">
+          {/* Scroll Indicator - improved contrast */}
+          <div className="flex flex-col items-center space-y-2 text-foreground/70 mt-8 mb-8">
             <span className="text-xs font-medium">Scroll to explore</span>
             <div className="w-6 h-10 border-2 border-current rounded-full flex justify-center">
               <div className="w-1 h-3 bg-current rounded-full mt-2 animate-bounce"></div>

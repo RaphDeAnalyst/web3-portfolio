@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { MediaFile, mediaServiceHybrid } from '@/lib/media-service-hybrid'
 import { useNotification } from '@/lib/notification-context'
 import { FolderOpen, Video, FileText, Trash2, AlertTriangle } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 interface MediaLibraryProps {
   mediaFiles: MediaFile[]
@@ -70,7 +71,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
       await onRefresh()
 
     } catch (err) {
-      console.error('Error during bulk delete:', err)
+      logger.error('Error during bulk delete:', err)
       error('Failed to delete selected files. Please try again.')
     } finally {
       setIsDeleting(false)
@@ -86,7 +87,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
       await navigator.clipboard.writeText(text)
       copied('Media URL')
     } catch (err) {
-      console.error('Failed to copy:', err)
+      logger.error('Failed to copy:', err)
       copied('Media URL') // Still show success message as fallback
     }
   }
