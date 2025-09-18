@@ -1,5 +1,5 @@
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { Github, Twitter, Linkedin } from 'lucide-react'
+import { Github, Twitter, Linkedin, Sparkles } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -70,6 +70,17 @@ export function Footer() {
           <div className="text-sm text-foreground/70 text-center md:text-right order-last md:order-none">
             © {currentYear} Built for Web3
           </div>
+        </div>
+
+        {/* Easter Egg */}
+        <div className="mt-4 text-center">
+          <span
+            className="inline-flex items-center space-x-1 text-[0.8rem] text-[#9CA3AF] hover:text-[#6B7280] transition-colors duration-200 cursor-default group"
+            title="Built smarter, not harder. Thanks Claude ✨"
+          >
+            <Sparkles className="w-3 h-3 group-hover:animate-pulse" />
+            <span>Curious?</span>
+          </span>
         </div>
 
         {/* Web3 tagline */}

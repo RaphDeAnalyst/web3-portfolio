@@ -142,7 +142,7 @@ export default function ProfileManagement() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Picture Section */}
         <div className="lg:col-span-1">
-          <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-6">
+          <div className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24 lg:top-28 z-10">
             <h2 className="text-xl font-bold text-foreground mb-6">Profile Picture</h2>
             
             <div className="space-y-4">
