@@ -43,3 +43,9 @@ next-env.d.ts
 # External service files (for reference only)
 cloudflare-worker-backup.js
 KEEP_ALIVE_SETUP.md
+
+# Admin documentation (security sensitive)
+ADMIN_ACCESS.md
+ADMIN_INSTRUCTIONS.md
+HIDDEN_ADMIN_ACCESS.md
+**/admin*.md
