@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
 import { projectService } from '@/lib/service-switcher'
+import { logger } from '@/lib/logger'
 
 export default function NewProject() {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function NewProject() {
       // Redirect to projects list
       router.push('/admin/projects')
     } catch (error) {
-      console.error('Error saving project:', error)
+      logger.error('Error saving project:', error)
       alert('Error saving project. Please try again.')
     }
   }

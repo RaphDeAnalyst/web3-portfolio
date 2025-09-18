@@ -17,7 +17,9 @@
       "WebFetch(domain:websitedemos.net)",
       "WebFetch(domain:preview.colorlib.com)",
       "WebFetch(domain:technext.github.io)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npx eslint:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": [],

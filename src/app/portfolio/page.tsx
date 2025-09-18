@@ -8,6 +8,7 @@ import type { Project as ServiceProject } from '@/lib/project-service-supabase'
 import { projectService } from '@/lib/service-switcher'
 import Link from 'next/link'
 import { Search, X } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function Portfolio() {
   const [projects, setProjects] = useState<(Project | ServiceProject)[]>([])
@@ -25,7 +26,7 @@ export default function Portfolio() {
         const allProjects = await projectService.getAllProjects()
         setProjects(allProjects)
       } catch (error) {
-        console.error('Error loading projects:', error)
+        logger.error('Error loading projects:', error)
       } finally {
         setIsLoaded(true)
       }

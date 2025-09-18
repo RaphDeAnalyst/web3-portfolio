@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { logger } from './logger'
 
 interface Web3State {
   isConnected: boolean
@@ -60,7 +61,7 @@ export function Web3Provider({ children }: Web3ProviderProps) {
           }
         }
       } catch (error) {
-        console.error('Error checking wallet connection:', error)
+        logger.error('Error checking wallet connection:', error)
       }
     }
 
@@ -99,7 +100,7 @@ export function Web3Provider({ children }: Web3ProviderProps) {
         isConnecting: false
       }))
     } catch (error) {
-      console.error('Failed to connect wallet:', error)
+      logger.error('Failed to connect wallet:', error)
       setState(prev => ({ ...prev, isConnecting: false }))
       throw error
     }
@@ -135,7 +136,7 @@ export function Web3Provider({ children }: Web3ProviderProps) {
         }
       }
     } catch (error) {
-      console.error('Failed to switch network:', error)
+      logger.error('Failed to switch network:', error)
       throw error
     }
   }

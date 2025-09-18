@@ -1,4 +1,5 @@
 import { mediaServiceHybrid } from './media-service-hybrid'
+import { logger } from './logger'
 
 export interface MigrationResult {
   success: number
@@ -17,7 +18,7 @@ export class MediaMigration {
    * Main migration function - migrates all localStorage media to Supabase database
    */
   static async migrateAll(): Promise<MigrationResult> {
-    console.log('🚀 Starting media migration from localStorage to Supabase...')
+    logger.info('🚀 Starting media migration from localStorage to Supabase...')
     
     const result = await mediaServiceHybrid.migrateFromLocalStorage()
     
@@ -45,7 +46,7 @@ export class MediaMigration {
       })
     }
 
-    console.log(`✅ Migration completed: ${result.success} successful, ${result.errors} errors`)
+    logger.info(`✅ Migration completed: ${result.success} successful, ${result.errors} errors`)
     return migrationResult
   }
 
@@ -78,7 +79,7 @@ export class MediaMigration {
       const localFiles = JSON.parse(stored)
       const filteredFiles = localFiles.filter((file: any) => this.matchesType(file, mediaType))
 
-      console.log(`Migrating ${filteredFiles.length} ${mediaType} files...`)
+      logger.info(`Migrating ${filteredFiles.length} ${mediaType} files...`)
 
       // This is a simplified version - in a real implementation you'd want more detailed migration
       const migrationResult = await mediaServiceHybrid.migrateFromLocalStorage()
@@ -93,7 +94,7 @@ export class MediaMigration {
       })
 
     } catch (error) {
-      console.error(`Error migrating ${mediaType} files:`, error)
+      logger.error(`Error migrating ${mediaType} files:`, error)
       result.errors++
       result.details.push({
         filename: `${mediaType} migration`,
@@ -126,7 +127,7 @@ export class MediaMigration {
       // Get all existing media from database
       const allMedia = await mediaServiceHybrid.getAllMedia()
       
-      console.log(`Found ${allMedia.length} media files in database`)
+      logger.info(`Found ${allMedia.length} media files in database`)
 
       for (const media of allMedia) {
         if (media.storage_provider === 'supabase') {
@@ -190,7 +191,7 @@ export class MediaMigration {
           result.skipped++
 
         } catch (error) {
-          console.error(`Error consolidating ${media.filename}:`, error)
+          logger.error(`Error consolidating ${media.filename}:`, error)
           result.errors++
           result.details.push({
             filename: media.filename,
@@ -202,7 +203,7 @@ export class MediaMigration {
       }
 
     } catch (error) {
-      console.error('Error in consolidation:', error)
+      logger.error('Error in consolidation:', error)
       result.errors++
       result.details.push({
         filename: 'consolidation',
@@ -211,7 +212,7 @@ export class MediaMigration {
       })
     }
 
-    console.log(`Consolidation completed: ${result.success} successful, ${result.errors} errors, ${result.skipped} skipped`)
+    logger.info(`Consolidation completed: ${result.success} successful, ${result.errors} errors, ${result.skipped} skipped`)
     return result
   }
 
@@ -228,7 +229,7 @@ export class MediaMigration {
 
     try {
       const allMedia = await mediaServiceHybrid.getAllMedia()
-      console.log(`Checking ${allMedia.length} media files for cleanup...`)
+      logger.info(`Checking ${allMedia.length} media files for cleanup...`)
 
       // Group by URL to find duplicates
       const urlGroups = allMedia.reduce((groups, media) => {
@@ -291,7 +292,7 @@ export class MediaMigration {
       })
 
     } catch (error) {
-      console.error('Error in cleanup:', error)
+      logger.error('Error in cleanup:', error)
       result.errors++
       result.details.push({
         filename: 'cleanup',
@@ -300,7 +301,7 @@ export class MediaMigration {
       })
     }
 
-    console.log(`Cleanup completed: ${result.success} cleaned up, ${result.errors} errors`)
+    logger.info(`Cleanup completed: ${result.success} cleaned up, ${result.errors} errors`)
     return result
   }
 
@@ -358,7 +359,7 @@ export class MediaMigration {
           
           report.localStorage.totalSize = this.formatFileSize(totalBytes)
         } catch (error) {
-          console.error('Error reading localStorage:', error)
+          logger.error('Error reading localStorage:', error)
         }
       }
     }
@@ -371,7 +372,7 @@ export class MediaMigration {
       report.database.byProvider = stats.byProvider
       report.database.byType = stats.byType
     } catch (error) {
-      console.error('Error getting database stats:', error)
+      logger.error('Error getting database stats:', error)
     }
 
     // Generate recommendations
@@ -445,7 +446,7 @@ export class MediaMigration {
 export const quickMigration = {
   // Run in browser console: await quickMigration.all()
   async all() {
-    console.log('🚀 Starting quick migration...')
+    logger.info('🚀 Starting quick migration...')
     const result = await MediaMigration.migrateAll()
     console.table(result.details)
     return result
@@ -453,17 +454,17 @@ export const quickMigration = {
 
   // Run in browser console: await quickMigration.report()
   async report() {
-    console.log('📊 Generating migration report...')
+    logger.info('📊 Generating migration report...')
     const report = await MediaMigration.generateReport()
-    console.log('📁 localStorage:', report.localStorage)
-    console.log('🗄️ Database:', report.database)
-    console.log('💡 Recommendations:', report.recommendations)
+    logger.info('📁 localStorage:', report.localStorage)
+    logger.info('🗄️ Database:', report.database)
+    logger.info('💡 Recommendations:', report.recommendations)
     return report
   },
 
   // Run in browser console: await quickMigration.cleanup()
   async cleanup() {
-    console.log('🧹 Starting cleanup...')
+    logger.info('🧹 Starting cleanup...')
     const result = await MediaMigration.cleanupMedia()
     console.table(result.details)
     return result

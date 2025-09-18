@@ -1,3 +1,4 @@
+import { logger } from './logger'
 import { supabase, type Media as SupabaseMedia } from './supabase'
 
 export interface MediaFile {
@@ -33,13 +34,13 @@ export class MediaServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching media from Supabase:', error)
+        logger.error('Error fetching media from Supabase:', error)
         return []
       }
 
       return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
-      console.error('Error in getAllMedia:', error)
+      logger.error('Error in getAllMedia:', error)
       return []
     }
   }
@@ -57,13 +58,13 @@ export class MediaServiceSupabase {
         if (error.code === 'PGRST116') {
           return null
         }
-        console.error('Error fetching media by ID:', error)
+        logger.error('Error fetching media by ID:', error)
         return null
       }
 
       return this.transformToMediaFile(data)
     } catch (error) {
-      console.error('Error in getMediaById:', error)
+      logger.error('Error in getMediaById:', error)
       return null
     }
   }
@@ -84,13 +85,13 @@ export class MediaServiceSupabase {
         .single()
 
       if (error) {
-        console.error('Error adding media:', error)
+        logger.error('Error adding media:', error)
         return null
       }
 
       return this.transformToMediaFile(data)
     } catch (error) {
-      console.error('Error in addMedia:', error)
+      logger.error('Error in addMedia:', error)
       return null
     }
   }
@@ -109,13 +110,13 @@ export class MediaServiceSupabase {
         .single()
 
       if (error) {
-        console.error('Error updating media:', error)
+        logger.error('Error updating media:', error)
         return null
       }
 
       return this.transformToMediaFile(data)
     } catch (error) {
-      console.error('Error in updateMedia:', error)
+      logger.error('Error in updateMedia:', error)
       return null
     }
   }
@@ -129,13 +130,13 @@ export class MediaServiceSupabase {
         .eq('id', id)
 
       if (error) {
-        console.error('Error deleting media:', error)
+        logger.error('Error deleting media:', error)
         return false
       }
 
       return true
     } catch (error) {
-      console.error('Error in deleteMedia:', error)
+      logger.error('Error in deleteMedia:', error)
       return false
     }
   }
@@ -150,13 +151,13 @@ export class MediaServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching media by type:', error)
+        logger.error('Error fetching media by type:', error)
         return []
       }
 
       return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
-      console.error('Error in getMediaByType:', error)
+      logger.error('Error in getMediaByType:', error)
       return []
     }
   }
@@ -171,13 +172,13 @@ export class MediaServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error searching media:', error)
+        logger.error('Error searching media:', error)
         return []
       }
 
       return data.map((media: SupabaseMedia) => this.transformToMediaFile(media))
     } catch (error) {
-      console.error('Error in searchMedia:', error)
+      logger.error('Error in searchMedia:', error)
       return []
     }
   }
@@ -190,7 +191,7 @@ export class MediaServiceSupabase {
         .select('type, size')
 
       if (error) {
-        console.error('Error fetching media stats:', error)
+        logger.error('Error fetching media stats:', error)
         return {
           total: 0,
           totalSize: 0,
@@ -211,7 +212,7 @@ export class MediaServiceSupabase {
         byType
       }
     } catch (error) {
-      console.error('Error in getMediaStats:', error)
+      logger.error('Error in getMediaStats:', error)
       return {
         total: 0,
         totalSize: 0,
@@ -232,7 +233,7 @@ export class MediaServiceSupabase {
         .upload(filePath, file)
 
       if (error) {
-        console.error('Error uploading file:', error)
+        logger.error('Error uploading file:', error)
         return null
       }
 
@@ -251,7 +252,7 @@ export class MediaServiceSupabase {
 
       return publicUrl
     } catch (error) {
-      console.error('Error in uploadFile:', error)
+      logger.error('Error in uploadFile:', error)
       return null
     }
   }

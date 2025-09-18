@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { logger } from '@/lib/logger'
 import { profileService } from '@/lib/service-switcher'
 import type { ProfileData } from '@/lib/profile-service-supabase'
 
@@ -18,7 +19,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile for structured data:', error)
+        logger.error('Error loading profile for structured data', error)
       }
     }
 

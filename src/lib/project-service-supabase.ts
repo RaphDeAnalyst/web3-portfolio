@@ -1,4 +1,5 @@
 import { supabase, isSupabaseAvailable, type Project as SupabaseProject } from './supabase'
+import { logger } from './logger'
 
 // Legacy Project interface for compatibility
 export interface Project {
@@ -93,13 +94,13 @@ export class ProjectServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching projects from Supabase:', error)
+        logger.error('Error fetching projects from Supabase', error)
         return []
       }
 
       return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
-      console.error('Error in getAllProjects:', error)
+      logger.error('Error in getAllProjects', error)
       return []
     }
   }
@@ -117,13 +118,13 @@ export class ProjectServiceSupabase {
         if (error.code === 'PGRST116') {
           return null
         }
-        console.error('Error fetching project by ID:', error)
+        logger.error('Error fetching project by ID', error, { id })
         return null
       }
 
       return this.transformToLegacyProject(data)
     } catch (error) {
-      console.error('Error in getProjectById:', error)
+      logger.error('Error in getProjectById', error, { id })
       return null
     }
   }
@@ -134,7 +135,7 @@ export class ProjectServiceSupabase {
       const projects = await this.getAllProjects()
       return projects[index] || null
     } catch (error) {
-      console.error('Error in getProjectByIndex:', error)
+      logger.error('Error in getProjectByIndex', error, { index })
       return null
     }
   }
@@ -150,7 +151,7 @@ export class ProjectServiceSupabase {
         .eq('id', id)
 
       if (error) {
-        console.error('Error updating project:', error)
+        logger.error('Error updating project', error, { id })
         // Handle specific database errors
         if (error.code === '42703') {
           throw new Error('Database schema error. Please ensure all required columns exist in the projects table.')
@@ -166,7 +167,7 @@ export class ProjectServiceSupabase {
       // Track activity (activity service not implemented yet)
       console.log(`Project activity: ${updatedProject.title || 'Unknown Project'} - updated`)
     } catch (error) {
-      console.error('Error in updateProject:', error)
+      logger.error('Error in updateProject', error)
       throw error
     }
   }
@@ -187,7 +188,7 @@ export class ProjectServiceSupabase {
 
       await this.updateProject(projectId, updatedProject)
     } catch (error) {
-      console.error('Error in updateProjectByIndex:', error)
+      logger.error('Error in updateProjectByIndex', error)
       throw error
     }
   }
@@ -202,16 +203,16 @@ export class ProjectServiceSupabase {
         .insert([projectData])
 
       if (error) {
-        console.error('Error adding project:', error)
+        logger.error('Error adding project', error, { title: projectData.title })
         throw error
       }
 
-      console.log(`Project added: ${newProject.title}`)
+      logger.info('Project added', { title: projectData.title })
       
       // Track activity (activity service not implemented yet)
-      console.log(`Project activity: ${newProject.title || 'Unknown Project'} - created`)
+      logger.info('Project activity - created', { title: projectData.title })
     } catch (error) {
-      console.error('Error in addProject:', error)
+      logger.error('Error in addProject', error)
       throw error
     }
   }
@@ -225,13 +226,13 @@ export class ProjectServiceSupabase {
         .eq('id', id)
 
       if (error) {
-        console.error('Error deleting project:', error)
+        logger.error('Error deleting project', error, { id })
         throw error
       }
 
       console.log(`Project deleted: ${id}`)
     } catch (error) {
-      console.error('Error in deleteProject:', error)
+      logger.error('Error in deleteProject', error)
       throw error
     }
   }
@@ -252,7 +253,7 @@ export class ProjectServiceSupabase {
 
       await this.deleteProject(projectId)
     } catch (error) {
-      console.error('Error in deleteProjectByIndex:', error)
+      logger.error('Error in deleteProjectByIndex', error)
       throw error
     }
   }
@@ -268,13 +269,13 @@ export class ProjectServiceSupabase {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching featured projects:', error)
+        logger.error('Error fetching featured projects', error)
         return []
       }
 
       return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
-      console.error('Error in getFeaturedProjects:', error)
+      logger.error('Error in getFeaturedProjects', error)
       return []
     }
   }
@@ -292,7 +293,7 @@ export class ProjectServiceSupabase {
 
       await this.updateProject(id, { featured })
     } catch (error) {
-      console.error('Error in setFeaturedStatus:', error)
+      logger.error('Error in setFeaturedStatus', error)
       throw error
     }
   }
@@ -313,7 +314,7 @@ export class ProjectServiceSupabase {
 
       await this.setFeaturedStatus(projectId, featured)
     } catch (error) {
-      console.error('Error in setFeaturedStatusByIndex:', error)
+      logger.error('Error in setFeaturedStatusByIndex', error)
       throw error
     }
   }
@@ -326,7 +327,7 @@ export class ProjectServiceSupabase {
         .select('status, category, featured')
 
       if (error) {
-        console.error('Error fetching project stats:', error)
+        logger.error('Error fetching project stats', error)
         return {
           total: 0,
           featured: 0,
@@ -352,7 +353,7 @@ export class ProjectServiceSupabase {
         byCategory
       }
     } catch (error) {
-      console.error('Error in getProjectStats:', error)
+      logger.error('Error in getProjectStats', error)
       return {
         total: 0,
         featured: 0,
@@ -380,13 +381,13 @@ export class ProjectServiceSupabase {
       const { data, error } = await queryBuilder.order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error searching projects:', error)
+        logger.error('Error searching projects', error, { query })
         return []
       }
 
       return data.map((project: SupabaseProject) => this.transformToLegacyProject(project))
     } catch (error) {
-      console.error('Error in searchProjects:', error)
+      logger.error('Error in searchProjects', error)
       return []
     }
   }
@@ -399,14 +400,14 @@ export class ProjectServiceSupabase {
         .select('category')
 
       if (error) {
-        console.error('Error fetching categories:', error)
+        logger.error('Error fetching categories', error)
         return []
       }
 
       const categories = [...new Set(data.map((p: any) => p.category))] as string[]
       return categories.sort()
     } catch (error) {
-      console.error('Error in getCategories:', error)
+      logger.error('Error in getCategories', error)
       return []
     }
   }

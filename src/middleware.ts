@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
+import { logger } from './lib/logger'
 
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-change-in-production'
@@ -36,7 +37,7 @@ export async function middleware(request: NextRequest) {
       // Token is valid, allow access
       return NextResponse.next()
     } catch (error) {
-      console.error('Admin middleware error:', error)
+      logger.error('Admin middleware error', error)
       // Token verification failed, redirect to login
       const loginUrl = new URL('/admin', request.url)
       loginUrl.searchParams.set('auth', 'true')

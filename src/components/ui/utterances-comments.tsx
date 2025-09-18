@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
+import { logger } from '@/lib/logger'
 
 interface UtterancesCommentsProps {
   slug: string
@@ -39,14 +40,14 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
     // Add error handler
     script.onerror = () => {
       if (mounted) {
-        console.warn('Failed to load Utterances comments')
+        logger.warn('Failed to load Utterances comments')
       }
     }
     
     // Add load handler to prevent issues
     script.onload = () => {
       if (mounted) {
-        console.debug('Utterances comments loaded successfully')
+        logger.info('Utterances comments loaded successfully')
       }
     }
     
@@ -74,7 +75,7 @@ export function UtterancesComments({ slug, title }: UtterancesCommentsProps) {
           container.innerHTML = ''
         } catch (error) {
           // Ignore errors during cleanup - component is unmounting anyway
-          console.debug('Utterances cleanup error (safe to ignore):', error)
+          logger.info('Utterances cleanup error (safe to ignore)', error as Error)
         }
       }
     }

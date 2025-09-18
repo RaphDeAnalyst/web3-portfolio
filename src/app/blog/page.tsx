@@ -7,6 +7,7 @@ import { NewsletterSignup } from '@/components/ui/newsletter-signup'
 import { blogService, profileService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/lib/blog-service'
 import { Search, X } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -47,7 +48,7 @@ export default function Blog() {
         const allCategories = ['All', ...await blogService.getCategories()]
         setCategories(allCategories)
       } catch (error) {
-        console.error('Error loading blog data:', error)
+        logger.error('Error loading blog data:', error)
         // Fallback to original posts if profile loading fails
         try {
           const publishedPosts = await blogService.getPublishedPosts()
@@ -55,7 +56,7 @@ export default function Blog() {
           const allCategories = ['All', ...await blogService.getCategories()]
           setCategories(allCategories)
         } catch (fallbackError) {
-          console.error('Error loading fallback posts:', fallbackError)
+          logger.error('Error loading fallback posts:', fallbackError)
         }
       } finally {
         setIsLoaded(true)

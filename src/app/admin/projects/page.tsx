@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Github
 } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function ProjectsManagement() {
   const { error, success } = useNotification()
@@ -36,7 +37,7 @@ export default function ProjectsManagement() {
         const projects = await projectService.getAllProjects()
         setProjectList(projects)
       } catch (err) {
-        console.error('Error loading projects:', err)
+        logger.error('Error loading projects:', err)
         error('Failed to load projects. Please refresh the page.')
       } finally {
         setIsLoaded(true)
@@ -77,7 +78,7 @@ export default function ProjectsManagement() {
       setProjectList(updatedProjects)
       success(`Project "${title}" deleted successfully`)
     } catch (err) {
-      console.error('Error deleting project:', err)
+      logger.error('Error deleting project:', err)
       error('Failed to delete project. Please try again.')
     }
   }

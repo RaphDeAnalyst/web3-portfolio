@@ -5,6 +5,7 @@ import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
 import { BlogPostData } from '@/lib/blog-service'
 import { Edit, Eye, RefreshCw, Rocket, FileText, Image, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 interface BlogPostEditorProps {
   initialData?: Partial<BlogPostData>
@@ -86,7 +87,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
     try {
       await onSave(dataToSave, isDraft)
     } catch (error) {
-      console.error('Failed to save post:', error)
+      logger.error('Failed to save post:', error)
     } finally {
       setIsSaving(false)
     }

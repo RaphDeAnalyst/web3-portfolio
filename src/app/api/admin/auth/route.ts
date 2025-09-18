@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import { logger } from '@/lib/logger'
 
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-change-in-production'
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('Admin auth error:', error)
+    logger.error('Admin auth error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -135,7 +136,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Admin auth verification error:', error)
+    logger.error('Admin auth verification error:', error)
     return NextResponse.json(
       { authenticated: false },
       { status: 401 }
@@ -161,7 +162,7 @@ export async function DELETE(request: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('Admin logout error:', error)
+    logger.error('Admin logout error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

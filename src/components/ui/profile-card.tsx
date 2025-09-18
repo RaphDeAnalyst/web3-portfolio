@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
+import { logger } from '@/lib/logger'
 
 export function ProfileCard() {
   const [isFlipped, setIsFlipped] = useState(false)
@@ -16,7 +17,7 @@ export function ProfileCard() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile in ProfileCard:', error)
+        logger.error('Error loading profile in ProfileCard:', error)
       } finally {
         setLoading(false)
       }
@@ -90,7 +91,7 @@ export function ProfileCard() {
         })
         setSocialLinks(formattedLinks)
       } catch (error) {
-        console.error('Error loading social links:', error)
+        logger.error('Error loading social links:', error)
       }
     }
     

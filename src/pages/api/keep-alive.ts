@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { logger } from '../../lib/logger'
 
 interface KeepAliveResponse {
   success: boolean
@@ -49,7 +50,7 @@ export default async function handler(
         throw new Error(`Keep-alive connection failed: ${connectionError.message}`)
       }
 
-      console.log('✅ Supabase keep-alive successful (connection test)', {
+      logger.serverLog('info', '✅ Supabase keep-alive successful (connection test)', {
         timestamp: new Date().toISOString(),
         connection_active: true
       })
@@ -62,7 +63,7 @@ export default async function handler(
       })
     }
 
-    console.log('✅ Supabase keep-alive successful', {
+    logger.serverLog('info', '✅ Supabase keep-alive successful', {
       timestamp: new Date().toISOString(),
       result: data
     })
@@ -75,7 +76,7 @@ export default async function handler(
     })
 
   } catch (error) {
-    console.error('❌ Supabase keep-alive failed:', error)
+    logger.serverLog('error', '❌ Supabase keep-alive failed', { error })
 
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
 

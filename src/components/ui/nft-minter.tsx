@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useWeb3 } from '@/lib/web3-context'
 import { useNotification } from '@/lib/notification-context'
+import { logger } from '@/lib/logger'
 
 interface NFTMetadata {
   name: string
@@ -80,7 +81,7 @@ export function NFTMinter() {
       success(`${nftDesigns[selectedDesign].name} minted successfully! 🎉`)
       setTimeout(() => setMintSuccess(false), 5000)
     } catch (err) {
-      console.error('Minting failed:', err)
+      logger.error('Minting failed:', err)
       error('Failed to mint NFT. Please try again.')
     } finally {
       setIsMinting(false)

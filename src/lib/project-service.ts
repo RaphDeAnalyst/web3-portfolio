@@ -1,4 +1,5 @@
 import { projects as staticProjects, Project } from '@/data/projects'
+import { logger } from './logger'
 
 export class ProjectService {
   private STORAGE_KEY = 'portfolio_projects'
@@ -18,7 +19,7 @@ export class ProjectService {
         return merged
       }
     } catch (error) {
-      console.error('Error loading projects from localStorage:', error)
+      logger.error('Error loading projects from localStorage:', error)
     }
     
     return staticProjects
@@ -51,7 +52,7 @@ export class ProjectService {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projects))
     } catch (error) {
-      console.error('Error saving projects to localStorage:', error)
+      logger.error('Error saving projects to localStorage:', error)
       throw error
     }
   }

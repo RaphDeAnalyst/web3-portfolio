@@ -6,6 +6,7 @@ import { profileService } from '@/lib/service-switcher'
 import { viewTracker } from '@/lib/view-tracking'
 import { calculateReadingTime } from '@/lib/reading-time'
 import { ImageViewer } from '@/components/ui/image-viewer'
+import { logger } from '@/lib/logger'
 
 interface BlogCardProps {
   title: string
@@ -60,7 +61,7 @@ export function BlogCard({
         const profile = await profileService.getProfile()
         setProfileData(profile)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
       }
     }
     

@@ -13,6 +13,7 @@ import {
   Star,
   Plus
 } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function PostsManagement() {
   const { success, error } = useNotification()
@@ -59,7 +60,7 @@ export default function PostsManagement() {
       setPosts(allPosts)
       success(`Blog post "${title}" deleted successfully`)
     } catch (err) {
-      console.error('Failed to delete post:', err)
+      logger.error('Failed to delete post:', err)
       error('Failed to delete blog post. Please try again.')
     }
   }

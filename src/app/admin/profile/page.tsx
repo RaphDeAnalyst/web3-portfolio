@@ -6,6 +6,7 @@ import { ProfilePictureUpload } from '@/components/ui/profile-picture-upload'
 import { profileService } from '@/lib/service-switcher'
 import type { ProfileData } from '@/lib/profile-service-supabase'
 import { AlertTriangle } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function ProfileManagement() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -19,7 +20,7 @@ export default function ProfileManagement() {
         const profileData = await profileService.getProfile()
         setProfile(profileData)
       } catch (error) {
-        console.error('Error loading profile:', error)
+        logger.error('Error loading profile:', error)
         setMessage({ type: 'error', text: 'Failed to load profile data.' })
       } finally {
         setLoading(false)
@@ -37,7 +38,7 @@ export default function ProfileManagement() {
       setMessage({ type: 'success', text: 'Profile updated successfully!' })
       setTimeout(() => setMessage(null), 3000)
     } catch (error) {
-      console.error('Error saving profile:', error)
+      logger.error('Error saving profile:', error)
       setMessage({ type: 'error', text: 'Failed to save profile. Please try again.' })
       setTimeout(() => setMessage(null), 3000)
     } finally {

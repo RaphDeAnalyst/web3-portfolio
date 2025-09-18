@@ -8,6 +8,7 @@ import { Menu, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { NavbarAvatar } from '@/components/ui/profile-avatar'
+import { logger } from '@/lib/logger'
 
 /**
  * Navigation item interface
@@ -225,7 +226,7 @@ export function Navbar() {
     })
 
     if (!isMobile) {
-      console.log('Admin gesture: Desktop detected, skipping tap detection')
+      logger.info('Admin gesture: Desktop detected, skipping tap detection')
       return
     }
 
@@ -235,17 +236,17 @@ export function Navbar() {
     }
 
     const newCount = tapCount + 1
-    console.log('Admin gesture: Processing tap', { newCount, totalNeeded: 5 })
+    logger.info('Admin gesture: Processing tap', { newCount, totalNeeded: 5 })
     setTapCount(newCount)
 
     // Check if we've reached 5 taps
     if (newCount >= 5) {
-      console.log('Admin gesture: 5 taps reached! Navigating to admin')
+      logger.info('Admin gesture: 5 taps reached! Navigating to admin')
 
       // Haptic feedback if available
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
         navigator.vibrate([100, 50, 100, 50, 100])
-        console.log('Admin gesture: Haptic feedback triggered')
+        logger.info('Admin gesture: Haptic feedback triggered')
       }
 
       // Navigate to admin
@@ -257,14 +258,14 @@ export function Navbar() {
     // Navigate to home page after a short delay if less than 5 taps
     setTimeout(() => {
       if (tapCount < 4) {
-        console.log('Admin gesture: Normal navigation to home')
+        logger.info('Admin gesture: Normal navigation to home')
         router.push('/')
       }
     }, 150)
 
     // Reset tap count after 3 seconds of no activity
     tapTimeoutRef.current = setTimeout(() => {
-      console.log('Admin gesture: Timeout reached, resetting tap count')
+      logger.info('Admin gesture: Timeout reached, resetting tap count')
       setTapCount(0)
     }, 3000)
   }, [tapCount, router])

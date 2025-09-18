@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useWeb3 } from '@/lib/web3-context'
 import { useNotification } from '@/lib/notification-context'
+import { logger } from '@/lib/logger'
 
 interface WalletOption {
   name: string
@@ -66,7 +67,7 @@ export function WalletConnect() {
       setShowWallets(false)
       success('Wallet connected successfully!')
     } catch (err) {
-      console.error('Connection failed:', err)
+      logger.error('Connection failed:', err)
       error('Failed to connect wallet. Please try again.')
     }
   }
@@ -78,7 +79,7 @@ export function WalletConnect() {
       await switchNetwork(networkId)
       success(`Switched to ${targetNetwork?.name || 'network'} successfully!`)
     } catch (err) {
-      console.error('Network switch failed:', err)
+      logger.error('Network switch failed:', err)
       error('Failed to switch network. Please try again.')
     } finally {
       setIsSwitchingNetwork(false)

@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectEditor } from '@/components/admin/project-editor'
 import { projectService } from '@/lib/service-switcher'
+import { logger } from '@/lib/logger'
 
 export default function EditProject() {
   const router = useRouter()
@@ -24,7 +25,7 @@ export default function EditProject() {
           setProjectData(project)
         }
       } catch (error) {
-        console.error('Error loading project:', error)
+        logger.error('Error loading project:', error)
       } finally {
         setLoading(false)
       }
@@ -43,7 +44,7 @@ export default function EditProject() {
       // Redirect to projects list
       router.push('/admin/projects')
     } catch (error) {
-      console.error('Error updating project:', error)
+      logger.error('Error updating project:', error)
       
       // Provide specific error messages based on error type
       let errorMessage = 'Error updating project. Please try again.'

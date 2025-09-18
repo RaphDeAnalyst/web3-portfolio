@@ -1,3 +1,4 @@
+import { logger } from './logger'
 // View Tracking Service
 // Handles view count tracking using localStorage for persistence
 
@@ -25,7 +26,7 @@ class ViewTrackingService {
       const stored = localStorage.getItem(this.VIEWS_STORAGE_KEY)
       return stored ? JSON.parse(stored) : {}
     } catch (error) {
-      console.error('Error reading view data:', error)
+      logger.error('Error reading view data:', error)
       return {}
     }
   }
@@ -37,7 +38,7 @@ class ViewTrackingService {
     try {
       localStorage.setItem(this.VIEWS_STORAGE_KEY, JSON.stringify(views))
     } catch (error) {
-      console.error('Error saving view data:', error)
+      logger.error('Error saving view data:', error)
     }
   }
 
@@ -67,7 +68,7 @@ class ViewTrackingService {
         sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(viewedPosts))
       }
     } catch (error) {
-      console.error('Error marking session view:', error)
+      logger.error('Error marking session view:', error)
     }
   }
 

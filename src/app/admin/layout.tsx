@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AdminDock from '@/components/ui/admin-dock'
+import { logger } from '@/lib/logger'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -33,7 +34,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
           setIsAuthenticated(false)
         }
       } catch (error) {
-        console.error('Auth check failed:', error)
+        logger.error('Auth check failed:', error)
         setIsAuthenticated(false)
       } finally {
         setIsLoading(false)
@@ -70,7 +71,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
         setError(data.error || 'Authentication failed')
       }
     } catch (error) {
-      console.error('Login error:', error)
+      logger.error('Login error:', error)
       setError('Network error. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -84,7 +85,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
         credentials: 'include'
       })
     } catch (error) {
-      console.error('Logout error:', error)
+      logger.error('Logout error:', error)
     }
 
     setIsAuthenticated(false)

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { logger } from '@/lib/logger'
 
 interface ImageUploadProps {
   onImageSelect: (imageUrl: string) => void
@@ -24,7 +25,7 @@ export function ImageUpload({
         const imageUrl = await uploadToImgBB(file)
         onImageSelect(imageUrl)
       } catch (error) {
-        console.error('Failed to upload image:', error)
+        logger.error('Failed to upload image:', error)
         // Fallback to base64 for now
         const reader = new FileReader()
         reader.onload = (e) => {

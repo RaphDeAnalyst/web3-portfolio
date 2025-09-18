@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Project } from '@/data/projects'
 import { RefreshCw, Rocket, Save } from 'lucide-react'
 import { useNotification } from '@/lib/notification-context'
+import { logger } from '@/lib/logger'
 
 interface ProjectData extends Omit<Project, 'id'> {
   id?: string
@@ -118,7 +119,7 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
       await onSave(dataToSave, isDraft)
       success(isDraft ? 'Project draft saved successfully!' : 'Project saved successfully!')
     } catch (err) {
-      console.error('Failed to save project:', err)
+      logger.error('Failed to save project:', err)
       error('Failed to save project. Please try again.')
     } finally {
       setIsSaving(false)

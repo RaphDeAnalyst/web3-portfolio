@@ -1,3 +1,4 @@
+import { logger } from './logger'
 // Blog Post Management Service
 // Handles CRUD operations for blog posts using localStorage for persistence
 
@@ -112,12 +113,12 @@ The potential is limitless, and we're just scratching the surface of what's poss
         // If post has been modified by user (origin=user) or if it's a default post that was edited, preserve it
         if (existingPost.origin === 'user') {
           // User-created or user-modified post - NEVER overwrite
-          console.log(`Preserving user-modified post: ${existingPost.title}`)
+          logger.info(`Preserving user-modified post: ${existingPost.title}`)
           // Leave it completely alone
         } else if (existingPost.origin === 'default') {
           // This is still a default post, but preserve any user changes to featured/status
           // Only update content/metadata, never user-controlled fields
-          console.log(`Updating default post metadata while preserving user settings: ${existingPost.title}`)
+          logger.info(`Updating default post metadata while preserving user settings: ${existingPost.title}`)
           merged[existingIndex] = {
             ...defaultPost,
             // Always preserve user-controlled fields from existing post
@@ -183,12 +184,12 @@ The potential is limitless, and we're just scratching the surface of what's poss
         return finalPosts
       }
     } catch (error) {
-      console.error('Error loading blog posts from localStorage:', error)
+      logger.error('Error loading blog posts from localStorage:', error)
     }
     
     // When no localStorage data exists, start with defaults but don't overwrite any existing state
     // This handles first-time setup without being destructive to cleared cache scenarios
-    console.warn('No blog posts found in localStorage - initializing with defaults')
+    logger.warn('No blog posts found in localStorage - initializing with defaults')
     const defaultPosts = this.getDefaultPosts()
     this.savePosts(defaultPosts)
     return defaultPosts
@@ -233,7 +234,7 @@ The potential is limitless, and we're just scratching the surface of what's poss
         localStorage.setItem(this.METADATA_KEY, JSON.stringify(metadata))
       }
     } catch (error) {
-      console.error('Error saving blog posts to localStorage:', error)
+      logger.error('Error saving blog posts to localStorage:', error)
     }
   }
 
@@ -249,13 +250,13 @@ The potential is limitless, and we're just scratching the surface of what's poss
         const userPosts = JSON.parse(backup)
         const meta = JSON.parse(metadata)
         
-        console.warn(`Cache loss detected! Recovering ${userPosts.length} user posts from backup (last backup: ${meta.lastBackup})`)
+        logger.warn(`Cache loss detected! Recovering ${userPosts.length} user posts from backup (last backup: ${meta.lastBackup})`)
         
         // Merge recovered user posts with current defaults
         return this.mergePostsWithDefaults(userPosts)
       }
     } catch (error) {
-      console.error('Error during cache recovery:', error)
+      logger.error('Error during cache recovery:', error)
     }
     
     return null
@@ -326,7 +327,7 @@ The potential is limitless, and we're just scratching the surface of what's poss
     posts[index] = updatedPost
     this.savePosts(posts)
     
-    console.log(`Post field updated and marked as user-owned: ${updatedPost.title}`, updates)
+    logger.info(`Post field updated and marked as user-owned: ${updatedPost.title}`, updates)
     return updatedPost
   }
 
@@ -412,9 +413,9 @@ The potential is limitless, and we're just scratching the surface of what's poss
     try {
       localStorage.removeItem(this.STORAGE_KEY)
       localStorage.removeItem(this.CONTENT_KEY)
-      console.log('Blog data reset to clean state')
+      logger.info('Blog data reset to clean state')
     } catch (error) {
-      console.error('Error resetting blog data:', error)
+      logger.error('Error resetting blog data:', error)
     }
   }
 }

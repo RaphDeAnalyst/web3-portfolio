@@ -2,6 +2,7 @@ import { supabase } from './supabase'
 import { blogService as legacyBlogService } from './blog-service'
 import { ProjectService as legacyProjectService } from './project-service'
 import { MediaMigration } from './media-migration'
+import { logger } from './logger'
 
 export class DataMigration {
   // Migrate blog posts from localStorage to Supabase
@@ -14,11 +15,11 @@ export class DataMigration {
       const existingPosts = legacyBlogService.getAllPosts()
       
       if (existingPosts.length === 0) {
-        console.log('No blog posts to migrate')
+        logger.info('No blog posts to migrate')
         return { success, errors }
       }
 
-      console.log(`Starting migration of ${existingPosts.length} blog posts...`)
+      logger.info(`Starting migration of ${existingPosts.length} blog posts...`)
 
       for (const post of existingPosts) {
         try {
@@ -56,10 +57,10 @@ export class DataMigration {
               .eq('id', existing.id)
 
             if (error) {
-              console.error(`Error updating blog post "${post.title}":`, error)
+              logger.error(`Error updating blog post "${post.title}":`, error)
               errors++
             } else {
-              console.log(`Updated blog post: ${post.title}`)
+              logger.info(`Updated blog post: ${post.title}`)
               success++
             }
           } else {
@@ -69,23 +70,23 @@ export class DataMigration {
               .insert([blogData])
 
             if (error) {
-              console.error(`Error inserting blog post "${post.title}":`, error)
+              logger.error(`Error inserting blog post "${post.title}":`, error)
               errors++
             } else {
-              console.log(`Migrated blog post: ${post.title}`)
+              logger.info(`Migrated blog post: ${post.title}`)
               success++
             }
           }
         } catch (error) {
-          console.error(`Error migrating blog post "${post.title}":`, error)
+          logger.error(`Error migrating blog post "${post.title}":`, error)
           errors++
         }
       }
 
-      console.log(`Blog migration completed: ${success} successful, ${errors} errors`)
+      logger.info(`Blog migration completed: ${success} successful, ${errors} errors`)
       return { success, errors }
     } catch (error) {
-      console.error('Error in blog migration:', error)
+      logger.error('Error in blog migration:', error)
       return { success, errors }
     }
   }
@@ -101,11 +102,11 @@ export class DataMigration {
       const existingProjects = legacyService.getAllProjects()
       
       if (existingProjects.length === 0) {
-        console.log('No projects to migrate')
+        logger.info('No projects to migrate')
         return { success, errors }
       }
 
-      console.log(`Starting migration of ${existingProjects.length} projects...`)
+      logger.info(`Starting migration of ${existingProjects.length} projects...`)
 
       for (const project of existingProjects) {
         try {
@@ -137,10 +138,10 @@ export class DataMigration {
               .eq('id', existing.id)
 
             if (error) {
-              console.error(`Error updating project "${project.title}":`, error)
+              logger.error(`Error updating project "${project.title}":`, error)
               errors++
             } else {
-              console.log(`Updated project: ${project.title}`)
+              logger.info(`Updated project: ${project.title}`)
               success++
             }
           } else {
@@ -150,23 +151,23 @@ export class DataMigration {
               .insert([projectData])
 
             if (error) {
-              console.error(`Error inserting project "${project.title}":`, error)
+              logger.error(`Error inserting project "${project.title}":`, error)
               errors++
             } else {
-              console.log(`Migrated project: ${project.title}`)
+              logger.info(`Migrated project: ${project.title}`)
               success++
             }
           }
         } catch (error) {
-          console.error(`Error migrating project "${project.title}":`, error)
+          logger.error(`Error migrating project "${project.title}":`, error)
           errors++
         }
       }
 
-      console.log(`Project migration completed: ${success} successful, ${errors} errors`)
+      logger.info(`Project migration completed: ${success} successful, ${errors} errors`)
       return { success, errors }
     } catch (error) {
-      console.error('Error in project migration:', error)
+      logger.error('Error in project migration:', error)
       return { success, errors }
     }
   }
@@ -181,11 +182,11 @@ export class DataMigration {
       const existingActivities = JSON.parse(localStorage.getItem('portfolio_activities') || '[]')
       
       if (existingActivities.length === 0) {
-        console.log('No activities to migrate')
+        logger.info('No activities to migrate')
         return { success, errors }
       }
 
-      console.log(`Starting migration of ${existingActivities.length} activities...`)
+      logger.info(`Starting migration of ${existingActivities.length} activities...`)
 
       for (const activity of existingActivities) {
         try {
@@ -212,33 +213,33 @@ export class DataMigration {
               .insert([activityData])
 
             if (error) {
-              console.error(`Error inserting activity "${activity.title}":`, error)
+              logger.error(`Error inserting activity "${activity.title}":`, error)
               errors++
             } else {
-              console.log(`Migrated activity: ${activity.title}`)
+              logger.info(`Migrated activity: ${activity.title}`)
               success++
             }
           } else {
-            console.log(`Activity already exists: ${activity.title}`)
+            logger.info(`Activity already exists: ${activity.title}`)
             success++
           }
         } catch (error) {
-          console.error(`Error migrating activity "${activity.title}":`, error)
+          logger.error(`Error migrating activity "${activity.title}":`, error)
           errors++
         }
       }
 
-      console.log(`Activity migration completed: ${success} successful, ${errors} errors`)
+      logger.info(`Activity migration completed: ${success} successful, ${errors} errors`)
       return { success, errors }
     } catch (error) {
-      console.error('Error in activity migration:', error)
+      logger.error('Error in activity migration:', error)
       return { success, errors }
     }
   }
 
   // Migrate media files from localStorage to Supabase
   static async migrateMediaFiles(): Promise<{ success: number; errors: number }> {
-    console.log('Starting media file migration...')
+    logger.info('Starting media file migration...')
     const result = await MediaMigration.migrateAll()
     return {
       success: result.success,
@@ -248,7 +249,7 @@ export class DataMigration {
 
   // Run full migration
   static async migrateAll(): Promise<void> {
-    console.log('Starting full data migration to Supabase...')
+    logger.info('Starting full data migration to Supabase...')
 
     const blogResults = await this.migrateBlogPosts()
     const projectResults = await this.migrateProjects()
@@ -258,18 +259,18 @@ export class DataMigration {
     const totalSuccess = blogResults.success + projectResults.success + activityResults.success + mediaResults.success
     const totalErrors = blogResults.errors + projectResults.errors + activityResults.errors + mediaResults.errors
 
-    console.log(`Migration completed:`)
-    console.log(`- Total successful: ${totalSuccess}`)
-    console.log(`- Total errors: ${totalErrors}`)
-    console.log(`- Blog posts: ${blogResults.success} successful, ${blogResults.errors} errors`)
-    console.log(`- Projects: ${projectResults.success} successful, ${projectResults.errors} errors`)
-    console.log(`- Activities: ${activityResults.success} successful, ${activityResults.errors} errors`)
-    console.log(`- Media files: ${mediaResults.success} successful, ${mediaResults.errors} errors`)
+    logger.info(`Migration completed:`)
+    logger.info(`- Total successful: ${totalSuccess}`)
+    logger.info(`- Total errors: ${totalErrors}`)
+    logger.info(`- Blog posts: ${blogResults.success} successful, ${blogResults.errors} errors`)
+    logger.info(`- Projects: ${projectResults.success} successful, ${projectResults.errors} errors`)
+    logger.info(`- Activities: ${activityResults.success} successful, ${activityResults.errors} errors`)
+    logger.info(`- Media files: ${mediaResults.success} successful, ${mediaResults.errors} errors`)
 
     if (totalErrors === 0) {
-      console.log('✅ All data migrated successfully!')
+      logger.info('✅ All data migrated successfully!')
     } else {
-      console.log('⚠️  Migration completed with some errors. Check the logs above.')
+      logger.info('⚠️  Migration completed with some errors. Check the logs above.')
     }
   }
 
@@ -301,7 +302,7 @@ export class DataMigration {
 
       return hasLocalData && (!blogs || blogs.length === 0) && (!projects || projects.length === 0)
     } catch (error) {
-      console.error('Error checking migration status:', error)
+      logger.error('Error checking migration status:', error)
       return false
     }
   }

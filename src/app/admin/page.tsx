@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { 
-  FileText, 
-  Rocket, 
-  Star, 
+import {
+  FileText,
+  Rocket,
+  Star,
   Award,
   RefreshCw,
   Plus,
@@ -14,6 +14,7 @@ import {
   Calendar,
   User
 } from 'lucide-react'
+import { logger } from '@/lib/logger'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -47,7 +48,7 @@ export default function AdminDashboard() {
           featuredProjects
         })
       } catch (error) {
-        console.error('Error loading stats:', error)
+        logger.error('Error loading stats:', error)
       } finally {
         setLoading(false)
         setLastUpdated(new Date())
@@ -78,7 +79,7 @@ export default function AdminDashboard() {
         featuredProjects
       })
     } catch (error) {
-      console.error('Error refreshing stats:', error)
+      logger.error('Error refreshing stats:', error)
     } finally {
       setLoading(false)
       setLastUpdated(new Date())

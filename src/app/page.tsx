@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { logger } from '@/lib/logger'
 import { blogService, projectService, profileService } from '@/lib/service-switcher'
 
 // Import section components
@@ -50,7 +51,7 @@ export default function Home() {
         setFeaturedProjects(projects)
         setFeaturedPosts(updatedPosts)
       } catch (error) {
-        console.error('Error loading featured content:', error)
+        logger.error('Error loading featured content', error)
         // Fallback to original posts if profile loading fails
         try {
           const [projects, posts] = await Promise.all([
@@ -60,7 +61,7 @@ export default function Home() {
           setFeaturedProjects(projects)
           setFeaturedPosts(posts)
         } catch (fallbackError) {
-          console.error('Error loading fallback content:', fallbackError)
+          logger.error('Error loading fallback content', fallbackError)
         }
       } finally {
         setLoading(false)

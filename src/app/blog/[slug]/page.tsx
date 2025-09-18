@@ -6,6 +6,7 @@ import { StructuredData } from '@/components/seo/StructuredData'
 import { blogService, profileService } from '@/lib/service-switcher'
 import { calculateReadingTime } from '@/lib/reading-time'
 import Link from 'next/link'
+import { logger } from '@/lib/logger'
 
 // Generate metadata for dynamic blog posts
 export async function generateMetadata(
@@ -76,7 +77,7 @@ export async function generateMetadata(
       },
     }
   } catch (error) {
-    console.error('Error generating blog post metadata:', error)
+    logger.error('Error generating blog post metadata:', error)
     return {
       title: 'Blog Post | Matthew Raphael Web3 Analytics',
       description: 'Web3 data analytics insights and blockchain research.',
@@ -93,7 +94,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       profileService.getProfile()
     ])
   } catch (error) {
-    console.error('Error loading blog post or profile:', error)
+    logger.error('Error loading blog post or profile:', error)
     return notFound()
   }
 

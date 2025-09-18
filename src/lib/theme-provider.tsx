@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { logger } from './logger'
 
 type Theme = 'dark' | 'light' | 'system'
 
@@ -163,7 +164,7 @@ export function ThemeProvider({
           localStorage?.setItem(storageKey, newTheme)
         }
       } catch (error) {
-        console.warn('Failed to save theme to localStorage:', error)
+        logger.warn('Failed to save theme to localStorage', error as Error)
       }
       setTheme(newTheme)
     },

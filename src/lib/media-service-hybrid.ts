@@ -1,4 +1,5 @@
 import { supabase, type Media } from './supabase'
+import { logger } from './logger'
 
 // Enhanced MediaFile interface for hybrid system
 export interface MediaFile {
@@ -135,7 +136,7 @@ export class MediaServiceHybrid {
         alt_text: options.alt_text || null
       }
 
-      console.log('💾 Saving media record to database:', mediaRecord)
+      logger.info('💾 Saving media record to database:', mediaRecord)
 
       const { data, error } = await supabase
         .from('media')
@@ -144,15 +145,15 @@ export class MediaServiceHybrid {
         .single()
 
       if (error) {
-        console.error('❌ Error saving media metadata:', error)
-        console.error('Full error details:', JSON.stringify(error, null, 2))
+        logger.error('❌ Error saving media metadata:', error)
+        logger.error('Full error details:', JSON.stringify(error))
         return null
       }
 
-      console.log('✅ Media record saved successfully:', data)
+      logger.info('✅ Media record saved successfully:', data)
       return this.transformToMediaFile(data)
     } catch (error) {
-      console.error(`Error uploading to ${provider}:`, error)
+      logger.error(`Error uploading to ${provider}:`, error)
       return null
     }
   }
@@ -187,13 +188,13 @@ export class MediaServiceHybrid {
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('ImgBB API Error:', response.status, errorText)
+      logger.error('ImgBB API Error:', response.status)
       throw new Error(`ImgBB upload failed: ${response.status} ${errorText}`)
     }
 
     const data = await response.json()
     if (!data.success) {
-      console.error('ImgBB Response Error:', data)
+      logger.error('ImgBB Response Error:', data)
       throw new Error(data.error?.message || 'ImgBB upload failed')
     }
 
@@ -242,7 +243,7 @@ export class MediaServiceHybrid {
         alt_text: null
       }
 
-      console.log('💾 Saving external media to database:', mediaRecord)
+      logger.info('💾 Saving external media to database:', mediaRecord)
 
       const { data, error } = await supabase
         .from('media')
@@ -251,15 +252,15 @@ export class MediaServiceHybrid {
         .single()
 
       if (error) {
-        console.error('❌ Error saving external media:', error)
-        console.error('Full error details:', JSON.stringify(error, null, 2))
+        logger.error('❌ Error saving external media:', error)
+        logger.error('Full error details:', JSON.stringify(error))
         return null
       }
 
-      console.log('✅ External media saved successfully:', data)
+      logger.info('✅ External media saved successfully:', data)
       return this.transformToMediaFile(data)
     } catch (error) {
-      console.error('Error adding external media:', error)
+      logger.error('Error adding external media:', error)
       return null
     }
   }
@@ -273,13 +274,13 @@ export class MediaServiceHybrid {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching media:', error)
+        logger.error('Error fetching media:', error)
         return []
       }
 
       return data.map((record: Media) => this.transformToMediaFile(record))
     } catch (error) {
-      console.error('Error in getAllMedia:', error)
+      logger.error('Error in getAllMedia:', error)
       return []
     }
   }
@@ -294,13 +295,13 @@ export class MediaServiceHybrid {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching media by provider:', error)
+        logger.error('Error fetching media by provider:', error)
         return []
       }
 
       return data.map((record: Media) => this.transformToMediaFile(record))
     } catch (error) {
-      console.error('Error in getMediaByProvider:', error)
+      logger.error('Error in getMediaByProvider:', error)
       return []
     }
   }
@@ -324,10 +325,10 @@ export class MediaServiceHybrid {
         .eq('id', id)
 
       if (error) {
-        console.error('Error tracking media usage:', error)
+        logger.error('Error tracking media usage:', error)
       }
     } catch (error) {
-      console.error('Error in trackUsage:', error)
+      logger.error('Error in trackUsage:', error)
     }
   }
 
@@ -342,7 +343,7 @@ export class MediaServiceHybrid {
         .single()
 
       if (fetchError || !media) {
-        console.error('Error fetching media for deletion:', fetchError)
+        logger.error('Error fetching media for deletion:', fetchError)
         return false
       }
 
@@ -353,7 +354,7 @@ export class MediaServiceHybrid {
           .remove([media.file_path])
 
         if (storageError) {
-          console.error('Error deleting from storage:', storageError)
+          logger.error('Error deleting from storage:', storageError)
           // Continue with database deletion even if storage deletion fails
         }
       }
@@ -365,13 +366,13 @@ export class MediaServiceHybrid {
         .eq('id', id)
 
       if (deleteError) {
-        console.error('Error deleting media record:', deleteError)
+        logger.error('Error deleting media record:', deleteError)
         return false
       }
 
       return true
     } catch (error) {
-      console.error('Error in deleteMedia:', error)
+      logger.error('Error in deleteMedia:', error)
       return false
     }
   }
@@ -407,7 +408,7 @@ export class MediaServiceHybrid {
       }
     }
 
-    console.log(`Bulk deletion completed: ${results.summary.successful} successful, ${results.summary.failed} failed`)
+    logger.info(`Bulk deletion completed: ${results.summary.successful} successful, ${results.summary.failed} failed`)
     return results
   }
 
@@ -419,7 +420,7 @@ export class MediaServiceHybrid {
         .select('storage_provider, type, size, is_public, usage_count')
 
       if (error) {
-        console.error('Error fetching media stats:', error)
+        logger.error('Error fetching media stats:', error)
         return {
           total: 0,
           totalSize: 0,
@@ -457,7 +458,7 @@ export class MediaServiceHybrid {
         totalUsage
       }
     } catch (error) {
-      console.error('Error in getMediaStats:', error)
+      logger.error('Error in getMediaStats:', error)
       return {
         total: 0,
         totalSize: 0,
@@ -523,12 +524,12 @@ export class MediaServiceHybrid {
     try {
       const stored = localStorage.getItem('media-library')
       if (!stored) {
-        console.log('No media library found in localStorage')
+        logger.info('No media library found in localStorage')
         return { success, errors }
       }
 
       const localFiles = JSON.parse(stored)
-      console.log(`Migrating ${localFiles.length} files from localStorage...`)
+      logger.info(`Migrating ${localFiles.length} files from localStorage...`)
 
       for (const localFile of localFiles) {
         try {
@@ -564,22 +565,22 @@ export class MediaServiceHybrid {
             .insert([mediaRecord])
 
           if (error) {
-            console.error(`Error migrating file "${localFile.name}":`, error)
+            logger.error(`Error migrating file "${localFile.name}":`, error)
             errors++
           } else {
-            console.log(`Migrated: ${localFile.name}`)
+            logger.info(`Migrated: ${localFile.name}`)
             success++
           }
         } catch (error) {
-          console.error(`Error processing file "${localFile.name}":`, error)
+          logger.error(`Error processing file "${localFile.name}":`, error)
           errors++
         }
       }
 
-      console.log(`Migration completed: ${success} successful, ${errors} errors`)
+      logger.info(`Migration completed: ${success} successful, ${errors} errors`)
       return { success, errors }
     } catch (error) {
-      console.error('Error in migration:', error)
+      logger.error('Error in migration:', error)
       return { success, errors }
     }
   }

@@ -1,3 +1,4 @@
+import { logger } from './logger'
 // GitHub Comments Service
 // Fetches comment counts from GitHub Issues API for Utterances-powered comments
 
@@ -33,7 +34,7 @@ class GitHubCommentsService {
       const cached = localStorage.getItem(this.CACHE_KEY)
       return cached ? JSON.parse(cached) : {}
     } catch (error) {
-      console.error('Error reading comment cache:', error)
+      logger.error('Error reading comment cache:', error)
       return {}
     }
   }
@@ -45,7 +46,7 @@ class GitHubCommentsService {
     try {
       localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache))
     } catch (error) {
-      console.error('Error saving comment cache:', error)
+      logger.error('Error saving comment cache:', error)
     }
   }
 
@@ -86,17 +87,17 @@ class GitHubCommentsService {
 
         if (response.ok) {
           const issues = await response.json()
-          console.log(`Found ${issues.length} issues with label: ${label}`)
+          logger.info(`Found ${issues.length} issues with label: ${label}`)
           allIssues.push(...issues)
         }
       } catch (error) {
-        console.warn(`Error fetching issues with label ${label}:`, error)
+        logger.warn(`Error fetching issues with label ${label}`, error as Error)
       }
     }
 
     // If no labeled issues found, try to get all issues and filter by content
     if (allIssues.length === 0) {
-      console.log('No labeled issues found, fetching all issues to search for blog comments...')
+      logger.info('No labeled issues found, fetching all issues to search for blog comments...')
       
       const url = `${this.API_BASE}/repos/${this.REPO_OWNER}/${this.REPO_NAME}/issues?state=all&per_page=100`
       
@@ -109,14 +110,14 @@ class GitHubCommentsService {
 
       if (response.ok) {
         const issues = await response.json()
-        console.log(`Found ${issues.length} total issues, filtering for blog-related ones...`)
+        logger.info(`Found ${issues.length} total issues, filtering for blog-related ones...`)
         
         // Filter issues that look like blog comments (contain blog URLs)
         allIssues = issues.filter((issue: GitHubIssue) => 
           issue.body && issue.body.includes('/blog/')
         )
         
-        console.log(`Filtered to ${allIssues.length} blog-related issues`)
+        logger.info(`Filtered to ${allIssues.length} blog-related issues`)
       }
     }
 
@@ -151,29 +152,29 @@ class GitHubCommentsService {
       const match = issue.body.match(pattern)
       if (match && match[1]) {
         const slug = match[1].replace(/[)#?&].*$/, '').trim()
-        console.log(`Extracted slug "${slug}" from issue #${issue.number}`)
+        logger.info(`Extracted slug "${slug}" from issue #${issue.number}`)
         return slug
       }
     }
     
-    console.log(`Could not extract slug from issue #${issue.number}:`, issue.body.substring(0, 100))
+    logger.info(`Could not extract slug from issue #${issue.number}`, { body: issue.body.substring(0, 100) })
     return null
   }
 
   // Get comment count for a specific blog post slug
   async getCommentCount(slug: string): Promise<number> {
-    console.log(`Fetching comment count for slug: ${slug}`)
+    logger.info(`Fetching comment count for slug: ${slug}`)
     
     // Check cache first
     const cachedCount = this.getCachedCount(slug)
     if (cachedCount !== null) {
-      console.log(`Using cached count for ${slug}: ${cachedCount}`)
+      logger.info(`Using cached count for ${slug}: ${cachedCount}`)
       return cachedCount
     }
 
     try {
       // Fetch fresh data from GitHub
-      console.log('Fetching fresh data from GitHub API...')
+      logger.info('Fetching fresh data from GitHub API...')
       const issues = await this.fetchUtterancesIssues()
       const cache = this.getCache()
       const now = Date.now()
@@ -184,7 +185,7 @@ class GitHubCommentsService {
       issues.forEach(issue => {
         const issueSlug = this.extractSlugFromIssue(issue)
         if (issueSlug) {
-          console.log(`Caching slug "${issueSlug}" with ${issue.comments} comments`)
+          logger.info(`Caching slug "${issueSlug}" with ${issue.comments} comments`)
           cache[issueSlug] = {
             count: issue.comments,
             timestamp: now,
@@ -193,14 +194,14 @@ class GitHubCommentsService {
           
           if (issueSlug === slug) {
             foundMatch = true
-            console.log(`✅ Found match for slug "${slug}" with ${issue.comments} comments`)
+            logger.info(`✅ Found match for slug "${slug}" with ${issue.comments} comments`)
           }
         }
       })
 
       // Also cache this specific slug even if no issue found yet
       if (!cache[slug]) {
-        console.log(`No issue found for slug "${slug}", caching as 0 comments`)
+        logger.info(`No issue found for slug "${slug}", caching as 0 comments`)
         cache[slug] = {
           count: 0,
           timestamp: now
@@ -210,16 +211,16 @@ class GitHubCommentsService {
       this.setCache(cache)
       
       const finalCount = cache[slug].count
-      console.log(`Final count for slug "${slug}": ${finalCount}`)
+      logger.info(`Final count for slug "${slug}": ${finalCount}`)
       return finalCount
 
     } catch (error) {
-      console.error('Error fetching GitHub comments:', error)
+      logger.error('Error fetching GitHub comments:', error)
       
       // Return cached value even if expired, or 0 if no cache
       const cache = this.getCache()
       const fallbackCount = cache[slug]?.count || 0
-      console.log(`Using fallback count for ${slug}: ${fallbackCount}`)
+      logger.info(`Using fallback count for ${slug}: ${fallbackCount}`)
       return fallbackCount
     }
   }
@@ -252,7 +253,7 @@ class GitHubCommentsService {
       // Fetch once and update cache for all posts
       await this.fetchUtterancesIssues()
     } catch (error) {
-      console.error('Error preloading comment counts:', error)
+      logger.error('Error preloading comment counts:', error)
     }
   }
 
@@ -260,13 +261,13 @@ class GitHubCommentsService {
   clearCache(): void {
     if (typeof window === 'undefined') return
     localStorage.removeItem(this.CACHE_KEY)
-    console.log('GitHub comments cache cleared')
+    logger.info('GitHub comments cache cleared')
   }
 
   // Debug: Log current cache contents
   debugCache(): void {
     const cache = this.getCache()
-    console.log('Current GitHub comments cache:', cache)
+    logger.info('Current GitHub comments cache:', cache)
   }
 }
 

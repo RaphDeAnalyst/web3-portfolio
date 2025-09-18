@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useNotification } from '@/lib/notification-context'
+import { logger } from '@/lib/logger'
 
 interface FormData {
   name: string
@@ -75,7 +76,7 @@ export function ContactForm() {
         throw new Error('Failed to send message')
       }
     } catch (err) {
-      console.error('Error submitting form:', err)
+      logger.error('Error submitting form:', err)
       error('Failed to send message. Please try again or contact me directly at matthewraphael@matthewraphael.xyz')
     } finally {
       setIsSubmitting(false)
