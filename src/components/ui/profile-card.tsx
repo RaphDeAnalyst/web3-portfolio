@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { profileService } from '@/lib/service-switcher'
 import { logger } from '@/lib/logger'
+import { Mail } from 'lucide-react'
 
 export function ProfileCard() {
   const [isFlipped, setIsFlipped] = useState(false)
@@ -294,7 +295,7 @@ export function ProfileCard() {
                     href={`mailto:${profile?.email || 'matthewraphael@matthewraphael.xyz'}`}
                     className="w-full flex items-center justify-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
                   >
-                    <span className="text-base sm:text-lg">📩</span>
+                    <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="text-sm sm:text-base">Hire Me</span>
                   </a>
                 </div>
