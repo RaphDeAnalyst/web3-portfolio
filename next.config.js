@@ -19,18 +19,24 @@ const nextConfig = {
       },
     ],
   },
-  
+
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
-  
+
   // Compression and optimization
   compress: true,
   poweredByHeader: false,
-  
+
   // SEO optimizations
   trailingSlash: false,
+
+  // Modern browser targeting to reduce bundle size
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   
   // Security headers
   async headers() {

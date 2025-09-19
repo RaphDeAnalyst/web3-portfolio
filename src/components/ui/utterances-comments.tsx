@@ -127,7 +127,7 @@ export function UtterancesSetupInstructions() {
               github.com/apps/utterances
             </a>
           </li>
-          <li>Click "Configure" and install the app on your repository</li>
+          <li>Click &quot;Configure&quot; and install the app on your repository</li>
           <li>Grant access to your <code className="bg-gray-200 dark:bg-gray-800 px-1 rounded">web3-portfolio</code> repository</li>
           <li>
             Update the repo name in{' '}
@@ -141,7 +141,7 @@ export function UtterancesSetupInstructions() {
         <div className="mt-4 p-3 bg-gray-200 dark:bg-gray-800 rounded border-l-4 border-gray-500">
           <p className="font-medium">Replace this line in the component:</p>
           <code className="text-xs block mt-1 font-mono">
-            script.setAttribute('repo', 'your-username/web3-portfolio')
+            script.setAttribute(&apos;repo&apos;, &apos;your-username/web3-portfolio&apos;)
           </code>
           <p className="text-xs mt-1">With your actual GitHub username/repository name</p>
         </div>

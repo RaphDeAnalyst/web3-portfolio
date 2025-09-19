@@ -217,7 +217,7 @@ export function ProfileCard() {
 
             {/* Flip Indicator */}
             <div className="absolute bottom-4 right-4 text-foreground/40 text-xs flex items-center space-x-1">
-              <span>Click "More Info" to flip</span>
+              <span>Click &quot;More Info&quot; to flip</span>
               <span className="text-cyber-500">↻</span>
             </div>
           </div>

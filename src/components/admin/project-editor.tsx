@@ -342,7 +342,7 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
           {/* Project Metrics */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-foreground">Project Metrics</label>
-            <p className="text-xs text-foreground/60">Add key metrics that highlight your project's impact and results</p>
+            <p className="text-xs text-foreground/60">Add key metrics that highlight your project&apos;s impact and results</p>
             <div className="grid grid-cols-2 gap-2">
               <input
                 type="text"
@@ -388,8 +388,8 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
             
             <div className="text-xs text-foreground/50 space-y-1">
               <p><strong>Examples:</strong></p>
-              <p>• accuracy: "85%" • datapoints: "10K+" • users: "500+"</p>
-              <p>• timeframe: "6 months" • savings: "20%" • protocols: "12"</p>
+              <p>• accuracy: &quot;85%&quot; • datapoints: &quot;10K+&quot; • users: &quot;500+&quot;</p>
+              <p>• timeframe: &quot;6 months&quot; • savings: &quot;20%&quot; • protocols: &quot;12&quot;</p>
             </div>
           </div>
 

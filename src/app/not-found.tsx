@@ -16,7 +16,7 @@ export default function NotFound() {
               Oops, you found this page!
             </h1>
             <p className="text-lg text-foreground/70 leading-relaxed">
-              You think you're lost? Don't worry, it happens to the best of us.
+              You think you&apos;re lost? Don&apos;t worry, it happens to the best of us.
             </p>
           </div>
 

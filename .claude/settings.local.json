@@ -20,7 +20,8 @@
       "Bash(rm:*)",
       "Bash(npx eslint:*)",
       "Bash(node:*)",
-      "Bash(npx @next/bundle-analyzer:*)"
+      "Bash(npx @next/bundle-analyzer:*)",
+      "WebFetch(domain:www.webpagetest.org)"
     ],
     "deny": [],
     "ask": [],

@@ -68,7 +68,7 @@ export default function EditBlogPost() {
           <FileText className="w-16 h-16 text-gray-400" />
         </div>
         <h1 className="text-2xl font-bold text-foreground">Post Not Found</h1>
-        <p className="text-foreground/70">The blog post you're looking for doesn't exist.</p>
+        <p className="text-foreground/70">The blog post you&apos;re looking for doesn&apos;t exist.</p>
         <Link
           href="/admin/posts"
           className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"

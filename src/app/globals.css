@@ -214,7 +214,7 @@ select {
   }
 }
 
-/* Reference-based Button System - Minimal and Clean */
+/* Reference-based Button System - Minimal and Clean with Enhanced Contrast */
 .btn-primary {
   background: var(--primary); /* Reference blue */
   color: white;
@@ -230,9 +230,11 @@ select {
 }
 
 .btn-primary:hover {
-  background: transparent;
-  color: var(--primary);
-  border-color: var(--primary);
+  background: var(--primary-hover);
+  color: white;
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(42, 127, 201, 0.3);
 }
 
 .btn-secondary {

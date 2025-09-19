@@ -138,7 +138,7 @@ export function SkillsErrorFallback() {
           Skills & <span className="text-gradient">Expertise</span>
         </h2>
         <p className="text-xl text-foreground/70 max-w-3xl mx-auto mb-8">
-          The skills section is temporarily unavailable. Here's a brief overview of my expertise:
+          The skills section is temporarily unavailable. Here&apos;s a brief overview of my expertise:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
           <div className="p-6 rounded-2xl border border-primary-200/50 dark:border-primary-800/50 bg-primary-50/30 dark:bg-primary-900/10">

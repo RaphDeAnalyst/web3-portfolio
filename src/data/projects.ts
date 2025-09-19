@@ -31,8 +31,8 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript", "Chart.js", "Tailwind CSS", "Next.js", "Supabase"],
     category: "Analytics",
     status: "Live",
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "https://my-new-portfolio.com",
+    githubUrl: "https://github.com/matthewraphael/sample-analytics-dashboard",
     metrics: {
       "Users": "1K+",
       "Accuracy": "95%",
@@ -65,8 +65,8 @@ export const newProjectTemplate: Project = {
   tech: ["Technology1", "Technology2", "Technology3"], // List all technologies used
   category: "Analytics", // Must be one of the categories above
   status: "Learning", // Live, Learning, Complete, Development, or Beta
-  demoUrl: "#", // Link to live demo or "#" if none
-  githubUrl: "#", // Link to GitHub repo or "#" if private
+  demoUrl: "https://example.com", // Link to live demo or "https://example.com" as placeholder
+  githubUrl: "https://github.com/user/repo", // Link to GitHub repo or valid placeholder
   metrics: {
     // Add relevant metrics for your project
     // Examples: "timeframe: '2 months'", "accuracy: '85%'", "users: '50+'", etc.

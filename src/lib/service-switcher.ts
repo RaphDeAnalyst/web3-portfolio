@@ -13,24 +13,24 @@ let profileServiceSupabaseCache: any = null
 // Lazy loading functions for Supabase services
 async function getBlogServiceSupabase() {
   if (!blogServiceSupabaseCache) {
-    const module = await import('./blog-service-supabase')
-    blogServiceSupabaseCache = module.blogServiceSupabase
+    const importedModule = await import('./blog-service-supabase')
+    blogServiceSupabaseCache = importedModule.blogServiceSupabase
   }
   return blogServiceSupabaseCache
 }
 
 async function getProjectServiceSupabase() {
   if (!projectServiceSupabaseCache) {
-    const module = await import('./project-service-supabase')
-    projectServiceSupabaseCache = module.projectServiceSupabase
+    const importedModule = await import('./project-service-supabase')
+    projectServiceSupabaseCache = importedModule.projectServiceSupabase
   }
   return projectServiceSupabaseCache
 }
 
 async function getProfileServiceSupabase() {
   if (!profileServiceSupabaseCache) {
-    const module = await import('./profile-service-supabase')
-    profileServiceSupabaseCache = module.profileServiceSupabase
+    const importedModule = await import('./profile-service-supabase')
+    profileServiceSupabaseCache = importedModule.profileServiceSupabase
   }
   return profileServiceSupabaseCache
 }

@@ -1,0 +1,18 @@
+# Modern browsers targeting for reduced bundle size
+# This eliminates the need for legacy JavaScript polyfills
+
+# Production - Modern browsers only
+> 0.5%
+last 2 versions
+Firefox ESR
+not dead
+not op_mini all
+not ie 11
+not android 4.4.3-4.4.4
+
+# ES2020+ features support
+supports es6-module
+supports es6-module-dynamic-import
+supports fetch
+supports proxy
+supports async-functions

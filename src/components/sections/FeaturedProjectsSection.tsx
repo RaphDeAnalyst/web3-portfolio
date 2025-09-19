@@ -56,7 +56,7 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
             <div className="text-4xl sm:text-6xl mb-4">🚧</div>
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4">No Featured Projects</h3>
             <p className="text-sm sm:text-base text-foreground/60 mb-6 px-4">
-              Featured projects will appear here once they're selected in the admin panel.
+              Featured projects will appear here once they&apos;re selected in the admin panel.
             </p>
             <Link href="/portfolio">
               <button className="px-6 py-3 bg-storj-navy text-white rounded-storj font-medium hover:bg-storj-blue hover:transform hover:translate-y-[-1px] transition-all duration-200 text-sm sm:text-base">

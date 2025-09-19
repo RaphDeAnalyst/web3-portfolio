@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { profileService } from '@/lib/service-switcher'
 import { logger } from '@/lib/logger'
 import type { ProfileData } from '@/lib/profile-service'
@@ -116,15 +117,19 @@ export function ProfileAvatar({
             )}
             
             {/* Actual Image */}
-            <img
+            <Image
               src={profile?.avatar}
               alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
-              className={`${sizeClasses[size]} rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10 transition-all duration-300 hover:shadow-primary-500/20 hover:scale-105 ${
-                imageLoading ? 'opacity-0 absolute inset-0' : 'opacity-100'
+              fill
+              sizes="(max-width: 640px) 60px, (max-width: 1024px) 80px, 96px"
+              className={`rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10 transition-all duration-300 hover:shadow-primary-500/20 hover:scale-105 ${
+                imageLoading ? 'opacity-0' : 'opacity-100'
               }`}
               onLoad={handleImageLoad}
               onError={handleImageError}
-              loading={priority ? 'eager' : 'lazy'}
+              priority={priority}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
           </div>
         ) : (

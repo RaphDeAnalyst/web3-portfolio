@@ -2,6 +2,7 @@
 
 import { useState, memo } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Github, ExternalLink, BarChart3, FileText } from 'lucide-react'
 import { ImageViewer } from '@/components/ui/image-viewer'
 
@@ -49,6 +50,7 @@ export const ProjectCard = memo(function ProjectCard({
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const [showImageViewer, setShowImageViewer] = useState(false)
 
 
@@ -83,21 +85,30 @@ export const ProjectCard = memo(function ProjectCard({
 
       {/* Project thumbnail/hero visual */}
       <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-        {image ? (
+        {image && !imageError ? (
           <>
-            <img
+            <Image
               src={image}
               alt={`${title} project screenshot`}
-              loading="lazy"
-              className={`w-full h-full object-cover transition-all duration-700 cursor-pointer ${
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={`object-cover transition-all duration-700 cursor-pointer ${
                 imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
               } ${isHovered ? 'scale-110' : 'scale-100'}`}
               onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageError(true)
+                setImageLoaded(false)
+                console.warn(`Failed to load image: ${image}`)
+              }}
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
                 setShowImageViewer(true)
               }}
+              priority={featured}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {!imageLoaded && (
@@ -107,11 +118,14 @@ export const ProjectCard = memo(function ProjectCard({
             )}
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: '#2a7fc9' }}>
+          <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: '#1a5f99' }}>
             <div className="text-center">
               <h3 className="text-white font-bold text-lg sm:text-xl md:text-2xl leading-tight text-center break-words max-w-full">
                 {title}
               </h3>
+              {imageError && (
+                <p className="text-white/70 text-xs mt-2">Image unavailable</p>
+              )}
             </div>
           </div>
         )}

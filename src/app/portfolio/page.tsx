@@ -254,7 +254,7 @@ export default function Portfolio() {
               <h3 className="text-2xl font-bold text-foreground mb-4">No projects found</h3>
               <p className="text-foreground/60 mb-8">
                 {searchQuery ? (
-                  <>No projects match "{searchQuery}". Try different keywords or </>
+                  <>No projects match &quot;{searchQuery}&quot;. Try different keywords or </>
                 ) : (
                   'No projects found in this category. Try '
                 )}
@@ -289,8 +289,8 @@ export default function Portfolio() {
               Interested in <span className="text-gradient">Collaborating?</span>
             </h2>
             <p className="text-xl text-foreground/70 mb-8 leading-relaxed">
-              I'm always looking for opportunities to learn and contribute to Web3 projects. 
-              Whether it's data analysis, learning collaborations, or entry-level opportunities.
+              I&apos;m always looking for opportunities to learn and contribute to Web3 projects.
+              Whether it&apos;s data analysis, learning collaborations, or entry-level opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

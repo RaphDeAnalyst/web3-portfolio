@@ -259,7 +259,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                     <p><span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">https://drive.google.com/file/d/FILE_ID/view</span></p>
                     <div className="flex items-center space-x-1">
                       <Clipboard className="w-3 h-3" />
-                      <p>Setup: Upload to Google Drive → Set sharing to "Anyone with link" → Copy share URL</p>
+                      <p>Setup: Upload to Google Drive → Set sharing to &quot;Anyone with link&quot; → Copy share URL</p>
                     </div>
                     <div className="flex items-center space-x-1 text-xs text-foreground/50">
                       <Lightbulb className="w-3 h-3" />
@@ -381,7 +381,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                     <span className="text-sm font-medium text-primary-500">Featured Post</span>
                   </div>
                   <p className="text-xs text-foreground/70">
-                    This post will appear in the "Featured Articles" section and get prominent display on the blog page. 
+                    This post will appear in the &quot;Featured Articles&quot; section and get prominent display on the blog page. 
                     Max 2 posts can be featured at once.
                   </p>
                 </div>

@@ -89,22 +89,8 @@ export default function Home() {
       }
     }
 
-    // Use requestIdleCallback to defer heavy loading after initial render
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      const idleCallback = window.requestIdleCallback(() => {
-        loadFeaturedContent()
-      }, { timeout: 5000 })
-
-      return () => {
-        if (idleCallback) {
-          window.cancelIdleCallback(idleCallback)
-        }
-      }
-    } else {
-      // Fallback for browsers without requestIdleCallback
-      const timeoutId = setTimeout(loadFeaturedContent, 100)
-      return () => clearTimeout(timeoutId)
-    }
+    // Load content immediately to reduce HTML fragmentation
+    loadFeaturedContent()
   }, [])
   
   return (

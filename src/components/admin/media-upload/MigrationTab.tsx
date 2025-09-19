@@ -207,7 +207,7 @@ export function MigrationTab({ migrationStatus, onMigration }: MigrationTabProps
             <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">During Migration</h4>
             <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
               <li>• Keep this tab active</li>
-              <li>• Don't refresh the page</li>
+              <li>• Don&apos;t refresh the page</li>
               <li>• Monitor progress carefully</li>
             </ul>
           </div>

@@ -367,7 +367,7 @@ export default function ProfileManagement() {
                 placeholder="Tell your story... Use double line breaks to separate paragraphs."
               />
               <p className="text-sm text-foreground/60 mt-1">
-                This content will appear in the "My Story" section on the About page. Use double line breaks to separate paragraphs.
+                This content will appear in the &quot;My Story&quot; section on the About page. Use double line breaks to separate paragraphs.
               </p>
             </div>
           </div>

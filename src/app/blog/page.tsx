@@ -336,7 +336,7 @@ export default function Blog() {
               <h3 className="text-2xl font-bold text-foreground mb-4">No articles found</h3>
               <p className="text-foreground/60 mb-6">
                 {searchQuery ? (
-                  <>No articles match "{searchQuery}". Try different keywords or </>
+                  <>No articles match &quot;{searchQuery}&quot;. Try different keywords or </>
                 ) : (
                   'No articles found in this category. Try '
                 )}

@@ -82,7 +82,7 @@ export default function EditProject() {
       <div className="max-w-4xl mx-auto space-y-6 text-center py-20">
         <div className="text-6xl mb-4">💼</div>
         <h1 className="text-2xl font-bold text-foreground">Project Not Found</h1>
-        <p className="text-foreground/70">The project you're looking for doesn't exist.</p>
+        <p className="text-foreground/70">The project you&apos;re looking for doesn&apos;t exist.</p>
         <Link
           href="/admin/projects"
           className="inline-flex items-center space-x-2 px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-accent-blue/20"

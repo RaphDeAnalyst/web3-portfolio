@@ -18,7 +18,7 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center px-4 py-2 rounded-full backdrop-blur-sm mb-8" style={{ border: '1px solid #8b5cf6', backgroundColor: '#8b5cf630' }}>
             <span className="w-2 h-2 rounded-full mr-3 animate-pulse" style={{ backgroundColor: '#8b5cf6' }}></span>
-            <span className="text-sm font-medium" style={{ color: '#8b5cf6' }}>Let's Collaborate</span>
+            <span className="text-sm font-medium" style={{ color: '#8b5cf6' }}>Let&apos;s Collaborate</span>
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8">
@@ -31,7 +31,7 @@ export default function Contact() {
             Whether you need <span className="text-foreground font-semibold">analytics dashboards</span>,
             <span className="text-foreground font-semibold"> smart contracts</span>, or
             <span className="text-foreground font-semibold"> AI-powered solutions</span>,
-            let's bring your Web3 vision to life.
+            let&apos;s bring your Web3 vision to life.
           </p>
         </div>
       </section>
@@ -48,7 +48,7 @@ export default function Contact() {
                     Start Your Project
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
-                    Tell me about your Web3 project and I'll get back to you with a detailed proposal. 
+                    Tell me about your Web3 project and I&apos;ll get back to you with a detailed proposal. 
                     The more information you provide, the better I can help you achieve your goals.
                   </p>
                 </div>
@@ -153,11 +153,11 @@ export default function Contact() {
             </div>
             
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6">
-              Let's Build the Future Together
+              Let&apos;s Build the Future Together
             </h2>
             
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-              Ready to transform your Web3 idea into reality? I'm here to help you navigate
+              Ready to transform your Web3 idea into reality? I&apos;m here to help you navigate
               the technical challenges and build something extraordinary.
               <Link href="/about" className="text-primary-600 hover:text-primary-700 underline">
                 Learn more about my background

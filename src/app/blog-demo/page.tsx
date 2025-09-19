@@ -81,7 +81,7 @@ export default function BlogDemoPage() {
             Blog Component Demo
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-            Two different blog listing components inspired by Medium's design, optimized for Web3 content and your portfolio branding.
+            Two different blog listing components inspired by Medium&apos;s design, optimized for Web3 content and your portfolio branding.
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export default function BlogDemoPage() {
               Medium-Style Blog Feed
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Clean, minimal design closely mimicking Medium's blog feed with author info, categories, and bookmark functionality.
+              Clean, minimal design closely mimicking Medium&apos;s blog feed with author info, categories, and bookmark functionality.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function BlogDemoPage() {
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
                 The Medium-style blog feed has been successfully integrated into the main blog page for non-featured posts.
-                It provides a clean, minimal design that closely mimics Medium's interface with author info, categories, and bookmark functionality.
+                It provides a clean, minimal design that closely mimics Medium&apos;s interface with author info, categories, and bookmark functionality.
               </p>
               <div className="space-y-2">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -163,7 +163,7 @@ export default function BlogDemoPage() {
               Best for portfolio sites that need detailed post metadata.
             </p>
             <p>
-              <strong>MediumBlogFeed:</strong> Clean, minimal component that closely mimics Medium's design. Perfect for content-focused blogs
+              <strong>MediumBlogFeed:</strong> Clean, minimal component that closely mimics Medium&apos;s design. Perfect for content-focused blogs
               with emphasis on readability and author information.
             </p>
             <p>
@@ -171,7 +171,7 @@ export default function BlogDemoPage() {
               float to the right on desktop.
             </p>
             <p>
-              <strong>Dark Mode:</strong> Full dark mode support using Tailwind's dark: modifiers and CSS custom properties.
+              <strong>Dark Mode:</strong> Full dark mode support using Tailwind&apos;s dark: modifiers and CSS custom properties.
             </p>
           </div>
         </section>

@@ -21,6 +21,7 @@ const inter = Inter({
   display: "swap",
   preload: true,
   adjustFontFallback: true,
+  weight: ["400", "500", "600", "700"], // Only load needed weights
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
@@ -30,6 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
   preload: false, // Only preload primary font
   adjustFontFallback: true,
+  weight: ["400", "500"], // Minimal weights for code
   fallback: ["Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
 });
 
@@ -110,12 +112,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Resource hints for performance */}
+        {/* Resource hints for performance - optimized for Core Web Vitals */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+
         <link rel="dns-prefetch" href="https://vercel.live" />
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
+
+        {/* Performance optimizations for external services */}
+        <link rel="preconnect" href="https://i.ibb.co" />
+        <link rel="dns-prefetch" href="https://api.imgbb.com" />
 
         {/* Primary favicon - ICO format for best compatibility */}
         <link rel="icon" href="/favicon.ico" sizes="any" />

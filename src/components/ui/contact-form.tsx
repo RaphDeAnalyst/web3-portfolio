@@ -143,7 +143,7 @@ export function ContactForm() {
         </div>
         <h3 className="text-2xl font-bold text-foreground mb-4">Message Sent Successfully!</h3>
         <p className="text-foreground/70 mb-6">
-          Thanks for reaching out! I'll get back to you within 24 hours to discuss your project.
+          Thanks for reaching out! I&apos;ll get back to you within 24 hours to discuss your project.
         </p>
         <div className="text-sm text-foreground/60">
           Expect a response from: matthewraphael@matthewraphael.xyz

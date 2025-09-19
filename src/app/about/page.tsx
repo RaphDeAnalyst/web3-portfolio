@@ -281,7 +281,7 @@ export default function About() {
               Ready to Build the Future?
             </h2>
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-              Let's collaborate on your next Web3 project and unlock the potential of blockchain data and AI.
+              Let&apos;s collaborate on your next Web3 project and unlock the potential of blockchain data and AI.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
