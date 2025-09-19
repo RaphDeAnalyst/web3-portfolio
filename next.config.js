@@ -38,6 +38,41 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   
+  // Redirects for canonical URL enforcement
+  async redirects() {
+    return [
+      // Redirect www to non-www (backup in case middleware doesn't catch it)
+      {
+        source: '/(.*)',
+        has: [
+          {
+            type: 'host',
+            value: 'www.matthewraphael.xyz',
+          },
+        ],
+        destination: 'https://matthewraphael.xyz/$1',
+        permanent: true,
+      },
+      // Redirect trailing slashes to non-trailing slash URLs
+      {
+        source: '/((?!api).*)/',
+        destination: '/$1',
+        permanent: true,
+      },
+      // Redirect common alternative paths to canonical ones
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
+
   // Security headers
   async headers() {
     return [

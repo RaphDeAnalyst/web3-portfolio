@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { Github, Twitter, Linkedin } from 'lucide-react'
 
@@ -13,6 +14,29 @@ export function Footer() {
       setIsEggBroken(true)
     }
   }
+
+  const navigationLinks = [
+    {
+      name: 'About Matthew Raphael',
+      href: '/about',
+      description: 'Learn about my Web3 data analytics journey'
+    },
+    {
+      name: 'Portfolio Projects',
+      href: '/portfolio',
+      description: 'Explore my blockchain analytics work'
+    },
+    {
+      name: 'Blog & Insights',
+      href: '/blog',
+      description: 'Read my Web3 analysis and research'
+    },
+    {
+      name: 'Contact & Collaboration',
+      href: '/contact',
+      description: 'Let\'s work together on your Web3 project'
+    },
+  ]
 
   const socialLinks = [
     {
@@ -44,41 +68,79 @@ export function Footer() {
   return (
     <footer className="bg-background-secondary border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-        <div className="flex flex-col space-y-6 sm:space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
-          {/* Brand */}
-          <div className="flex items-center justify-center md:justify-start space-x-2">
-            <span className="text-sm sm:text-base font-medium text-foreground/90 text-center md:text-left">
-              Matthew Raphael - Web3 Analytics
-            </span>
+        {/* Main footer content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+          {/* Brand & Description */}
+          <div className="lg:col-span-1">
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-foreground">
+                Matthew Raphael
+              </h3>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                Web3 Data Analyst specializing in blockchain analytics, DeFi protocols, and on-chain insights. Transitioning traditional data skills to decentralized finance.
+              </p>
+            </div>
           </div>
 
-          {/* Center section with social links and theme toggle */}
-          <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-6">
-            {/* Social Links */}
-            <div className="flex items-center justify-center space-x-4">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-foreground/60 hover:text-primary transition-colors duration-200 group"
-                  aria-label={link.name}
-                >
-                  <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/10 transition-all duration-200 min-w-[36px] min-h-[36px]">
-                    <div className="text-foreground/60 group-hover:text-primary">{link.icon}</div>
-                  </div>
-                </a>
+          {/* Navigation Links */}
+          <div className="lg:col-span-2">
+            <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wide">
+              Explore My Work
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {navigationLinks.map((link) => (
+                <div key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="group block hover:text-primary transition-colors duration-200"
+                  >
+                    <h5 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200">
+                      {link.name}
+                    </h5>
+                    <p className="text-xs text-foreground/60 mt-1 group-hover:text-foreground/80 transition-colors duration-200">
+                      {link.description}
+                    </p>
+                  </Link>
+                </div>
               ))}
             </div>
-            
-            {/* Theme Toggle */}
-            <div className="sm:border-l sm:border-border sm:pl-4 flex justify-center">
-              <ThemeToggle />
-            </div>
           </div>
 
-          {/* Copyright */}
-          <div className="text-sm text-foreground/70 text-center md:text-right order-last md:order-none">
-            © {currentYear} Built for Web3
+          {/* Social Links & Theme */}
+          <div className="lg:col-span-1">
+            <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wide">
+              Connect
+            </h4>
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-foreground/60 hover:text-primary transition-colors duration-200 group"
+                    aria-label={link.name}
+                    title={link.name}
+                  >
+                    <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/10 transition-all duration-200">
+                      <div className="text-foreground/60 group-hover:text-primary">{link.icon}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <div className="pt-2 border-t border-border">
+                <ThemeToggle />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center pt-6 border-t border-border space-y-4 sm:space-y-0">
+          <div className="text-sm text-foreground/70">
+            © {currentYear} Matthew Raphael. Built for Web3.
+          </div>
+          <div className="text-xs text-foreground/60">
+            Decentralized • Transparent • Future-Ready
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import { NotificationProvider } from "@/lib/notification-context";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GlobalNotificationContainer } from "@/components/ui/notification";
+import { CanonicalLink } from "@/components/seo/CanonicalLink";
 import dynamic from 'next/dynamic';
 
 // Deferred analytics loading for better performance
@@ -138,6 +139,9 @@ export default function RootLayout({
 
         {/* Web App Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
+
+        {/* Canonical URL */}
+        <CanonicalLink />
 
         {/* Additional meta tags for better browser support */}
         <meta name="msapplication-TileColor" content="#666666" />

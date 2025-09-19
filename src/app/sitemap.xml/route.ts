@@ -1,13 +1,15 @@
 export async function GET() {
+  // Always use canonical domain (no www)
   const baseUrl = 'https://matthewraphael.xyz'
   const lastModified = new Date().toISOString()
 
+  // Canonical URLs - ensuring no trailing slashes and HTTPS
   const urls = [
     {
       url: baseUrl,
       lastModified,
       changeFrequency: 'weekly',
-      priority: 1,
+      priority: 1.0,
     },
     {
       url: `${baseUrl}/about`,
@@ -45,6 +47,7 @@ export async function GET() {
   }
 
   const xmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>'
+  const comment = '<!-- Canonical URLs only - no www variants, no trailing slashes -->'
   const urlsetOpen = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
   const urlsetClose = '</urlset>'
 
@@ -60,6 +63,7 @@ export async function GET() {
     .join('\n')
 
   const sitemap = `${xmlDeclaration}
+${comment}
 ${urlsetOpen}
 ${urlElements}
 ${urlsetClose}`
