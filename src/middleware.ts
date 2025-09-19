@@ -9,11 +9,12 @@ const secret = new TextEncoder().encode(
 export async function middleware(request: NextRequest) {
   // Only protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Allow login page to be accessed
-    if (request.nextUrl.pathname === '/admin' && request.nextUrl.searchParams.get('auth') === 'true') {
+    // Allow main admin page to be accessed (for deception page)
+    if (request.nextUrl.pathname === '/admin') {
       return NextResponse.next()
     }
 
+    // Protect all other admin routes
     try {
       const token = request.cookies.get('admin-token')?.value
 
@@ -49,8 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/admin/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/admin/:path*'],
 }

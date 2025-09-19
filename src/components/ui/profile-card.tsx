@@ -225,7 +225,7 @@ export function ProfileCard() {
 
         {/* Back Side */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">
-          <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-600/10 via-gray-500/5 to-gray-400/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
+          <div className="h-full p-6 pt-6 rounded-3xl bg-gradient-to-br from-gray-600/10 via-gray-500/5 to-gray-400/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 cyber-grid opacity-10"></div>
             
@@ -279,7 +279,7 @@ export function ProfileCard() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`flex items-center space-x-3 p-3 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-sm ${
+                          className={`flex items-center space-x-2 p-2 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-xs ${
                             link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
                             link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
                             link.color === 'gray-700' ? 'hover:bg-gray-700/10 hover:border-gray-700/30 text-gray-700' :

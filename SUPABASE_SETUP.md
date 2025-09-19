@@ -26,7 +26,7 @@ Your current setup uses localStorage, which gets cleared when users clear their 
 ## Step 2: Setup Database Schema
 
 1. In your Supabase project dashboard, go to "SQL Editor"
-2. Copy the entire contents of `supabase-schema.sql` in your project
+2. Copy the entire contents of the database schema from your project setup
 3. Paste it into the SQL Editor and click "Run"
 4. This creates all necessary tables, indexes, and security policies
 
