@@ -184,7 +184,7 @@ export function ThemeToggle() {
           isLongPressing ? 'scale-110 border-green-500 shadow-lg shadow-green-500/20' : ''
         }`}
         aria-label={`Current theme: ${currentOption.label}. Click to change theme`}
-        title={`${currentOption.label} theme (Alt+T) | Hold 3s for admin`}
+        title={`${currentOption.label} theme (Alt+T)`}
       >
         <div className="relative w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-storj-blue transition-colors duration-200">
           {/* Dynamic icon based on effective theme */}

@@ -8,7 +8,7 @@ export interface ProfileData {
   avatar: string
   email: string
   location: string
-  website: string
+  dune: string
   github: string
   twitter: string
   linkedin: string
@@ -26,7 +26,7 @@ export class ProfileServiceSupabase {
     avatar: '/avatar.jpg',
     email: 'matthewraphael@matthewraphael.xyz',
     location: 'Remote',
-    website: 'https://matthewraphael.xyz',
+    dune: 'raphdeanalyst',
     github: 'RaphdeAnalyst',
     twitter: 'RaphdeAnalyst',
     linkedin: 'matthewraphael',
@@ -48,7 +48,7 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       avatar: profile.avatar_url || '/avatar.jpg',
       email: profile.contact_email || '',
       location: 'Remote', // Static for now
-      website: '', // Can be added to schema later
+      dune: this.defaultProfile.dune, // Use default until schema is updated
       github: profile.github_url ? profile.github_url.replace('https://github.com/', '') : '',
       twitter: profile.twitter_url ? profile.twitter_url.replace('https://twitter.com/', '') : '',
       linkedin: profile.linkedin_url ? profile.linkedin_url.replace('https://linkedin.com/in/', '') : '',
@@ -219,12 +219,12 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
         })
       }
 
-      if (profile.website) {
+      if (profile.dune) {
         links.push({
-          name: 'Website',
-          url: profile.website,
-          icon: '🌐',
-          username: profile.website.replace(/^https?:\/\//, '')
+          name: 'Dune',
+          url: `https://dune.com/${profile.dune}`,
+          icon: '📊',
+          username: profile.dune
         })
       }
 

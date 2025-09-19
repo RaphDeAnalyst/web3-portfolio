@@ -85,11 +85,11 @@ export function ProfileCard() {
                 </svg>
               )
               break
-            case 'Website':
+            case 'Dune':
               color = 'gray-500'
               icon = (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.559-.499-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.559.499.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.497-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
               )
               break
@@ -228,47 +228,42 @@ export function ProfileCard() {
             <div className="absolute inset-0 cyber-grid opacity-10"></div>
             
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col space-y-4">
-              {/* Top Content */}
-              <div className="space-y-3 sm:space-y-4">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-bold text-foreground">About Me</h3>
-                  <button
-                    onClick={() => setIsFlipped(false)}
-                    className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-foreground hover:border-cyber-500 transition-colors duration-200"
-                  >
-                    ←
-                  </button>
+            <div className="relative z-10 h-full flex flex-col space-y-4 sm:space-y-6">
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-foreground">About Me</h3>
+                <button
+                  onClick={() => setIsFlipped(false)}
+                  className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-foreground hover:border-cyber-500 transition-colors duration-200"
+                >
+                  ←
+                </button>
+              </div>
+
+              {/* Who I Am Section */}
+              <div>
+                <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Who I Am</h4>
+                <div className="space-y-1 sm:space-y-2">
+                  {aboutInfo.whoIAm.map((item, index) => (
+                    <div key={index} className="text-sm sm:text-sm text-foreground/80 leading-relaxed">
+                      {item}
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Who I Am Section */}
-                <div className="space-y-2 sm:space-y-4">
-                  <div>
-                    <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Who I Am</h4>
-                    <div className="space-y-1 sm:space-y-2">
-                      {aboutInfo.whoIAm.map((item, index) => (
-                        <div key={index} className="text-sm sm:text-sm text-foreground/80 leading-relaxed">
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* My Vision Section */}
-                  <div>
-                    <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">My Vision</h4>
-                    <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-r from-primary-500/10 to-cyber-500/10 border border-primary-500/20">
-                      <p className="text-xs sm:text-sm text-foreground/90 italic text-center leading-relaxed">
-                        {aboutInfo.vision}
-                      </p>
-                    </div>
-                  </div>
+              {/* My Vision Section */}
+              <div>
+                <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">My Vision</h4>
+                <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-r from-primary-500/10 to-cyber-500/10 border border-primary-500/20">
+                  <p className="text-xs sm:text-sm text-foreground/90 italic text-center leading-relaxed">
+                    {aboutInfo.vision}
+                  </p>
                 </div>
               </div>
 
               {/* Social Links & Contact */}
-              <div className="space-y-2 sm:space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {/* Social Links */}
                 <div>
                   <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Connect</h4>
@@ -281,8 +276,8 @@ export function ProfileCard() {
                         rel="noopener noreferrer"
                         className={`flex items-center space-x-1 sm:space-x-2 p-1.5 sm:p-2 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-xs ${
                           link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
-                          link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
                           link.color === 'gray-700' ? 'hover:bg-gray-700/10 hover:border-gray-700/30 text-gray-700' :
+                          link.color === 'gray-500' ? 'hover:bg-gray-500/10 hover:border-gray-500/30 text-gray-500' :
                           'hover:bg-gray-500/10 hover:border-gray-500/30 text-gray-500'
                         }`}
                       >
@@ -294,7 +289,7 @@ export function ProfileCard() {
                 </div>
 
                 {/* Contact CTA */}
-                <div>
+                <div className="pt-1">
                   <a
                     href={`mailto:${profile?.email || 'matthewraphael@matthewraphael.xyz'}`}
                     className="w-full flex items-center justify-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"

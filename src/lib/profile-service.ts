@@ -7,7 +7,7 @@ export interface ProfileData {
   avatar: string
   email: string
   location: string
-  website: string
+  dune: string
   github: string
   twitter: string
   linkedin: string
@@ -27,7 +27,7 @@ export class ProfileService {
     avatar: '/avatar.jpg',
     email: 'matthewraphael@matthewraphael.xyz',
     location: 'Remote',
-    website: 'https://matthewraphael.xyz',
+    dune: 'raphdeanalyst',
     github: 'RaphdeAnalyst',
     twitter: 'RaphdeAnalyst',
     linkedin: 'matthewraphael',
@@ -116,12 +116,12 @@ Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior
       })
     }
 
-    if (profile.website) {
+    if (profile.dune) {
       links.push({
-        name: 'Website',
-        url: profile.website,
-        icon: '🌐',
-        username: profile.website.replace(/^https?:\/\//, '')
+        name: 'Dune',
+        url: `https://dune.com/${profile.dune}`,
+        icon: '📊',
+        username: profile.dune
       })
     }
 
