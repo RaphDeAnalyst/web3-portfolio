@@ -44,10 +44,8 @@ export function ProfileCard() {
   const aboutInfo = {
     whoIAm: [
       'Matthew Raphael - Web3 Data Analyst since 2022',
-      'Exploring Web3 & AI since 2025',
       'Skills: SQL · Python · Dune · Smart Contracts',
-      'Open to remote projects, working globally',
-      'Powered by Indie playlists & ginger water'
+      'Open to remote projects, working globally'
     ],
     vision: '"Every block has a story. I specialize in uncovering it."'
   }
@@ -129,7 +127,7 @@ export function ProfileCard() {
   }, [])
 
   return (
-    <div className="relative h-[600px] perspective-1000">
+    <div className="relative h-[500px] sm:h-[600px] perspective-1000">
       <div 
         className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
           isFlipped ? 'rotate-y-180' : ''
@@ -225,87 +223,86 @@ export function ProfileCard() {
 
         {/* Back Side */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">
-          <div className="h-full p-6 pt-6 rounded-3xl bg-gradient-to-br from-gray-600/10 via-gray-500/5 to-gray-400/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
+          <div className="h-full p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-gray-600/10 via-gray-500/5 to-gray-400/10 border border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 cyber-grid opacity-10"></div>
             
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col space-y-8">
-              {/* Header */}
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold text-foreground">About Me</h3>
-                <button 
-                  onClick={() => setIsFlipped(false)}
-                  className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-foreground hover:border-cyber-500 transition-colors duration-200"
-                >
-                  ←
-                </button>
-              </div>
-
-              {/* Who I Am Section */}
-              <div className="flex-1 space-y-6">
-                <div>
-                  <h4 className="text-lg font-semibold text-foreground mb-4">Who I Am</h4>
-                  <div className="space-y-2">
-                    {aboutInfo.whoIAm.map((item, index) => (
-                      <div key={index} className="text-sm text-foreground/80 leading-relaxed">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
+            <div className="relative z-10 h-full flex flex-col space-y-4">
+              {/* Top Content */}
+              <div className="space-y-3 sm:space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-bold text-foreground">About Me</h3>
+                  <button
+                    onClick={() => setIsFlipped(false)}
+                    className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-foreground hover:border-cyber-500 transition-colors duration-200"
+                  >
+                    ←
+                  </button>
                 </div>
 
-                {/* My Vision Section */}
-                <div>
-                  <h4 className="text-lg font-semibold text-foreground mb-4">My Vision</h4>
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-primary-500/10 to-cyber-500/10 border border-primary-500/20">
-                    <p className="text-sm text-foreground/90 italic text-center leading-relaxed">
-                      {aboutInfo.vision}
-                    </p>
+                {/* Who I Am Section */}
+                <div className="space-y-2 sm:space-y-4">
+                  <div>
+                    <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Who I Am</h4>
+                    <div className="space-y-1 sm:space-y-2">
+                      {aboutInfo.whoIAm.map((item, index) => (
+                        <div key={index} className="text-sm sm:text-sm text-foreground/80 leading-relaxed">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* My Vision Section */}
+                  <div>
+                    <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">My Vision</h4>
+                    <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-r from-primary-500/10 to-cyber-500/10 border border-primary-500/20">
+                      <p className="text-xs sm:text-sm text-foreground/90 italic text-center leading-relaxed">
+                        {aboutInfo.vision}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Social Links & Contact */}
-              <div className="space-y-6">
+              <div className="space-y-2 sm:space-y-4">
                 {/* Social Links */}
-                {socialLinks.length > 0 && (
-                  <div>
-                    <h4 className="text-lg font-semibold text-foreground mb-3">Connect</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {socialLinks.map((link, index) => (
-                        <a
-                          key={index}
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`flex items-center space-x-2 p-2 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-xs ${
-                            link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
-                            link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
-                            link.color === 'gray-700' ? 'hover:bg-gray-700/10 hover:border-gray-700/30 text-gray-700' :
-                            'hover:bg-gray-500/10 hover:border-gray-500/30 text-gray-500'
-                          }`}
-                        >
-                          {link.icon}
-                          <span className="text-foreground/80 font-medium">{link.label}</span>
-                        </a>
-                      ))}
-                    </div>
+                <div>
+                  <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Connect</h4>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    {socialLinks.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center space-x-1 sm:space-x-2 p-1.5 sm:p-2 rounded-lg border border-gray-200/30 dark:border-gray-800/30 bg-background/30 transition-all duration-200 text-xs ${
+                          link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
+                          link.color === 'gray-600' ? 'hover:bg-gray-600/10 hover:border-gray-600/30 text-gray-600' :
+                          link.color === 'gray-700' ? 'hover:bg-gray-700/10 hover:border-gray-700/30 text-gray-700' :
+                          'hover:bg-gray-500/10 hover:border-gray-500/30 text-gray-500'
+                        }`}
+                      >
+                        {link.icon}
+                        <span className="text-foreground/80 font-medium text-xs">{link.label}</span>
+                      </a>
+                    ))}
                   </div>
-                )}
+                </div>
 
                 {/* Contact CTA */}
-                {profile?.email && (
-                  <div>
-                    <a
-                      href={`mailto:${profile.email}`}
-                      className="w-full flex items-center justify-center space-x-3 p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
-                    >
-                      <span className="text-lg">📩</span>
-                      <span>Hire Me</span>
-                    </a>
-                  </div>
-                )}
+                <div>
+                  <a
+                    href={`mailto:${profile?.email || 'matthewraphael@matthewraphael.xyz'}`}
+                    className="w-full flex items-center justify-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
+                  >
+                    <span className="text-base sm:text-lg">📩</span>
+                    <span className="text-sm sm:text-base">Hire Me</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
