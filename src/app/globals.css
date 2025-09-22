@@ -160,6 +160,9 @@
   --primary-hover: #33b1e8;
 }
 
+/* Load fonts with font-display: swap for better performance */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   min-height: 100vh;
@@ -168,6 +171,10 @@ body {
   transition:
     background-color 200ms ease,
     color 200ms ease;
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Enhanced smooth transitions for premium theme switching */

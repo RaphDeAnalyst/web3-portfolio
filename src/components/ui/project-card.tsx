@@ -3,13 +3,15 @@
 import { useState, memo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Github, ExternalLink, BarChart3, FileText } from 'lucide-react'
+import { Github, ExternalLink, BarChart3, FileText, Eye, Star, TrendingUp, Wrench, Sparkles, Target, Lightbulb } from 'lucide-react'
 import { ImageViewer } from '@/components/ui/image-viewer'
+import { logger } from '@/lib/logger'
 
 interface ProjectCardProps {
   title: string
   description: string
   image?: string
+  imageAlt?: string
   tech: string[]
   category: string
   status: 'Live' | 'Development' | 'Beta' | 'Completed' | 'Learning' | 'Complete'
@@ -32,6 +34,7 @@ export const ProjectCard = memo(function ProjectCard({
   title,
   description,
   image,
+  imageAlt,
   tech,
   category,
   status,
@@ -73,23 +76,33 @@ export const ProjectCard = memo(function ProjectCard({
   const hasValidUrl = (url?: string) => url && url !== '#' && url.trim() !== ''
 
   return (
-    <div>
+    <div style={{ minHeight: '600px' }}>
       <article
-        className="group relative h-full rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-700/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
+        className="group relative h-full rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 flex flex-col"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{ minHeight: '580px' }}
       >
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" />
-
-
       {/* Project thumbnail/hero visual */}
-      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+      <div className="relative aspect-video bg-gradient-to-br from-primary/5 to-primary/10 overflow-hidden" style={{ minHeight: '200px' }}>
+        {isHovered && (
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 transition-opacity duration-300">
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="flex items-center justify-between">
+                <span className="text-white text-sm font-medium">
+                  Click to explore live data
+                </span>
+                <Eye className="w-4 h-4 text-white" />
+              </div>
+            </div>
+          </div>
+        )}
+
         {image && !imageError ? (
           <>
             <Image
               src={image}
-              alt={`${title} project screenshot`}
+              alt={imageAlt || `${title} project screenshot`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className={`object-cover transition-all duration-700 cursor-pointer ${
@@ -99,7 +112,7 @@ export const ProjectCard = memo(function ProjectCard({
               onError={() => {
                 setImageError(true)
                 setImageLoaded(false)
-                console.warn(`Failed to load image: ${image}`)
+                logger.warn('Failed to load project image', { image, title })
               }}
               onClick={(e) => {
                 e.preventDefault()
@@ -107,145 +120,260 @@ export const ProjectCard = memo(function ProjectCard({
                 setShowImageViewer(true)
               }}
               priority={featured}
+              quality={75}
               placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli5N4ck+gdMOOAcI8tR8v9fNaXlEZdJvSVcxEV8lNgKdGh+GXPwP1cVpqJYqcvjc3LHhbJ8Cp5gM1Nt1tN7rvrsxvGc=" />
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             )}
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: '#1a5f99' }}>
+          <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
-              <h3 className="text-white font-bold text-lg sm:text-xl md:text-2xl leading-tight text-center break-words max-w-full">
-                {title}
-              </h3>
-              {imageError && (
-                <p className="text-white/70 text-xs mt-2">Image unavailable</p>
-              )}
+              <div className="relative">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <BarChart3 className="text-white text-2xl w-8 h-8" />
+                </div>
+                <div className="w-32 h-1 bg-gradient-to-r from-primary to-primary/80 rounded-full mx-auto opacity-60 group-hover:opacity-100 transition-opacity"></div>
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Card content */}
-      <div className="relative flex-1 p-6 flex flex-col">
-        {/* Header section */}
-        <div className="mb-4">
+      {/* Clean Content Section */}
+      <div className="p-6 flex-1 flex flex-col">
+        {/* Featured Badge */}
+        {featured && (
+          <div className="mb-3">
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+              <Star className="w-3 h-3 text-primary" />
+              Featured
+            </span>
+          </div>
+        )}
 
-          {/* Project title */}
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
-            {title}
-          </h3>
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+              {title}
+            </h3>
+
+            {/* Key Insight Preview */}
+            <div className="p-3 bg-primary/5 rounded-lg mb-4">
+              <div className="flex items-center gap-2 mb-1">
+                <FileText className="w-4 h-4 text-primary" />
+                <span className="text-xs font-medium text-primary">Summary</span>
+              </div>
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            {/* Tech Stack */}
+            {tech && tech.length > 0 && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Wrench className="w-4 h-4 text-foreground/60" />
+                  <span className="text-xs font-medium text-foreground/60">Tech Stack</span>
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {tech.slice(0, 4).map((technology, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs rounded-md"
+                    >
+                      {technology}
+                    </span>
+                  ))}
+                  {tech.length > 4 && (
+                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-500 text-xs rounded-md">
+                      +{tech.length - 4} more
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Metrics */}
+            {metrics && Object.keys(metrics).length > 0 && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <BarChart3 className="w-4 h-4 text-foreground/60" />
+                  <span className="text-xs font-medium text-foreground/60">Key Metrics</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {Object.entries(metrics).slice(0, 4).map(([key, value]) => (
+                    <div key={key} className="text-center p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                      <div className="text-sm font-bold text-primary">{value}</div>
+                      <div className="text-xs text-foreground/60 capitalize">{key}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+
+            {/* Features */}
+            {features && features.length > 0 && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-foreground/60" />
+                  <span className="text-xs font-medium text-foreground/60">Key Features</span>
+                </div>
+                <div className="space-y-1">
+                  {features.slice(0, 3).map((feature, index) => (
+                    <div key={index} className="text-xs text-foreground/70 flex items-start gap-2">
+                      <div className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                  {features.length > 3 && (
+                    <div className="text-xs text-foreground/50">
+                      +{features.length - 3} more features
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Challenges */}
+            {challenges && challenges.trim() && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className="w-4 h-4 text-foreground/60" />
+                  <span className="text-xs font-medium text-foreground/60">Challenges</span>
+                </div>
+                <p className="text-xs text-foreground/70 leading-relaxed">
+                  {challenges.length > 120 ? `${challenges.substring(0, 120)}...` : challenges}
+                </p>
+              </div>
+            )}
+
+            {/* Learnings */}
+            {learnings && learnings.trim() && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb className="w-4 h-4 text-foreground/60" />
+                  <span className="text-xs font-medium text-foreground/60">Key Learnings</span>
+                </div>
+                <p className="text-xs text-foreground/70 leading-relaxed">
+                  {learnings.length > 120 ? `${learnings.substring(0, 120)}...` : learnings}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Description (2-3 lines max) */}
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-6 line-clamp-3">
-          {description}
-        </p>
 
-        {/* Metrics section (if provided) */}
-        {metrics && Object.keys(metrics).length > 0 && (
-          <div className="mb-6 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Key Metrics</h4>
-            <div className="grid grid-cols-2 gap-4">
-              {Object.entries(metrics).slice(0, 4).map(([key, value]) => (
-                <div key={key} className="text-center">
-                  <div className="text-lg font-bold text-primary-600 dark:text-primary-400">{value}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">{key}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Strategic Action Buttons */}
+        <div className="space-y-3 mt-auto pt-4">
+          {/* Primary button - Read More (blog post or external link) */}
+          {blogPostSlug && blogPostSlug.trim() ? (
+            (() => {
+              const trimmedSlug = blogPostSlug.trim()
+              const isExternalUrl = trimmedSlug.startsWith('http://') || trimmedSlug.startsWith('https://')
 
-        {/* Challenges & Solutions (if provided) */}
-        {(challenges || learnings) && (
-          <div className="mb-6 space-y-4">
-            {challenges && (
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Key Challenges</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{challenges}</p>
-              </div>
-            )}
-            {learnings && (
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Solutions & Learnings</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{learnings}</p>
-              </div>
-            )}
-          </div>
-        )}
+              // Debug logging
+              logger.info('Blog post slug processing', {
+                original: blogPostSlug,
+                trimmed: trimmedSlug,
+                isExternal: isExternalUrl,
+                title: title
+              })
 
+              return isExternalUrl ? (
+                <a
+                  href={trimmedSlug}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-lg font-medium text-sm transition-all duration-200 hover:bg-primary/90 min-h-[44px]"
+                  onClick={(e) => {
+                    logger.info('External blog link clicked', { url: trimmedSlug, title })
+                  }}
+                  aria-label={`Read more about ${title} project`}
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>READ MORE</span>
+                </a>
+              ) : (
+                <Link
+                  href={`/blog/${trimmedSlug}`}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-lg font-medium text-sm transition-all duration-200 hover:bg-primary/90 min-h-[44px]"
+                  onClick={(e) => {
+                    logger.info('Internal blog link clicked', { slug: trimmedSlug, title })
+                  }}
+                  aria-label={`Read detailed blog post about ${title} project`}
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>READ MORE</span>
+                </Link>
+              )
+            })()
+          ) : (
+            <button
+              disabled
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 rounded-lg font-medium text-sm cursor-not-allowed min-h-[44px]"
+              title="No blog post available"
+            >
+              <FileText className="w-4 h-4" />
+              <span>READ MORE</span>
+            </button>
+          )}
 
-        {/* Action buttons */}
-        <div className="mt-auto space-y-3">
-          {/* Primary buttons row */}
+          {/* Secondary buttons - grid layout */}
           <div className="grid grid-cols-2 gap-3">
-            {/* Read More button */}
-            {hasValidUrl(demoUrl) ? (
-              <Link href={demoUrl!} target="_blank" rel="noopener noreferrer" className="w-full" aria-label={`View live demo of ${title}`}>
-                <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 hover:shadow-lg min-h-[44px]">
-                  <ExternalLink className="w-4 h-4" />
-                  <span>View Demo</span>
-                </button>
-              </Link>
-            ) : (
-              <button
-                disabled
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-gray-400 rounded-xl font-medium text-sm cursor-not-allowed opacity-60 min-h-[44px]"
-                title="Demo URL not available"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span>Read More</span>
-              </button>
-            )}
-
             {/* GitHub button */}
             {hasValidUrl(githubUrl) ? (
-              <Link href={githubUrl!} target="_blank" rel="noopener noreferrer" className="w-full" aria-label={`View source code for ${title} on GitHub`}>
-                <button className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-300 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 hover:shadow-lg min-h-[44px]">
-                  <Github className="w-4 h-4" />
-                  <span>GitHub</span>
-                </button>
-              </Link>
+              <a
+                href={githubUrl!}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
+                aria-label={`View ${title} source code on GitHub`}
+              >
+                <Github className="w-4 h-4" />
+                <span>GITHUB</span>
+              </a>
             ) : (
               <button
                 disabled
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 dark:border-gray-700 text-gray-400 rounded-xl font-medium text-sm cursor-not-allowed opacity-60 min-h-[44px]"
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 dark:border-gray-700 text-gray-400 rounded-lg font-medium text-sm cursor-not-allowed opacity-50 min-h-[44px]"
                 title="GitHub URL not available"
               >
                 <Github className="w-4 h-4" />
-                <span>GitHub</span>
+                <span>GITHUB</span>
+              </button>
+            )}
+
+            {/* Dune button */}
+            {hasValidUrl(duneUrl) ? (
+              <a
+                href={duneUrl!}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
+                aria-label={`Open ${title} dashboard in Dune Analytics`}
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>DUNE</span>
+              </a>
+            ) : (
+              <button
+                disabled
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 dark:border-gray-700 text-gray-400 rounded-lg font-medium text-sm cursor-not-allowed opacity-50 min-h-[44px]"
+                title="Dune URL not available"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>DUNE</span>
               </button>
             )}
           </div>
-
-          {/* Secondary buttons row (conditional) */}
-          {(hasValidUrl(duneUrl) || hasValidUrl(blogPostSlug)) && (
-            <div className="grid grid-cols-2 gap-3">
-              {hasValidUrl(duneUrl) && (
-                <Link href={duneUrl!} target="_blank" className="w-full">
-                  <button className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-primary-300 dark:border-primary-600 text-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 min-h-[44px]">
-                    <BarChart3 className="w-4 h-4" />
-                    <span>Dashboard</span>
-                  </button>
-                </Link>
-              )}
-              {hasValidUrl(blogPostSlug) && (
-                <Link href={`/blog/${blogPostSlug}`} className="w-full">
-                  <button className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-accent-blue/30 dark:border-accent-blue/60 text-accent-blue hover:bg-accent-blue/10 dark:hover:bg-accent-blue/20 rounded-xl font-medium text-sm transition-all duration-200 hover:transform hover:scale-105 min-h-[44px]">
-                    <FileText className="w-4 h-4" />
-                    <span>Read Blog</span>
-                  </button>
-                </Link>
-              )}
-            </div>
-          )}
         </div>
+
       </div>
       </article>
 
@@ -253,7 +381,7 @@ export const ProjectCard = memo(function ProjectCard({
       {image && (
         <ImageViewer
           src={image}
-          alt={`${title} project screenshot`}
+          alt={imageAlt || `${title} project screenshot`}
           isOpen={showImageViewer}
           onClose={() => setShowImageViewer(false)}
         />

@@ -218,7 +218,7 @@ export function Navbar() {
     const isMobile = window.innerWidth < 768
     const isTouch = 'touches' in e
 
-    console.log('Admin gesture: Event triggered', {
+    logger.info('Admin gesture: Event triggered', {
       isMobile,
       isTouch,
       eventType: e.type,

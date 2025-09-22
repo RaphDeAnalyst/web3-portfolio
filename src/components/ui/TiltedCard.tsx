@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 
 interface TiltedCardProps {
   imageSrc?: string
@@ -159,16 +160,16 @@ export default function TiltedCard({
         >
           {/* Image */}
           {imageSrc && (
-            <img
-              src={imageSrc}
-              alt={altText}
-              className="w-full h-full object-cover"
-              style={{
-                height: imageHeight,
-                width: imageWidth,
-              }}
-              draggable={false}
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={imageSrc}
+                alt={altText || ''}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                draggable={false}
+              />
+            </div>
           )}
 
           {/* Children Content */}

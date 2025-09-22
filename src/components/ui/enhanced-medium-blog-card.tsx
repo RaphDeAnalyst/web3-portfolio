@@ -2,6 +2,7 @@
 
 import { useState, Fragment } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Clock, Eye, Calendar, Tag } from 'lucide-react'
 import { ImageViewer } from '@/components/ui/image-viewer'
 
@@ -76,7 +77,7 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
   return (
     <Fragment>
     <div className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 ${className}`}>
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         <Link key={post.slug} href={`/blog/${post.slug}`}>
           <article
             className={`group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 cursor-pointer h-full flex flex-col min-h-[320px] sm:min-h-[360px] shadow-sm ${
@@ -90,12 +91,14 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
 
             {/* Featured Image */}
             {post.featuredImage ? (
-              <div className="w-full h-36 sm:h-44 md:h-48 overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                <img
+              <div className="relative w-full h-36 sm:h-44 md:h-48 overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                <Image
                   src={post.featuredImage}
                   alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 cursor-pointer"
-                  loading="lazy"
+                  fill
+                  priority={index === 0} // Prioritize first image for LCP
+                  className="object-cover transition-transform duration-200 group-hover:scale-105 cursor-pointer"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                   onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
@@ -145,12 +148,15 @@ export function EnhancedMediumBlogCard({ posts, className = '' }: EnhancedMedium
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
                   <div className="flex-shrink-0">
                     {post.author.avatar ? (
-                      <img
-                        src={post.author.avatar}
-                        alt={post.author.name}
-                        loading="lazy"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                        <Image
+                          src={post.author.avatar}
+                          alt={post.author.name}
+                          fill
+                          className="object-cover"
+                          sizes="40px"
+                        />
+                      </div>
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
                         <span className="text-sm font-medium text-white">

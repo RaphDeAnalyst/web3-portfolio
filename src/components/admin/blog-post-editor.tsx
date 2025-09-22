@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
 import { BlogPostData } from '@/types/shared'
-import { Edit, Eye, RefreshCw, Rocket, FileText, Image, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
+import { Edit, Eye, RefreshCw, Rocket, FileText, Image as ImageIcon, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
 import { logger } from '@/lib/logger'
 
 interface BlogPostEditorProps {
@@ -233,7 +233,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                   </div>
                   <div>
                     <div className="flex items-center space-x-1 mb-1">
-                      <Image className="w-3 h-3" />
+                      <ImageIcon className="w-3 h-3" />
                       <p className="font-medium text-foreground/80">Images:</p>
                     </div>
                     <p>1. Upload via <span className="font-mono bg-gray-200 dark:bg-gray-800 px-1 rounded">Admin → Media</span> page</p>

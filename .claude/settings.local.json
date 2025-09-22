@@ -21,7 +21,8 @@
       "Bash(npx eslint:*)",
       "Bash(node:*)",
       "Bash(npx @next/bundle-analyzer:*)",
-      "WebFetch(domain:www.webpagetest.org)"
+      "WebFetch(domain:www.webpagetest.org)",
+      "Bash(npm audit:*)"
     ],
     "deny": [],
     "ask": [],

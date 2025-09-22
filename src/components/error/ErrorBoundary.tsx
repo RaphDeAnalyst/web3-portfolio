@@ -1,6 +1,7 @@
 'use client'
 
 import { Component, ErrorInfo, ReactNode } from 'react'
+import { logger } from '@/lib/logger'
 
 interface Props {
   children: ReactNode
@@ -27,8 +28,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error details for debugging
-    console.error(`Error in ${this.props.section || 'component'}:`, error)
-    console.error('Error Info:', errorInfo)
+    logger.error(`Error in ${this.props.section || 'component'}`, error, {
+      section: this.props.section,
+      componentStack: errorInfo.componentStack,
+      errorBoundary: true
+    })
     
     // Call custom error handler if provided
     if (this.props.onError) {

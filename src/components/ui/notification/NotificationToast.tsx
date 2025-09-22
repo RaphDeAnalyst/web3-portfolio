@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { X, CheckCircle, AlertCircle, AlertTriangle, Info, Loader2 } from 'lucide-react'
 import type { Notification, NotificationType } from '@/types/notification'
 
@@ -55,17 +55,17 @@ export function NotificationToast({ notification, onDismiss, index }: Notificati
     return () => clearTimeout(timer)
   }, [index])
 
+  const handleDismiss = useCallback(() => {
+    setIsLeaving(true)
+    setTimeout(() => onDismiss(notification.id), 300)
+  }, [onDismiss, notification.id])
+
   useEffect(() => {
     if (notification.duration && notification.duration > 0) {
       const timer = setTimeout(() => handleDismiss(), notification.duration)
       return () => clearTimeout(timer)
     }
-  }, [notification.duration])
-
-  const handleDismiss = () => {
-    setIsLeaving(true)
-    setTimeout(() => onDismiss(notification.id), 300)
-  }
+  }, [notification.duration, handleDismiss])
 
   return (
     <div

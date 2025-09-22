@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { Smartphone } from 'lucide-react'
 import { useWeb3 } from '@/lib/web3-context'
 import { useNotification } from '@/lib/notification-context'
 import { logger } from '@/lib/logger'
 
 interface WalletOption {
   name: string
-  icon: string
+  icon: string | React.ReactNode
   description: string
   installed: boolean
 }
@@ -27,7 +28,7 @@ export function WalletConnect() {
     },
     {
       name: 'WalletConnect',
-      icon: '📱',
+      icon: <Smartphone className="w-6 h-6" />,
       description: 'Connect using mobile wallet',
       installed: true
     },
@@ -201,7 +202,7 @@ export function WalletConnect() {
                     : 'border-gray-100 dark:border-gray-900 opacity-50 cursor-not-allowed'
                 }`}
               >
-                <span className="text-2xl">{wallet.icon}</span>
+                <span className="text-2xl flex items-center justify-center">{wallet.icon}</span>
                 <div className="flex-1 text-left">
                   <div className="font-medium text-foreground">{wallet.name}</div>
                   <div className="text-sm text-foreground/60">{wallet.description}</div>

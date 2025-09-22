@@ -123,11 +123,11 @@ class GitHubCommentsService {
 
     // Log issue details for debugging
     allIssues.forEach(issue => {
-      console.log('Issue:', {
+      logger.info('GitHub issue details', {
         number: issue.number,
         title: issue.title,
         comments: issue.comments,
-        body: issue.body.substring(0, 200) + '...'
+        bodyPreview: issue.body.substring(0, 200) + '...'
       })
     })
 

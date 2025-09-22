@@ -271,14 +271,14 @@ class BlogServiceSupabase {
         .single()
 
       if (error) {
-        console.error('Error updating blog fields:', error)
+        logger.error('Error updating blog fields', error)
         return null
       }
 
-      console.log(`Post field updated and marked as user-owned: ${data.title}`, updates)
+      logger.success('Post field updated and marked as user-owned', { title: data.title, updates })
       return this.transformToBlogPostData(data)
     } catch (error) {
-      console.error('Error in updatePostFields:', error)
+      logger.error('Error in updatePostFields', error)
       return null
     }
   }
@@ -292,13 +292,13 @@ class BlogServiceSupabase {
         .eq('id', id)
 
       if (error) {
-        console.error('Error deleting blog:', error)
+        logger.error('Error deleting blog', error)
         return false
       }
 
       return true
     } catch (error) {
-      console.error('Error in deletePost:', error)
+      logger.error('Error in deletePost', error)
       return false
     }
   }
@@ -311,7 +311,7 @@ class BlogServiceSupabase {
         .select('status, category')
 
       if (error) {
-        console.error('Error fetching blog stats:', error)
+        logger.error('Error fetching blog stats', error)
         return {
           total: 0,
           published: 0,
@@ -331,7 +331,7 @@ class BlogServiceSupabase {
         categories: categories.length
       }
     } catch (error) {
-      console.error('Error in getStats:', error)
+      logger.error('Error in getStats', error)
       return {
         total: 0,
         published: 0,
@@ -362,7 +362,7 @@ class BlogServiceSupabase {
         .not('id', 'eq', existingId || 'none')
 
       if (error) {
-        console.error('Error checking slug uniqueness:', error)
+        logger.error('Error checking slug uniqueness', error)
         break
       }
 
@@ -395,7 +395,7 @@ class BlogServiceSupabase {
       const { data, error } = await queryBuilder.order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error searching blogs:', error)
+        logger.error('Error searching blogs', error)
         return []
       }
 
@@ -410,7 +410,7 @@ class BlogServiceSupabase {
 
       return results
     } catch (error) {
-      console.error('Error in searchPosts:', error)
+      logger.error('Error in searchPosts', error)
       return []
     }
   }
@@ -423,14 +423,14 @@ class BlogServiceSupabase {
         .select('category')
 
       if (error) {
-        console.error('Error fetching categories:', error)
+        logger.error('Error fetching categories', error)
         return []
       }
 
       const categories = [...new Set(data.map((p: Blog) => p.category))] as string[]
       return categories.sort()
     } catch (error) {
-      console.error('Error in getCategories:', error)
+      logger.error('Error in getCategories', error)
       return []
     }
   }
@@ -441,10 +441,10 @@ class BlogServiceSupabase {
       const { error } = await supabase.rpc('increment_blog_views', { blog_slug: slug })
       
       if (error) {
-        console.error('Error incrementing views:', error)
+        logger.error('Error incrementing views', error)
       }
     } catch (error) {
-      console.error('Error in incrementViews:', error)
+      logger.error('Error in incrementViews', error)
     }
   }
 }

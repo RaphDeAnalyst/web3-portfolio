@@ -30,7 +30,6 @@ export default function ProjectsManagement() {
     index: -1
   })
 
-  // Load projects on component mount
   useEffect(() => {
     const loadProjects = async () => {
       try {
@@ -43,9 +42,8 @@ export default function ProjectsManagement() {
         setIsLoaded(true)
       }
     }
-
     loadProjects()
-  }, [])
+  }, [error])
 
   const categories = Array.from(new Set(projectList.map(project => project.category)))
 
@@ -53,7 +51,7 @@ export default function ProjectsManagement() {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = filterCategory === 'all' || project.category === filterCategory
-    const matchesFeatured = filterFeatured === 'all' || 
+    const matchesFeatured = filterFeatured === 'all' ||
                            (filterFeatured === 'featured' && project.featured) ||
                            (filterFeatured === 'regular' && !project.featured)
     return matchesSearch && matchesCategory && matchesFeatured
@@ -69,11 +67,9 @@ export default function ProjectsManagement() {
 
   const handleDeleteProject = async () => {
     if (!deleteDialog.project || deleteDialog.index === -1) return
-
     const { title } = deleteDialog.project
     try {
       await projectService.deleteProject(deleteDialog.index)
-      // Reload projects after deletion
       const updatedProjects = await projectService.getAllProjects()
       setProjectList(updatedProjects)
       success(`Project "${title}" deleted successfully`)
@@ -94,7 +90,6 @@ export default function ProjectsManagement() {
     }
   }
 
-
   const statsData = {
     total: projectList.length,
     completed: projectList.filter(p => p.status === 'Complete' || p.status === 'Live').length,
@@ -102,7 +97,6 @@ export default function ProjectsManagement() {
     featured: projectList.filter(p => p.featured).length
   }
 
-  // Show loading state
   if (!isLoaded) {
     return (
       <div className="space-y-6">
@@ -124,7 +118,6 @@ export default function ProjectsManagement() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Projects</h1>
@@ -138,7 +131,6 @@ export default function ProjectsManagement() {
         </Link>
       </div>
 
-      {/* Stats Cards - Mobile Responsive */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
@@ -151,7 +143,6 @@ export default function ProjectsManagement() {
             </div>
           </div>
         </div>
-        
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -163,7 +154,6 @@ export default function ProjectsManagement() {
             </div>
           </div>
         </div>
-        
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -175,7 +165,6 @@ export default function ProjectsManagement() {
             </div>
           </div>
         </div>
-        
         <div className="bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -189,7 +178,6 @@ export default function ProjectsManagement() {
         </div>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4 bg-background rounded-lg border border-gray-200 dark:border-gray-800 p-4">
         <div className="flex-1">
           <input
@@ -211,7 +199,6 @@ export default function ProjectsManagement() {
               <option key={category} value={category}>{category}</option>
             ))}
           </select>
-          
           <select
             value={filterFeatured}
             onChange={(e) => setFilterFeatured(e.target.value)}
@@ -224,112 +211,102 @@ export default function ProjectsManagement() {
         </div>
       </div>
 
-      {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {filteredProjects.map((project, index) => (
-            <div key={index} className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 hover:shadow-lg transition-shadow">
-              {/* Project Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="font-bold text-foreground text-base sm:text-lg mb-2">{project.title}</h3>
-                  <p className="text-foreground/70 text-sm line-clamp-3 mb-3">{project.description}</p>
-                </div>
-              </div>
-
-              {/* Project Details */}
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-foreground/60">Status</span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(project.status)}`}>
-                    {project.status}
-                  </span>
-                </div>
-                
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-foreground/60">Category</span>
-                  <span className="text-xs text-foreground">{project.category}</span>
-                </div>
-                
-                {project.featured && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-foreground/60">Featured</span>
-                    <span className="text-xs text-foreground font-medium">Yes</span>
+          {filteredProjects.map((project, filteredIndex) => {
+            const originalIndex = projectList.findIndex(p => p === project)
+            return (
+              <div key={originalIndex} className="bg-background rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h3 className="font-bold text-foreground text-base sm:text-lg mb-2">{project.title}</h3>
+                    <p className="text-foreground/70 text-sm line-clamp-3 mb-3">{project.description}</p>
                   </div>
-                )}
-              </div>
-
-              {/* Tech Stack */}
-              <div className="mb-4">
-                <div className="text-xs text-foreground/60 mb-2">Tech Stack</div>
-                <div className="flex flex-wrap gap-1">
-                  {project.tech?.slice(0, 3).map((tech, index) => (
-                    <span key={index} className="px-2 py-1 bg-foreground/10 text-foreground text-xs rounded">
-                      {tech}
+                </div>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-foreground/60">Status</span>
+                    <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(project.status)}`}>
+                      {project.status}
                     </span>
-                  ))}
-                  {project.tech && project.tech.length > 3 && (
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-foreground/60 text-xs rounded">
-                      +{project.tech.length - 3}
-                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-foreground/60">Category</span>
+                    <span className="text-xs text-foreground">{project.category}</span>
+                  </div>
+                  {project.featured && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-foreground/60">Featured</span>
+                      <span className="text-xs text-foreground font-medium">Yes</span>
+                    </div>
                   )}
                 </div>
-              </div>
-
-
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800 gap-2 sm:gap-0">
-                <div className="flex space-x-2">
-                  {project.demoUrl && (
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                <div className="mb-4">
+                  <div className="text-xs text-foreground/60 mb-2">Tech Stack</div>
+                  <div className="flex flex-wrap gap-1">
+                    {project.tech?.slice(0, 3).map((tech, index) => (
+                      <span key={index} className="px-2 py-1 bg-foreground/10 text-foreground text-xs rounded">
+                        {tech}
+                      </span>
+                    ))}
+                    {project.tech && project.tech.length > 3 && (
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-foreground/60 text-xs rounded">
+                        +{project.tech.length - 3}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800 gap-2 sm:gap-0">
+                  <div className="flex space-x-2">
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="View demo"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="View code"
+                      >
+                        <Github size={16} />
+                      </a>
+                    )}
+                  </div>
+                  <div className="flex space-x-2">
+                    <Link
+                      href={`/admin/projects/edit/${originalIndex}`}
                       className="p-3 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-                      title="View demo"
+                      title="Edit project"
                     >
-                      <ExternalLink size={16} />
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 text-foreground/60 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-                      title="View code"
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => openDeleteDialog(project, originalIndex)}
+                      className="p-3 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      title="Delete project"
                     >
-                      <Github size={16} />
-                    </a>
-                  )}
-                </div>
-                
-                <div className="flex space-x-2">
-                  <Link
-                    href={`/admin/projects/edit/${index}`}
-                    className="p-3 text-foreground/60 hover:text-foreground hover:bg-foreground/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    title="Edit project"
-                  >
-Edit
-                  </Link>
-                  <button
-                    onClick={() => openDeleteDialog(project, index)}
-                    className="p-3 text-foreground/60 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    title="Delete project"
-                  >
-Delete
-                  </button>
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       ) : (
         <div className="text-center py-12 bg-background rounded-lg border border-gray-200 dark:border-gray-800">
           <h3 className="text-lg font-medium text-foreground mb-2">No projects found</h3>
           <p className="text-foreground/60 mb-6">
-            {searchTerm || filterCategory !== 'all' 
+            {searchTerm || filterCategory !== 'all'
               ? 'Try adjusting your search or filters'
               : 'Get started by adding your first project'
             }
@@ -343,7 +320,6 @@ Delete
         </div>
       )}
 
-      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={deleteDialog.isOpen}
         onClose={closeDeleteDialog}

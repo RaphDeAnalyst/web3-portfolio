@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import { logger } from '@/lib/logger'
@@ -45,10 +45,10 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
         if (response.ok) {
           const data = await response.json()
           setIsAuthenticated(data.authenticated)
-          console.log('Authentication check result:', data.authenticated)
+          logger.info('Authentication check result', { authenticated: data.authenticated })
         } else {
           setIsAuthenticated(false)
-          console.log('Authentication check failed, setting to false')
+          logger.warn('Authentication check failed, setting to false')
         }
       } catch (error) {
         logger.error('Auth check failed:', error)
@@ -62,12 +62,12 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
   }, [])
 
   // Helper function to trigger admin access with feedback
-  const triggerAdminAccess = () => {
+  const triggerAdminAccess = useCallback(() => {
     setShowAdminAccess(true)
     setTimeout(() => {
       router.push('/admin?auth=true')
     }, 1500) // Show message for 1.5 seconds
-  }
+  }, [router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -123,7 +123,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
     if (!isLoading && !isAuthenticated) {
       const shouldShowAuth = searchParams?.get('auth') === 'true'
       setShowAuthForm(shouldShowAuth)
-      console.log('Auth form should show:', shouldShowAuth, 'Auth param:', searchParams?.get('auth'))
+      logger.info('Auth form visibility check', { shouldShow: shouldShowAuth, authParam: searchParams?.get('auth') })
     }
   }, [isLoading, isAuthenticated, searchParams])
 
@@ -144,18 +144,18 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
         setTapCount(prev => {
           const newCount = prev + 1
-          console.log(`Tap ${newCount}/3`)
+          logger.info('Admin access tap sequence', { tapCount: newCount, required: 3 })
 
           // Redirect to admin after 3 taps with auth trigger
           if (newCount >= 3) {
-            console.log('Triggering admin access...')
+            logger.info('Triggering admin access after tap sequence')
             triggerAdminAccess()
             return 0
           }
 
           // Set new reset timer
           tapResetTimer = setTimeout(() => {
-            console.log('Resetting tap count')
+            logger.info('Resetting admin tap count after timeout')
             setTapCount(0)
           }, 3000)
 

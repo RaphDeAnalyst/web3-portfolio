@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { Github, Twitter, Linkedin } from 'lucide-react'
+import { Github, Twitter, Linkedin, Sparkles } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -161,7 +161,10 @@ export function Footer() {
               <div className="text-center sm:text-left">
                 <span className="text-[#6B7280] font-medium">This website was built smarter, not harder.</span>
                 <br className="sm:hidden" />
-                <span className="text-[#6B7280] font-medium sm:ml-1">Thanks Claude ✨</span>
+                <span className="text-[#6B7280] font-medium sm:ml-1 flex items-center gap-1">
+                  Thanks Claude
+                  <Sparkles className="w-3 h-3" />
+                </span>
               </div>
             </div>
           )}

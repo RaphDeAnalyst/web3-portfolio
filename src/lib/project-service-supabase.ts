@@ -162,10 +162,10 @@ export class ProjectServiceSupabase {
         throw new Error(`Failed to update project: ${error.message}`)
       }
 
-      console.log(`Project updated: ${updatedProject.title || id}`)
+      logger.success('Project updated successfully', { title: updatedProject.title || id })
       
       // Track activity (activity service not implemented yet)
-      console.log(`Project activity: ${updatedProject.title || 'Unknown Project'} - updated`)
+      logger.info('Project activity tracked', { project: updatedProject.title || 'Unknown Project', action: 'updated' })
     } catch (error) {
       logger.error('Error in updateProject', error)
       throw error
@@ -230,7 +230,7 @@ export class ProjectServiceSupabase {
         throw error
       }
 
-      console.log(`Project deleted: ${id}`)
+      logger.success('Project deleted successfully', { id })
     } catch (error) {
       logger.error('Error in deleteProject', error)
       throw error

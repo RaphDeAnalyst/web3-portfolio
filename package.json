@@ -21,6 +21,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "autoprefixer": "^10.4.0",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "dotenv": "^16.4.5",
     "jose": "^6.1.0",
     "lucide-react": "^0.263.1",

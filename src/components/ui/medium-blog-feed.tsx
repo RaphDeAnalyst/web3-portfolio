@@ -4,6 +4,7 @@ import { useState, Fragment } from 'react'
 import Link from 'next/link'
 import { MoreHorizontal, Bookmark, Check } from 'lucide-react'
 import { ImageViewer } from '@/components/ui/image-viewer'
+import { OptimizedImage } from '@/components/performance/optimized-image'
 
 interface BlogPost {
   id?: string
@@ -89,9 +90,11 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
                   <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
                     <div className="flex items-center space-x-2">
                       {post.author.avatar ? (
-                        <img
+                        <OptimizedImage
                           src={post.author.avatar}
                           alt={post.author.name}
+                          width={24}
+                          height={24}
                           className="w-6 h-6 rounded-full object-cover"
                         />
                       ) : (
@@ -167,21 +170,25 @@ export function MediumBlogFeed({ posts, className = '' }: MediumBlogFeedProps) {
 
                 {/* Image */}
                 {post.featuredImage ? (
-                  <div className="w-full h-36 sm:w-24 sm:h-24 md:w-28 md:h-20 lg:w-32 lg:h-24 xl:w-40 xl:h-28 flex-shrink-0 order-first sm:order-last">
-                    <img
+                  <div
+                    className="w-full h-36 sm:w-24 sm:h-24 md:w-28 md:h-20 lg:w-32 lg:h-24 xl:w-40 xl:h-28 flex-shrink-0 order-first sm:order-last cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setImageViewer({
+                        src: post.featuredImage!,
+                        alt: post.title,
+                        isOpen: true
+                      })
+                    }}
+                  >
+                    <OptimizedImage
                       src={post.featuredImage}
                       alt={post.title}
-                      className="w-full h-full object-cover rounded-sm cursor-pointer"
-                      loading="lazy"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setImageViewer({
-                          src: post.featuredImage!,
-                          alt: post.title,
-                          isOpen: true
-                        })
-                      }}
+                      fill
+                      priority={index === 0} // Prioritize first image for LCP
+                      className="w-full h-full object-cover rounded-sm"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 96px, (max-width: 1024px) 112px, 160px"
                     />
                   </div>
                 ) : (

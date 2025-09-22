@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { mediaServiceHybrid, MediaFile, StorageProvider, UploadOptions } from '@/lib/media-service-hybrid'
 import { smartUploadRouter, RoutingDecision } from '@/lib/smart-upload-router'
 import { MediaMigration, quickMigration } from '@/lib/media-migration'
@@ -50,12 +50,7 @@ export default function EnhancedMediaUpload() {
     results?: any
   }>({ inProgress: false })
 
-  // Load media files on component mount
-  useEffect(() => {
-    loadMediaFiles()
-  }, [])
-
-  const loadMediaFiles = async () => {
+  const loadMediaFiles = useCallback(async () => {
     try {
       const files = await mediaServiceHybrid.getAllMedia()
       setMediaFiles(files)
@@ -63,7 +58,12 @@ export default function EnhancedMediaUpload() {
       logger.error('Error loading media files:', err)
       error('Failed to load media files. Please refresh and try again.')
     }
-  }
+  }, [error])
+
+  // Load media files on component mount
+  useEffect(() => {
+    loadMediaFiles()
+  }, [loadMediaFiles])
 
   const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return

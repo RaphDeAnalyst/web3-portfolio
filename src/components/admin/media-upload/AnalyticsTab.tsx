@@ -1,17 +1,17 @@
 'use client'
 
 import { MediaFile } from '@/lib/media-service-hybrid'
-import { 
-  BarChart3, 
-  FolderOpen, 
-  HardDrive, 
-  Cloud, 
-  TrendingUp, 
-  Calendar, 
-  Image, 
-  Video, 
-  FileText, 
-  Music 
+import {
+  BarChart3,
+  FolderOpen,
+  HardDrive,
+  Cloud,
+  TrendingUp,
+  Calendar,
+  Image as ImageIcon,
+  Video,
+  FileText,
+  Music
 } from 'lucide-react'
 
 interface AnalyticsTabProps {
@@ -153,7 +153,7 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium text-foreground capitalize">
                         {type} 
-                        {type === 'image' && <Image size={16} className="ml-1 inline" />}
+                        {type === 'image' && <ImageIcon size={16} className="ml-1 inline" />}
                         {type === 'video' && <Video size={16} className="ml-1 inline" />}
                         {type === 'application' && <FileText size={16} className="ml-1 inline" />}
                         {type === 'audio' && <Music size={16} className="ml-1 inline" />}
@@ -218,7 +218,7 @@ export function AnalyticsTab({ mediaFiles }: AnalyticsTabProps) {
                           {(() => {
                             const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
                             if (fileType.startsWith('image/')) {
-                              return <Image size={16} className="text-gray-500" />
+                              return <ImageIcon size={16} className="text-gray-500" />
                             } else if (fileType.startsWith('video/')) {
                               return <Video size={16} className="text-gray-500" />
                             } else {

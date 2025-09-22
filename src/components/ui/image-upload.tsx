@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { logger } from '@/lib/logger'
 
 interface ImageUploadProps {
@@ -117,11 +118,15 @@ export function ImageUpload({
         
         {currentImage ? (
           <div className="space-y-4">
-            <img
-              src={currentImage}
-              alt="Featured"
-              className="max-w-full h-32 object-cover rounded-lg mx-auto"
-            />
+            <div className="relative w-full h-32 rounded-lg overflow-hidden mx-auto">
+              <Image
+                src={currentImage}
+                alt="Featured"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
             <div className="text-center">
               <p className="text-sm text-foreground/60">Click or drag to replace image</p>
             </div>

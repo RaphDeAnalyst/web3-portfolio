@@ -23,6 +23,50 @@ const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    webpackBuildWorker: true,
+    optimizeCss: true,
+  },
+
+  // Bundle optimization
+  webpack: (config, { dev, isServer }) => {
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks.cacheGroups,
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            enforce: true,
+          },
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'all',
+            maxSize: 244000,
+          },
+          lucide: {
+            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
+            name: 'lucide-icons',
+            chunks: 'all',
+            priority: 10,
+            maxSize: 50000,
+          },
+        },
+      }
+    }
+
+    // Tree shake unused imports (only for production)
+    if (!dev && !isServer) {
+      config.optimization.usedExports = true
+      config.optimization.sideEffects = false
+    }
+
+    return config
   },
 
   // Compression and optimization

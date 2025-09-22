@@ -6,6 +6,7 @@ import { StructuredData } from '@/components/seo/StructuredData'
 import { blogService, profileService } from '@/lib/service-switcher'
 import { calculateReadingTime } from '@/lib/reading-time'
 import Link from 'next/link'
+import Image from 'next/image'
 import { logger } from '@/lib/logger'
 
 // Generate metadata for dynamic blog posts
@@ -141,11 +142,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
               {/* Featured Image */}
               {post.featuredImage && (
-                <div className="w-full h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-                  <img
+                <div className="relative w-full h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                  <Image
                     src={post.featuredImage}
                     alt={`${post.title} - Web3 ${post.category} analysis by Matthew Raphael covering ${post.tags.slice(0, 3).join(', ')} blockchain analytics topics`}
-                    className="w-full h-full object-contain"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                   />
                 </div>
               )}
@@ -158,11 +161,15 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               {/* Author */}
               <div className="flex items-center space-x-4 pt-6 border-t border-text-light-primary/10 dark:border-text-dark-primary/10">
                 {profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
-                  <img
-                    src={profile.avatar}
-                    alt={`${post.author.name} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10"
-                  />
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary-500/30 shadow-lg shadow-primary-500/10">
+                    <Image
+                      src={profile.avatar}
+                      alt={`${post.author.name} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  </div>
                 ) : (
                   <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center text-background font-bold">
                     {post.author.name.charAt(0)}

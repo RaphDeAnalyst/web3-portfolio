@@ -4,6 +4,7 @@ import { useState, useEffect, memo } from 'react'
 import Link from 'next/link'
 import { ProjectCard } from '@/components/ui/project-card'
 import { projectService } from '@/lib/service-switcher'
+import { Construction } from 'lucide-react'
 
 interface FeaturedProjectsSectionProps {
   featuredProjects?: any[]
@@ -40,8 +41,8 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
             featuredProjects.length === 1
               ? 'grid-cols-1 max-w-2xl mx-auto'
               : featuredProjects.length === 2
-              ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
-              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto'
+              ? 'grid-cols-1 lg:grid-cols-2 max-w-4xl mx-auto'
+              : 'grid-cols-1 lg:grid-cols-3 max-w-6xl mx-auto'
           }`}>
             {featuredProjects.map((project, index) => (
               <ProjectCard
@@ -53,7 +54,9 @@ const FeaturedProjectsSection = memo(function FeaturedProjectsSection({ featured
           </div>
         ) : (
           <div className="text-center py-16 sm:py-20">
-            <div className="text-4xl sm:text-6xl mb-4">🚧</div>
+            <div className="mb-4 flex justify-center">
+              <Construction className="w-16 h-16 sm:w-24 sm:h-24 text-foreground/40" />
+            </div>
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4">No Featured Projects</h3>
             <p className="text-sm sm:text-base text-foreground/60 mb-6 px-4">
               Featured projects will appear here once they&apos;re selected in the admin panel.

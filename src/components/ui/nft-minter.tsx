@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useWeb3 } from '@/lib/web3-context'
 import { useNotification } from '@/lib/notification-context'
 import { logger } from '@/lib/logger'
+import { Palette, Sparkles, Target } from 'lucide-react'
 
 interface NFTMetadata {
   name: string
@@ -220,7 +221,13 @@ export function NFTMinter() {
           {/* NFT Card Preview */}
           <div className="aspect-square rounded-xl border border-gray-200/30 dark:border-gray-800/30 bg-gradient-to-br from-background to-gray-50 dark:to-gray-900 flex items-center justify-center">
             <div className="text-center space-y-4">
-              <div className="text-6xl">{(nftDesigns[selectedDesign] as any).image || '🎨'}</div>
+              <div className="text-6xl flex justify-center">
+                {(nftDesigns[selectedDesign] as any).image ? (
+                  <div>{(nftDesigns[selectedDesign] as any).image}</div>
+                ) : (
+                  <Palette className="w-16 h-16" />
+                )}
+              </div>
               <div className="space-y-2">
                 <div className="text-lg font-bold text-foreground">
                   {nftDesigns[selectedDesign].name}
@@ -279,7 +286,10 @@ export function NFTMinter() {
         </button>
         
         <div className="mt-4 text-sm text-foreground/60">
-          <p>✨ Completely free • No gas fees • Instant delivery</p>
+          <p className="flex items-center justify-center gap-2">
+            <Sparkles className="w-4 h-4" />
+            Completely free • No gas fees • Instant delivery
+          </p>
           <p className="mt-1">🔒 Your NFT will be sent to: {ensName || `${address?.slice(0, 8)}...${address?.slice(-6)}`}</p>
         </div>
       </div>
@@ -287,7 +297,9 @@ export function NFTMinter() {
       {/* Benefits */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
         <div className="text-center p-4 rounded-xl border border-gray-200/30 dark:border-gray-800/30 bg-background/30">
-          <div className="text-2xl mb-2">🎯</div>
+          <div className="mb-2 flex justify-center">
+            <Target className="w-8 h-8" />
+          </div>
           <h5 className="font-semibold text-foreground mb-1">Proof of Visit</h5>
           <p className="text-xs text-foreground/60">Collectible proof you visited my Web3 portfolio</p>
         </div>

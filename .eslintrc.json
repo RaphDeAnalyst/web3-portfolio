@@ -1,3 +1,10 @@
 {
-  "extends": ["next/core-web-vitals"]
+  "extends": ["next/core-web-vitals"],
+  "plugins": ["jsx-a11y"],
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-img-element": "warn",
+    "jsx-a11y/alt-text": "error",
+    "@next/next/no-page-custom-font": "warn"
+  }
 }

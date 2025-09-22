@@ -3,6 +3,8 @@
  * Handles PWA functionality and offline caching
  */
 
+import { logger } from '@/lib/logger'
+
 interface ServiceWorkerManager {
   register(): Promise<void>
   unregister(): Promise<boolean>
@@ -26,7 +28,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
    */
   async register(): Promise<void> {
     if (!this.isSupported()) {
-      console.info('[SW] Service Worker not supported in this browser')
+      logger.info('Service Worker not supported in this browser')
       return
     }
 
@@ -36,17 +38,17 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
                              process.env.NEXT_PUBLIC_SW_ENABLED === 'true'
 
       if (!shouldRegister) {
-        console.info('[SW] Service Worker disabled in development')
+        logger.info('Service Worker disabled in development')
         return
       }
 
-      console.log('[SW] Registering service worker...')
+      logger.info('Registering service worker')
 
       this.registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
       })
 
-      console.log('[SW] Service Worker registered successfully:', this.registration.scope)
+      logger.success('Service Worker registered successfully', { scope: this.registration.scope })
 
       // Listen for updates
       this.registration.addEventListener('updatefound', this.handleUpdateFound.bind(this))
@@ -60,7 +62,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
       }
 
     } catch (error) {
-      console.error('[SW] Service Worker registration failed:', error)
+      logger.error('Service Worker registration failed', error)
     }
   }
 
@@ -74,10 +76,10 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
 
     try {
       const result = await this.registration.unregister()
-      console.log('[SW] Service Worker unregistered:', result)
+      logger.success('Service Worker unregistered', { result })
       return result
     } catch (error) {
-      console.error('[SW] Service Worker unregistration failed:', error)
+      logger.error('Service Worker unregistration failed', error)
       return false
     }
   }
@@ -87,15 +89,15 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
    */
   async update(): Promise<void> {
     if (!this.registration) {
-      console.warn('[SW] No service worker registered')
+      logger.warn('No service worker registered')
       return
     }
 
     try {
       await this.registration.update()
-      console.log('[SW] Service Worker update check completed')
+      logger.info('Service Worker update check completed')
     } catch (error) {
-      console.error('[SW] Service Worker update failed:', error)
+      logger.error('Service Worker update failed', error)
     }
   }
 
@@ -112,7 +114,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
       await Promise.all(
         cacheNames.map(cacheName => caches.delete(cacheName))
       )
-      console.log('[SW] All caches cleared')
+      logger.success('All caches cleared')
 
       // Notify service worker to clear its caches too
       if (navigator.serviceWorker.controller) {
@@ -121,7 +123,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
         })
       }
     } catch (error) {
-      console.error('[SW] Cache clearing failed:', error)
+      logger.error('Cache clearing failed', error)
     }
   }
 
@@ -129,7 +131,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
    * Handle service worker update found
    */
   private handleUpdateFound(): void {
-    console.log('[SW] Service Worker update found')
+    logger.info('Service Worker update found')
 
     if (!this.registration) return
 
@@ -149,7 +151,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
    * Handle controller change (new service worker activated)
    */
   private handleControllerChange(): void {
-    console.log('[SW] Service Worker controller changed')
+    logger.info('Service Worker controller changed')
 
     // Reload the page to ensure the new service worker is used
     if (typeof window !== 'undefined') {
@@ -161,7 +163,7 @@ class ServiceWorkerManagerImpl implements ServiceWorkerManager {
    * Show update available notification
    */
   private showUpdateAvailable(): void {
-    console.log('[SW] Service Worker update available')
+    logger.info('Service Worker update available')
 
     // Dispatch custom event for the app to handle
     if (typeof window !== 'undefined') {

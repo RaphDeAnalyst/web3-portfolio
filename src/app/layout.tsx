@@ -14,6 +14,12 @@ import dynamic from 'next/dynamic';
 const DeferredAnalytics = dynamic(() => import('@/components/analytics/DeferredAnalytics').then(mod => ({ default: mod.DeferredAnalytics })), {
   ssr: false
 });
+
+// PWA install prompt
+const InstallPrompt = dynamic(() => import('@/components/pwa/install-prompt').then(mod => ({ default: mod.InstallPrompt })), {
+  ssr: false
+});
+
 import '@/lib/sw-registration';
 
 const inter = Inter({
@@ -39,6 +45,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Web3 Data Analyst | Matthew Raphael | Blockchain & On-chain Analytics Portfolio",
   description: "Portfolio of Matthew Raphael, Web3 Data Analyst skilled in SQL, Python, and Dune Analytics. Explore blockchain dashboards, DeFi analytics, wallet profiling, and on-chain data insights. Bridging traditional analytics with Web3 innovation.",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+    viewportFit: "cover"
+  },
   keywords: [
     // Core Identity Keywords
     "Web3 Data Analyst", "Blockchain Analyst", "On-chain Data Analytics", "DeFi Analytics",
@@ -188,6 +201,7 @@ export default function RootLayout({
           </Web3Provider>
         </ThemeProvider>
         <DeferredAnalytics />
+        <InstallPrompt />
       </body>
     </html>
   );
