@@ -9,23 +9,30 @@ import { StructuredData } from '@/components/seo/StructuredData'
 import { profileService } from '@/lib/service-switcher'
 import { BarChart3, Link2, TrendingUp } from 'lucide-react'
 
-export default function AboutClient() {
-  const [profile, setProfile] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+interface AboutClientProps {
+  initialProfile?: any
+}
+
+export default function AboutClient({ initialProfile }: AboutClientProps) {
+  const [profile, setProfile] = useState<any>(initialProfile || null)
+  const [loading, setLoading] = useState(!initialProfile)
 
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const profileData = await profileService.getProfile()
-        setProfile(profileData)
-      } catch (error) {
-        logger.error('Error loading profile', error)
-      } finally {
-        setLoading(false)
+    // Only load profile if we don't have initial data
+    if (!initialProfile) {
+      const loadProfile = async () => {
+        try {
+          const profileData = await profileService.getProfile()
+          setProfile(profileData)
+        } catch (error) {
+          logger.error('Error loading profile', error)
+        } finally {
+          setLoading(false)
+        }
       }
+      loadProfile()
     }
-    loadProfile()
-  }, [])
+  }, [initialProfile])
   const skills = [
     {
       title: 'Core Data Analytics',

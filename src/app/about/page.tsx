@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { logger } from '@/lib/logger'
+import { profileService } from '@/lib/service-switcher'
 import AboutClient from './about-client'
 
 export const metadata: Metadata = {
@@ -25,6 +27,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default function About() {
-  return <AboutClient />
+// Server-side data fetching for about page with ISR
+export const revalidate = 3600 // Revalidate every hour
+
+export default async function About() {
+  try {
+    const profile = await profileService.getProfile()
+    return <AboutClient initialProfile={profile} />
+  } catch (error) {
+    logger.error('Error loading about page data', error)
+    // Fallback with default profile data
+    return <AboutClient initialProfile={{ name: 'Matthew Raphael', title: 'Web3 Data & AI Specialist' }} />
+  }
 }
