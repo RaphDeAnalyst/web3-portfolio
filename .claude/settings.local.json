@@ -29,7 +29,9 @@
       "Bash(npx madge:*)",
       "Bash(xargs:*)",
       "Bash(mv:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm test)"
     ],
     "deny": [],
     "ask": [],
