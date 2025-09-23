@@ -1,14 +1,102 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { GoogleDriveDocument } from './google-drive-document'
 import { GoogleDriveDocumentGroup } from './google-drive-document-group'
+import { DuneEmbed } from '../blog/dune-embed'
+import { dashboardService } from '../../lib/service-switcher'
+import { extractDashboardIds } from '../../lib/utils/dune-placeholder-parser'
+import type { Dashboard } from '../../types/dashboard'
 
 interface MarkdownRendererProps {
   content: string
 }
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+  const [dashboards, setDashboards] = useState<Dashboard[]>([])
+  const [isLoadingDashboards, setIsLoadingDashboards] = useState(false)
+
+  // Load dashboards when content changes
+  useEffect(() => {
+    const loadDashboards = async (retryCount = 0) => {
+      const dashboardIds = extractDashboardIds(content)
+
+      if (dashboardIds.length === 0) {
+        setDashboards([])
+        return
+      }
+
+      setIsLoadingDashboards(true)
+
+      try {
+        // Add timeout to the dashboard service call
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('Dashboard loading timeout')), 10000) // 10 second timeout
+        })
+
+        const dashboardPromise = dashboardService.getDashboardsWithEmbeds()
+
+        const allDashboards = await Promise.race([dashboardPromise, timeoutPromise])
+
+        // Filter to get only the dashboards requested in the content
+        const relevantDashboards = allDashboards.filter((d: Dashboard) =>
+          dashboardIds.includes(d.dashboard_id)
+        )
+
+        // The allDashboards is already sorted by the service (featured first, then sort_order)
+        // but we need to ensure the filtered dashboards maintain that priority order
+        // since they'll be rendered in the order they appear in the content, not by priority
+
+        // Debug logging for markdown renderer
+        console.log('MarkdownRenderer Dashboard Debug:', {
+          requestedIds: dashboardIds,
+          retryCount,
+          allDashboards: allDashboards.map((d: Dashboard, index: number) => ({
+            position: index + 1,
+            id: d.dashboard_id,
+            title: d.title,
+            featured: d.featured,
+            sortOrder: d.sort_order,
+            hasEmbedUrl: !!d.embed_url,
+            isActive: d.is_active
+          })),
+          relevantDashboards: relevantDashboards.map((d: Dashboard, index: number) => ({
+            position: index + 1,
+            id: d.dashboard_id,
+            title: d.title,
+            featured: d.featured,
+            sortOrder: d.sort_order
+          }))
+        })
+
+        setDashboards(relevantDashboards)
+        setIsLoadingDashboards(false)
+      } catch (error) {
+        console.error(`Error loading dashboards (attempt ${retryCount + 1}):`, error)
+
+        // Retry logic: retry up to 2 times with increasing delay
+        if (retryCount < 2) {
+          const retryDelay = (retryCount + 1) * 1000 // 1s, 2s delay
+          console.log(`Retrying dashboard load in ${retryDelay}ms...`)
+          setTimeout(() => {
+            loadDashboards(retryCount + 1)
+          }, retryDelay)
+          return
+        }
+
+        // After all retries failed, set empty dashboards and stop loading
+        setDashboards([])
+        setIsLoadingDashboards(false)
+      }
+    }
+
+    // Add a small delay to prevent hydration issues
+    const timeoutId = setTimeout(() => {
+      loadDashboards()
+    }, 100)
+
+    return () => clearTimeout(timeoutId)
+  }, [content])
   // Helper function to detect and group consecutive Google Drive documents
   const groupGoogleDriveDocs = (lines: string[]) => {
     const grouped: Array<{ type: 'document' | 'group' | 'other', data: any, originalIndex: number }> = []
@@ -131,6 +219,76 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
             {line.substring(4)}
           </h3>
         )
+      }
+      // Dune Analytics Placeholders
+      else if (line.trim().match(/^\{\{embed_query:[a-zA-Z0-9_-]+\}\}$/)) {
+        const match = line.trim().match(/^\{\{embed_query:([a-zA-Z0-9_-]+)\}\}$/)
+        if (match) {
+          const dashboardId = match[1]
+          const dashboard = dashboards.find(d => d.dashboard_id === dashboardId)
+
+          // Debug log for each dashboard lookup
+          console.log(`Rendering dashboard placeholder ${dashboardId}:`, {
+            found: !!dashboard,
+            dashboard: dashboard ? {
+              id: dashboard.dashboard_id,
+              title: dashboard.title,
+              featured: dashboard.featured,
+              sortOrder: dashboard.sort_order,
+              hasEmbed: !!dashboard.embed_url
+            } : null,
+            allAvailableDashboards: dashboards.map(d => ({
+              id: d.dashboard_id,
+              title: d.title,
+              featured: d.featured,
+              sortOrder: d.sort_order
+            }))
+          })
+
+          // Always show loading state first, then dashboard or error
+          if (isLoadingDashboards || dashboards.length === 0) {
+            elements.push(
+              <div key={i} className="my-8">
+                <div className="animate-pulse">
+                  {/* Dashboard skeleton */}
+                  <div className="bg-gray-200 dark:bg-gray-700 rounded-lg h-6 w-48 mb-2"></div>
+                  <div className="bg-gray-100 dark:bg-gray-800 rounded-xl border border-gray-200/50 dark:border-gray-800/50 overflow-hidden">
+                    <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      <div className="flex items-center space-x-3 text-gray-500 dark:text-gray-400">
+                        <div className="animate-spin h-6 w-6 border-2 border-current border-t-transparent rounded-full" />
+                        <span className="text-sm font-medium">Loading dashboard...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          } else if (dashboard && dashboard.embed_url) {
+            elements.push(
+              <DuneEmbed
+                key={i}
+                embedUrl={dashboard.embed_url}
+                title={dashboard.title}
+                caption={dashboard.description}
+                dashboard={dashboard}
+              />
+            )
+          } else {
+            elements.push(
+              <div key={i} className="my-8 p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
+                <div className="flex items-center space-x-2 text-yellow-800 dark:text-yellow-200">
+                  <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                  <span className="font-medium">Dashboard Unavailable</span>
+                </div>
+                <p className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+                  The dashboard &quot;<code className="bg-yellow-100 dark:bg-yellow-800 px-1 py-0.5 rounded">{dashboardId}</code>&quot; is not available or has no embed URL configured.
+                </p>
+              </div>
+            )
+          }
+        }
       }
       // Code blocks
       else if (line.startsWith('```')) {

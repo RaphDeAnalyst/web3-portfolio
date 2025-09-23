@@ -282,7 +282,7 @@ export const ProjectCard = memo(function ProjectCard({
                 original: blogPostSlug,
                 trimmed: trimmedSlug,
                 isExternal: isExternalUrl,
-                title: title
+                title
               })
 
               return isExternalUrl ? (

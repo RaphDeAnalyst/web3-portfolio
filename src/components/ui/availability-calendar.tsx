@@ -205,9 +205,9 @@ export function AvailabilityCalendar() {
     // Update tooltip data immediately for smooth transition
     setHoveredDate({
       day: availability,
-      x: x,
-      y: y,
-      arrowPosition: arrowPosition
+      x,
+      y,
+      arrowPosition
     })
 
     // Show tooltip with slight delay to prevent rapid flickering

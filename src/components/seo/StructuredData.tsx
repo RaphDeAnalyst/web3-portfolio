@@ -156,7 +156,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       },
       "keywords": data.tags?.join(', ') || "Web3, Blockchain Analytics, DeFi",
       "articleSection": data.category || "Web3 Analytics",
-      "wordCount": wordCount,
+      wordCount,
       "timeRequired": `PT${readingTime}M`,
       "inLanguage": "en-US",
       "isAccessibleForFree": true

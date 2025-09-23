@@ -24,7 +24,7 @@ export function BlogPostClient({ slug, title }: BlogPostClientProps) {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: title,
+        title,
         url: window.location.href
       })
     } else {

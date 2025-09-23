@@ -11,7 +11,8 @@ import {
   ImageIcon,
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  BarChart3
 } from 'lucide-react'
 
 export type AdminDockItemData = {
@@ -53,6 +54,11 @@ export default function AdminDock({
       icon: <FolderOpen size={20} />,
       label: 'Projects',
       href: '/admin/projects'
+    },
+    {
+      icon: <BarChart3 size={20} />,
+      label: 'Dashboards',
+      href: '/admin/dashboards'
     },
     {
       icon: <User size={20} />,

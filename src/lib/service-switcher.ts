@@ -9,6 +9,7 @@ import { ProfileService as legacyProfileService } from './profile-service'
 let blogServiceSupabaseCache: any = null
 let projectServiceSupabaseCache: any = null
 let profileServiceSupabaseCache: any = null
+let dashboardServiceSupabaseCache: any = null
 
 // Lazy loading functions for Supabase services
 async function getBlogServiceSupabase() {
@@ -35,12 +36,21 @@ async function getProfileServiceSupabase() {
   return profileServiceSupabaseCache
 }
 
+async function getDashboardServiceSupabase() {
+  if (!dashboardServiceSupabaseCache) {
+    const importedModule = await import('./dashboard-service-supabase')
+    dashboardServiceSupabaseCache = importedModule.dashboardServiceSupabase
+  }
+  return dashboardServiceSupabaseCache
+}
+
 // Configuration for which services to use
 export const SERVICE_CONFIG = {
   USE_SUPABASE: process.env.NEXT_PUBLIC_USE_SUPABASE === 'true',
   BLOG_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_BLOG !== 'false',
   PROJECT_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_PROJECTS !== 'false',
   PROFILE_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_PROFILE !== 'false',
+  DASHBOARD_SERVICE: process.env.NEXT_PUBLIC_USE_SUPABASE_DASHBOARDS !== 'false',
 }
 
 // Unified Blog Service Interface
@@ -294,6 +304,124 @@ export const profileService = {
       return await supabaseService.importProfile(profileJson)
     }
     return legacyProfileService.importProfile(profileJson)
+  }
+}
+
+// Unified Dashboard Service Interface
+export const dashboardService = {
+  async getAllDashboards() {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getAllDashboards()
+    }
+    return [] // No legacy dashboard service yet
+  },
+
+  async getActiveDashboards() {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getActiveDashboards()
+    }
+    return []
+  },
+
+  async getDashboardByKey(dashboardId: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getDashboardByKey(dashboardId)
+    }
+    return null
+  },
+
+  async getDashboardById(id: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getDashboardById(id)
+    }
+    return null
+  },
+
+  async createDashboard(dashboardData: any) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.createDashboard(dashboardData)
+    }
+    throw new Error('Dashboard service not available')
+  },
+
+  async updateDashboard(updateData: any) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.updateDashboard(updateData)
+    }
+    throw new Error('Dashboard service not available')
+  },
+
+  async deleteDashboard(id: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.deleteDashboard(id)
+    }
+    throw new Error('Dashboard service not available')
+  },
+
+  async getDashboardsByCategory(category: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getDashboardsByCategory(category)
+    }
+    return []
+  },
+
+  async getDashboardsWithEmbeds() {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getDashboardsWithEmbeds()
+    }
+    return []
+  },
+
+  async searchDashboards(query: string, category?: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.searchDashboards(query, category)
+    }
+    return []
+  },
+
+  validateEmbedUrl(url: string) {
+    try {
+      const parsed = new URL(url)
+      const allowedDomains = ['dune.com', 'dune.xyz']
+      return allowedDomains.includes(parsed.hostname) &&
+             parsed.pathname.startsWith('/embeds/')
+    } catch {
+      return false
+    }
+  },
+
+  async updateEmbedUrl(id: string, embedUrl: string) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.updateEmbedUrl(id, embedUrl)
+    }
+    throw new Error('Dashboard service not available')
+  },
+
+  async getStats() {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.getStats()
+    }
+    return { total: 0, active: 0, withEmbeds: 0, categories: {} }
+  },
+
+  async compactSortOrders(featured: boolean) {
+    if (SERVICE_CONFIG.DASHBOARD_SERVICE && SERVICE_CONFIG.USE_SUPABASE) {
+      const supabaseService = await getDashboardServiceSupabase()
+      return await supabaseService.compactSortOrders(featured)
+    }
+    throw new Error('Dashboard service not available')
   }
 }
 

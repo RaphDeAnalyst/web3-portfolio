@@ -23,7 +23,13 @@
       "Bash(npx @next/bundle-analyzer:*)",
       "WebFetch(domain:www.webpagetest.org)",
       "Bash(npm audit:*)",
-      "WebFetch(domain:dune.com)"
+      "WebFetch(domain:dune.com)",
+      "Bash(npx tsc:*)",
+      "Bash(npx depcheck:*)",
+      "Bash(npx madge:*)",
+      "Bash(xargs:*)",
+      "Bash(mv:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": [],

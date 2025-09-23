@@ -237,7 +237,7 @@ export class MediaServiceHybrid {
       // Simple database record - only using columns that exist
       const mediaRecord = {
         filename: filename || this.extractFilenameFromUrl(url, provider),
-        url: url,
+        url,
         type: provider === 'youtube' ? 'video/youtube' : 'application/pdf',
         size: 0,
         alt_text: null
