@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { dashboardService } from '@/lib/service-switcher'
 import type { Dashboard } from '@/types/dashboard'
@@ -33,11 +33,7 @@ export default function DashboardsManagement() {
     dashboard: null
   })
 
-  useEffect(() => {
-    loadDashboards()
-  }, [])
-
-  const loadDashboards = async () => {
+  const loadDashboards = useCallback(async () => {
     setIsLoading(true)
     try {
       const allDashboards = await dashboardService.getAllDashboards()
@@ -48,7 +44,11 @@ export default function DashboardsManagement() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [error])
+
+  useEffect(() => {
+    loadDashboards()
+  }, [loadDashboards])
 
   const categories = Array.from(new Set(dashboards.map(d => d.category).filter(Boolean)))
 
@@ -452,27 +452,38 @@ export default function DashboardsManagement() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      {dashboard.embed_url ? (
-                        <div className="flex items-center space-x-2">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                            <Eye className="w-3 h-3 mr-1" />
-                            Available
+                      {(() => {
+                        // Check for embed URLs (prioritize embed_urls array over legacy embed_url)
+                        const hasEmbedUrls = (dashboard.embed_urls && dashboard.embed_urls.length > 0) || dashboard.embed_url
+                        const embedCount = dashboard.embed_urls?.length || (dashboard.embed_url ? 1 : 0)
+                        const primaryUrl = dashboard.embed_urls?.[0]
+                          ? (typeof dashboard.embed_urls[0] === 'string' ? dashboard.embed_urls[0] : dashboard.embed_urls[0].url)
+                          : dashboard.embed_url
+
+                        return hasEmbedUrls ? (
+                          <div className="flex items-center space-x-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                              <Eye className="w-3 h-3 mr-1" />
+                              Available {embedCount > 1 ? `(${embedCount})` : ''}
+                            </span>
+                            {primaryUrl && (
+                              <a
+                                href={primaryUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                            <EyeOff className="w-3 h-3 mr-1" />
+                            No Embed
                           </span>
-                          <a
-                            href={dashboard.embed_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        </div>
-                      ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
-                          <EyeOff className="w-3 h-3 mr-1" />
-                          No Embed
-                        </span>
-                      )}
+                        )
+                      })()}
                     </td>
                     <td className="px-6 py-4">
                       {(() => {

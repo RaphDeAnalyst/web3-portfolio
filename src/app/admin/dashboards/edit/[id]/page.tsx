@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { dashboardService } from '@/lib/service-switcher'
-import type { Dashboard, UpdateDashboardInput } from '@/types/dashboard'
+import type { Dashboard, UpdateDashboardInput, ChartEmbed } from '@/types/dashboard'
 import { useNotification } from '@/lib/notification-context'
 import { logger } from '@/lib/logger'
+import { invalidateBlogCache, invalidateDashboardCache } from '@/lib/actions/cache-invalidation'
 import Link from 'next/link'
 import {
   ArrowLeft,
@@ -13,7 +14,8 @@ import {
   ExternalLink,
   Eye,
   Save,
-  Trash2
+  Trash2,
+  Plus
 } from 'lucide-react'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
@@ -34,6 +36,7 @@ export default function EditDashboard() {
     category: '',
     tags: [],
     embed_url: '',
+    embed_urls: [],
     dune_url: '',
     featured: false,
     is_active: true,
@@ -41,13 +44,7 @@ export default function EditDashboard() {
     sort_order: 0
   })
 
-  useEffect(() => {
-    if (params?.id) {
-      loadDashboard(params.id as string)
-    }
-  }, [params?.id])
-
-  const loadDashboard = async (id: string) => {
+  const loadDashboard = useCallback(async (id: string) => {
     setIsLoading(true)
     try {
       const dashboard = await dashboardService.getDashboardById(id)
@@ -66,6 +63,16 @@ export default function EditDashboard() {
         category: dashboard.category || '',
         tags: dashboard.tags || [],
         embed_url: dashboard.embed_url || '',
+        embed_urls: dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0
+          ? dashboard.embed_urls.map((item: string | ChartEmbed, index: number) => {
+              if (typeof item === 'string') {
+                return { url: item, title: '', description: '' }
+              } else if (typeof item === 'object' && item !== null && 'url' in item) {
+                return item as ChartEmbed
+              }
+              return { url: '', title: '', description: '' }
+            })
+          : (dashboard.embed_url ? [{ url: dashboard.embed_url, title: '', description: '' }] : [{ url: '', title: '', description: '' }]),
         dune_url: dashboard.dune_url || '',
         featured: dashboard.featured || false,
         is_active: dashboard.is_active !== false,
@@ -73,8 +80,24 @@ export default function EditDashboard() {
         sort_order: dashboard.sort_order || 0
       })
 
-      if (dashboard.embed_url && dashboardService.validateEmbedUrl(dashboard.embed_url)) {
-        setPreviewUrl(dashboard.embed_url)
+      // Set preview URL to first valid embed URL from chart objects
+      const allUrls: string[] = []
+      if (dashboard.embed_url) {
+        allUrls.push(dashboard.embed_url)
+      }
+      if (dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) {
+        dashboard.embed_urls.forEach((item: string | ChartEmbed) => {
+          if (typeof item === 'string') {
+            allUrls.push(item)
+          } else if (typeof item === 'object' && item !== null && 'url' in item) {
+            allUrls.push(item.url)
+          }
+        })
+      }
+
+      const firstValidUrl = allUrls.find(url => url && dashboardService.validateEmbedUrl(url))
+      if (firstValidUrl) {
+        setPreviewUrl(firstValidUrl)
       }
     } catch (err) {
       error('Failed to load dashboard')
@@ -83,7 +106,13 @@ export default function EditDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [error, router])
+
+  useEffect(() => {
+    if (params?.id) {
+      loadDashboard(params.id as string)
+    }
+  }, [params?.id, loadDashboard])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,7 +125,18 @@ export default function EditDashboard() {
         return
       }
 
-      // Validate embed URL if provided
+      // Validate embed charts if provided
+      const validEmbedCharts = (formData.embed_urls as ChartEmbed[] || []).filter(chart => chart.url && chart.url.trim() !== '')
+      if (validEmbedCharts.length > 0) {
+        for (const chart of validEmbedCharts) {
+          if (!dashboardService.validateEmbedUrl(chart.url)) {
+            error(`Invalid embed URL: ${chart.url}. Must be from dune.com or dune.xyz with /embeds/ path`)
+            return
+          }
+        }
+      }
+
+      // Also validate legacy embed_url if provided
       if (formData.embed_url && !dashboardService.validateEmbedUrl(formData.embed_url)) {
         error('Invalid embed URL. Must be from dune.com or dune.xyz with /embeds/ path')
         return
@@ -107,7 +147,15 @@ export default function EditDashboard() {
       const newFeatured = formData.featured === true
       const featuredStatusChanged = originalFeatured !== newFeatured
 
-      const finalFormData = { ...formData }
+      // Clean up embed charts - only include charts with non-empty URLs
+      const cleanedEmbedCharts = (formData.embed_urls as ChartEmbed[] || []).filter(chart => chart.url && chart.url.trim() !== '')
+
+      const finalFormData = {
+        ...formData,
+        embed_urls: cleanedEmbedCharts.length > 0 ? cleanedEmbedCharts : undefined,
+        // Clear legacy embed_url when using multiple URLs to avoid conflicts
+        embed_url: cleanedEmbedCharts.length > 1 ? null : (cleanedEmbedCharts[0]?.url || formData.embed_url)
+      }
       let successMessage = 'Dashboard updated successfully'
 
       // Only recalculate sort_order if featured status changed
@@ -132,6 +180,9 @@ export default function EditDashboard() {
 
         // Skip the final update since we already updated above
         success(successMessage)
+        // Invalidate caches to ensure blog posts reflect dashboard changes
+        await invalidateBlogCache(dashboard?.dashboard_id)
+        await invalidateDashboardCache()
         router.push('/admin/dashboards')
         return
       }
@@ -139,6 +190,9 @@ export default function EditDashboard() {
 
       await dashboardService.updateDashboard(finalFormData)
       success(successMessage)
+      // Invalidate caches to ensure blog posts reflect dashboard changes
+      await invalidateBlogCache(dashboard?.dashboard_id)
+      await invalidateDashboardCache()
       router.push('/admin/dashboards')
     } catch (err) {
       error('Failed to update dashboard')
@@ -154,6 +208,9 @@ export default function EditDashboard() {
     try {
       await dashboardService.deleteDashboard(dashboard.id)
       success('Dashboard deleted successfully')
+      // Invalidate caches after deletion
+      await invalidateBlogCache(dashboard?.dashboard_id)
+      await invalidateDashboardCache()
       router.push('/admin/dashboards')
     } catch (err) {
       error('Failed to delete dashboard')
@@ -161,14 +218,46 @@ export default function EditDashboard() {
     }
   }
 
-  const handleInputChange = (field: keyof UpdateDashboardInput, value: any) => {
+  const handleInputChange = (field: keyof UpdateDashboardInput, value: string | boolean | number | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }))
 
     // Update preview URL when embed URL changes
-    if (field === 'embed_url' && value && dashboardService.validateEmbedUrl(value)) {
+    if (field === 'embed_url' && typeof value === 'string' && value && dashboardService.validateEmbedUrl(value)) {
       setPreviewUrl(value)
     } else if (field === 'embed_url') {
       setPreviewUrl('')
+    }
+  }
+
+  // Helper functions for managing embed chart objects
+  const addEmbedChart = () => {
+    setFormData(prev => ({
+      ...prev,
+      embed_urls: [...(prev.embed_urls as ChartEmbed[] || []), { url: '', title: '', description: '' }]
+    }))
+  }
+
+  const removeEmbedChart = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      embed_urls: (prev.embed_urls as ChartEmbed[] || []).filter((_, i) => i !== index)
+    }))
+  }
+
+  const updateEmbedChart = (index: number, field: keyof ChartEmbed, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      embed_urls: (prev.embed_urls as ChartEmbed[] || []).map((chart, i) =>
+        i === index ? { ...chart, [field]: value } : chart
+      )
+    }))
+
+    // Update preview URL for the first valid embed URL
+    if (field === 'url') {
+      const charts = formData.embed_urls as ChartEmbed[]
+      const firstValidUrl = index === 0 && value && dashboardService.validateEmbedUrl(value) ? value :
+                           charts?.find(chart => chart.url && dashboardService.validateEmbedUrl(chart.url))?.url
+      setPreviewUrl(firstValidUrl || '')
     }
   }
 
@@ -279,7 +368,7 @@ export default function EditDashboard() {
                       onChange={(e) => handleInputChange('dashboard_id', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="e.g., active_wallets, gas_tracker"
-                      pattern="[a-zA-Z0-9_\\-]+"
+                      pattern="[a-zA-Z0-9_-]+"
                       title="Only letters, numbers, underscores, and hyphens allowed"
                       required
                     />
@@ -387,29 +476,96 @@ export default function EditDashboard() {
                 </h3>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Embed URL
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="url"
-                      value={formData.embed_url || ''}
-                      onChange={(e) => handleInputChange('embed_url', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="https://dune.com/embeds/..."
-                    />
-                    {formData.embed_url && (
-                      <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                        {dashboardService.validateEmbedUrl(formData.embed_url) ? (
-                          <span className="text-green-500">✓</span>
-                        ) : (
-                          <span className="text-red-500">✗</span>
-                        )}
-                      </div>
-                    )}
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Embed URLs
+                    </label>
+                    <button
+                      type="button"
+                      onClick={addEmbedChart}
+                      className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add Chart
+                    </button>
                   </div>
+
+                  <div className="space-y-4">
+                    {(formData.embed_urls as ChartEmbed[] || []).map((chart, index) => (
+                      <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Chart {index + 1}
+                          </h4>
+                          {(formData.embed_urls as ChartEmbed[] || []).length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeEmbedChart(index)}
+                              className="p-1 text-red-600 hover:text-red-500 dark:text-red-400"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              Embed URL *
+                            </label>
+                            <div className="relative">
+                              <input
+                                type="url"
+                                value={chart.url}
+                                onChange={(e) => updateEmbedChart(index, 'url', e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="https://dune.com/embeds/..."
+                              />
+                              {chart.url && (
+                                <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                                  {dashboardService.validateEmbedUrl(chart.url) ? (
+                                    <span className="text-green-500">✓</span>
+                                  ) : (
+                                    <span className="text-red-500">✗</span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              Chart Title
+                            </label>
+                            <input
+                              type="text"
+                              value={chart.title || ''}
+                              onChange={(e) => updateEmbedChart(index, 'title', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="e.g., Daily Active Users, Gas Price Tracker"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              Chart Description
+                            </label>
+                            <textarea
+                              value={chart.description || ''}
+                              onChange={(e) => updateEmbedChart(index, 'description', e.target.value)}
+                              rows={2}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Brief description of what this chart shows"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Must be a valid Dune Analytics embed URL
+                    Add multiple Dune Analytics charts. Each embed URL must be from dune.com or dune.xyz with /embeds/ path.
+                    Individual titles and descriptions help users understand what each chart shows.
                   </p>
                 </div>
 

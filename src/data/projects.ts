@@ -31,8 +31,8 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript", "Chart.js", "Tailwind CSS", "Next.js", "Supabase"],
     category: "Analytics",
     status: "Live",
-    demoUrl: "https://my-new-portfolio.com",
-    githubUrl: "https://github.com/matthewraphael/sample-analytics-dashboard",
+    demoUrl: "https://matthewraphael.xyz",
+    githubUrl: "https://github.com/matthewraphael/web3-portfolio",
     metrics: {
       "Users": "1K+",
       "Accuracy": "95%",
@@ -57,21 +57,3 @@ export const projectCategories = [
   "DeFi", 
   "Learning"
 ]
-
-// Template for adding new projects - copy this and fill in your details
-export const newProjectTemplate: Project = {
-  title: "Your Project Title",
-  description: "Detailed description of what you built, what you learned, and the impact/results. Be specific about the problem you solved and your approach.",
-  tech: ["Technology1", "Technology2", "Technology3"], // List all technologies used
-  category: "Analytics", // Must be one of the categories above
-  status: "Learning", // Live, Learning, Complete, Development, or Beta
-  demoUrl: "https://example.com", // Link to live demo or "https://example.com" as placeholder
-  githubUrl: "https://github.com/user/repo", // Link to GitHub repo or valid placeholder
-  metrics: {
-    // Add relevant metrics for your project
-    // Examples: "timeframe: '2 months'", "accuracy: '85%'", "users: '50+'", etc.
-    metric1: "value1",
-    metric2: "value2"
-  },
-  featured: false // Set to true if you want this project highlighted
-}

@@ -15,7 +15,7 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   theme: Theme
-  setTheme: (theme: Theme) => void
+  setTheme: (newTheme: Theme) => void
   systemTheme: 'dark' | 'light'
   effectiveTheme: 'dark' | 'light'
 }

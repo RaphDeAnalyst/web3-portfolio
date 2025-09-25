@@ -80,7 +80,7 @@ export class SmartUploadRouter {
   /**
    * Image routing logic
    */
-  private routeImage(file: File, options: UploadOptions): RoutingDecision {
+  private routeImage(file: File, _options: UploadOptions): RoutingDecision {
     const warnings: string[] = []
 
     // Large images might exceed ImgBB limits
@@ -115,7 +115,7 @@ export class SmartUploadRouter {
   /**
    * Video routing logic
    */
-  private routeVideo(file: File, options: UploadOptions): RoutingDecision {
+  private routeVideo(file: File, _options: UploadOptions): RoutingDecision {
     const warnings: string[] = []
 
     // For public videos, YouTube is often better for SEO and performance
@@ -178,7 +178,7 @@ export class SmartUploadRouter {
   /**
    * Generic file routing
    */
-  private routeGenericFile(file: File, options: UploadOptions): RoutingDecision {
+  private routeGenericFile(file: File, _options: UploadOptions): RoutingDecision {
     const warnings: string[] = []
 
     // Check if file type is supported by providers

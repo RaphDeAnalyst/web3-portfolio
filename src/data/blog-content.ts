@@ -576,7 +576,7 @@ def your_function():
 
 > Block quotes for important insights
 
-Links work: [Link text](https://example.com)
+Links work: [Portfolio](https://matthewraphael.xyz)
 
 **Tips for writing good blog content:**
 1. Start with a compelling introduction

@@ -170,10 +170,9 @@ export default function EnhancedMediaUpload() {
     setUploadState(prev => ({ ...prev, uploading: false }))
   }
 
-  const handleExternalAdd = async (url: string, provider: 'youtube' | 'googledrive'): Promise<boolean> => {
+  const handleExternalAdd = async (url: string, provider: 'youtube' | 'googledrive', customTitle?: string): Promise<boolean> => {
     try {
-      const filename = provider === 'youtube' ? 'YouTube Video' : 'Google Drive Document'
-      const result = await mediaServiceHybrid.addExternalMedia(url, provider, filename)
+      const result = await mediaServiceHybrid.addExternalMedia(url, provider, undefined, customTitle)
       
       if (result) {
         await loadMediaFiles()

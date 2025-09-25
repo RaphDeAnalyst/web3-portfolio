@@ -7,12 +7,13 @@ interface GoogleDriveDocumentProps {
 }
 
 export function GoogleDriveDocument({ fileId, customTitle, url }: GoogleDriveDocumentProps) {
+  // Title precedence: customTitle (from database or markdown) → fallback 'Document'
   const title = customTitle || 'Document'
   const subtitle = 'Google Drive'
 
   const viewUrl = `https://drive.google.com/file/d/${fileId}/view`
   const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`
-  const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`
+  const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`
 
   return (
     <div className="my-6">
@@ -54,11 +55,19 @@ export function GoogleDriveDocument({ fileId, customTitle, url }: GoogleDriveDoc
             </summary>
             <div className="mt-3">
               <iframe
-                src={previewUrl}
+                src={embedUrl}
                 className="w-full h-96 border border-gray-200 dark:border-gray-700 rounded-lg"
                 title="Document Preview"
                 loading="lazy"
+                onError={() => {
+                  console.warn('Google Drive preview failed to load, document may not be publicly accessible')
+                }}
               />
+              <div className="mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                  💡 If preview doesn&apos;t load, the document may need to be shared publicly or you may need to open it directly via the &quot;View&quot; button.
+                </p>
+              </div>
             </div>
           </details>
         </div>

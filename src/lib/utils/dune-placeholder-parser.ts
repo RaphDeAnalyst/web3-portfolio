@@ -57,13 +57,25 @@ export class DunePlaceholderParser {
       for (const match of sortedMatches) {
         const dashboard = dashboardMap.get(match.dashboardId)
 
-        if (dashboard && dashboard.embed_url) {
+
+        if (dashboard && this.hasValidEmbedUrls(dashboard)) {
           const embedHtml = this.generateEmbedHtml(dashboard)
           result = result.substring(0, match.startIndex) +
                   embedHtml +
                   result.substring(match.endIndex)
         } else {
-          logger.warn(`Dashboard not found or has no embed URL: ${match.dashboardId}`)
+          if (dashboard) {
+            logger.warn(`Dashboard found but no valid embed URLs: ${match.dashboardId}`, {
+              embed_url: dashboard.embed_url,
+              embed_urls: dashboard.embed_urls,
+              has_embed_url: !!dashboard.embed_url,
+              has_embed_urls: !!(dashboard.embed_urls && dashboard.embed_urls.length > 0),
+              getAllEmbedUrls_result: this.getAllEmbedUrls(dashboard)
+            })
+          } else {
+            logger.warn(`Dashboard not found: ${match.dashboardId}`)
+            logger.warn('Available dashboards:', Array.from(dashboardMap.keys()))
+          }
           // Replace with a placeholder message
           const fallbackHtml = this.generateFallbackHtml(match.dashboardId)
           result = result.substring(0, match.startIndex) +
@@ -79,49 +91,104 @@ export class DunePlaceholderParser {
     }
   }
 
+  // Helper method to check if dashboard has any valid embed URLs
+  static hasValidEmbedUrls(dashboard: Dashboard): boolean {
+    // Prioritize embed_urls array over legacy embed_url
+    return !!((dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) || dashboard.embed_url)
+  }
+
+  // Helper method to get all embed URLs from a dashboard (legacy support)
+  static getAllEmbedUrls(dashboard: Dashboard): string[] {
+    return this.getAllChartEmbeds(dashboard).map(chart => chart.url)
+  }
+
+  // Helper method to get all ChartEmbed objects from a dashboard
+  static getAllChartEmbeds(dashboard: Dashboard): import('../../types/dashboard').ChartEmbed[] {
+    const charts: import('../../types/dashboard').ChartEmbed[] = []
+
+    // Prioritize new multiple embed URLs if exists
+    if (dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) {
+      dashboard.embed_urls.forEach((item, index) => {
+        if (typeof item === 'string') {
+          // Convert legacy string format to ChartEmbed object
+          charts.push({
+            url: item,
+            title: `Chart ${index + 1}`,
+            description: undefined
+          })
+        } else if (typeof item === 'object' && item !== null && 'url' in item) {
+          // Already a ChartEmbed object
+          charts.push(item as import('../../types/dashboard').ChartEmbed)
+        }
+      })
+    }
+    // Fallback to legacy single embed URL only if no embed_urls array
+    else if (dashboard.embed_url && typeof dashboard.embed_url === 'string') {
+      charts.push({
+        url: dashboard.embed_url,
+        title: dashboard.title,
+        description: dashboard.description
+      })
+    }
+
+    return charts.filter(chart => chart.url && chart.url.trim() !== '')
+  }
+
   static generateEmbedHtml(dashboard: Dashboard): string {
     const {
-      embed_url,
       title = 'Dune Analytics Dashboard',
       description,
       dashboard_id
     } = dashboard
 
-    if (!embed_url) {
+    // Get chart embed objects instead of just URLs
+    const chartEmbeds = this.getAllChartEmbeds(dashboard)
+
+    if (chartEmbeds.length === 0) {
       return this.generateFallbackHtml(dashboard_id)
     }
 
-    // Generate unique ID for the iframe
-    const iframeId = `dune-embed-${dashboard_id}-${Date.now()}`
+    // Generate HTML for all chart embeds with individual titles and descriptions
+    const embedsHtml = chartEmbeds.map((chart, index) => {
+      const iframeId = `dune-embed-${dashboard_id}-${index}-${Date.now()}`
+      const chartTitle = chart.title || (chartEmbeds.length > 1 ? `${title} - Chart ${index + 1}` : title)
+      const chartDescription = chart.description
 
-    return `
-<div class="dune-embed-container my-8" data-dashboard-id="${dashboard_id}">
-  ${title ? `<h3 class="dune-embed-title text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">${this.escapeHtml(title)}</h3>` : ''}
-  ${description ? `<p class="dune-embed-description text-sm text-gray-600 dark:text-gray-400 mb-4">${this.escapeHtml(description)}</p>` : ''}
-  <div class="dune-embed-wrapper relative w-full max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg overflow-hidden">
+      return `
+  <div class="dune-embed-wrapper relative w-full max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg overflow-hidden ${index > 0 ? 'mt-6' : ''}">
+    ${chartTitle && chartTitle !== title ? `<div class="px-4 pt-4"><h4 class="text-md font-medium text-gray-800 dark:text-gray-200">${this.escapeHtml(chartTitle)}</h4></div>` : ''}
+    ${chartDescription ? `<div class="px-4 ${chartTitle && chartTitle !== title ? 'pt-1 pb-3' : 'pt-4 pb-3'}"><p class="text-sm text-gray-600 dark:text-gray-400">${this.escapeHtml(chartDescription)}</p></div>` : ''}
     <div class="dune-embed-loading absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-800">
       <div class="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
         <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span>Loading dashboard...</span>
+        <span>Loading chart...</span>
       </div>
     </div>
     <iframe
       id="${iframeId}"
-      src="${this.escapeHtml(embed_url)}"
+      src="${this.escapeHtml(chart.url)}"
       width="100%"
       height="400"
       frameborder="0"
       allowfullscreen
       loading="lazy"
       class="dune-embed-iframe"
-      title="${this.escapeHtml(title)}"
+      title="${this.escapeHtml(chartTitle)}"
       onload="this.previousElementSibling.style.display='none'"
       style="min-height: 400px;"
     ></iframe>
-  </div>
+  </div>`
+    }).join('')
+
+    return `
+<div class="dune-embed-container my-8" data-dashboard-id="${dashboard_id}">
+  ${title ? `<h3 class="dune-embed-title text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">${this.escapeHtml(title)}</h3>` : ''}
+  ${description && !chartEmbeds.some(chart => chart.description) ? `<p class="dune-embed-description text-sm text-gray-600 dark:text-gray-400 mb-4">${this.escapeHtml(description)}</p>` : ''}
+  ${chartEmbeds.length > 1 ? `<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${chartEmbeds.length} charts</p>` : ''}
+  ${embedsHtml}
 </div>`.trim()
   }
 

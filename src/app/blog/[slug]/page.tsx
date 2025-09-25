@@ -9,6 +9,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { logger } from '@/lib/logger'
 
+// Configure ISR to revalidate blog posts every 60 seconds
+export const revalidate = 60
+
 // Generate metadata for dynamic blog posts
 export async function generateMetadata(
   { params }: { params: { slug: string } }

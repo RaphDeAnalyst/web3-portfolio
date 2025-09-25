@@ -15,7 +15,7 @@ interface UploadTabProps {
   selectedProvider: StorageProvider | 'auto'
   showAdvanced: boolean
   onFileUpload: (files: FileList | null) => void
-  onExternalAdd: (url: string, provider: 'youtube' | 'googledrive') => Promise<boolean>
+  onExternalAdd: (url: string, provider: 'youtube' | 'googledrive', customTitle?: string) => Promise<boolean>
   onOptionsChange: (options: UploadOptions) => void
   onProviderChange: (provider: StorageProvider | 'auto') => void
   onAdvancedToggle: (show: boolean) => void
@@ -35,6 +35,7 @@ export function UploadTab({
   const [dragOver, setDragOver] = useState(false)
   const [externalUrl, setExternalUrl] = useState('')
   const [externalProvider, setExternalProvider] = useState<'youtube' | 'googledrive'>('youtube')
+  const [customTitle, setCustomTitle] = useState('')
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -45,10 +46,11 @@ export function UploadTab({
   const handleExternalSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!externalUrl.trim()) return
-    
-    const success = await onExternalAdd(externalUrl, externalProvider)
+
+    const success = await onExternalAdd(externalUrl, externalProvider, customTitle.trim() || undefined)
     if (success) {
       setExternalUrl('')
+      setCustomTitle('')
     }
   }
 
@@ -164,6 +166,29 @@ export function UploadTab({
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-background text-foreground"
               required
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Custom Title {externalProvider === 'youtube' ? '(Optional - will use video title if empty)' : '(Recommended for Google Drive)'}
+            </label>
+            <input
+              type="text"
+              value={customTitle}
+              onChange={e => setCustomTitle(e.target.value)}
+              placeholder={
+                externalProvider === 'youtube'
+                  ? "Leave empty to use YouTube video title"
+                  : "e.g., Financial Report Q4 2024"
+              }
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-background text-foreground"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {externalProvider === 'youtube'
+                ? 'YouTube videos will automatically get their real titles from the API'
+                : 'Google Drive documents need custom titles for better identification'
+              }
+            </p>
           </div>
           
           <button

@@ -1,3 +1,9 @@
+export interface ChartEmbed {
+  url: string
+  title?: string
+  description?: string
+}
+
 export interface Dashboard {
   id: string
   dashboard_id: string
@@ -12,7 +18,8 @@ export interface Dashboard {
   parameters?: Record<string, any>
   thumbnail_url?: string
   dune_url?: string
-  embed_url?: string
+  embed_url?: string // Legacy single embed URL for backward compatibility
+  embed_urls?: string[] | ChartEmbed[] // Support both legacy string[] and new ChartEmbed[]
   sort_order?: number
   is_active?: boolean
   created_at?: string
@@ -52,7 +59,8 @@ export interface CreateDashboardInput {
   parameters?: Record<string, any>
   thumbnail_url?: string
   dune_url?: string
-  embed_url?: string
+  embed_url?: string // Legacy single embed URL for backward compatibility
+  embed_urls?: string[] | ChartEmbed[] // Support both legacy string[] and new ChartEmbed[]
   sort_order?: number
   is_active?: boolean
   report_key_finding?: string
@@ -111,7 +119,8 @@ export interface DashboardFormData {
   description?: string
   category?: string
   tags: string[]
-  embed_url?: string
+  embed_url?: string // Legacy single embed URL for backward compatibility
+  embed_urls?: string[] | ChartEmbed[] // Support both legacy string[] and new ChartEmbed[]
   dune_url?: string
   featured: boolean
   is_active: boolean

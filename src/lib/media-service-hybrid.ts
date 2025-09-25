@@ -9,12 +9,15 @@ export interface MediaFile {
   type: string
   size: number
   alt_text?: string
+  title?: string // Display title (e.g., YouTube video title, custom document name)
+  description?: string // Description or caption
   storage_provider: 'supabase' | 'imgbb' | 'youtube' | 'googledrive'
   bucket_name?: string
   file_path?: string
   thumbnail_url?: string
   video_id?: string
   drive_file_id?: string
+  duration?: string // Video duration (YouTube format: PT1M30S)
   is_public: boolean
   usage_count: number
   last_accessed_at?: string
@@ -208,19 +211,83 @@ export class MediaServiceHybrid {
     }
   }
 
+  // YouTube API integration
+  private async fetchYouTubeMetadata(videoId: string): Promise<{
+    title: string
+    description?: string
+    thumbnailUrl?: string
+    duration?: string
+  } | null> {
+    const apiKey = process.env.YOUTUBE_API_KEY
+
+    if (!apiKey) {
+      logger.warn('YouTube API key not configured, using fallback naming')
+      return null
+    }
+
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet,contentDetails`
+      )
+
+      if (!response.ok) {
+        throw new Error(`YouTube API error: ${response.status} ${response.statusText}`)
+      }
+
+      const data = await response.json()
+
+      if (!data.items || data.items.length === 0) {
+        logger.warn(`No YouTube video found for ID: ${videoId}`)
+        return null
+      }
+
+      const video = data.items[0]
+      const snippet = video.snippet
+      const contentDetails = video.contentDetails
+
+      return {
+        title: snippet.title || `YouTube Video ${videoId}`,
+        description: snippet.description ? snippet.description.substring(0, 500) : undefined,
+        thumbnailUrl: snippet.thumbnails?.maxres?.url ||
+                     snippet.thumbnails?.high?.url ||
+                     snippet.thumbnails?.medium?.url ||
+                     snippet.thumbnails?.default?.url,
+        duration: contentDetails?.duration
+      }
+    } catch (error) {
+      logger.error('Error fetching YouTube metadata:', error)
+      return null
+    }
+  }
+
   // Add external URL (YouTube, Google Drive, etc.)
   async addExternalMedia(
-    url: string, 
-    provider: 'youtube' | 'googledrive', 
-    filename?: string
+    url: string,
+    provider: 'youtube' | 'googledrive',
+    filename?: string,
+    customTitle?: string
   ): Promise<MediaFile | null> {
     try {
-      // Validate URLs first
+      let finalTitle = customTitle || filename
+      let description: string | undefined
+      let thumbnailUrl: string | undefined
+
+      // Validate URLs and fetch metadata
       if (provider === 'youtube') {
         const videoId = this.extractYouTubeVideoId(url)
         if (!videoId) {
           throw new Error('Invalid YouTube URL. Please use a valid YouTube video URL.')
         }
+
+        // Fetch YouTube metadata
+        const metadata = await this.fetchYouTubeMetadata(videoId)
+        if (metadata) {
+          finalTitle = customTitle || metadata.title
+          description = metadata.description
+          thumbnailUrl = metadata.thumbnailUrl
+          logger.info(`📺 Fetched YouTube metadata: ${metadata.title}`)
+        }
+
         // Update URL to use embed format for consistency
         url = `https://www.youtube.com/watch?v=${videoId}`
       }
@@ -232,15 +299,28 @@ export class MediaServiceHybrid {
         }
         // Update URL to use direct view format
         url = `https://drive.google.com/file/d/${fileId}/view`
+
+        // Use custom title or fallback
+        finalTitle = customTitle || 'Google Drive Document'
       }
 
-      // Simple database record - only using columns that exist
+      // Database record with enhanced metadata
       const mediaRecord = {
-        filename: filename || this.extractFilenameFromUrl(url, provider),
+        filename: finalTitle || this.extractFilenameFromUrl(url, provider),
         url,
         type: provider === 'youtube' ? 'video/youtube' : 'application/pdf',
         size: 0,
-        alt_text: null
+        alt_text: description ? description.substring(0, 255) : null,
+        // New schema columns (will be ignored if columns don't exist yet)
+        title: finalTitle,
+        description,
+        thumbnail_url: thumbnailUrl,
+        metadata: {
+          provider,
+          videoId: provider === 'youtube' ? this.extractYouTubeVideoId(url) : undefined,
+          fileId: provider === 'googledrive' ? this.extractGoogleDriveFileId(url) : undefined,
+          fetchedAt: new Date().toISOString()
+        }
       }
 
       logger.info('💾 Saving external media to database:', mediaRecord)

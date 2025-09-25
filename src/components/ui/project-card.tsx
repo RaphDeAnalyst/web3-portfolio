@@ -277,13 +277,6 @@ export const ProjectCard = memo(function ProjectCard({
               const trimmedSlug = blogPostSlug.trim()
               const isExternalUrl = trimmedSlug.startsWith('http://') || trimmedSlug.startsWith('https://')
 
-              // Debug logging
-              logger.info('Blog post slug processing', {
-                original: blogPostSlug,
-                trimmed: trimmedSlug,
-                isExternal: isExternalUrl,
-                title
-              })
 
               return isExternalUrl ? (
                 <a

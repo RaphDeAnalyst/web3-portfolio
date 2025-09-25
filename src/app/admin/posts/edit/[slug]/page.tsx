@@ -9,6 +9,7 @@ import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/types/shared'
 import { FileText } from 'lucide-react'
 import { logger } from '@/lib/logger'
+import { invalidateBlogPostCache } from '@/lib/actions/cache-invalidation'
 
 export default function EditBlogPost() {
   const router = useRouter()
@@ -33,16 +34,22 @@ export default function EditBlogPost() {
   const handleSave = async (updatedPostData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
     try {
       // Save the updated post
-      await blogService.savePost({
+      const savedPost = await blogService.savePost({
         ...updatedPostData,
         status: isDraft ? 'draft' : 'published'
       }, id)
-      
+
+      // Invalidate blog post caches to ensure changes are immediately visible
+      if (savedPost?.slug) {
+        await invalidateBlogPostCache(savedPost.slug)
+      }
+
       // Redirect back to posts list
       router.push('/admin/posts')
     } catch (error) {
       logger.error('Failed to save post:', error)
-      alert('Failed to save post. Please try again.')
+      // TODO: Replace with proper toast notification system
+      throw error
     }
   }
 

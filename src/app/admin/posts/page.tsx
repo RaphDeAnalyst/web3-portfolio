@@ -10,8 +10,7 @@ import {
   FileText,
   CheckCircle,
   FileEdit,
-  Star,
-  Plus
+  Star
 } from 'lucide-react'
 import { logger } from '@/lib/logger'
 

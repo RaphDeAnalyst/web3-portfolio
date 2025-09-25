@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { logger } from '@/lib/logger'
 import type { DuneEmbedProps } from '../../types/dashboard'
 
 export function DuneEmbed({
@@ -67,6 +68,20 @@ export function DuneEmbed({
   }
 
   if (!embedUrl || !validateEmbedUrl(embedUrl)) {
+    // Log validation failure for debugging
+    logger.error('DuneEmbed validation failed', {
+      embedUrl,
+      embedUrlType: typeof embedUrl,
+      isEmpty: !embedUrl,
+      isValid: embedUrl ? validateEmbedUrl(embedUrl) : false,
+      dashboard: dashboard ? {
+        id: dashboard.dashboard_id,
+        title: dashboard.title,
+        embed_url: dashboard.embed_url,
+        embed_urls: dashboard.embed_urls
+      } : null
+    })
+
     return (
       <div className="dune-embed-error my-8 p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
         <div className="flex items-center space-x-2 text-red-800 dark:text-red-200">
@@ -77,6 +92,9 @@ export function DuneEmbed({
         </div>
         <p className="mt-2 text-sm text-red-700 dark:text-red-300">
           The provided URL is not a valid Dune Analytics embed URL.
+        </p>
+        <p className="mt-1 text-xs text-red-600 dark:text-red-400 font-mono">
+          Debug: embedUrl = &quot;{String(embedUrl)}&quot;
         </p>
       </div>
     )
@@ -195,26 +213,23 @@ export function DuneEmbed({
         </p>
       )}
 
-      {/* Dashboard metadata for development */}
-      {process.env.NODE_ENV === 'development' && dashboard && (
-        <details className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-          <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
-            Debug Info
-          </summary>
-          <pre className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded overflow-x-auto">
-            {JSON.stringify(
-              {
-                dashboard_id: dashboard.dashboard_id,
-                title: dashboard.title,
-                category: dashboard.category,
-                embed_url: dashboard.embed_url
-              },
-              null,
-              2
-            )}
-          </pre>
-        </details>
+      {/* View on Dune Link */}
+      {dashboard?.dune_url && (
+        <div className="mt-3 text-center">
+          <a
+            href={dashboard.dune_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            View Full Dashboard on Dune
+          </a>
+        </div>
       )}
+
     </div>
   )
 }

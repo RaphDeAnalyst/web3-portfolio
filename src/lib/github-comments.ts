@@ -274,12 +274,3 @@ class GitHubCommentsService {
 // Export singleton instance
 export const githubComments = new GitHubCommentsService()
 
-// Make debugging methods available globally in development
-if (typeof window !== 'undefined') {
-  // @ts-ignore
-  window.debugGitHubComments = {
-    clearCache: () => githubComments.clearCache(),
-    debugCache: () => githubComments.debugCache(),
-    getCommentCount: (slug: string) => githubComments.getCommentCount(slug)
-  }
-}

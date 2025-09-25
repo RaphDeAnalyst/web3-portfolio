@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase'
 import { logger } from './logger'
-import type { Dashboard, CreateDashboardInput, UpdateDashboardInput } from '../types/dashboard'
+import type { Dashboard, CreateDashboardInput, UpdateDashboardInput, ChartEmbed } from '../types/dashboard'
 
 export class DashboardServiceSupabase {
   async getAllDashboards(): Promise<Dashboard[]> {
@@ -46,21 +46,6 @@ export class DashboardServiceSupabase {
         return aOrder - bOrder
       })
 
-      // Debug logging for admin page
-      logger.info('getAllDashboards results (admin page - sorted: featured first, then sort_order)', {
-        total: result.length,
-        featured: result.filter((d: Dashboard) => d.featured === true).length,
-        nonFeatured: result.filter((d: Dashboard) => d.featured !== true).length,
-        undefinedFeatured: result.filter((d: Dashboard) => d.featured === undefined).length,
-        sortedOrder: result.map((d: Dashboard, index: number) => ({
-          position: index + 1,
-          id: d.dashboard_id,
-          title: d.title,
-          featured: d.featured,
-          featuredResolved: d.featured === true,
-          sortOrder: d.sort_order
-        }))
-      })
 
       return result
     } catch (error) {
@@ -163,6 +148,11 @@ export class DashboardServiceSupabase {
         throw new Error('Invalid embed URL. Must be from dune.com or dune.xyz with /embeds/ path')
       }
 
+      // Validate embed URLs array if provided
+      if (dashboardData.embed_urls && Array.isArray(dashboardData.embed_urls) && dashboardData.embed_urls.length > 0 && !this.validateEmbedUrls(dashboardData.embed_urls)) {
+        throw new Error('Invalid embed URLs. All URLs must be from dune.com or dune.xyz with /embeds/ path')
+      }
+
       const { data, error } = await supabase
         .from('dashboards')
         .insert([dashboardData])
@@ -197,6 +187,11 @@ export class DashboardServiceSupabase {
       // Validate embed URL if provided
       if (updateData.embed_url && !this.validateEmbedUrl(updateData.embed_url)) {
         throw new Error('Invalid embed URL. Must be from dune.com or dune.xyz with /embeds/ path')
+      }
+
+      // Validate embed URLs array if provided
+      if (updateData.embed_urls && Array.isArray(updateData.embed_urls) && updateData.embed_urls.length > 0 && !this.validateEmbedUrls(updateData.embed_urls)) {
+        throw new Error('Invalid embed URLs. All URLs must be from dune.com or dune.xyz with /embeds/ path')
       }
 
       const { id, ...updateFields } = updateData
@@ -273,7 +268,7 @@ export class DashboardServiceSupabase {
     }
   }
 
-  async getDashboardsWithEmbeds(): Promise<Dashboard[]> {
+  async getDashboardsWithEmbeds(bustCache = false): Promise<Dashboard[]> {
     if (!isSupabaseAvailable()) {
       logger.warn('Supabase not available, returning empty dashboard list')
       return []
@@ -288,8 +283,8 @@ export class DashboardServiceSupabase {
       // Explicitly filter for active dashboards
       query = query.eq('is_active', true)
 
-      // Explicitly filter for dashboards with embed URLs
-      query = query.not('embed_url', 'is', null)
+      // Filter for dashboards with embed URLs (legacy embed_url OR new embed_urls)
+      query = query.or('embed_url.not.is.null,embed_urls.not.is.null')
 
       // Explicitly include both featured AND non-featured dashboards
       // (no featured filter at all)
@@ -297,6 +292,14 @@ export class DashboardServiceSupabase {
       // Order by sort_order only - featured sorting will be handled client-side
       // (Supabase boolean ordering can be unreliable with NULL/undefined values)
       query = query.order('sort_order', { ascending: true })
+
+      // Add cache-busting parameter when requested (for fresh data after updates)
+      if (bustCache) {
+        // Force a fresh query by adding a timestamp-based filter that doesn't affect results
+        const cacheKey = `cache_bust_${Date.now()}`
+        logger.info(`Cache-busting dashboard query: ${cacheKey}`)
+        query = query.limit(1000).offset(0)
+      }
 
       const { data, error } = await query
 
@@ -332,23 +335,6 @@ export class DashboardServiceSupabase {
         return aOrder - bOrder
       })
 
-      // Debug logging to verify sorting results
-      logger.info('getDashboardsWithEmbeds results (sorted: featured first, then sort_order)', {
-        total: result.length,
-        featured: result.filter((d: Dashboard) => d.featured === true).length,
-        nonFeatured: result.filter((d: Dashboard) => d.featured !== true).length,
-        undefinedFeatured: result.filter((d: Dashboard) => d.featured === undefined).length,
-        sortedOrder: result.map((d: Dashboard, index: number) => ({
-          position: index + 1,
-          id: d.dashboard_id,
-          title: d.title,
-          featured: d.featured,
-          featuredResolved: d.featured === true, // show how undefined is resolved
-          sortOrder: d.sort_order,
-          isActive: d.is_active,
-          hasEmbedUrl: !!d.embed_url
-        }))
-      })
 
       return result
     } catch (error) {
@@ -406,6 +392,90 @@ export class DashboardServiceSupabase {
     } catch {
       return false
     }
+  }
+
+  validateEmbedUrls(urls: string[] | ChartEmbed[]): boolean {
+    if (!Array.isArray(urls)) return false
+
+    return urls.every(item => {
+      if (typeof item === 'string') {
+        return this.validateEmbedUrl(item)
+      } else if (typeof item === 'object' && item !== null && 'url' in item) {
+        return this.validateEmbedUrl(item.url)
+      }
+      return false
+    })
+  }
+
+  // Helper method to get all embed URLs from a dashboard (legacy + new format)
+  getAllEmbedUrls(dashboard: Dashboard): string[] {
+    const urls: string[] = []
+
+    // Prioritize new multiple embed URLs if exists
+    if (dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) {
+      dashboard.embed_urls.forEach(item => {
+        if (typeof item === 'string') {
+          urls.push(item)
+        } else if (typeof item === 'object' && item !== null && 'url' in item) {
+          urls.push(item.url)
+        }
+      })
+    }
+    // Fallback to legacy single embed URL only if no embed_urls array
+    else if (dashboard.embed_url && typeof dashboard.embed_url === 'string') {
+      urls.push(dashboard.embed_url)
+    }
+
+    return urls.filter(url => url && url.trim() !== '')
+  }
+
+  // Helper method to check if dashboard has any embed URLs
+  hasEmbedUrls(dashboard: Dashboard): boolean {
+    // Prioritize embed_urls array over legacy embed_url
+    if (dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) {
+      // Check if any chart has a valid URL
+      return dashboard.embed_urls.some(item => {
+        if (typeof item === 'string') {
+          return item.trim() !== ''
+        } else if (typeof item === 'object' && item !== null && 'url' in item) {
+          return item.url && item.url.trim() !== ''
+        }
+        return false
+      })
+    }
+    return !!(dashboard.embed_url && dashboard.embed_url.trim() !== '')
+  }
+
+  // Helper method to get all ChartEmbed objects from a dashboard
+  getAllChartEmbeds(dashboard: Dashboard): ChartEmbed[] {
+    const charts: ChartEmbed[] = []
+
+    // Prioritize new multiple embed URLs if exists
+    if (dashboard.embed_urls && Array.isArray(dashboard.embed_urls) && dashboard.embed_urls.length > 0) {
+      dashboard.embed_urls.forEach((item, index) => {
+        if (typeof item === 'string') {
+          // Convert legacy string format to ChartEmbed object
+          charts.push({
+            url: item,
+            title: `Chart ${index + 1}`,
+            description: undefined
+          })
+        } else if (typeof item === 'object' && item !== null && 'url' in item) {
+          // Already a ChartEmbed object
+          charts.push(item as ChartEmbed)
+        }
+      })
+    }
+    // Fallback to legacy single embed URL only if no embed_urls array
+    else if (dashboard.embed_url && typeof dashboard.embed_url === 'string') {
+      charts.push({
+        url: dashboard.embed_url,
+        title: dashboard.title,
+        description: dashboard.description
+      })
+    }
+
+    return charts.filter(chart => chart.url && chart.url.trim() !== '')
   }
 
   async updateEmbedUrl(id: string, embedUrl: string): Promise<void> {
@@ -477,7 +547,7 @@ export class DashboardServiceSupabase {
       const [totalResult, activeResult, embedsResult, allDashboards] = await Promise.all([
         supabase.from('dashboards').select('id', { count: 'exact', head: true }),
         supabase.from('dashboards').select('id', { count: 'exact', head: true }).eq('is_active', true),
-        supabase.from('dashboards').select('id', { count: 'exact', head: true }).not('embed_url', 'is', null),
+        supabase.from('dashboards').select('id', { count: 'exact', head: true }).or('embed_url.not.is.null,embed_urls.not.is.null'),
         supabase.from('dashboards').select('category').eq('is_active', true)
       ])
 

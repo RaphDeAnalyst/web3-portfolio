@@ -240,7 +240,21 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                   <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                     {(() => {
                       const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
-                      if (fileType.startsWith('image/')) {
+                      const thumbnailUrl = (file as any).thumbnail_url
+
+                      // Show thumbnail if available (YouTube videos)
+                      if (thumbnailUrl) {
+                        return (
+                          <img
+                            src={thumbnailUrl}
+                            alt={(file as any).title || file.filename}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        )
+                      }
+                      // Show original image for regular images
+                      else if (fileType.startsWith('image/')) {
                         return (
                           <img
                             src={file.url}
@@ -252,7 +266,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                       } else {
                         return (
                           <div className="flex justify-center">
-                            {fileType.startsWith('video/') ?
+                            {fileType.startsWith('video/') || fileType === 'video/youtube' ?
                               <Video size={32} className="text-gray-400" /> :
                               <FileText size={32} className="text-gray-400" />
                             }
@@ -263,8 +277,8 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                   </div>
                   
                   <div className="p-4">
-                    <h3 className="font-medium text-foreground text-sm truncate mb-1">
-                      {file.filename}
+                    <h3 className="font-medium text-foreground text-sm truncate mb-1" title={(file as any).title || file.filename}>
+                      {(file as any).title || file.filename}
                     </h3>
                     <p className="text-xs text-gray-500 mb-2">
                       {formatFileSize((file as any).file_size || (file as any).size || 0)} • {formatDate((file as any).created_at || (file as any).createdAt || (file as any).uploadedAt)}
@@ -288,7 +302,21 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                   <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center mr-4">
                     {(() => {
                       const fileType = (file as any).file_type || (file as any).type || (file as any).fileType || ''
-                      if (fileType.startsWith('image/')) {
+                      const thumbnailUrl = (file as any).thumbnail_url
+
+                      // Show thumbnail if available (YouTube videos)
+                      if (thumbnailUrl) {
+                        return (
+                          <img
+                            src={thumbnailUrl}
+                            alt={(file as any).title || file.filename}
+                            className="w-full h-full object-cover rounded"
+                            loading="lazy"
+                          />
+                        )
+                      }
+                      // Show original image for regular images
+                      else if (fileType.startsWith('image/')) {
                         return (
                           <img
                             src={file.url}
@@ -300,7 +328,7 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                       } else {
                         return (
                           <div className="flex justify-center">
-                            {fileType.startsWith('video/') ?
+                            {fileType.startsWith('video/') || fileType === 'video/youtube' ?
                               <Video size={20} className="text-gray-400" /> :
                               <FileText size={20} className="text-gray-400" />
                             }
@@ -309,10 +337,10 @@ export function MediaLibrary({ mediaFiles, onRefresh }: MediaLibraryProps) {
                       }
                     })()}
                   </div>
-                  
+
                   <div className="flex-grow min-w-0">
-                    <h3 className="font-medium text-foreground truncate mb-1">
-                      {file.filename}
+                    <h3 className="font-medium text-foreground truncate mb-1" title={(file as any).title || file.filename}>
+                      {(file as any).title || file.filename}
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span>{formatFileSize((file as any).file_size || (file as any).size || 0)}</span>

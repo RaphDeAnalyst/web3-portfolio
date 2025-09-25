@@ -14,7 +14,7 @@ interface Web3State {
 interface Web3ContextType extends Web3State {
   connect: () => Promise<void>
   disconnect: () => void
-  switchNetwork: (chainId: number) => Promise<void>
+  switchNetwork: (targetChainId: number) => Promise<void>
 }
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined)

@@ -7,6 +7,7 @@ import { blogService } from '@/lib/service-switcher'
 import { BlogPostData } from '@/types/shared'
 import { ProfileService } from '@/lib/profile-service'
 import { logger } from '@/lib/logger'
+import { invalidateBlogPostCache } from '@/lib/actions/cache-invalidation'
 
 export default function NewBlogPost() {
   const router = useRouter()
@@ -14,16 +15,22 @@ export default function NewBlogPost() {
   const handleSave = async (postData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
     try {
       // Create the new post
-      await blogService.savePost({
+      const savedPost = await blogService.savePost({
         ...postData,
         status: isDraft ? 'draft' : 'published'
       })
-      
+
+      // Invalidate blog post caches to ensure new post is immediately visible
+      if (savedPost?.slug) {
+        await invalidateBlogPostCache(savedPost.slug)
+      }
+
       // Redirect back to posts list
       router.push('/admin/posts')
     } catch (error) {
       logger.error('Failed to create post:', error)
-      alert('Failed to create post. Please try again.')
+      // TODO: Replace with proper toast notification system
+      throw error
     }
   }
 

@@ -9,6 +9,11 @@ const withBundleAnalyzer = process.env.ANALYZE === 'true' ?
   (config) => config
 
 const nextConfig = {
+  // Environment variables configuration
+  env: {
+    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+  },
+
   // Performance optimizations
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -160,7 +165,7 @@ const nextConfig = {
               "img-src 'self' blob: data: https: http:",
               "media-src 'self' blob: data:",
               "connect-src 'self' https: wss: https://vercel.live https://*.vercel.app https://vitals.vercel-insights.com https://*.supabase.co https://*.supabase.io https://api.github.com",
-              "frame-src 'self' https://dune.com https://*.dune.com https://dune.xyz https://*.dune.xyz",
+              "frame-src 'self' https://dune.com https://*.dune.com https://dune.xyz https://*.dune.xyz https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://utteranc.es https://drive.google.com https://docs.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -185,7 +190,7 @@ const nextConfig = {
               "img-src 'self' blob: data: https: http:",
               "media-src 'self' blob: data:",
               "connect-src 'self' https: wss: https://*.supabase.co https://*.supabase.io https://api.github.com",
-              "frame-src 'self' https://dune.com https://*.dune.com https://dune.xyz https://*.dune.xyz",
+              "frame-src 'self' https://dune.com https://*.dune.com https://dune.xyz https://*.dune.xyz https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://utteranc.es https://drive.google.com https://docs.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

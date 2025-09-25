@@ -190,7 +190,6 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "alternateName": "RaphDeAnalyst",
       "description": "Professional Web3 data analytics consultation and blockchain dashboard development services.",
       "url": "https://matthewraphael.xyz",
-      "telephone": "+1-XXX-XXX-XXXX",
       "email": profile.email || "matthewraphael@matthewraphael.xyz",
       "address": {
         "@type": "PostalAddress",
