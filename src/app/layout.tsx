@@ -73,6 +73,16 @@ export const metadata: Metadata = {
     "Decentralized Finance DeFi Trends", "Token Economy Insights", "Wallet Behavior Analysis",
     "On-chain Cohort Analysis", "Web3 Growth Metrics",
 
+    // Employment & Market Targeting
+    "Remote Web3 Data Analyst", "Freelance Blockchain Analytics", "Full-time Web3 Jobs",
+    "Web3 Data Analyst US", "Blockchain Analyst UK", "DeFi Analyst Canada",
+    "Remote Blockchain Consultant", "Web3 Analytics Contract", "Crypto Data Freelancer",
+    "Full-time DeFi Analyst", "Remote Web3 Developer", "Blockchain Data Scientist Remote",
+
+    // Geographic Market Keywords
+    "Web3 Analytics United States", "Blockchain Jobs UK", "DeFi Analyst Europe",
+    "Remote Crypto Analyst", "Global Web3 Consultant", "International Blockchain Analytics",
+
     // Name and Location
     "Matthew Raphael", "RaphDeAnalyst"
   ],
@@ -95,7 +105,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://matthewraphael.xyz",
     title: "Web3 Data Analyst | Matthew Raphael | Blockchain & On-chain Analytics Portfolio",
-    description: "Portfolio of Matthew Raphael, Web3 Data Analyst specialized in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, Dune Analytics with proven Web2 to Web3 transition experience.",
+    description: "Portfolio of Matthew Raphael, Web3 Data Analyst available for remote, freelance, and full-time positions globally. Specialized in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, Dune Analytics serving clients in US, UK, EU, and worldwide markets.",
     siteName: "Matthew Raphael - Web3 Data Analytics Portfolio",
     images: [
       {
@@ -109,7 +119,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Web3 Data Analyst | Matthew Raphael | Blockchain & On-chain Analytics Portfolio",
-    description: "Specialized in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, and Dune Analytics. Explore my Web3 dashboards and case studies.",
+    description: "Remote Web3 Data Analyst available for freelance, contract, and full-time positions globally. Specialized in blockchain analytics, DeFi protocols, Python, SQL, Dune Analytics. Serving US, UK, EU, and international markets.",
     creator: "@matthew_nnamani",
     images: ["https://matthewraphael.xyz/og-image.jpg"],
   },
@@ -133,9 +143,17 @@ export default function RootLayout({
         <meta name="geo.position" content="6.5244;3.3792" />
         <meta name="ICBM" content="6.5244, 3.3792" />
         <meta name="geo.country" content="NG" />
-        <meta name="target-audience" content="Global, Africa, Nigeria" />
+        <meta name="target-audience" content="Global, US, UK, EU, Canada, Nigeria" />
         <meta name="coverage" content="Worldwide" />
         <meta name="distribution" content="Global" />
+
+        {/* Employment and Availability Meta Tags */}
+        <meta name="work-type" content="Full-time, Contract, Freelance, Remote, Consulting" />
+        <meta name="availability" content="Available for hire" />
+        <meta name="employment-status" content="Open to opportunities" />
+        <meta name="work-preference" content="Remote, Global" />
+        <meta name="timezone-flexibility" content="US EST, UK GMT, EU CET, WAT" />
+        <meta name="markets-served" content="United States, United Kingdom, European Union, Canada, Nigeria, Global" />
 
         {/* Resource hints for performance - optimized for Core Web Vitals */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

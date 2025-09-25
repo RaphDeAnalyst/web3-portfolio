@@ -101,7 +101,26 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "nationality": {
         "@type": "Country",
         "name": "Nigeria"
-      }
+      },
+      "seekingWorkType": [
+        "Full-time",
+        "Contract",
+        "Freelance",
+        "Remote",
+        "Consulting"
+      ],
+      "availableChannel": [
+        {
+          "@type": "ServiceChannel",
+          "name": "Remote Collaboration",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ServiceChannel",
+          "name": "Global Timezone Flexibility",
+          "serviceArea": ["US Eastern Time", "UK GMT", "EU CET", "West Africa Time"]
+        }
+      ]
     }
   }
 
@@ -230,7 +249,31 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "serviceArea": [
         {
           "@type": "Country",
+          "name": "United States"
+        },
+        {
+          "@type": "Country",
+          "name": "United Kingdom"
+        },
+        {
+          "@type": "Country",
+          "name": "Canada"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        },
+        {
+          "@type": "Country",
           "name": "Nigeria"
+        },
+        {
+          "@type": "Continent",
+          "name": "Europe"
+        },
+        {
+          "@type": "Continent",
+          "name": "North America"
         },
         {
           "@type": "Continent",
@@ -238,17 +281,41 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
         },
         {
           "@type": "Place",
-          "name": "Global"
+          "name": "Global Remote"
         }
       ],
       "areaServed": [
         {
           "@type": "Country",
-          "name": "Nigeria"
+          "name": "United States"
         },
         {
-          "@type": "Continent",
-          "name": "Africa"
+          "@type": "Country",
+          "name": "United Kingdom"
+        },
+        {
+          "@type": "Country",
+          "name": "Canada"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        },
+        {
+          "@type": "Country",
+          "name": "Germany"
+        },
+        {
+          "@type": "Country",
+          "name": "Netherlands"
+        },
+        {
+          "@type": "Country",
+          "name": "Singapore"
+        },
+        {
+          "@type": "Country",
+          "name": "Nigeria"
         },
         {
           "@type": "Place",
@@ -281,6 +348,30 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
               "@type": "Service",
               "name": "Dune Analytics Dashboards",
               "description": "Custom dashboard development using Dune Analytics"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Remote Web3 Analytics Consulting",
+              "description": "Full-time and freelance Web3 data analysis services available globally"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Contract Blockchain Data Analysis",
+              "description": "Short-term and long-term contract opportunities for blockchain analytics projects"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Full-time Web3 Data Analyst Positions",
+              "description": "Available for permanent Web3 data analyst roles in US, UK, EU, and global markets"
             }
           }
         ]
