@@ -127,10 +127,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Invisible Geographic Meta Tags for Local SEO (Nigeria targeting) */}
+        <meta name="geo.region" content="NG" />
+        <meta name="geo.placename" content="Lagos, Nigeria" />
+        <meta name="geo.position" content="6.5244;3.3792" />
+        <meta name="ICBM" content="6.5244, 3.3792" />
+        <meta name="geo.country" content="NG" />
+        <meta name="target-audience" content="Global, Africa, Nigeria" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="distribution" content="Global" />
+
         {/* Resource hints for performance - optimized for Core Web Vitals */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
 
         <link rel="dns-prefetch" href="https://vercel.live" />
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />

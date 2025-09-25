@@ -133,6 +133,18 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, s-maxage=300, stale-while-revalidate=60',
           },
+          {
+            key: 'CF-IPCountry',
+            value: 'NG',
+          },
+          {
+            key: 'X-Geo-Country',
+            value: 'Nigeria',
+          },
+          {
+            key: 'X-Content-Location',
+            value: 'Lagos, Nigeria',
+          },
         ],
       },
       {
@@ -142,6 +154,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+          {
+            key: 'X-Geo-Country',
+            value: 'Nigeria',
           },
         ],
       },
@@ -162,6 +178,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+          {
+            key: 'X-Geo-Country',
+            value: 'Nigeria',
           },
         ],
       },

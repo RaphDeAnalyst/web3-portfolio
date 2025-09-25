@@ -75,6 +75,32 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "alumniOf": {
         "@type": "EducationalOrganization",
         "name": "Data Analytics Background"
+      },
+      "homeLocation": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lagos",
+          "addressRegion": "Lagos State",
+          "addressCountry": "Nigeria"
+        }
+      },
+      "workLocation": [
+        {
+          "@type": "Place",
+          "name": "Global Remote"
+        },
+        {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Nigeria"
+          }
+        }
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "Nigeria"
       }
     }
   }
@@ -193,17 +219,42 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "email": profile.email || "matthewraphael@matthewraphael.xyz",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": profile.location || "Remote",
-        "addressCountry": "US"
+        "addressLocality": "Lagos",
+        "addressRegion": "Lagos State",
+        "addressCountry": "Nigeria"
       },
       "founder": {
         "@type": "Person",
         "name": "Matthew Raphael"
       },
-      "serviceArea": {
-        "@type": "Place",
-        "name": "Worldwide"
-      },
+      "serviceArea": [
+        {
+          "@type": "Country",
+          "name": "Nigeria"
+        },
+        {
+          "@type": "Continent",
+          "name": "Africa"
+        },
+        {
+          "@type": "Place",
+          "name": "Global"
+        }
+      ],
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "Nigeria"
+        },
+        {
+          "@type": "Continent",
+          "name": "Africa"
+        },
+        {
+          "@type": "Place",
+          "name": "Worldwide"
+        }
+      ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Web3 Analytics Services",
