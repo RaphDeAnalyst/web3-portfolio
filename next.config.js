@@ -126,6 +126,64 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Cache control for homepage
+        source: '/',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+        ],
+      },
+      {
+        // Cache control for blog listing page
+        source: '/blog',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+        ],
+      },
+      {
+        // Cache control for individual blog posts
+        source: '/blog/:slug*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+        ],
+      },
+      {
+        // Cache control for portfolio page
+        source: '/portfolio',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=60',
+          },
+        ],
+      },
+      {
+        // No caching for admin pages - always fresh content
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate, max-age=0',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           // Existing security headers
