@@ -3,7 +3,7 @@ import { blogService, projectService, profileService } from '@/lib/service-switc
 import { HomeClient } from './home-client'
 
 // Server-side data fetching for homepage with ISR
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 300 // Revalidate every 5 minutes
 
 export default async function Home() {
   try {

@@ -47,6 +47,24 @@ export async function invalidateBlogPostCache(slug?: string) {
 }
 
 /**
+ * Server action to invalidate project caches when content is updated
+ */
+export async function invalidateProjectCache() {
+  try {
+    // Revalidate portfolio and related pages
+    revalidatePath('/portfolio', 'page')
+    revalidatePath('/admin/projects', 'page')
+
+    // Also revalidate the homepage if it displays projects
+    revalidatePath('/', 'page')
+
+    logger.info('Project cache invalidated')
+  } catch (error) {
+    logger.error('Failed to invalidate project cache:', error)
+  }
+}
+
+/**
  * Server action to invalidate dashboard-specific caches
  */
 export async function invalidateDashboardCache() {

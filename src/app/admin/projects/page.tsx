@@ -16,6 +16,7 @@ import {
   Github
 } from 'lucide-react'
 import { logger } from '@/lib/logger'
+import { invalidateProjectCache } from '@/lib/actions/cache-invalidation'
 
 export default function ProjectsManagement() {
   const { error, success } = useNotification()
@@ -72,6 +73,10 @@ export default function ProjectsManagement() {
       await projectService.deleteProject(deleteDialog.index)
       const updatedProjects = await projectService.getAllProjects()
       setProjectList(updatedProjects)
+
+      // Invalidate cache to ensure deletion is immediately visible on client side
+      await invalidateProjectCache()
+
       success(`Project "${title}" deleted successfully`)
     } catch (err) {
       logger.error('Error deleting project:', err)
