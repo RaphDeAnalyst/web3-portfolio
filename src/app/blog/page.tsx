@@ -80,5 +80,5 @@ export default async function BlogPage() {
   }
 }
 
-// Enable ISR (Incremental Static Regeneration) - rebuilds every hour
-export const revalidate = 3600 // 1 hour
+// Enable ISR (Incremental Static Regeneration) - rebuilds every 5 minutes
+export const revalidate = 300 // 5 minutes

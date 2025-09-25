@@ -13,6 +13,7 @@ import {
   Star
 } from 'lucide-react'
 import { logger } from '@/lib/logger'
+import { invalidateBlogPostCache } from '@/lib/actions/cache-invalidation'
 
 export default function PostsManagement() {
   const { success, error } = useNotification()
@@ -57,6 +58,10 @@ export default function PostsManagement() {
       await blogService.deletePost(id!)
       const allPosts = await blogService.getAllPosts()
       setPosts(allPosts)
+
+      // Invalidate cache to ensure deletion is immediately visible on client side
+      await invalidateBlogPostCache()
+
       success(`Blog post "${title}" deleted successfully`)
     } catch (err) {
       logger.error('Failed to delete post:', err)
