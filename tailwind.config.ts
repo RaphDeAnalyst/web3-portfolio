@@ -50,6 +50,7 @@ export default {
 
         // Primary colors using Storj navy and blue
         primary: {
+          DEFAULT: 'hsl(220, 54%, 23%)', // Storj navy - default for bg-primary with good contrast
           50: '#f8fafc',
           100: '#f1f5f9',
           200: '#e2e8f0',
