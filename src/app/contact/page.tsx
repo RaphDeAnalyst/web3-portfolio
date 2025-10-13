@@ -62,9 +62,17 @@ export default function Contact() {
                     Check My <span className="text-gradient">Availability</span>
                   </h2>
                   <p className="text-foreground/70 leading-relaxed">
-                    See my real-time availability and book a consultation call. 
-                    <span className="text-foreground font-semibold"> Hover over any date</span> to see available time slots,
-                    or <span className="text-foreground font-semibold"> click to book</span> directly.
+                    See my real-time availability and book a consultation call.
+                    {/* Mobile instruction */}
+                    <span className="inline sm:hidden">
+                      <span className="text-foreground font-semibold"> Tap and hold any date</span> to see available time slots,
+                      or <span className="text-foreground font-semibold">tap to book</span> directly.
+                    </span>
+                    {/* Desktop instruction */}
+                    <span className="hidden sm:inline">
+                      <span className="text-foreground font-semibold"> Hover over any date</span> to see available time slots,
+                      or <span className="text-foreground font-semibold">click to book</span> directly.
+                    </span>
                   </p>
                 </div>
                 <AvailabilityCalendar />

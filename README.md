@@ -475,7 +475,7 @@ Configured in `next.config.js`:
 
 ### Reporting Security Issues
 
-If you discover a security vulnerability, please email: **raphandy007@gmail.com**
+If you discover a security vulnerability, please email: **matthewraphael@matthewraphael.xyz**
 
 **Do not** create a public GitHub issue for security vulnerabilities.
 
@@ -530,7 +530,7 @@ This project is **private and proprietary**. All rights reserved.
 ## Contact & Support
 
 **Developer:** Matthew Raphael (RaphDeAnalyst)
-**Email:** raphandy007@gmail.com
+**Email:** matthewraphael@matthewraphael.xyz
 **GitHub:** [@RaphDeAnalyst](https://github.com/RaphDeAnalyst)
 **Website:** [matthewraphael.xyz](https://matthewraphael.xyz)
 
