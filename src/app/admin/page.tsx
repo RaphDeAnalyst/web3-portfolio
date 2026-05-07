@@ -183,7 +183,12 @@ export default function AdminPage() {
                 >
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-base">{project.title}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-base">{project.title}</h3>
+                        {project.blogPostSlug && (
+                          <span className="text-xs opacity-50">• has content</span>
+                        )}
+                      </div>
                       <p className="text-sm opacity-60 mt-1 line-clamp-2">{project.description}</p>
                       {project.tech_stack && project.tech_stack.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
@@ -198,12 +203,20 @@ export default function AdminPage() {
                         </div>
                       )}
                     </div>
-                    <button
-                      onClick={() => handleDeleteProject(project.id)}
-                      className="px-3 py-1 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium transition-colors"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/admin/projects/${project.id}`}
+                        className="px-3 py-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors"
+                      >
+                        Content
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteProject(project.id)}
+                        className="px-3 py-1 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

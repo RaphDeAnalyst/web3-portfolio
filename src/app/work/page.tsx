@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { projectServiceSupabase, type Project } from '@/lib/project-service-supabase'
 
 export default function WorkPage() {
@@ -58,11 +59,9 @@ export default function WorkPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {projects.map((project) => (
-                  <a
+                  <Link
                     key={project.id}
-                    href={project.duneUrl || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/work/${project.id}`}
                     className="group block p-6 sm:p-8 border border-border rounded hover:border-foreground hover:shadow-lg transition-all duration-300"
                   >
                     {/* Project Name */}
@@ -75,25 +74,25 @@ export default function WorkPage() {
                       {project.description}
                     </p>
 
-                    {/* Tags */}
-                    {project.tech_stack && project.tech_stack.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tech_stack.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Link */}
-                    <div className="text-sm font-medium opacity-60 group-hover:opacity-100 transition-opacity">
-                      View on Dune ↗
+                    {/* Tags and Dune link */}
+                    <div className="flex flex-wrap items-center gap-3 justify-between">
+                      {project.tech_stack && project.tech_stack.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {project.tech_stack.map((tag) => (
+                            <span
+                              key={tag}
+                              className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {project.duneUrl && (
+                        <span className="text-xs opacity-60">Dune ↗</span>
+                      )}
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
