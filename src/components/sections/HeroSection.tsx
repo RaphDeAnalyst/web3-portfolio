@@ -26,7 +26,7 @@ export function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-4">
             <Link
               href="/work"
-              className="px-8 py-3 bg-black text-white rounded hover:opacity-80 transition-opacity font-medium"
+              className="px-8 py-3 bg-foreground text-background rounded hover:opacity-80 transition-opacity font-medium"
             >
               View Work
             </Link>
@@ -34,7 +34,7 @@ export function HeroSection() {
               href="https://dune.com/rraphael"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 border border-black rounded hover:bg-black hover:text-white transition-colors font-medium"
+              className="px-8 py-3 border border-foreground rounded hover:bg-foreground hover:text-background transition-colors font-medium"
             >
               Dune Profile ↗
             </a>

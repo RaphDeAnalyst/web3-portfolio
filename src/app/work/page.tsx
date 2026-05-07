@@ -28,7 +28,7 @@ export default function WorkPage() {
               href={project.duneUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block p-6 sm:p-8 border border-gray-200 rounded hover:border-black hover:shadow-lg transition-all duration-300"
+              className="group block p-6 sm:p-8 border border-border rounded hover:border-foreground hover:shadow-lg transition-all duration-300"
             >
               {/* Project Name */}
               <h2 className="text-xl font-semibold mb-3 group-hover:opacity-70 transition-opacity">
@@ -45,7 +45,7 @@ export default function WorkPage() {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-block text-xs font-medium px-2 py-1 bg-gray-100 rounded"
+                    className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
                   >
                     {tag}
                   </span>

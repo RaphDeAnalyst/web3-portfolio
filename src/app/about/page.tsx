@@ -30,7 +30,7 @@ export default function About() {
         </div>
 
         {/* Zone 2: Tools */}
-        <div className="mb-12 pb-12 border-b border-gray-200">
+        <div className="mb-12 pb-12 border-b border-border">
           <p className="text-xs uppercase tracking-widest opacity-50 mb-4">Tools</p>
           <p className="text-sm sm:text-base opacity-70">
             Python · SQL · Dune Analytics · Flipside Crypto · Power BI · Tableau · Pandas · Web3.py · Etherscan API
