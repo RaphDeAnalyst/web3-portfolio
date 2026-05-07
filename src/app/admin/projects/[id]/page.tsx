@@ -121,7 +121,7 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
     category: 'Data Analytics',
     tags: project.tech_stack || [],
     featured: false,
-    status: 'draft',
+    status: 'published',
   }
 
   return (

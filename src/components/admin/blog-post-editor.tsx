@@ -27,7 +27,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
     },
     date: new Date().toISOString().split('T')[0],
     readTime: '5 min read',
-    status: 'draft',
+    status: 'published',
     ...initialData
   })
 
