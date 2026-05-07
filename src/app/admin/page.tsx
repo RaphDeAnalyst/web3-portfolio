@@ -181,7 +181,7 @@ export default function AdminPage() {
           date: new Date().toISOString().split('T')[0],
           readTime: '5 min read',
           featured: formData.blogFeatured,
-          status: 'draft',
+          status: 'published',
           featuredImage: formData.blogFeaturedImage,
         }
 
