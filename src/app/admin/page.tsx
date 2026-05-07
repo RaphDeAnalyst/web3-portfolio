@@ -181,7 +181,7 @@ export default function AdminPage() {
           date: new Date().toISOString().split('T')[0],
           readTime: '5 min read',
           featured: formData.blogFeatured,
-          status: 'published',
+          status: 'published' as const, // Always publish new blog posts created with projects
           featuredImage: formData.blogFeaturedImage,
         }
 

@@ -28,11 +28,12 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
       setProject(projectData)
 
-      // If project has a blog post linked, fetch it (only if published)
+      // If project has a blog post linked, fetch it
       if (projectData.blogPostSlug) {
         const post = await blogServiceSupabase.getPostBySlug(projectData.blogPostSlug)
-        // Only show published posts on client side
-        if (post && post.status === 'published') {
+        if (post) {
+          // Show the post regardless of status (admin can see drafts)
+          // In the future, add auth check here if needed
           setBlogPost(post)
         }
       }

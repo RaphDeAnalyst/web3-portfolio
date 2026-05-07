@@ -113,7 +113,11 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
   }
 
   // Prepare initial data for the editor
-  const initialEditorData: Partial<BlogPostData> = linkedPost || {
+  // Always ensure new blog posts for projects default to 'published'
+  const initialEditorData: Partial<BlogPostData> = linkedPost ? {
+    ...linkedPost,
+    // Ensure linked posts maintain their status
+  } : {
     title: project.title,
     slug: undefined,
     summary: project.description,
@@ -121,7 +125,7 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
     category: 'Data Analytics',
     tags: project.tech_stack || [],
     featured: false,
-    status: 'published',
+    status: 'published' as const, // New posts default to published
   }
 
   return (
@@ -162,18 +166,38 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
         )}
 
         {!showEditor && linkedPost && (
-          <div className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg bg-background/50">
-            <h2 className="text-lg font-semibold mb-4">Current Content</h2>
-            <div className="space-y-2">
-              <p className="text-sm text-foreground/70"><strong>Status:</strong> {linkedPost.status}</p>
-              <p className="text-sm text-foreground/70"><strong>Last Updated:</strong> {linkedPost.updatedAt ? new Date(linkedPost.updatedAt).toLocaleDateString() : 'Never'}</p>
-              <button
-                onClick={() => setShowEditor(true)}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-              >
-                Edit Content
-              </button>
+          <div className={`p-6 border rounded-lg ${
+            linkedPost.status === 'published'
+              ? 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10'
+              : 'border-yellow-200 dark:border-yellow-800 bg-yellow-50/50 dark:bg-yellow-900/10'
+          }`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Current Content</h2>
+                <div className="space-y-2">
+                  <p className="text-sm text-foreground/70">
+                    <strong>Status:</strong> <span className={`font-medium ${
+                      linkedPost.status === 'published'
+                        ? 'text-green-700 dark:text-green-300'
+                        : 'text-yellow-700 dark:text-yellow-300'
+                    }`}>
+                      {linkedPost.status === 'published' ? '✓ Published' : '⚠ Draft (Hidden)'}
+                    </span>
+                  </p>
+                  <p className="text-sm text-foreground/70"><strong>Last Updated:</strong> {linkedPost.updatedAt ? new Date(linkedPost.updatedAt).toLocaleDateString() : 'Never'}</p>
+                  <p className="text-sm text-foreground/70"><strong>Title:</strong> {linkedPost.title}</p>
+                  {linkedPost.content && (
+                    <p className="text-sm text-foreground/70"><strong>Content:</strong> {linkedPost.content.split('\n').length} lines, {linkedPost.content.split(/\s+/).length} words</p>
+                  )}
+                </div>
+              </div>
             </div>
+            <button
+              onClick={() => setShowEditor(true)}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              Edit Content
+            </button>
           </div>
         )}
       </div>

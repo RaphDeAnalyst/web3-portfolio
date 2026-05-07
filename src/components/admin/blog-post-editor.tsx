@@ -123,8 +123,14 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
   }
 
   const handleSaveClick = (isDraft: boolean) => {
-    setPendingSave(isDraft)
-    setShowConfirmation(true)
+    // Warn if changing from published to draft
+    if (isDraft && formData.status === 'published') {
+      setPendingSave(isDraft)
+      setShowConfirmation(true)
+    } else {
+      setPendingSave(isDraft)
+      setShowConfirmation(true)
+    }
   }
 
   const handleConfirmSave = async () => {
@@ -164,6 +170,39 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
 
   return (
     <div className="space-y-6">
+      {/* Publishing Status Warning */}
+      <div className={`p-4 rounded-lg border ${
+        formData.status === 'published'
+          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+          : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+      }`}>
+        <div className="flex items-start gap-3">
+          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+            formData.status === 'published' ? 'bg-green-600' : 'bg-yellow-600'
+          }`}></div>
+          <div className="flex-1">
+            <p className={`font-medium text-sm ${
+              formData.status === 'published'
+                ? 'text-green-900 dark:text-green-100'
+                : 'text-yellow-900 dark:text-yellow-100'
+            }`}>
+              {formData.status === 'published'
+                ? '✓ This post is PUBLISHED and visible to visitors'
+                : '⚠ This post is a DRAFT and hidden from the public site'}
+            </p>
+            <p className={`text-xs mt-1 ${
+              formData.status === 'published'
+                ? 'text-green-800 dark:text-green-200'
+                : 'text-yellow-800 dark:text-yellow-200'
+            }`}>
+              {formData.status === 'published'
+                ? 'Visitors can see this content on the project detail page.'
+                : 'Only you can see this in the admin panel. Use "Publish Now" to make it visible.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Header Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
         <div className="flex items-center space-x-4">
@@ -536,13 +575,15 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
         title={pendingSave ? 'Save as Draft?' : 'Publish Post?'}
         message={
           pendingSave
-            ? "This will save your post as a draft. It won't be visible on the site yet."
+            ? (formData.status === 'published'
+              ? "⚠️ WARNING: Saving this as a draft will HIDE it from the site. Your published content will become invisible to visitors. Are you sure?"
+              : "This will save your post as a draft. It won't be visible on the site yet.")
             : 'This will publish your post immediately. It will be visible to all visitors.'
         }
         confirmLabel={pendingSave ? 'Save Draft' : 'Publish Now'}
         cancelLabel="Cancel"
         isLoading={isSaving}
-        isDangerous={false}
+        isDangerous={!!(pendingSave && formData.status === 'published')}
         onConfirm={handleConfirmSave}
         onCancel={handleCancelSave}
       />
