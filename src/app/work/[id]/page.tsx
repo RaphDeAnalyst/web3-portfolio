@@ -113,6 +113,17 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
             </p>
           )}
 
+          {/* Featured Image */}
+          {blogPost?.featuredImage && (
+            <div className="mb-8 rounded-lg overflow-hidden">
+              <img
+                src={blogPost.featuredImage}
+                alt={blogPost.title}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          )}
+
           {/* Tags and Dune link */}
           <div className="flex flex-wrap items-center gap-3">
             {((blogPost?.tags?.length ?? 0) > 0 || (project?.tech_stack?.length ?? 0) > 0) && (

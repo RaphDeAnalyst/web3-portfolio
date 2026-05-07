@@ -160,15 +160,12 @@ export default function AdminPage() {
           .map(t => t.trim())
           .filter(t => t)
 
-        const blogSlug = formData.blogTitle
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .trim()
+        // Generate unique slug using the service
+        const blogTitle = formData.blogTitle || formData.name
+        const blogSlug = await blogServiceSupabase.generateSlug(blogTitle)
 
         const blogPostData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'> = {
-          title: formData.blogTitle || formData.name,
+          title: blogTitle,
           slug: blogSlug,
           summary: formData.blogSummary || formData.description,
           content: formData.blogContent,
@@ -181,18 +178,21 @@ export default function AdminPage() {
           date: new Date().toISOString().split('T')[0],
           readTime: '5 min read',
           featured: formData.blogFeatured,
-          status: 'published' as const, // Always publish new blog posts created with projects
+          status: 'published' as const,
           featuredImage: formData.blogFeaturedImage,
         }
 
         const savedPost = await blogServiceSupabase.savePost(blogPostData)
 
-        if (savedPost) {
-          // Link blog post to project
-          await projectServiceSupabase.updateProject(projectId, {
-            blogPostSlug: savedPost.slug,
-          })
+        if (!savedPost) {
+          showError('Failed to create blog post. Please try again.')
+          return
         }
+
+        // Link blog post to project
+        await projectServiceSupabase.updateProject(projectId, {
+          blogPostSlug: savedPost.slug,
+        })
       }
 
       setFormData({
