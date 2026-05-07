@@ -1,7 +1,12 @@
 import { MetadataRoute } from 'next'
-import { projectService } from '@/lib/service-switcher'
 import { blogService } from '@/lib/service-switcher'
 import { logger } from '@/lib/logger'
+
+interface BlogPost {
+  slug: string
+  lastModified?: string
+  updatedAt?: string
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://matthewraphael.xyz'
@@ -43,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // Dynamic blog posts
     const posts = await blogService.getPublishedPosts()
-    const blogPages = posts.map((post: any) => ({
+    const blogPages = posts.map((post: BlogPost) => ({
       url: `${baseUrl}/blog/${post.slug}`,
       lastModified: new Date(post.lastModified || post.updatedAt || new Date()),
       changeFrequency: 'monthly' as const,

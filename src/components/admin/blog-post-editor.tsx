@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import { ImageUpload } from '@/components/ui/image-upload'
+import { ConfirmationModal } from '@/components/admin/confirmation-modal'
 import { BlogPostData } from '@/types/shared'
 import { Edit, Eye, RefreshCw, Rocket, FileText, Image as ImageIcon, Clipboard, Lightbulb, Save, Video, File } from 'lucide-react'
 import { logger } from '@/lib/logger'
 
 interface BlogPostEditorProps {
   initialData?: Partial<BlogPostData>
-  onSave: (data: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => void
+  onSave: (data: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => Promise<void>
 }
 
 export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
@@ -33,6 +34,27 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
   const [showPreview, setShowPreview] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [tagInput, setTagInput] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [pendingSave, setPendingSave] = useState<boolean | null>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+
+  // Update form when initialData changes (e.g., after save)
+  useEffect(() => {
+    if (initialData && initialData.id) {
+      setFormData(prev => ({
+        ...prev,
+        title: initialData.title || prev.title,
+        slug: initialData.slug || prev.slug,
+        summary: initialData.summary || prev.summary,
+        content: initialData.content || prev.content,
+        category: initialData.category || prev.category,
+        tags: initialData.tags || prev.tags,
+        featured: initialData.featured || prev.featured,
+        status: initialData.status || prev.status,
+        featuredImage: initialData.featuredImage || prev.featuredImage,
+      }))
+    }
+  }, [initialData?.id])
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -75,22 +97,57 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
     }))
   }
 
-  const handleSave = async (isDraft: boolean) => {
+  const insertImageAtCursor = (imageUrl: string) => {
+    const textarea = contentRef.current
+    if (!textarea) return
+
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const imageMarkdown = `![Image](${imageUrl})\n\n`
+
+    const newContent =
+      formData.content.substring(0, start) +
+      imageMarkdown +
+      formData.content.substring(end)
+
+    setFormData(prev => ({ ...prev, content: newContent }))
+
+    // Restore cursor position after image
+    setTimeout(() => {
+      textarea.focus()
+      textarea.setSelectionRange(start + imageMarkdown.length, start + imageMarkdown.length)
+    }, 0)
+  }
+
+  const handleSaveClick = (isDraft: boolean) => {
+    setPendingSave(isDraft)
+    setShowConfirmation(true)
+  }
+
+  const handleConfirmSave = async () => {
+    if (pendingSave === null) return
+
     setIsSaving(true)
-    
+
     const dataToSave = {
       ...formData,
-      status: (isDraft ? 'draft' : 'published') as 'draft' | 'published'
+      status: (pendingSave ? 'draft' : 'published') as 'draft' | 'published'
     }
 
-
     try {
-      await onSave(dataToSave, isDraft)
+      await onSave(dataToSave, pendingSave)
     } catch (error) {
       logger.error('Failed to save post:', error)
     } finally {
       setIsSaving(false)
+      setShowConfirmation(false)
+      setPendingSave(null)
     }
+  }
+
+  const handleCancelSave = () => {
+    setShowConfirmation(false)
+    setPendingSave(null)
   }
 
   const categories = [
@@ -105,57 +162,70 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
   return (
     <div className="space-y-6">
       {/* Header Controls */}
-      <div className="flex items-center justify-between bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-background border border-gray-200 dark:border-gray-800 rounded-lg p-4">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => setShowPreview(false)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors flex items-center space-x-2 ${
+            className={`px-4 py-3 h-11 text-sm rounded-md transition-colors flex items-center space-x-2 focus-visible:outline-2 focus-visible:outline-offset-2 ${
               !showPreview
-                ? 'bg-cyber-500 text-white'
-                : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
+                ? 'bg-cyber-500 text-white focus-visible:outline-cyber-500'
+                : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-foreground'
             }`}
           >
-            <Edit className="w-4 h-4" />
+            <Edit className="w-4 h-4 flex-shrink-0" />
             <span>Edit</span>
           </button>
           <button
             onClick={() => setShowPreview(true)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors flex items-center space-x-2 ${
+            className={`px-4 py-3 h-11 text-sm rounded-md transition-colors flex items-center space-x-2 focus-visible:outline-2 focus-visible:outline-offset-2 ${
               showPreview
-                ? 'bg-cyber-500 text-white'
-                : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800'
+                ? 'bg-cyber-500 text-white focus-visible:outline-cyber-500'
+                : 'text-foreground/70 hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-foreground'
             }`}
           >
-            <Eye className="w-4 h-4" />
+            <Eye className="w-4 h-4 flex-shrink-0" />
             <span>Preview</span>
           </button>
         </div>
-        
-        <div className="flex items-center space-x-3">
+
+        <div className="flex items-center gap-3">
           <button
-            onClick={() => handleSave(true)}
+            onClick={() => handleSaveClick(true)}
             disabled={isSaving || !formData.title.trim()}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center space-x-2"
+            className="px-6 py-3 h-11 border-2 border-gray-300 dark:border-gray-700 text-foreground rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-medium whitespace-nowrap group relative min-w-fit"
+            title="Save as draft — changes won't be visible on site"
+            aria-label="Save draft (not visible on site)"
           >
-            <Save className="w-4 h-4" />
-            <span>Save Draft</span>
+            <Save className="w-4 h-4 flex-shrink-0" />
+            <span className="text-foreground">Save Draft</span>
+            {/* Tooltip */}
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-foreground text-background text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+              Not visible on site
+            </div>
           </button>
+
           <button
-            onClick={() => handleSave(false)}
+            onClick={() => handleSaveClick(false)}
             disabled={isSaving || !formData.title.trim() || !formData.content.trim()}
-            className="px-4 py-2 bg-accent-blue hover:bg-accent-blue-light text-white rounded-lg shadow-lg shadow-accent-blue/20 transition-all duration-200 disabled:opacity-50 disabled:transform-none flex items-center space-x-2"
+            className="px-6 py-3 h-11 bg-gradient-to-r from-accent-blue to-cyan-500 hover:from-accent-blue-light hover:to-cyan-400 text-white rounded-lg shadow-lg shadow-accent-blue/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-blue transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-bold whitespace-nowrap group relative min-w-fit"
+            title="Publish now — visible on site immediately"
+            aria-label="Publish now (visible on site)"
           >
             {isSaving ? (
               <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Publishing...</span>
+                <RefreshCw className="w-4 h-4 flex-shrink-0 animate-spin" />
+                <span className="text-white">Publishing...</span>
               </>
             ) : (
               <>
-                <Rocket className="w-4 h-4" />
-                <span>Publish</span>
+                <Rocket className="w-4 h-4 flex-shrink-0" />
+                <span className="text-white">Publish Now</span>
               </>
             )}
+            {/* Tooltip */}
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-foreground text-background text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+              Visible on site
+            </div>
           </button>
         </div>
       </div>
@@ -217,6 +287,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Content *</label>
                 <textarea
+                  ref={contentRef}
                   value={formData.content}
                   onChange={(e) => handleInputChange('content', e.target.value)}
                   placeholder="Write your post content using Markdown..."
@@ -278,14 +349,11 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                 <div className="border-t border-gray-200 dark:border-gray-800 pt-4 mt-4">
                   <ImageUpload
                     label="Add Images to Content"
-                    onImageSelect={(imageUrl) => {
-                      const imageMarkdown = `![Image](${imageUrl})\n\n`
-                      handleInputChange('content', formData.content + imageMarkdown)
-                    }}
+                    onImageSelect={insertImageAtCursor}
                     className="mb-2"
                   />
                   <div className="text-xs text-foreground/50">
-                    Images will be added to the end of your content as Markdown
+                    Click in the content area where you want the image, then upload. Images will be inserted at your cursor position.
                   </div>
                 </div>
               </div>
@@ -458,6 +526,23 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showConfirmation}
+        title={pendingSave ? 'Save as Draft?' : 'Publish Post?'}
+        message={
+          pendingSave
+            ? "This will save your post as a draft. It won't be visible on the site yet."
+            : 'This will publish your post immediately. It will be visible to all visitors.'
+        }
+        confirmLabel={pendingSave ? 'Save Draft' : 'Publish Now'}
+        cancelLabel="Cancel"
+        isLoading={isSaving}
+        isDangerous={false}
+        onConfirm={handleConfirmSave}
+        onCancel={handleCancelSave}
+      />
     </div>
   )
 }

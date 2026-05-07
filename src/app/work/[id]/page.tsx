@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
 import { blogServiceSupabase } from '@/lib/blog-service-supabase'
@@ -14,11 +14,7 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadProject()
-  }, [params.id])
-
-  const loadProject = async () => {
+  const loadProject = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -32,17 +28,24 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
       setProject(projectData)
 
-      // If project has a blog post linked, fetch it
+      // If project has a blog post linked, fetch it (only if published)
       if (projectData.blogPostSlug) {
         const post = await blogServiceSupabase.getPostBySlug(projectData.blogPostSlug)
-        setBlogPost(post)
+        // Only show published posts on client side
+        if (post && post.status === 'published') {
+          setBlogPost(post)
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load project')
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    loadProject()
+  }, [loadProject])
 
   if (loading) {
     return (
@@ -73,21 +76,47 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
     <div className="min-h-screen pt-20 pb-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back button */}
-        <Link href="/work" className="text-sm opacity-60 hover:opacity-100 mb-8 inline-block transition-opacity">
+        <Link href="/work" className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground mb-8 inline-block transition-opacity rounded">
           ← Work
         </Link>
 
         {/* Project header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            {project.title}
+            {blogPost?.title || project.title}
           </h1>
+
+          {/* Blog metadata */}
+          {blogPost && (
+            <div className="flex items-center gap-4 text-sm opacity-65 mb-4">
+              {blogPost.date && <span>{blogPost.date}</span>}
+              {blogPost.readTime && (
+                <>
+                  <span>•</span>
+                  <span>{blogPost.readTime}</span>
+                </>
+              )}
+              {blogPost.category && (
+                <>
+                  <span>•</span>
+                  <span>{blogPost.category}</span>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Summary */}
+          {blogPost?.summary && (
+            <p className="text-lg opacity-75 mb-6">
+              {blogPost.summary}
+            </p>
+          )}
 
           {/* Tags and Dune link */}
           <div className="flex flex-wrap items-center gap-3">
-            {project.tech_stack && project.tech_stack.length > 0 && (
+            {((blogPost?.tags?.length ?? 0) > 0 || (project?.tech_stack?.length ?? 0) > 0) && (
               <div className="flex flex-wrap gap-2">
-                {project.tech_stack.map((tag) => (
+                {(blogPost?.tags || project?.tech_stack || []).map((tag) => (
                   <span
                     key={tag}
                     className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
@@ -97,12 +126,12 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                 ))}
               </div>
             )}
-            {project.duneUrl && (
+            {project?.duneUrl && (
               <a
                 href={project.duneUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
+                className="text-sm font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
               >
                 View on Dune ↗
               </a>

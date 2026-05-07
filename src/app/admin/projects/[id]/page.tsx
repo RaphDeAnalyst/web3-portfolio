@@ -1,32 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
 import { blogServiceSupabase, type BlogPostData } from '@/lib/blog-service-supabase'
 import { BlogPostEditor } from '@/components/admin/blog-post-editor'
+import { useToast } from '@/hooks/useToast'
+import { ToastContainer } from '@/components/admin/toast-container'
 import type { Project } from '@/lib/project-service-supabase'
 
 export default function ProjectEditorPage({ params }: { params: { id: string } }) {
+  const { toast, showSuccess, showError, dismiss } = useToast()
   const [project, setProject] = useState<Project | null>(null)
   const [linkedPost, setLinkedPost] = useState<BlogPostData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [showEditor, setShowEditor] = useState(false)
 
-  useEffect(() => {
-    loadProject()
-  }, [params.id])
-
-  const loadProject = async () => {
+  const loadProject = useCallback(async () => {
     try {
       setLoading(true)
-      setError(null)
 
       // Fetch project
       const projectData = await projectServiceSupabase.getProjectById(params.id)
       if (!projectData) {
-        setError('Project not found')
         return
       }
 
@@ -37,19 +34,22 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
         const post = await blogServiceSupabase.getPostBySlug(projectData.blogPostSlug)
         setLinkedPost(post)
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load project')
+    } catch {
+      // Error handling via fallback UI
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    loadProject()
+  }, [loadProject])
 
   const handleSave = async (postData: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => {
     if (!project) return
 
     try {
       setSaving(true)
-      setError(null)
 
       // Save or update blog post
       const savedPost = await blogServiceSupabase.savePost(
@@ -58,7 +58,7 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
       )
 
       if (!savedPost) {
-        setError('Failed to save post')
+        showError('Failed to save post', () => handleSave(postData, isDraft))
         return
       }
 
@@ -76,10 +76,12 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
         blogPostSlug: savedPost.slug,
       })
 
-      // Show success message (in a real app, would be a toast)
-      alert('Content saved successfully!')
+      // Show success and close editor
+      showSuccess(isDraft ? 'Draft saved ✓' : 'Post published ✓')
+      setTimeout(() => setShowEditor(false), 500)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save content')
+      const message = err instanceof Error ? err.message : 'Failed to save content'
+      showError(message, () => handleSave(postData, isDraft))
     } finally {
       setSaving(false)
     }
@@ -95,7 +97,7 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
     )
   }
 
-  if (error || !project) {
+  if (!project) {
     return (
       <div className="min-h-screen pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,7 +105,7 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
             ← Admin
           </Link>
           <div className="mt-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-700 dark:text-red-300">
-            {error || 'Project not found'}
+            Project not found
           </div>
         </div>
       </div>
@@ -125,35 +127,53 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
   return (
     <div className="min-h-screen pt-20 pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <Link href="/admin" className="text-sm opacity-60 hover:opacity-100 mb-4 inline-block">
-          ← Admin
-        </Link>
+        {/* Toast Container */}
+        <ToastContainer toast={toast} onDismiss={dismiss} />
 
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold">Edit Content: {project.title}</h1>
-          <p className="text-sm opacity-60 mt-2">
-            Write a blog-style write-up for this project. Add markdown, images, and more.
-          </p>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <Link href="/admin" className="text-sm opacity-60 hover:opacity-100 mb-4 inline-block">
+              ← Admin
+            </Link>
+            <h1 className="text-2xl font-bold">Edit Content: {project.title}</h1>
+            <p className="text-sm opacity-60 mt-2">
+              Write a blog-style write-up for this project. Add markdown, images, and more.
+            </p>
+          </div>
+          {!showEditor && (
+            <button
+              onClick={() => setShowEditor(true)}
+              className="px-6 py-3 h-11 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors font-medium whitespace-nowrap"
+            >
+              Edit Content
+            </button>
+          )}
         </div>
 
-        {/* Error message */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-700 dark:text-red-300 text-sm">
-            {error}
+        {/* Blog post editor */}
+        {showEditor && (
+          <div className="mb-8">
+            <BlogPostEditor
+              initialData={initialEditorData}
+              onSave={handleSave}
+            />
           </div>
         )}
 
-        {/* Blog post editor */}
-        <BlogPostEditor
-          initialData={initialEditorData}
-          onSave={handleSave}
-        />
-
-        {/* Saving indicator */}
-        {saving && (
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 px-4 py-3 bg-foreground text-background rounded text-sm">
-            Saving...
+        {!showEditor && linkedPost && (
+          <div className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg bg-background/50">
+            <h2 className="text-lg font-semibold mb-4">Current Content</h2>
+            <div className="space-y-2">
+              <p className="text-sm text-foreground/70"><strong>Status:</strong> {linkedPost.status}</p>
+              <p className="text-sm text-foreground/70"><strong>Last Updated:</strong> {linkedPost.updatedAt ? new Date(linkedPost.updatedAt).toLocaleDateString() : 'Never'}</p>
+              <button
+                onClick={() => setShowEditor(true)}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              >
+                Edit Content
+              </button>
+            </div>
           </div>
         )}
       </div>

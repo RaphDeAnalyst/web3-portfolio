@@ -13,12 +13,12 @@ export function HeroSection() {
           </h1>
 
           {/* Role */}
-          <p className="text-lg sm:text-xl md:text-2xl opacity-70">
+          <p className="text-lg sm:text-xl md:text-2xl opacity-75">
             Web3 Data Analyst
           </p>
 
           {/* Context sentence */}
-          <p className="text-base sm:text-lg max-w-2xl mx-auto opacity-60 leading-relaxed">
+          <p className="text-base sm:text-lg max-w-2xl mx-auto opacity-65 leading-relaxed">
             I analyze on-chain data across DeFi, NFT markets, and L2 networks using SQL, Python, and Dune Analytics — based in Lagos, open to the world.
           </p>
 
@@ -26,7 +26,7 @@ export function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-4">
             <Link
               href="/work"
-              className="px-8 py-3 bg-foreground text-background rounded hover:opacity-80 transition-opacity font-medium"
+              className="px-8 py-4 h-11 flex items-center justify-center bg-foreground text-background rounded hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity font-medium"
             >
               View Work
             </Link>
@@ -34,7 +34,7 @@ export function HeroSection() {
               href="https://dune.com/rraphael"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 border border-foreground rounded hover:bg-foreground hover:text-background transition-colors font-medium"
+              className="px-8 py-4 h-11 flex items-center justify-center border border-foreground rounded hover:bg-foreground hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-colors font-medium"
             >
               Dune Profile ↗
             </a>

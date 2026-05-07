@@ -19,3 +19,10 @@
     @apply bg-white dark:bg-black text-black dark:text-white;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow,
+  .animate-delete-confirm {
+    animation: none !important;
+  }
+}

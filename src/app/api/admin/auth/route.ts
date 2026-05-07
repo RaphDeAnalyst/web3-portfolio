@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = cookies()
     const token = cookieStore.get('admin-token')?.value
@@ -144,7 +144,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE() {
   try {
     const response = NextResponse.json(
       { message: 'Logged out successfully' },

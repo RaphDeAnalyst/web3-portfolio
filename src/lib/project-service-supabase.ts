@@ -194,23 +194,31 @@ export class ProjectServiceSupabase {
   }
 
   // Add new project
-  async addProject(newProject: Omit<Project, 'id'>): Promise<void> {
+  async addProject(newProject: Omit<Project, 'id'>): Promise<string> {
     try {
       const projectData = this.transformToSupabaseProject(newProject)
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('projects')
         .insert([projectData])
+        .select('id')
 
       if (error) {
         logger.error('Error adding project', error, { title: projectData.title })
         throw error
       }
 
-      logger.info('Project added', { title: projectData.title })
-      
+      const projectId = data?.[0]?.id
+      if (!projectId) {
+        throw new Error('Failed to get project ID')
+      }
+
+      logger.info('Project added', { title: projectData.title, id: projectId })
+
       // Track activity (activity service not implemented yet)
       logger.info('Project activity - created', { title: projectData.title })
+
+      return projectId
     } catch (error) {
       logger.error('Error in addProject', error)
       throw error

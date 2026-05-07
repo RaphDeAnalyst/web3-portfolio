@@ -39,7 +39,8 @@
       "Bash(pkill -f \"skills add\")",
       "Bash(npx -y skills add alchaincyf/huashu-design --help)",
       "Bash(npx -y skills --help)",
-      "Bash(npx -y skills add alchaincyf/huashu-design --agent claude-code --global -y)"
+      "Bash(npx -y skills add alchaincyf/huashu-design --agent claude-code --global -y)",
+      "Bash(openssl rand *)"
     ],
     "deny": [],
     "ask": [],

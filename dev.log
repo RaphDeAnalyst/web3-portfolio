@@ -1,0 +1,88 @@
+
+> web3-portfolio@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.32
+  - Local:        http://localhost:3003
+  - Environments: .env.local, .env
+  - Experiments (use with caution):
+    · optimizeCss
+    · webpackBuildWorker
+
+ ✓ Starting...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Ready in 2.7s
+ ✓ Compiled /src/middleware in 231ms (141 modules)
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 1394ms (725 modules)
+ GET /admin 200 in 1582ms
+Browserslist: browsers data (caniuse-lite) is 8 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled in 3s (880 modules)
+ ✓ Compiled in 1071ms (739 modules)
+ ✓ Compiled in 666ms (739 modules)
+ ✓ Compiled /test-toasts in 463ms (634 modules)
+ GET /test-toasts 200 in 606ms
+ GET /test-toasts 200 in 19ms
+ ✓ Compiled in 1069ms (648 modules)
+ ✓ Compiled in 765ms (648 modules)
+ ✓ Compiled in 1591ms (648 modules)
+ ✓ Compiled /admin in 435ms (352 modules)
+ GET /admin 200 in 601ms
+ GET /admin 200 in 20ms
+ ✓ Compiled in 535ms (389 modules)
+ ✓ Compiled in 382ms (389 modules)
+ ✓ Compiled in 372ms (389 modules)
+ ✓ Compiled in 327ms (389 modules)
+ ✓ Compiled in 550ms (389 modules)
+ ✓ Compiled in 304ms (389 modules)
+ ✓ Compiled in 593ms (389 modules)
+ ✓ Compiled in 413ms (389 modules)
+ ✓ Compiled in 388ms (389 modules)
+ ✓ Compiled in 589ms (389 modules)
+ ✓ Compiled in 583ms (389 modules)
+ ✓ Compiled in 528ms (389 modules)
+ ✓ Compiled in 619ms (389 modules)
+ ✓ Compiled in 531ms (389 modules)
+ ✓ Compiled in 492ms (389 modules)
+ ✓ Compiled in 732ms (389 modules)
+ ✓ Compiled in 578ms (389 modules)
+ ✓ Compiled in 699ms (389 modules)
+ ✓ Compiled in 664ms (389 modules)
+ ✓ Compiled in 571ms (389 modules)
+ ✓ Compiled in 547ms (389 modules)
+ ✓ Compiled in 878ms (389 modules)
+ ✓ Compiled in 1444ms (389 modules)
+ ✓ Compiled in 596ms (389 modules)
+ ✓ Compiled in 518ms (389 modules)
+ ✓ Compiled in 380ms (389 modules)
+ ✓ Compiled in 528ms (389 modules)
+ ✓ Compiled in 489ms (389 modules)
+ ✓ Compiled in 562ms (389 modules)
+ ✓ Compiled in 508ms (389 modules)
+ ✓ Compiled in 604ms (389 modules)
+ ✓ Compiled in 499ms (389 modules)
+ ✓ Compiled in 474ms (389 modules)
+ ✓ Compiled in 681ms (389 modules)
+ ✓ Compiled in 776ms (389 modules)
+ ✓ Compiled in 394ms (389 modules)
+ ✓ Compiled in 357ms (389 modules)
+ ✓ Compiled in 641ms (389 modules)
+ ✓ Compiled in 519ms (389 modules)
+ ✓ Compiled in 515ms (389 modules)
+ ✓ Compiled in 657ms (389 modules)
+ ✓ Compiled in 641ms (389 modules)
+ ✓ Compiled in 491ms (389 modules)
+ ✓ Compiled in 765ms (389 modules)
+ ✓ Compiled in 680ms (389 modules)
+ ✓ Compiled in 700ms (389 modules)
+ ✓ Compiled in 471ms (389 modules)
+ ✓ Compiled in 531ms (389 modules)
+ ✓ Compiled in 686ms (389 modules)
+ ✓ Compiled in 536ms (389 modules)

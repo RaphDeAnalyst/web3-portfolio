@@ -26,7 +26,7 @@ export function Navbar() {
           {/* Logo / Name */}
           <Link
             href="/"
-            className="font-semibold text-lg hover:opacity-70 transition-opacity"
+            className="font-semibold text-lg hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
           >
             Matthew Raphael
           </Link>
@@ -35,7 +35,7 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/work"
-              className={`text-sm transition-opacity hover:opacity-70 ${
+              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
                 isActive('/work') ? 'opacity-100' : 'opacity-60'
               }`}
             >
@@ -43,7 +43,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/about"
-              className={`text-sm transition-opacity hover:opacity-70 ${
+              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
                 isActive('/about') ? 'opacity-100' : 'opacity-60'
               }`}
             >
@@ -53,14 +53,15 @@ export function Navbar() {
               href="https://dune.com/rraphael"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+              className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
+              aria-label="Visit my Dune Analytics profile"
             >
-              ↗ Dune
+              Dune ↗
             </a>
             {mounted && (
               <button
                 onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
-                className="opacity-60 hover:opacity-100 transition-opacity p-1"
+                className="opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity p-1"
                 aria-label="Toggle theme"
               >
                 {effectiveTheme === 'dark' ? (
@@ -76,7 +77,7 @@ export function Navbar() {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               href="/work"
-              className={`text-sm transition-opacity hover:opacity-70 ${
+              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
                 isActive('/work') ? 'opacity-100' : 'opacity-60'
               }`}
             >
@@ -84,7 +85,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/about"
-              className={`text-sm transition-opacity hover:opacity-70 ${
+              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
                 isActive('/about') ? 'opacity-100' : 'opacity-60'
               }`}
             >
@@ -94,14 +95,15 @@ export function Navbar() {
               href="https://dune.com/rraphael"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+              className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
+              aria-label="Visit my Dune Analytics profile"
             >
-              ↗
+              Dune ↗
             </a>
             {mounted && (
               <button
                 onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
-                className="opacity-60 hover:opacity-100 transition-opacity p-1"
+                className="opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity p-1"
                 aria-label="Toggle theme"
               >
                 {effectiveTheme === 'dark' ? (
