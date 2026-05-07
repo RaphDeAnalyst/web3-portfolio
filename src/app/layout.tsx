@@ -41,20 +41,9 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        {/* Prevent flash of unstyled content (FOUC) on theme load */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            try {
-              const theme = localStorage.getItem('theme') || 'light';
-              if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-              }
-            } catch (e) {}
-          `
-        }} />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        <ThemeProvider defaultTheme="light" storageKey="theme">
+        <ThemeProvider defaultTheme="light" storageKey="web3-portfolio-theme">
           <div className="min-h-screen flex flex-col bg-background text-foreground">
             <Navbar />
             <main className="flex-1">

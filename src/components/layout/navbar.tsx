@@ -2,12 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTheme } from 'next-themes'
+import { useTheme } from '@/lib/theme-provider'
 import { useEffect, useState } from 'react'
 
 export function Navbar() {
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
+  const { effectiveTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -58,11 +58,11 @@ export function Navbar() {
             </a>
             {mounted && (
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
                 className="text-sm opacity-60 hover:opacity-100 transition-opacity"
                 aria-label="Toggle theme"
               >
-                {theme === 'dark' ? '☀️' : '🌙'}
+                {effectiveTheme === 'dark' ? '☀️' : '🌙'}
               </button>
             )}
           </div>
@@ -95,11 +95,11 @@ export function Navbar() {
             </a>
             {mounted && (
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
                 className="text-sm opacity-60 hover:opacity-100 transition-opacity"
                 aria-label="Toggle theme"
               >
-                {theme === 'dark' ? '☀️' : '🌙'}
+                {effectiveTheme === 'dark' ? '☀️' : '🌙'}
               </button>
             )}
           </div>
