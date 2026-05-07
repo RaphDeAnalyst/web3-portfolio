@@ -34,7 +34,12 @@
       "Bash(npm test)",
       "Bash(git checkout:*)",
       "Bash(git push:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(npx skills *)",
+      "Bash(pkill -f \"skills add\")",
+      "Bash(npx -y skills add alchaincyf/huashu-design --help)",
+      "Bash(npx -y skills --help)",
+      "Bash(npx -y skills add alchaincyf/huashu-design --agent claude-code --global -y)"
     ],
     "deny": [],
     "ask": [],
