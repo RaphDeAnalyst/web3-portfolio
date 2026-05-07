@@ -11,6 +11,7 @@ import { logger } from '@/lib/logger'
 interface BlogPostEditorProps {
   initialData?: Partial<BlogPostData>
   onSave: (data: Omit<BlogPostData, 'id' | 'createdAt' | 'updatedAt'>, isDraft: boolean) => Promise<void>
+  // Ensure new blog posts default to published status
 }
 
 export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
@@ -65,7 +66,9 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim()
-      setFormData(prev => ({ ...prev, slug }))
+      if (slug) {
+        setFormData(prev => ({ ...prev, slug }))
+      }
     }
   }, [formData.title, initialData?.slug])
 
