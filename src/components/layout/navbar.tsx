@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/lib/theme-provider'
 import { useEffect, useState } from 'react'
+import { Sun, Moon } from 'lucide-react'
 
 export function Navbar() {
   const pathname = usePathname()
@@ -59,10 +60,14 @@ export function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
-                className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+                className="opacity-60 hover:opacity-100 transition-opacity p-1"
                 aria-label="Toggle theme"
               >
-                {effectiveTheme === 'dark' ? '☀️' : '🌙'}
+                {effectiveTheme === 'dark' ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
               </button>
             )}
           </div>
@@ -96,10 +101,14 @@ export function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(effectiveTheme === 'dark' ? 'light' : 'dark')}
-                className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+                className="opacity-60 hover:opacity-100 transition-opacity p-1"
                 aria-label="Toggle theme"
               >
-                {effectiveTheme === 'dark' ? '☀️' : '🌙'}
+                {effectiveTheme === 'dark' ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
               </button>
             )}
           </div>
