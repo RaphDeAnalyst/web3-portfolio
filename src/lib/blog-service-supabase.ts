@@ -190,7 +190,22 @@ class BlogServiceSupabase {
       let result
 
       if (existingId) {
-        // Update existing post
+        // Update existing post - don't change the slug if it already exists
+        // Only keep the slug from the existing post to avoid conflicts
+        const { data: existingPost, error: fetchError } = await supabase
+          .from('blogs')
+          .select('slug')
+          .eq('id', existingId)
+          .single()
+
+        if (fetchError || !existingPost) {
+          logger.error('Error fetching existing post', fetchError, { id: existingId })
+          return null
+        }
+
+        // Preserve the existing slug to avoid unique constraint violations
+        blogData.slug = existingPost.slug
+
         const { data, error } = await supabase
           .from('blogs')
           .update(blogData)
@@ -199,7 +214,7 @@ class BlogServiceSupabase {
           .single()
 
         if (error) {
-          logger.error('Error updating blog', error, { id: existingId })
+          logger.error('Error updating blog', error, { id: existingId, slug: existingPost.slug })
           return null
         }
         result = data

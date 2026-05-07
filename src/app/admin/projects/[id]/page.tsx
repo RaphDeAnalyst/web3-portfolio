@@ -51,14 +51,17 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
     try {
       setSaving(true)
 
-      // Save or update blog post
+      // Always use the linked post ID if it exists (we're updating, not creating)
+      const existingPostId = linkedPost?.id
+
+      // Save or update blog post with the correct ID
       const savedPost = await blogServiceSupabase.savePost(
         postData,
-        linkedPost?.id // Pass existing ID if updating
+        existingPostId // Pass existing ID if updating
       )
 
       if (!savedPost) {
-        showError('Failed to save post', () => handleSave(postData, isDraft))
+        showError('Failed to save post. Please ensure the post content and title are valid.', () => handleSave(postData, isDraft))
         return
       }
 
@@ -80,8 +83,17 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
       showSuccess(isDraft ? 'Draft saved ✓' : 'Post published ✓')
       setTimeout(() => setShowEditor(false), 500)
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to save content'
-      showError(message, () => handleSave(postData, isDraft))
+      const errorMsg = err instanceof Error ? err.message : 'Failed to save content'
+
+      // Provide more helpful error message for 409 conflicts
+      if (errorMsg.includes('409') || errorMsg.includes('Conflict')) {
+        showError(
+          'Slug conflict: Another post has this URL. Try changing the post title slightly to generate a unique slug.',
+          () => handleSave(postData, isDraft)
+        )
+      } else {
+        showError(errorMsg, () => handleSave(postData, isDraft))
+      }
     } finally {
       setSaving(false)
     }
