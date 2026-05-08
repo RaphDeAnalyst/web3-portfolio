@@ -44,9 +44,9 @@ export function ProfileCard() {
 
   const aboutInfo = {
     whoIAm: [
-      'Matthew Raphael - Web3 Data Analyst since 2022',
-      'Skills: SQL · Python · Dune · Smart Contracts',
-      'Open to remote projects, working globally'
+      'Matthew Raphael Nnamani — Blockchain Intelligence Practitioner',
+      'Skills: On-Chain Investigation · KYT · AML · Dune Analytics',
+      'Based in Lagos'
     ],
     vision: '"Every block has a story. I specialize in uncovering it."'
   }
@@ -149,7 +149,7 @@ export function ProfileCard() {
                 ) : isHydrated && profile?.avatar && profile.avatar !== '/avatar.jpg' && profile.avatar.startsWith('http') ? (
                   <img
                     src={profile.avatar}
-                    alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst specializing in blockchain analytics, DeFi research, and on-chain data analysis`}
+                    alt={`${profile?.name || 'Matthew Raphael Nnamani'} - Blockchain Intelligence Practitioner`}
                     width={160}
                     height={160}
                     className="w-40 h-40 rounded-full object-cover shadow-2xl shadow-primary-500/30 border-4 border-gradient-to-r border-transparent bg-gradient-to-r from-primary-500 to-cyber-500"
@@ -293,7 +293,7 @@ export function ProfileCard() {
                 {/* Contact CTA */}
                 <div className="pt-1">
                   <a
-                    href={`mailto:${profile?.email || 'matthewraphael@notes0x.xyz'}`}
+                    href={`mailto:${profile?.email || 'matthewraphael@matthewraphael.xyz'}`}
                     className="w-full flex items-center justify-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
                   >
                     <Mail className="w-4 h-4 sm:w-5 sm:h-5" />

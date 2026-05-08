@@ -13,20 +13,20 @@ export function Footer() {
           {/* Social Links */}
           <div className="flex gap-6 text-sm">
             <a
-              href="https://github.com/RaphDeAnalyst"
+              href="https://x.com/0x_note"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-opacity"
+            >
+              X ↗
+            </a>
+            <a
+              href="https://github.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="opacity-60 hover:opacity-100 transition-opacity"
             >
               GitHub ↗
-            </a>
-            <a
-              href="https://twitter.com/matthew_nnamani"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-60 hover:opacity-100 transition-opacity"
-            >
-              Twitter ↗
             </a>
             <a
               href="https://linkedin.com/in/matthew-nnamani"

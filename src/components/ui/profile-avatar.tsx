@@ -119,7 +119,7 @@ export function ProfileAvatar({
             {/* Actual Image */}
             <Image
               src={profile?.avatar}
-              alt={`${profile?.name || 'Matthew Raphael'} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
+              alt={`${profile?.name || 'Matthew Raphael Nnamani'} - Blockchain Intelligence Practitioner profile picture`}
               fill
               sizes="(max-width: 640px) 60px, (max-width: 1024px) 80px, 96px"
               className={`rounded-full object-cover border-2 border-primary-500/30 shadow-lg shadow-primary-500/10 transition-all duration-300 hover:shadow-primary-500/20 hover:scale-105 ${
@@ -154,16 +154,7 @@ export function ProfileAvatar({
           )}
           {showTitle && (
             <div className={`text-foreground/60 ${titleTextSizeClasses[size]} truncate break-words`}>
-              {profile?.name === 'Matthew Raphael' || !profile?.name ?
-                <span className="sm:hidden">RaphdeAnalyst • Web3 Data & AI</span> :
-                (profile?.title || 'Web3 Data & AI Specialist')
-              }
-              <span className="hidden sm:inline">
-                {profile?.name === 'Matthew Raphael' || !profile?.name ?
-                  'RaphdeAnalyst • Web3 Data & AI Specialist' :
-                  (profile?.title || 'Web3 Data & AI Specialist')
-                }
-              </span>
+              {profile?.title || 'Blockchain Intelligence Practitioner'}
             </div>
           )}
         </div>

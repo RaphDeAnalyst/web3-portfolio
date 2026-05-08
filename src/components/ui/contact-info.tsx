@@ -39,11 +39,11 @@ export function ContactInfo() {
     {
       id: 'email',
       title: 'Email',
-      value: 'matthewraphael@notes0x.xyz',
+      value: 'matthewraphael@matthewraphael.xyz',
       description: 'Preferred for business inquiries',
       icon: <Mail className="w-5 h-5" />,
       color: 'primary-500',
-      action: 'mailto:matthewraphael@notes0x.xyz'
+      action: 'mailto:matthewraphael@matthewraphael.xyz'
     },
     {
       id: 'cal',
@@ -102,7 +102,7 @@ export function ContactInfo() {
         
         {/* Quick Bio */}
         <p className="text-sm text-foreground/70 leading-relaxed border-t border-text-light-primary/10 dark:border-text-dark-primary/10 pt-4">
-          {profile?.bio || 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.'}
+          {profile?.bio || 'Blockchain intelligence analyst conducting AML-aligned on-chain investigations, wallet behavioral profiling, and KYT/transaction monitoring across EVM chains since 2024.'}
         </p>
       </div>
 

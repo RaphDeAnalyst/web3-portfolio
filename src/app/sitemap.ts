@@ -1,63 +1,24 @@
 import { MetadataRoute } from 'next'
-import { blogService } from '@/lib/service-switcher'
-import { logger } from '@/lib/logger'
 
-interface BlogPost {
-  slug: string
-  lastModified?: string
-  updatedAt?: string
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://matthewraphael.xyz'
-
-  // Static pages
-  const staticPages = [
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
     {
-      url: baseUrl,
+      url: 'https://matthewraphael.xyz',
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: `${baseUrl}/about`,
+      url: 'https://matthewraphael.xyz/work',
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/portfolio`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: 'https://matthewraphael.xyz/about',
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
   ]
-
-  try {
-    // Dynamic blog posts
-    const posts = await blogService.getPublishedPosts()
-    const blogPages = posts.map((post: BlogPost) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.lastModified || post.updatedAt || new Date()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }))
-
-    return [...staticPages, ...blogPages]
-  } catch (error) {
-    logger.error('Error generating sitemap', error)
-    return staticPages
-  }
 }

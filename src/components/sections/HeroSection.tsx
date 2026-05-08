@@ -14,12 +14,12 @@ export function HeroSection() {
 
           {/* Role */}
           <p className="text-lg sm:text-xl md:text-2xl opacity-75">
-            Web3 Data Analyst
+            Blockchain Intelligence Practitioner
           </p>
 
           {/* Context sentence */}
           <p className="text-base sm:text-lg max-w-2xl mx-auto opacity-65 leading-relaxed">
-            I analyze on-chain data across DeFi, NFT markets, and L2 networks using SQL, Python, and Dune Analytics — based in Lagos, open to the world.
+            I investigate on-chain financial crime, trace fund flows across EVM chains, and produce AML-aligned intelligence. Published investigations, research papers, and production KYT tooling — based in Lagos.
           </p>
 
           {/* CTAs */}
@@ -31,12 +31,12 @@ export function HeroSection() {
               View Work
             </Link>
             <a
-              href="https://dune.com/notes0x"
+              href="https://paragraph.com/@notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 h-11 flex items-center justify-center border border-foreground rounded hover:bg-foreground hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-colors font-medium"
             >
-              Dune Profile ↗
+              Research ↗
             </a>
           </div>
         </div>

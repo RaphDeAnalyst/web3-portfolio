@@ -20,19 +20,19 @@ export function SocialLinks() {
   const socialLinks: SocialLink[] = [
     {
       name: 'GitHub',
-      username: 'RaphDeAnalyst',
-      url: 'https://github.com/RaphDeAnalyst',
+      username: 'notes0x',
+      url: 'https://github.com/notes0x',
       icon: <Github className="w-8 h-8" />,
       color: 'gray-600',
       description: 'Open source projects and contributions'
     },
     {
-      name: 'Twitter',
-      username: '@matthew_nnamani',
-      url: 'https://twitter.com/matthew_nnamani',
+      name: 'X',
+      username: '@0x_note',
+      url: 'https://x.com/0x_note',
       icon: <Twitter className="w-8 h-8" />,
       color: 'gray-600',
-      description: 'Web3 insights and market analysis'
+      description: 'On-chain investigations and intelligence'
     },
     {
       name: 'LinkedIn',

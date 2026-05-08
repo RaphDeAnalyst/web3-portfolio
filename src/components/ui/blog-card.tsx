@@ -200,7 +200,7 @@ export const BlogCard = memo(function BlogCard({
               {isHydrated && profileData?.avatar && profileData.avatar !== '/avatar.jpg' && profileData.avatar.startsWith('http') ? (
                 <img
                   src={profileData.avatar}
-                  alt={`${author.name} - Web3 Data Analyst and Blockchain Analytics Expert profile picture`}
+                  alt={`${author.name} - Blockchain Intelligence Practitioner profile picture`}
                   loading="lazy"
                   className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
                 />
@@ -212,14 +212,7 @@ export const BlogCard = memo(function BlogCard({
               <div>
                 <div className="text-sm font-medium text-foreground">{author.name}</div>
                 <div className="text-xs text-foreground/60 truncate">
-                  <span className="sm:hidden">
-                    {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI' :
-                     (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
-                  </span>
-                  <span className="hidden sm:inline">
-                    {author.name === 'Matthew Raphael' ? 'RaphdeAnalyst • Web3 Data & AI Specialist' :
-                     (isHydrated && profileData ? profileData.title : 'Web3 Data & AI Specialist')}
-                  </span>
+                  {isHydrated && profileData ? profileData.title : 'Blockchain Intelligence Practitioner'}
                 </div>
               </div>
             </div>

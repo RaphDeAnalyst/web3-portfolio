@@ -561,7 +561,7 @@ export function BlogPostEditor({ initialData, onSave }: BlogPostEditorProps) {
                 </div>
                 <div>
                   <div className="font-medium text-foreground">{formData.author.name || 'Matthew Raphael'}</div>
-                  <div className="text-sm text-foreground/60">RaphdeAnalyst • Web3 Data & AI Specialist</div>
+                  <div className="text-sm text-foreground/60">notes0x • Blockchain Intelligence</div>
                 </div>
               </div>
             </div>

@@ -77,7 +77,7 @@ export function ContactForm() {
       }
     } catch (err) {
       logger.error('Error submitting form:', err)
-      error('Failed to send message. Please try again or contact me directly at matthewraphael@notes0x.xyz')
+      error('Failed to send message. Please try again or contact me directly at matthewraphael@matthewraphael.xyz')
     } finally {
       setIsSubmitting(false)
     }
@@ -146,7 +146,7 @@ export function ContactForm() {
           Thanks for reaching out! I&apos;ll get back to you within 24 hours to discuss your project.
         </p>
         <div className="text-sm text-foreground/60">
-          Expect a response from: matthewraphael@notes0x.xyz
+          Expect a response from: matthewraphael@matthewraphael.xyz
         </div>
       </div>
     )

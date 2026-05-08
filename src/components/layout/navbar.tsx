@@ -50,13 +50,13 @@ export function Navbar() {
               About
             </Link>
             <a
-              href="https://dune.com/notes0x"
+              href="https://paragraph.com/@notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
-              aria-label="Visit my Dune Analytics profile"
+              aria-label="Read my research on Paragraph"
             >
-              Dune ↗
+              Research ↗
             </a>
             {mounted && (
               <button
@@ -92,13 +92,13 @@ export function Navbar() {
               About
             </Link>
             <a
-              href="https://dune.com/notes0x"
+              href="https://paragraph.com/@notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
-              aria-label="Visit my Dune Analytics profile"
+              aria-label="Read my research on Paragraph"
             >
-              Dune ↗
+              Research ↗
             </a>
             {mounted && (
               <button

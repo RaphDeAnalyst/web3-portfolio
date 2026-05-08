@@ -317,7 +317,7 @@ export function Navbar() {
                 Data Analytics
               </div>
               <div className="text-xs text-gray-600 dark:text-gray-300 -mt-1 hidden sm:block">
-                Web3 Data Analyst | Turning Blockchain Data into Insights
+                Blockchain Intelligence Practitioner
               </div>
             </div>
           </Link>

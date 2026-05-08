@@ -20,23 +20,19 @@ export interface ProfileData {
 export class ProfileServiceSupabase {
   // Default profile data
   private static defaultProfile: ProfileData = {
-    name: 'Matthew Raphael',
-    title: 'Web3 Data & AI Specialist',
-    bio: 'Transitioning from traditional data analytics to blockchain insights and Web3 analytics. Known as RaphdeAnalyst, I am passionate about decentralized data and AI-powered blockchain analysis, building the future of Web3 analytics.',
+    name: 'Matthew Raphael Nnamani',
+    title: 'Blockchain Intelligence Practitioner',
+    bio: 'Blockchain intelligence analyst conducting AML-aligned on-chain investigations, wallet behavioral profiling, and KYT/transaction monitoring across EVM chains since 2024.',
     avatar: '/avatar.jpg',
-    email: 'matthewraphael@notes0x.xyz',
-    location: 'Remote',
+    email: 'matthewraphael@matthewraphael.xyz',
+    location: 'Lagos, Nigeria',
     dune: 'notes0x',
-    github: 'RaphdeAnalyst',
-    twitter: 'RaphdeAnalyst',
-    linkedin: 'matthewraphael',
-    skills: ['Python', 'SQL', 'Dune Analytics', 'Web3', 'Data Analysis', 'Machine Learning', 'Blockchain Analysis', 'DeFi', 'Smart Contracts'],
+    github: 'notes0x',
+    twitter: '0x_note',
+    linkedin: 'matthew-nnamani',
+    skills: ['On-Chain Investigation', 'KYT / Transaction Monitoring', 'Multi-Hop Fund Tracing', 'AML/CTF Compliance', 'OFAC Sanctions Screening', 'Trino SQL', 'Dune Analytics', 'Python'],
     resume: '',
-    story: `I'm a data analyst transitioning from Web2 to Web3, with strong foundations in Python, SQL, and statistical modeling. I began my analytics journey in 2022, building skills in data querying, visualization, and predictive analytics. By 2023, I had advanced into statistical modeling, regression analysis, and machine learning applications, applying analytics to solve real-world problems in traditional finance.
-
-In 2024, I became fascinated by blockchain's open datasets and began studying DeFi protocols, smart contracts, and tokenomics. This curiosity led me to start hands-on Web3 analytics projects in 2025. For example, I built an Ethereum gas price dashboard that identified 20% cost savings opportunities, and created 8 Dune Analytics dashboards tracking over $100M in DeFi volumes.
-
-Today, I work with Dune Analytics and Flipside Crypto to analyze wallet behavior, DeFi activity, and NFT markets, while also learning Solidity basics to deepen my understanding of blockchain data structures. My goal is to establish myself as a Web3 Data & AI Specialist, bridging the rigor of traditional analytics with the transparency and innovation of blockchain data.`
+    story: `Blockchain intelligence analyst conducting AML-aligned on-chain investigations, wallet behavioral profiling, and KYT/transaction monitoring across EVM chains since 2024. Work spans multi-hop fund tracing, USDT flow attribution, cross-chain bridge analysis, sanctions screening, and structured compliance reporting — applying FATF, OFAC, and FinCEN frameworks to real financial crime casework. BSc Chemistry, University of Uyo, 2023.`
   }
 
   // Transform Supabase Profile to ProfileData

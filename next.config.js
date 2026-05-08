@@ -119,6 +119,22 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Redirect removed pages
+      {
+        source: '/portfolio',
+        destination: '/work',
+        permanent: true,
+      },
+      {
+        source: '/blog',
+        destination: '/work',
+        permanent: true,
+      },
+      {
+        source: '/contact',
+        destination: '/about',
+        permanent: true,
+      },
     ]
   },
 

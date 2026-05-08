@@ -34,47 +34,45 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
     return {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": profile.name || "Matthew Raphael",
-      "alternateName": "RaphDeAnalyst",
-      "jobTitle": "Web3 Data Analyst",
-      "description": "Web3 Data Analyst specializing in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, Dune Analytics with proven Web2 to Web3 transition experience.",
+      "name": profile.name || "Matthew Raphael Nnamani",
+      "alternateName": "notes0x",
+      "jobTitle": "Blockchain Intelligence Practitioner",
+      "description": "Blockchain intelligence practitioner conducting on-chain investigations, AML-aligned fund tracing, and KYT analysis across EVM chains. Based in Lagos.",
       "url": "https://matthewraphael.xyz",
       "image": profile.avatar || "https://matthewraphael.xyz/profile-image.jpg",
-      "email": profile.email || "matthewraphael@notes0x.xyz",
+      "email": profile.email || "matthewraphael@matthewraphael.xyz",
       "knowsAbout": [
-        "Web3 Data Analysis",
-        "Blockchain Analytics",
-        "DeFi Protocol Analysis",
-        "On-chain Data Analytics",
-        "Python Programming",
-        "SQL for Blockchain",
+        "Blockchain Intelligence",
+        "On-Chain Investigation",
+        "AML Compliance",
+        "KYT Transaction Monitoring",
+        "Fund Flow Tracing",
+        "OFAC Sanctions Screening",
+        "Cross-Chain Analysis",
+        "Wallet Behavioral Profiling",
         "Dune Analytics",
-        "Smart Contract Analytics",
-        "Token Economics",
-        "NFT Analytics",
-        "Data Visualization",
-        "Statistical Analysis",
-        "Wallet Behavior Analysis",
-        "Cryptocurrency Research"
+        "Trino SQL",
+        "EVM Chain Analysis"
       ],
       "hasSkill": [
-        "Python", "SQL", "DuneSQL", "Excel", "Power BI",
-        "Data Visualization", "Statistical Modeling", "Blockchain Analytics",
-        "Smart Contract Analysis", "DeFi Research", "On-chain Analytics"
+        "On-Chain Investigation", "KYT / Transaction Monitoring", "Multi-Hop Fund Tracing",
+        "AML/CTF Compliance", "OFAC Sanctions Screening", "Trino SQL",
+        "Dune Analytics", "Python", "Etherscan V2", "Breadcrumbs"
       ],
       "sameAs": [
-        `https://github.com/${profile.github || 'RaphDeAnalyst'}`,
-        `https://twitter.com/${profile.twitter || 'matthew_nnamani'}`,
+        `https://github.com/${profile.github || 'notes0x'}`,
+        `https://x.com/${profile.twitter || '0x_note'}`,
         `https://linkedin.com/in/${profile.linkedin || 'matthew-nnamani'}`,
-        "https://dune.com/notes0x"
+        "https://dune.com/notes0x",
+        "https://paragraph.com/@notes0x"
       ],
       "worksFor": {
         "@type": "Organization",
-        "name": "Freelance Web3 Analytics"
+        "name": "Blockchain Intelligence"
       },
       "alumniOf": {
         "@type": "EducationalOrganization",
-        "name": "Data Analytics Background"
+        "name": "University of Uyo"
       },
       "homeLocation": {
         "@type": "Place",
@@ -127,26 +125,18 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
   const generateWebsiteSchema = () => ({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Matthew Raphael - Web3 Data Analytics Portfolio",
-    "alternateName": "RaphDeAnalyst Portfolio",
+    "name": "Matthew Raphael Nnamani — Blockchain Intelligence Practitioner",
+    "alternateName": "notes0x",
     "url": "https://matthewraphael.xyz",
-    "description": "Portfolio showcasing Web3 data analytics projects, blockchain dashboards, DeFi analysis, and on-chain insights by Matthew Raphael.",
+    "description": "Blockchain intelligence practitioner conducting on-chain investigations, AML-aligned fund tracing, and KYT analysis across EVM chains.",
     "author": {
       "@type": "Person",
-      "name": "Matthew Raphael",
-      "jobTitle": "Web3 Data Analyst"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://matthewraphael.xyz/portfolio?search={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
+      "name": "Matthew Raphael Nnamani",
+      "jobTitle": "Blockchain Intelligence Practitioner"
     },
     "mainEntity": {
       "@type": "Person",
-      "name": "Matthew Raphael"
+      "name": "Matthew Raphael Nnamani"
     }
   })
 
@@ -188,8 +178,8 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "dateModified": data.updatedAt || data.date || data.createdAt,
       "author": {
         "@type": "Person",
-        "name": data.author?.name || "Matthew Raphael",
-        "jobTitle": "Web3 Data Analyst"
+        "name": data.author?.name || "Matthew Raphael Nnamani",
+        "jobTitle": "Blockchain Intelligence Practitioner"
       },
       "publisher": {
         "@type": "Person",
@@ -231,11 +221,11 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
     return {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "Matthew Raphael - Web3 Data Analytics",
-      "alternateName": "RaphDeAnalyst",
-      "description": "Professional Web3 data analytics consultation and blockchain dashboard development services.",
+      "name": "Matthew Raphael Nnamani — Blockchain Intelligence",
+      "alternateName": "notes0x",
+      "description": "Blockchain intelligence practitioner conducting on-chain investigations, AML-aligned fund tracing, and KYT analysis across EVM chains.",
       "url": "https://matthewraphael.xyz",
-      "email": profile.email || "matthewraphael@notes0x.xyz",
+      "email": profile.email || "matthewraphael@matthewraphael.xyz",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Lagos",
@@ -370,8 +360,8 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Full-time Web3 Data Analyst Positions",
-              "description": "Available for permanent Web3 data analyst roles in US, UK, EU, and global markets"
+              "name": "Blockchain Intelligence Consulting",
+              "description": "Available for blockchain intelligence, AML compliance, and on-chain investigation engagements"
             }
           }
         ]
