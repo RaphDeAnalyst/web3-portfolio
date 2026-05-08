@@ -293,7 +293,7 @@ export function ProfileCard() {
                 {/* Contact CTA */}
                 <div className="pt-1">
                   <a
-                    href={`mailto:${profile?.email || 'matthewraphael@matthewraphael.xyz'}`}
+                    href={`mailto:${profile?.email || 'matthewraphael@notes0x.xyz'}`}
                     className="w-full flex items-center justify-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-storj bg-storj-navy text-white font-semibold hover:bg-storj-blue hover:transform hover:translate-y-[-1px] shadow-lg shadow-storj-navy/20 transition-all duration-200"
                   >
                     <Mail className="w-4 h-4 sm:w-5 sm:h-5" />

@@ -20,7 +20,7 @@ export function StructuredData({ projects, type = 'portfolio' }: StructuredDataP
     sameAs: [
       'https://github.com/matthewraphael',
       'https://linkedin.com/in/matthewraphael',
-      'https://dune.com/@matthewraphael'
+      'https://dune.com/@notes0x'
     ],
     knowsAbout: [
       'Web3 Analytics',

@@ -39,11 +39,11 @@ export function ContactInfo() {
     {
       id: 'email',
       title: 'Email',
-      value: 'matthewraphael@matthewraphael.xyz',
+      value: 'matthewraphael@notes0x.xyz',
       description: 'Preferred for business inquiries',
       icon: <Mail className="w-5 h-5" />,
       color: 'primary-500',
-      action: 'mailto:matthewraphael@matthewraphael.xyz'
+      action: 'mailto:matthewraphael@notes0x.xyz'
     },
     {
       id: 'cal',

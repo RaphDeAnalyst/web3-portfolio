@@ -37,7 +37,7 @@ export function Footer() {
               LinkedIn ↗
             </a>
             <a
-              href="https://dune.com/rraphael"
+              href="https://dune.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="opacity-60 hover:opacity-100 transition-opacity"

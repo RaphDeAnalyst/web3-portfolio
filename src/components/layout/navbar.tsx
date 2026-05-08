@@ -50,7 +50,7 @@ export function Navbar() {
               About
             </Link>
             <a
-              href="https://dune.com/rraphael"
+              href="https://dune.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"
@@ -92,7 +92,7 @@ export function Navbar() {
               About
             </Link>
             <a
-              href="https://dune.com/rraphael"
+              href="https://dune.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity"

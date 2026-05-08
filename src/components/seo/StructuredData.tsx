@@ -40,7 +40,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "description": "Web3 Data Analyst specializing in blockchain analytics, DeFi protocols, and on-chain data analysis. Expert in Python, SQL, Dune Analytics with proven Web2 to Web3 transition experience.",
       "url": "https://matthewraphael.xyz",
       "image": profile.avatar || "https://matthewraphael.xyz/profile-image.jpg",
-      "email": profile.email || "matthewraphael@matthewraphael.xyz",
+      "email": profile.email || "matthewraphael@notes0x.xyz",
       "knowsAbout": [
         "Web3 Data Analysis",
         "Blockchain Analytics",
@@ -66,7 +66,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
         `https://github.com/${profile.github || 'RaphDeAnalyst'}`,
         `https://twitter.com/${profile.twitter || 'matthew_nnamani'}`,
         `https://linkedin.com/in/${profile.linkedin || 'matthew-nnamani'}`,
-        "https://dune.com/raphdeanalyst"
+        "https://dune.com/notes0x"
       ],
       "worksFor": {
         "@type": "Organization",
@@ -235,7 +235,7 @@ export function StructuredData({ type = 'person', data }: StructuredDataProps) {
       "alternateName": "RaphDeAnalyst",
       "description": "Professional Web3 data analytics consultation and blockchain dashboard development services.",
       "url": "https://matthewraphael.xyz",
-      "email": profile.email || "matthewraphael@matthewraphael.xyz",
+      "email": profile.email || "matthewraphael@notes0x.xyz",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Lagos",

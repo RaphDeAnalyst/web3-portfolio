@@ -31,7 +31,7 @@ export function HeroSection() {
               View Work
             </Link>
             <a
-              href="https://dune.com/rraphael"
+              href="https://dune.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 h-11 flex items-center justify-center border border-foreground rounded hover:bg-foreground hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-colors font-medium"
