@@ -371,11 +371,9 @@ class BlogServiceSupabase {
 
     // Check for duplicates (excluding current post if updating)
     while (true) {
-      const { data, error } = await supabase
-        .from('blogs')
-        .select('id')
-        .eq('slug', slug)
-        .not('id', 'eq', existingId || 'none')
+      let query = supabase.from('blogs').select('id').eq('slug', slug)
+      if (existingId) query = query.neq('id', existingId)
+      const { data, error } = await query
 
       if (error) {
         logger.error('Error checking slug uniqueness', error)
