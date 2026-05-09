@@ -1,22 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-
 export function AboutClient() {
-  const [copied, setCopied] = useState(false)
-
-  const copyEmail = () => {
-    navigator.clipboard.writeText('matthewraphael@matthewraphael.xyz')
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   return (
     <div className="min-h-screen pt-24 pb-20 px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
 
         {/* Section 1 — Introduction */}
-        <div className="mb-20 page-header">
+        <div className="mb-8 pb-8 page-header" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
           <div className="flex gap-6 items-start mb-8">
             {/* Avatar */}
             <div className="flex-shrink-0">
@@ -46,57 +36,59 @@ export function AboutClient() {
 
           {/* Bio */}
           <p className="text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-            On-chain investigator and AML compliance analyst conducting fund tracing, KYT/transaction monitoring, and financial crime investigations across EVM chains since 2024. Applies FATF, OFAC, and FinCEN frameworks to real casework. BSc Chemistry, University of Uyo, 2023.
+            On-chain investigator and AML compliance analyst conducting fund tracing, KYT/transaction monitoring, and financial crime investigations across EVM chains since 2024. Applies FATF, OFAC, and FinCEN frameworks to real casework.
           </p>
         </div>
 
-        {/* Section 2 — Published Work */}
-        <div className="mb-20 pb-20" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
-          <p className="text-xs font-mono uppercase tracking-wider mb-8" style={{ color: 'var(--text-muted)' }}>Published work</p>
-          <div className="space-y-6">
+        {/* Section 2 — Principles */}
+        <div className="mb-8 pb-8" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
+          <p className="text-xs font-mono uppercase tracking-wider mb-8" style={{ color: 'var(--text-muted)' }}>Principles</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-            <div className="pb-6 pub-item flex" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
-              <a
-                href="https://x.com/0x_note"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-serif font-bold hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity block mb-2"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                Kraken $18.2M Social Engineering Theft
-              </a>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                Full ETH trace through THORChain to dual-chain HitBTC cash-out. ↗
+            <div>
+              <p className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '15px', fontWeight: 500, marginBottom: '0.35rem' }}>
+                Assert only what the data supports.
+              </p>
+              <p className="font-mono" style={{ color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '1.25rem' }}>
+                CONFIRMED, PROBABLE, UNCONFIRMED — never collapsed into one.
               </p>
             </div>
 
-            <div className="pb-6" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
-              <a
-                href="https://paragraph.com/@notes0x"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-serif font-bold hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity block mb-2"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                LastPass Drain Cluster
-              </a>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                March 2026 — 287 ETH, 60,133 USDT reconciled, victim identified. ↗
+            <div>
+              <p className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '15px', fontWeight: 500, marginBottom: '0.35rem' }}>
+                Slow movement beats no movement.
+              </p>
+              <p className="font-mono" style={{ color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '1.25rem' }}>
+                A logged blocker is progress. An abandoned thread is not.
               </p>
             </div>
 
-            <div className="pb-6">
-              <a
-                href="https://paragraph.com/@notes0x"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-serif font-bold hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity block mb-2"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                Coordinated ETH Distribution Network
-              </a>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                New wallet taxonomy class: provisioned EOA infrastructure. ↗
+            <div>
+              <p className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '15px', fontWeight: 500, marginBottom: '0.35rem' }}>
+                The exit matters as much as the source.
+              </p>
+              <p className="font-mono" style={{ color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '1.25rem' }}>
+                Following funds to a cash-out endpoint is not enough —<br />
+                the regulatory posture of that endpoint is part of the finding.
+              </p>
+            </div>
+
+            <div>
+              <p className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '15px', fontWeight: 500, marginBottom: '0.35rem' }}>
+                Automation leaves fingerprints.
+              </p>
+              <p className="font-mono" style={{ color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '1.25rem' }}>
+                21,000 gas, every transaction, every time.<br />
+                Determinism is a signature.
+              </p>
+            </div>
+
+            <div>
+              <p className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '15px', fontWeight: 500, marginBottom: '0.35rem' }}>
+                {`Label what you don't know.`}
+              </p>
+              <p className="font-mono" style={{ color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '1.25rem' }}>
+                An open thread documented is more honest than a conclusion forced.
               </p>
             </div>
 
@@ -104,7 +96,7 @@ export function AboutClient() {
         </div>
 
         {/* Section 3 — Methods */}
-        <div className="mb-20 pb-20" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
+        <div className="mb-8 pb-8" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
           <p className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>Methods</p>
           <div className="flex flex-wrap gap-2">
             {[
@@ -115,6 +107,12 @@ export function AboutClient() {
               'OFAC sanctions screening',
               'Cross-chain analysis',
               'Wallet behavioral profiling',
+              'Trino SQL',
+              'Dune Analytics',
+              'Python (AI-assisted)',
+              'Etherscan V2',
+              'BSCScan',
+              'Breadcrumbs',
             ].map((method) => (
               <span
                 key={method}
@@ -135,16 +133,13 @@ export function AboutClient() {
         {/* Section 4 — Contact */}
         <div>
           <p className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>Get in touch</p>
-          <button
-            onClick={copyEmail}
-            className="font-serif font-bold text-lg hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity mb-6"
-            style={{ color: 'var(--text-primary)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+          <a
+            href="mailto:matthewraphael@matthewraphael.xyz"
+            className="font-serif font-bold text-lg no-underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent block mb-6"
+            style={{ color: 'var(--text-primary)', textDecorationColor: 'var(--text-primary)' }}
           >
             matthewraphael@matthewraphael.xyz
-            {copied && (
-              <span className="ml-2 text-sm" style={{ color: 'var(--text-muted)' }}>Copied!</span>
-            )}
-          </button>
+          </a>
           <div className="flex flex-wrap gap-4 text-sm">
             <a
               href="https://x.com/0x_note"
@@ -164,7 +159,7 @@ export function AboutClient() {
               href="https://linkedin.com/in/matthew-nnamani"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="px-4 py-2 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-accent"
               style={{
                 borderColor: 'var(--border)',
                 borderWidth: '1px',
