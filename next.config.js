@@ -18,10 +18,15 @@ const nextConfig = {
   images: {
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      // Supabase storage (project images, uploads)
+      { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: '*.supabase.in' },
+      // GitHub avatars (used in comments / author cards)
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+      // Unsplash placeholder images
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      // Google user content (profile pictures)
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
 
@@ -29,7 +34,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     webpackBuildWorker: true,
-    optimizeCss: true,
   },
 
   // Bundle optimization

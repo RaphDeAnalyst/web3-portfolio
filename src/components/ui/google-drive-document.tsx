@@ -1,5 +1,7 @@
 'use client'
 
+import { logger } from '@/lib/logger'
+
 interface GoogleDriveDocumentProps {
   fileId: string
   customTitle?: string
@@ -60,7 +62,7 @@ export function GoogleDriveDocument({ fileId, customTitle, url }: GoogleDriveDoc
                 title="Document Preview"
                 loading="lazy"
                 onError={() => {
-                  console.warn('Google Drive preview failed to load, document may not be publicly accessible')
+                  logger.warn('Google Drive preview failed to load, document may not be publicly accessible')
                 }}
               />
               <div className="mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">

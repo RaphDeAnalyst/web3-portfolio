@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
+import { logger } from '@/lib/logger'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://matthewraphael.xyz'
@@ -16,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   } catch (error) {
     // If projects fail to load, continue with empty project list
-    console.error('Failed to fetch projects for sitemap:', error)
+    logger.error('Failed to fetch projects for sitemap:', error)
   }
 
   return [

@@ -57,7 +57,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Retry logic: retry up to 2 times with increasing delay
         if (retryCount < 2) {
           const retryDelay = (retryCount + 1) * 1000 // 1s, 2s delay
-          console.log(`Retrying dashboard load in ${retryDelay}ms...`)
+          logger.info(`Retrying dashboard load in ${retryDelay}ms...`)
           setTimeout(() => {
             loadDashboards(retryCount + 1)
           }, retryDelay)
@@ -389,7 +389,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                   loading="lazy"
                   onError={() => {
                     // If iframe fails to load, this won't catch embedding restrictions
-                    console.warn(`YouTube iframe failed to load for video: ${videoId}`)
+                    logger.warn(`YouTube iframe failed to load for video: ${videoId}`)
                   }}
                 />
                 {/* Fallback content - shown when embedding is disabled */}

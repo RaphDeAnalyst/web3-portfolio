@@ -106,6 +106,7 @@ class BlogServiceSupabase {
         .select('*')
         .eq('status', 'published')
         .order('created_at', { ascending: false })
+        .range(0, 49)
 
       if (error) {
         logger.error('Error fetching published blogs', error)

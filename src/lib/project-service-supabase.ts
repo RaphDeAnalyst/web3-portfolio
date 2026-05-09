@@ -22,6 +22,10 @@ export interface Project {
   duneUrl?: string
   blogPostSlug?: string
   file_url?: string
+  metrics?: Record<string, string>
+  features?: string[]
+  challenges?: string
+  learnings?: string
   links?: {
     github?: string
     demo?: string
@@ -71,16 +75,16 @@ export class ProjectServiceSupabase {
       tech_stack: project.techStack || project.tech_stack || [],
       status: project.status,
       featured: project.featured || false,
-      github_url: (project as any).githubUrl || project.github || project.github_url || project.links?.github,
-      demo_url: (project as any).demoUrl || project.demo || project.demo_url || project.links?.demo,
+      github_url: project.githubUrl || project.github || project.github_url || project.links?.github,
+      demo_url: project.demoUrl || project.demo || project.demo_url || project.links?.demo,
       dune_url: project.duneUrl,
       blog_post_slug: project.blogPostSlug,
       file_url: project.file_url,
       image: project.image,
-      metrics: (project as any).metrics,
-      features: (project as any).features,
-      challenges: (project as any).challenges,
-      learnings: (project as any).learnings
+      metrics: project.metrics,
+      features: project.features,
+      challenges: project.challenges,
+      learnings: project.learnings
     }
   }
 
@@ -95,6 +99,7 @@ export class ProjectServiceSupabase {
         .from('projects')
         .select('*')
         .order('created_at', { ascending: false })
+        .range(0, 49)
 
       if (error) {
         logger.error('Error fetching projects from Supabase', error)
@@ -347,19 +352,19 @@ export class ProjectServiceSupabase {
         }
       }
 
-      const byStatus = data.reduce((acc: Record<string, number>, project: any) => {
+      const byStatus = data.reduce((acc: Record<string, number>, project: SupabaseProject) => {
         acc[project.status] = (acc[project.status] || 0) + 1
         return acc
       }, {})
 
-      const byCategory = data.reduce((acc: Record<string, number>, project: any) => {
+      const byCategory = data.reduce((acc: Record<string, number>, project: SupabaseProject) => {
         acc[project.category] = (acc[project.category] || 0) + 1
         return acc
       }, {})
 
       return {
         total: data.length,
-        featured: data.filter((p: any) => p.featured).length,
+        featured: data.filter((p: SupabaseProject) => p.featured).length,
         byStatus,
         byCategory
       }
@@ -415,7 +420,8 @@ export class ProjectServiceSupabase {
         return []
       }
 
-      const categories = [...new Set(data.map((p: any) => p.category))] as string[]
+      const rows = data as { category: string }[]
+      const categories: string[] = [...new Set(rows.map(p => p.category))]
       return categories.sort()
     } catch (error) {
       logger.error('Error in getCategories', error)

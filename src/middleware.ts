@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { logger } from './lib/logger'
 
-const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'fallback-secret-change-in-production'
-)
+function getJwtSecret(): Uint8Array {
+  const s = process.env.JWT_SECRET
+  if (!s) throw new Error('JWT_SECRET environment variable is not set')
+  return new TextEncoder().encode(s)
+}
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
@@ -81,7 +83,7 @@ export async function middleware(request: NextRequest) {
       }
 
       // Verify JWT token
-      const { payload } = await jwtVerify(token, secret)
+      const { payload } = await jwtVerify(token, getJwtSecret())
 
       if (payload.role !== 'admin') {
         // Invalid token, redirect to login

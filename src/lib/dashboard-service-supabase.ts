@@ -14,6 +14,7 @@ export class DashboardServiceSupabase {
         .from('dashboards')
         .select('*')
         .order('sort_order', { ascending: true })
+        .range(0, 99)
 
       if (error) {
         logger.error('Error fetching dashboards:', error)

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { profileService } from '@/lib/service-switcher'
 import { logger } from '@/lib/logger'
-import type { ProfileData } from '@/lib/profile-service'
+import type { ProfileData } from '@/lib/profile-service-supabase'
 
 interface ProfileAvatarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'

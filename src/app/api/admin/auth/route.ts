@@ -3,109 +3,117 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { logger } from '@/lib/logger'
 
-const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'fallback-secret-change-in-production'
-)
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
-
-// Rate limiting store (in production, use Redis or database)
-const rateLimitStore = new Map<string, { attempts: number; lastAttempt: number }>()
-
-function getRateLimitKey(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0] : request.ip || 'unknown'
-  return `admin_login_${ip}`
+function getJwtSecret(): Uint8Array {
+  const s = process.env.JWT_SECRET
+  if (!s) throw new Error('JWT_SECRET environment variable is not set')
+  return new TextEncoder().encode(s)
 }
 
-function checkRateLimit(key: string): boolean {
-  const now = Date.now()
-  const record = rateLimitStore.get(key)
+function getAdminPassword(): string {
+  const p = process.env.ADMIN_PASSWORD
+  if (!p) throw new Error('ADMIN_PASSWORD environment variable is not set')
+  return p
+}
 
-  if (!record) {
-    rateLimitStore.set(key, { attempts: 1, lastAttempt: now })
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  return forwarded ? forwarded.split(',')[0].trim() : request.ip ?? 'unknown'
+}
+
+async function hashIp(ip: string): Promise<string> {
+  const data = new TextEncoder().encode(ip + (process.env.JWT_SECRET ?? ''))
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
+const RATE_LIMIT_MAX = 5
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000
+
+async function checkRateLimit(ipHash: string): Promise<boolean> {
+  const { createClient } = await import('@supabase/supabase-js')
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString()
+
+  const { data, error } = await supabase
+    .from('login_attempts')
+    .select('id, attempts, window_start')
+    .eq('ip_hash', ipHash)
+    .gte('window_start', windowStart)
+    .maybeSingle()
+
+  if (error) {
+    logger.error('Rate limit check failed, allowing request', error)
     return true
   }
 
-  // Reset if more than 15 minutes have passed
-  if (now - record.lastAttempt > 15 * 60 * 1000) {
-    rateLimitStore.set(key, { attempts: 1, lastAttempt: now })
+  if (!data) {
+    await supabase.from('login_attempts').insert({ ip_hash: ipHash, attempts: 1, window_start: new Date().toISOString() })
     return true
   }
 
-  // Allow max 5 attempts per 15 minutes
-  if (record.attempts >= 5) {
-    return false
-  }
+  if (data.attempts >= RATE_LIMIT_MAX) return false
 
-  record.attempts++
-  record.lastAttempt = now
+  await supabase.from('login_attempts').update({ attempts: data.attempts + 1 }).eq('id', data.id)
   return true
+}
+
+async function resetRateLimit(ipHash: string): Promise<void> {
+  const { createClient } = await import('@supabase/supabase-js')
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  await supabase.from('login_attempts').delete().eq('ip_hash', ipHash)
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const rateLimitKey = getRateLimitKey(request)
+    const ip = getClientIp(request)
+    const ipHash = await hashIp(ip)
 
-    if (!checkRateLimit(rateLimitKey)) {
+    const allowed = await checkRateLimit(ipHash)
+    if (!allowed) {
       return NextResponse.json(
-        { error: 'Too many login attempts. Please try again later.' },
+        { error: 'Too many login attempts. Please try again in 15 minutes.' },
         { status: 429 }
       )
     }
 
-    const { password } = await request.json()
+    const body = await request.json()
+    const password: unknown = body?.password
 
-    if (!password) {
-      return NextResponse.json(
-        { error: 'Password is required' },
-        { status: 400 }
-      )
+    if (!password || typeof password !== 'string') {
+      return NextResponse.json({ error: 'Password is required' }, { status: 400 })
     }
 
-    // Server-side password verification
-    if (password !== ADMIN_PASSWORD) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      )
+    if (password !== getAdminPassword()) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
-    // Create JWT token with 24 hour expiration
-    const token = await new SignJWT({
-      role: 'admin',
-      iat: Math.floor(Date.now() / 1000),
-    })
+    const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('24h')
-      .sign(secret)
+      .sign(getJwtSecret())
 
-    // Create response
-    const response = NextResponse.json(
-      { message: 'Authentication successful' },
-      { status: 200 }
-    )
-
-    // Set secure HTTP-only cookie
+    const response = NextResponse.json({ message: 'Authentication successful' }, { status: 200 })
     response.cookies.set('admin-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60, // 24 hours
-      path: '/'
+      maxAge: 24 * 60 * 60,
+      path: '/',
     })
 
-    // Reset rate limit on successful login
-    rateLimitStore.delete(rateLimitKey)
-
+    await resetRateLimit(ipHash)
     return response
   } catch (error) {
     logger.error('Admin auth error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -121,8 +129,7 @@ export async function GET() {
       )
     }
 
-    // Verify JWT token
-    const { payload } = await jwtVerify(token, secret)
+    const { payload } = await jwtVerify(token, getJwtSecret())
 
     if (payload.role !== 'admin') {
       return NextResponse.json(

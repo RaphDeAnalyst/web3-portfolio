@@ -46,7 +46,9 @@
       "Bash(vercel inspect *)",
       "Bash(vercel env *)",
       "Bash(vercel domains *)",
-      "Bash(vercel metrics *)"
+      "Bash(vercel metrics *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(npx vitest *)"
     ],
     "deny": [],
     "ask": [],
