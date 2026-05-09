@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, FileText } from 'lucide-react'
 import type { Project } from '@/lib/project-service-supabase'
 
 interface WorkCardProps {
@@ -27,9 +27,24 @@ export function WorkCard({ project }: WorkCardProps) {
         elem.style.borderColor = 'var(--card-border)'
       }}
     >
-      {/* External link icon - top right */}
-      <div className="absolute top-6 right-6 transition-opacity duration-200" style={{ color: 'var(--text-secondary)', opacity: 0.4 }}>
-        <ExternalLink className="w-4 h-4" />
+      {/* Link icons - top right */}
+      <div className="absolute top-6 right-6 flex items-center gap-2 transition-opacity duration-200">
+        {project.file_url && (
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              window.open(project.file_url, '_blank')
+            }}
+            className="transition-opacity hover:opacity-100 cursor-pointer bg-none border-none p-0"
+            style={{ color: 'var(--text-secondary)', opacity: 0.4 }}
+            aria-label="Open PDF report"
+            title="Open PDF report"
+          >
+            <FileText className="w-4 h-4" />
+          </button>
+        )}
+        <ExternalLink className="w-4 h-4" style={{ color: 'var(--text-secondary)', opacity: 0.4 }} />
       </div>
 
       {/* Title */}

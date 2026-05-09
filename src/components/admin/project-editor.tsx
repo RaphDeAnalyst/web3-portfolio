@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { Project } from '@/data/projects'
-import { RefreshCw, Rocket, Save } from 'lucide-react'
+import { RefreshCw, Rocket, Save, Upload, X } from 'lucide-react'
 import { useNotification } from '@/lib/notification-context'
 import { logger } from '@/lib/logger'
+import { uploadPdfReport } from '@/lib/actions/upload-pdf'
 
 interface ProjectData extends Omit<Project, 'id'> {
   id?: string
@@ -27,6 +28,7 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
     githubUrl: '',
     duneUrl: '',
     blogPostSlug: '',
+    file_url: '',
     metrics: {},
     features: [],
     challenges: '',
@@ -44,6 +46,13 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
   const [metricKey, setMetricKey] = useState('')
   const [metricValue, setMetricValue] = useState('')
   const [isSaving, setIsSaving] = useState(false)
+  const [isUploadingPdf, setIsUploadingPdf] = useState(false)
+  const [pdfFileName, setPdfFileName] = useState<string | null>(null)
+
+  // NOTE: Before uploading any investigation report PDF to the reports bucket,
+  // review it for sensitive victim information. Redact specific victim wallet
+  // addresses and any personal identifying information before uploading.
+  // Attacker addresses and transaction hashes are fine to include.
 
   const handleInputChange = (field: keyof ProjectData | string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -102,9 +111,39 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
     })
   }
 
+  const handlePdfUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setIsUploadingPdf(true)
+    setPdfFileName(file.name)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const result = await uploadPdfReport(formData)
+
+      if (result.success && result.url) {
+        handleInputChange('file_url', result.url)
+        success(`PDF uploaded successfully: ${file.name}`)
+      } else {
+        error(result.error || 'Failed to upload PDF')
+      }
+    } catch (err) {
+      logger.error('PDF upload error:', err)
+      error('Failed to upload PDF. Please try again.')
+    } finally {
+      setIsUploadingPdf(false)
+      setPdfFileName(null)
+      // Reset the input
+      event.target.value = ''
+    }
+  }
+
   const handleSave = async (isDraft: boolean) => {
     setIsSaving(true)
-    
+
     const dataToSave = {
       ...formData,
       status: isDraft ? 'Development' : formData.status
@@ -276,26 +315,75 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
           </div>
 
           {/* Additional Links */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Dune Dashboard URL</label>
-              <input
-                type="url"
-                value={formData.duneUrl || ''}
-                onChange={(e) => handleInputChange('duneUrl', e.target.value)}
-                placeholder="https://dune.com/username/dashboard"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
-              />
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Dune Dashboard URL</label>
+                <input
+                  type="url"
+                  value={formData.duneUrl || ''}
+                  onChange={(e) => handleInputChange('duneUrl', e.target.value)}
+                  placeholder="https://dune.com/username/dashboard"
+                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Related Blog Post Slug</label>
+                <input
+                  type="text"
+                  value={formData.blogPostSlug || ''}
+                  onChange={(e) => handleInputChange('blogPostSlug', e.target.value)}
+                  placeholder="my-project-analysis"
+                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Related Blog Post Slug</label>
-              <input
-                type="text"
-                value={formData.blogPostSlug || ''}
-                onChange={(e) => handleInputChange('blogPostSlug', e.target.value)}
-                placeholder="my-project-analysis"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-cyber-500 focus:ring-2 focus:ring-cyber-500/20"
-              />
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">PDF Report</label>
+
+              {/* Upload Section */}
+              <div className="flex items-center gap-3">
+                <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
+                  <Upload className="w-4 h-4 text-gray-500" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {isUploadingPdf ? 'Uploading...' : pdfFileName || 'Choose PDF to upload'}
+                  </span>
+                  <input
+                    type="file"
+                    accept=".pdf,application/pdf"
+                    onChange={handlePdfUpload}
+                    disabled={isUploadingPdf}
+                    className="hidden"
+                    aria-label="Upload PDF report"
+                  />
+                </label>
+                {formData.file_url && (
+                  <button
+                    onClick={() => handleInputChange('file_url', '')}
+                    className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="Clear PDF URL"
+                    type="button"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* URL Display */}
+              {formData.file_url && (
+                <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                  <p className="text-xs text-green-700 dark:text-green-300 font-medium mb-1">PDF URL Ready:</p>
+                  <p className="text-xs text-green-600 dark:text-green-400 break-all font-mono">
+                    {formData.file_url}
+                  </p>
+                </div>
+              )}
+
+              <p className="text-xs text-foreground/60">
+                Upload a PDF directly, or paste a public Supabase Storage URL manually.
+                <br />
+                <strong>⚠️ Before uploading:</strong> Redact victim wallet addresses and personal information.
+              </p>
             </div>
           </div>
 

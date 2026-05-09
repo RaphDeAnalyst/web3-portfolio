@@ -8,6 +8,7 @@ Migrations must be run in numerical order:
 
 1. **`001_initial_schema.sql`** - Creates all base tables, indexes, RLS policies, and triggers
 2. **`002_add_media_metadata.sql`** - Adds enhanced metadata columns to the media table
+3. **`003_add_pdf_report_support.sql`** - Adds file_url column to projects table for hosting PDF investigation reports
 
 ## How to Run Migrations
 
@@ -136,6 +137,51 @@ psql "postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres" < backup.sql
 - Check your Supabase auth configuration
 - Verify policies match your authentication setup
 
+## PDF Report Hosting (Migration 003)
+
+The `003_add_pdf_report_support.sql` migration adds support for hosting PDF investigation reports in Supabase Storage.
+
+### Setup Instructions
+
+1. **Create Storage Bucket**
+   - Go to Supabase Dashboard → Storage
+   - Click "Create a new bucket"
+   - Name: `reports`
+   - Make it **public** (enable public read access)
+
+2. **Set Bucket Policy** (via SQL Editor in Supabase Dashboard)
+   ```sql
+   CREATE POLICY "Public read access for reports"
+   ON storage.objects FOR SELECT
+   USING (bucket_id = 'reports');
+   ```
+
+3. **Upload PDF Files**
+   - In Supabase Dashboard: Storage → reports bucket
+   - Click "Upload file" and select your PDF
+   - ⚠️ **Important**: Before uploading, redact sensitive information:
+     - Remove victim wallet addresses
+     - Remove personal identifying information
+     - Keep: attacker addresses, transaction hashes, public analysis
+
+4. **Get Public URL**
+   - Click the file you uploaded
+   - Copy the **Public URL**
+   - Paste into the project editor's "PDF Report URL" field
+
+### Field Structure
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `file_url` | TEXT | Public Supabase Storage URL for hosted PDF reports |
+| Related `url` | TEXT | External links (kept separate for flexibility) |
+
+### Frontend Display
+
+- **WorkCard component**: Shows PDF icon (📄) alongside external link arrow
+- **Project detail page**: Shows "PDF Report ↗" link with external icon
+- **Graceful fallback**: If no PDF is uploaded, field is simply omitted
+
 ## Development Workflow
 
 ### Creating New Migrations
@@ -176,6 +222,6 @@ For issues or questions:
 
 ---
 
-**Last Updated**: October 2024
-**Schema Version**: 002
+**Last Updated**: May 2026
+**Schema Version**: 003
 **Maintained by**: Matthew Raphael (RaphDeAnalyst)

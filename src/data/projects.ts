@@ -12,6 +12,7 @@ export interface Project {
   githubUrl: string
   duneUrl?: string
   blogPostSlug?: string
+  file_url?: string
   metrics?: Record<string, string>
   features?: string[]
   challenges?: string

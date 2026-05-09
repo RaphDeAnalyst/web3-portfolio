@@ -63,6 +63,7 @@ export interface Project {
   features?: string[]
   challenges?: string
   learnings?: string
+  file_url?: string
   created_at: string
   updated_at: string
 }

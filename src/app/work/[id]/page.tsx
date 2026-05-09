@@ -124,7 +124,7 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
             </div>
           )}
 
-          {/* Tags and Dune link */}
+          {/* Tags and Links */}
           <div className="flex flex-wrap items-center gap-3">
             {((blogPost?.tags?.length ?? 0) > 0 || (project?.tech_stack?.length ?? 0) > 0) && (
               <div className="flex flex-wrap gap-2">
@@ -138,12 +138,22 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                 ))}
               </div>
             )}
+            {project?.file_url && (
+              <a
+                href={project.file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
+              >
+                PDF Report ↗
+              </a>
+            )}
             {project?.duneUrl && (
               <a
                 href={project.duneUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
+                className="text-base font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
               >
                 View on Dune ↗
               </a>
@@ -155,6 +165,12 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
         <div className="prose prose-invert max-w-none">
           {blogPost && blogPost.content ? (
             <MarkdownRenderer content={blogPost.content} />
+          ) : project?.file_url || project?.duneUrl ? (
+            <div className="py-12">
+              <p className="text-lg opacity-75 leading-relaxed">
+                {project.description}
+              </p>
+            </div>
           ) : (
             <div className="text-center py-12 opacity-50">
               <p>No write-up yet. Check back soon!</p>

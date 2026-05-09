@@ -8,7 +8,9 @@ import { useToast } from '@/hooks/useToast'
 import { ToastContainer } from '@/components/admin/toast-container'
 import { DeleteConfirmButton } from '@/components/admin/delete-confirm-button'
 import Link from 'next/link'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Upload, X } from 'lucide-react'
+import { uploadPdfReport } from '@/lib/actions/upload-pdf'
+import { saveProjectAsAdmin, deleteProjectAsAdmin } from '@/lib/actions/admin-project-actions'
 
 interface FormData {
   // Project fields
@@ -16,6 +18,7 @@ interface FormData {
   description: string
   tags: string
   duneUrl: string
+  fileUrl: string
 
   // Blog content fields
   blogTitle: string
@@ -38,12 +41,15 @@ export default function AdminPage() {
   const [loginPassword, setLoginPassword] = useState('')
   const [loginError, setLoginError] = useState<string | null>(null)
   const [loginLoading, setLoginLoading] = useState(false)
+  const [isUploadingPdf, setIsUploadingPdf] = useState(false)
+  const [pdfFileName, setPdfFileName] = useState<string | null>(null)
   const [formData, setFormData] = useState<FormData>({
     // Project
     name: '',
     description: '',
     tags: '',
     duneUrl: '',
+    fileUrl: '',
 
     // Blog
     blogTitle: '',
@@ -121,10 +127,38 @@ export default function AdminPage() {
     }
   }
 
+  const handlePdfUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setIsUploadingPdf(true)
+    setPdfFileName(file.name)
+
+    try {
+      const formDataToSend = new FormData()
+      formDataToSend.append('file', file)
+
+      const result = await uploadPdfReport(formDataToSend)
+
+      if (result.success && result.url) {
+        setFormData({ ...formData, fileUrl: result.url })
+        showSuccess(`PDF uploaded: ${file.name}`)
+      } else {
+        showError(result.error || 'Failed to upload PDF')
+      }
+    } catch (err) {
+      showError('Failed to upload PDF. Please try again.')
+    } finally {
+      setIsUploadingPdf(false)
+      setPdfFileName(null)
+      event.target.value = ''
+    }
+  }
+
   const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.description || !formData.duneUrl) {
-      showError('Please fill in all required fields')
+    if (!formData.name || !formData.description) {
+      showError('Please fill in project name and description')
       return
     }
 
@@ -143,15 +177,23 @@ export default function AdminPage() {
         .map(t => t.trim())
         .filter(t => t)
 
-      // Create project
-      const projectId = await projectServiceSupabase.addProject({
+      // Create project with optional file_url
+      const projectData: any = {
         title: formData.name,
         description: formData.description,
         category: 'DeFi',
         status: 'active',
-        duneUrl: formData.duneUrl,
+        dune_url: formData.duneUrl,
         tech_stack: tags,
-      })
+      }
+
+      // Only add file_url if it has a value
+      if (formData.fileUrl) {
+        projectData.file_url = formData.fileUrl
+      }
+
+      const result = await saveProjectAsAdmin(projectData)
+      const projectId = result.projectId
 
       // If blog content provided, create blog post and link it
       if (formData.blogTitle || formData.blogContent) {
@@ -200,6 +242,7 @@ export default function AdminPage() {
         description: '',
         tags: '',
         duneUrl: '',
+        fileUrl: '',
         blogTitle: '',
         blogContent: '',
         blogSummary: '',
@@ -225,7 +268,7 @@ export default function AdminPage() {
 
     try {
       showLoading('Deleting...')
-      await projectServiceSupabase.deleteProject(id)
+      await deleteProjectAsAdmin(id)
       showSuccess('Project deleted ✓')
       await loadProjects()
     } catch (err) {
@@ -373,6 +416,44 @@ export default function AdminPage() {
                       className="w-full px-4 py-3 border border-border rounded bg-background text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                       placeholder="https://dune.com/your-username/dashboard-name"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">PDF Report</label>
+                    <div className="flex items-center gap-3">
+                      <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
+                        <Upload className="w-4 h-4 text-gray-500" />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {isUploadingPdf ? 'Uploading...' : pdfFileName || 'Choose PDF to upload'}
+                        </span>
+                        <input
+                          type="file"
+                          accept=".pdf,application/pdf"
+                          onChange={handlePdfUpload}
+                          disabled={isUploadingPdf}
+                          className="hidden"
+                          aria-label="Upload PDF report"
+                        />
+                      </label>
+                      {formData.fileUrl && (
+                        <button
+                          onClick={() => setFormData({ ...formData, fileUrl: '' })}
+                          className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                          title="Clear PDF URL"
+                          type="button"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                    {formData.fileUrl && (
+                      <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                        <p className="text-xs text-green-700 dark:text-green-300 font-medium mb-1">PDF URL Ready:</p>
+                        <p className="text-xs text-green-600 dark:text-green-400 break-all font-mono">
+                          {formData.fileUrl}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

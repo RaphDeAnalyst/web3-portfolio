@@ -21,6 +21,7 @@ export interface Project {
   demoUrl?: string
   duneUrl?: string
   blogPostSlug?: string
+  file_url?: string
   links?: {
     github?: string
     demo?: string
@@ -48,6 +49,7 @@ export class ProjectServiceSupabase {
       demoUrl: project.demo_url,
       duneUrl: project.dune_url,
       blogPostSlug: project.blog_post_slug,
+      file_url: project.file_url,
       image: project.image,
       ...(project.metrics && { metrics: project.metrics }),
       ...(project.features && { features: project.features }),
@@ -73,6 +75,7 @@ export class ProjectServiceSupabase {
       demo_url: (project as any).demoUrl || project.demo || project.demo_url || project.links?.demo,
       dune_url: project.duneUrl,
       blog_post_slug: project.blogPostSlug,
+      file_url: project.file_url,
       image: project.image,
       metrics: (project as any).metrics,
       features: (project as any).features,
