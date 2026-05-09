@@ -42,7 +42,11 @@
       "Bash(npx -y skills add alchaincyf/huashu-design --agent claude-code --global -y)",
       "Bash(openssl rand *)",
       "Bash(curl -s http://localhost:3002/)",
-      "Bash(curl -s http://localhost:3002/work)"
+      "Bash(curl -s http://localhost:3002/work)",
+      "Bash(vercel inspect *)",
+      "Bash(vercel env *)",
+      "Bash(vercel domains *)",
+      "Bash(vercel metrics *)"
     ],
     "deny": [],
     "ask": [],

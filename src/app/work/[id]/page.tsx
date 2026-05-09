@@ -1,12 +1,11 @@
-'use client'
-
-import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
 import { blogServiceSupabase } from '@/lib/blog-service-supabase'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import type { Project } from '@/lib/project-service-supabase'
 import type { BlogPostData } from '@/lib/blog-service-supabase'
+import type { Metadata } from 'next'
 
 function getLinkLabel(url: string): string {
   try {
@@ -25,54 +24,41 @@ function getLinkLabel(url: string): string {
   }
 }
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const [project, setProject] = useState<Project | null>(null)
-  const [blogPost, setBlogPost] = useState<BlogPostData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+export const revalidate = 300
 
-  const loadProject = useCallback(async () => {
-    try {
-      setLoading(true)
-      setError(null)
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const project = await projectServiceSupabase.getProjectById(params.id)
+  const title = project?.title || 'Project'
+  const description = project?.description || 'Work'
 
-      // Fetch project
-      const projectData = await projectServiceSupabase.getProjectById(params.id)
-      if (!projectData) {
-        setError('Project not found')
-        return
-      }
+  return {
+    title: `${title} | Matthew Raphael Nnamani — On-Chain Investigations`,
+    description,
+    alternates: {
+      canonical: `https://matthewraphael.xyz/work/${params.id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://matthewraphael.xyz/work/${params.id}`,
+    },
+  }
+}
 
-      setProject(projectData)
+export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
+  let project: Project | null = null
+  let blogPost: BlogPostData | null = null
+  let error: string | null = null
 
-      // If project has a blog post linked, fetch it
-      if (projectData.blogPostSlug) {
-        const post = await blogServiceSupabase.getPostBySlug(projectData.blogPostSlug)
-        if (post) {
-          // Show the post regardless of status (admin can see drafts)
-          // In the future, add auth check here if needed
-          setBlogPost(post)
-        }
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load project')
-    } finally {
-      setLoading(false)
+  try {
+    project = await projectServiceSupabase.getProjectById(params.id)
+    if (!project) {
+      error = 'Project not found'
+    } else if (project.blogPostSlug) {
+      blogPost = await blogServiceSupabase.getPostBySlug(project.blogPostSlug) || null
     }
-  }, [params.id])
-
-  useEffect(() => {
-    loadProject()
-  }, [loadProject])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-20 pb-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center opacity-50 py-12">Loading...</p>
-        </div>
-      </div>
-    )
+  } catch (err) {
+    error = err instanceof Error ? err.message : 'Failed to load project'
   }
 
   if (error || !project) {
@@ -132,11 +118,15 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
           {/* Featured Image */}
           {blogPost?.featuredImage && (
-            <div className="mb-8 rounded-lg overflow-hidden">
-              <img
+            <div className="mb-8 rounded-lg overflow-hidden bg-gray-900">
+              <Image
                 src={blogPost.featuredImage}
                 alt={blogPost.title}
+                width={800}
+                height={450}
+                priority
                 className="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, 800px"
               />
             </div>
           )}

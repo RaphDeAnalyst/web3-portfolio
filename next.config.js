@@ -164,44 +164,6 @@ const nextConfig = {
         ],
       },
       {
-        // Cache control for blog listing page
-        source: '/blog',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, s-maxage=300, stale-while-revalidate=60',
-          },
-          {
-            key: 'X-Geo-Country',
-            value: 'Nigeria',
-          },
-        ],
-      },
-      {
-        // Cache control for individual blog posts
-        source: '/blog/:slug*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, s-maxage=300, stale-while-revalidate=60',
-          },
-        ],
-      },
-      {
-        // Cache control for portfolio page
-        source: '/portfolio',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, s-maxage=300, stale-while-revalidate=60',
-          },
-          {
-            key: 'X-Geo-Country',
-            value: 'Nigeria',
-          },
-        ],
-      },
-      {
         // No caching for admin pages - always fresh content
         source: '/admin/:path*',
         headers: [

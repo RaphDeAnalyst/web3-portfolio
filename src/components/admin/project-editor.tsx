@@ -295,9 +295,9 @@ export function ProjectEditor({ initialData, onSave }: ProjectEditorProps) {
             {formData.image && (
               <div className="mt-3">
                 <label className="text-xs text-foreground/60 block mb-2">Preview:</label>
-                <div className="relative w-full max-w-md h-32 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
-                  <img 
-                    src={formData.image} 
+                <div className="relative w-full max-w-md h-32 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800" style={{ aspectRatio: '16 / 9' }}>
+                  <img
+                    src={formData.image}
                     alt="Project preview"
                     className="w-full h-full object-cover"
                     onError={(e) => {

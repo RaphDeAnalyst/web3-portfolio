@@ -429,12 +429,13 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           
           elements.push(
             <div key={i} className="my-8 text-center">
-              <div className="relative inline-block">
-                <img 
-                  src={imageUrl} 
+              <div className="relative inline-block max-w-full">
+                <img
+                  src={imageUrl}
                   alt={altText}
                   className="max-w-full h-auto rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg mx-auto transition-opacity duration-300"
                   loading="lazy"
+                  style={{ aspectRatio: '16 / 9' }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     target.style.display = 'none'
