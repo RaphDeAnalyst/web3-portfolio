@@ -27,6 +27,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       // Google user content (profile pictures)
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      // ImgBB image hosting
+      { protocol: 'https', hostname: 'i.ibb.co' },
     ],
   },
 
