@@ -4,14 +4,14 @@ export function Footer() {
   return (
     <footer className="py-12 mt-20" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 footer">
           {/* Copyright */}
           <p className="text-sm transition-colors" style={{ color: 'var(--text-muted)' }}>
             © {currentYear} Matthew Raphael
           </p>
 
           {/* Social Links */}
-          <div className="flex gap-6 text-sm">
+          <div className="foot-links flex gap-6 text-sm">
             <a
               href="https://x.com/0x_note"
               target="_blank"

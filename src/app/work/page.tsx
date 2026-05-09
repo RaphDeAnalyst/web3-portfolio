@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { projectServiceSupabase, type Project } from '@/lib/project-service-supabase'
 import { WorkCard } from '@/components/sections/WorkCard'
 
-export const revalidate = 3600
+export const revalidate = 300
 
 export const metadata = {
   title: 'Work | Matthew Raphael Nnamani — On-Chain Investigations',
@@ -35,15 +35,15 @@ export default async function WorkPage() {
     <div className="min-h-screen pt-24 pb-20 px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-16">
-          <h1 className="font-serif text-4xl sm:text-5xl font-bold mb-4">Work</h1>
+        <div className="mb-16 page-header">
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold mb-4 page-title">Work</h1>
           <p className="text-lg opacity-75 max-w-2xl">
             Investigations, research, and analytics — independently conducted and publicly documented.
           </p>
         </div>
 
         {/* Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 work-grid">
           {projects.map((project) => (
             <WorkCard key={project.id} project={project} />
           ))}

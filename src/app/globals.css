@@ -81,3 +81,211 @@
     animation: none !important;
   }
 }
+
+/* Mobile Responsiveness — 360px to 1280px */
+
+/* Ensure no horizontal overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Hero Section — Mobile */
+@media (max-width: 768px) {
+  /* Hero padding */
+  .hero {
+    padding: 0 24px;
+  }
+
+  /* H1 name scaling on mobile using clamp for smooth transition */
+  .hero h1 {
+    font-size: clamp(36px, 10vw, 58px);
+    line-height: 1.1;
+  }
+
+  /* Reduce top padding for work/about pages on mobile */
+  .page-header {
+    padding-top: 2rem;
+  }
+
+  /* Page H1 scaling */
+  h1.page-title {
+    font-size: 28px;
+  }
+
+  /* CTA row stacking on mobile */
+  .cta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* Work card padding */
+  .work-card {
+    padding: 1rem;
+  }
+
+  /* Work tag sizing */
+  .work-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  /* About avatar sizing */
+  .about-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+  }
+
+  /* Method/About tags sizing */
+  .method-tag,
+  .about-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  /* Published work list stacking on narrow screens */
+  .pub-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pub-item a {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  /* Nav brand sizing on mobile */
+  .nav-brand {
+    font-size: 14px;
+  }
+
+  /* Nav links spacing on mobile */
+  .nav-links {
+    gap: 0.75rem;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+  }
+
+  /* Footer stacking */
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem 24px;
+  }
+
+  .foot-links {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Chain pills wrapping */
+  .chain-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+/* Smaller mobile screens — 480px and below */
+@media (max-width: 480px) {
+  /* CTA row stacking at smaller widths */
+  .cta-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Published work stacking */
+  .pub-item {
+    flex-direction: column;
+  }
+
+  /* Nav spacing at very small widths */
+  .nav-brand {
+    font-size: 13px;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+  }
+
+  /* Reduced padding at very small screens */
+  body {
+    padding: 0 !important;
+  }
+}
+
+/* Tablet — 768px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Ensure content is readable */
+  h1.page-title {
+    font-size: 32px;
+  }
+
+  /* Work grid adjustments for tablet */
+  .work-grid {
+    gap: 6px;
+  }
+}
+
+/* Minimum tap target sizes — ensure all interactive elements are 44px */
+@media (max-width: 768px) {
+  button,
+  a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Nav links minimum touch target */
+  .nav-links a {
+    padding: 10px 8px;
+  }
+}
+
+/* Text size enforcement — never smaller than 11px on mobile */
+@media (max-width: 768px) {
+  body,
+  p,
+  span,
+  a,
+  button {
+    font-size: clamp(11px, 2.5vw, 16px);
+  }
+
+  .text-xs {
+    font-size: clamp(11px, 2.5vw, 12px);
+  }
+
+  .text-sm {
+    font-size: clamp(12px, 3vw, 14px);
+  }
+}
+
+/* Description line clamp — prevent mid-word cuts */
+.line-clamp-3,
+.work-card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* Hero H1 responsive sizing */
+.hero-h1 {
+  font-size: clamp(36px, 10vw, 58px);
+  line-height: 1.1;
+}

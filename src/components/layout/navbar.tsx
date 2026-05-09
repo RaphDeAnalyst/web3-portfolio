@@ -44,14 +44,14 @@ export function Navbar() {
           {/* Logo / Name - using serif heading font */}
           <Link
             href="/"
-            className="font-serif font-bold text-xl hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity"
+            className="nav-brand font-serif font-bold text-xl hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-opacity"
             style={{ color: 'var(--text-primary)' }}
           >
             Matthew Raphael
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="nav-links hidden md:flex items-center space-x-6">
             <Link
               href="/work"
               className={`text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
@@ -95,7 +95,7 @@ export function Navbar() {
             {isMounted && (
               <button
                 onClick={toggleTheme}
-                className="w-8 h-8 rounded-full border flex items-center justify-center hover:transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="theme-toggle w-8 h-8 rounded-full border flex items-center justify-center hover:transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 style={{
                   borderColor: 'var(--border)',
                   color: 'var(--text-secondary)',
@@ -119,7 +119,7 @@ export function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="nav-links md:hidden flex items-center space-x-2">
             <Link
               href="/work"
               className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${

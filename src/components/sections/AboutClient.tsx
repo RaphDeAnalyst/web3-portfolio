@@ -16,12 +16,12 @@ export function AboutClient() {
       <div className="max-w-3xl mx-auto">
 
         {/* Section 1 — Introduction */}
-        <div className="mb-20">
+        <div className="mb-20 page-header">
           <div className="flex gap-6 items-start mb-8">
             {/* Avatar */}
             <div className="flex-shrink-0">
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center font-serif text-lg font-bold"
+                className="w-16 h-16 about-avatar rounded-full flex items-center justify-center font-serif text-lg font-bold"
                 style={{
                   borderColor: 'var(--border)',
                   borderWidth: '1px',
@@ -55,7 +55,7 @@ export function AboutClient() {
           <p className="text-xs font-mono uppercase tracking-wider mb-8" style={{ color: 'var(--text-muted)' }}>Published work</p>
           <div className="space-y-6">
 
-            <div className="pb-6" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
+            <div className="pb-6 pub-item flex" style={{ borderBottomColor: 'var(--separator)', borderBottomWidth: '1px' }}>
               <a
                 href="https://x.com/0x_note"
                 target="_blank"
@@ -118,7 +118,7 @@ export function AboutClient() {
             ].map((method) => (
               <span
                 key={method}
-                className="text-xs px-3 py-1.5 transition-opacity hover:opacity-100"
+                className="method-tag text-xs px-3 py-1.5 transition-opacity hover:opacity-100"
                 style={{
                   borderColor: 'var(--border)',
                   borderWidth: '1px',

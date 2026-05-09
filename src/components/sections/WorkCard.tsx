@@ -12,7 +12,7 @@ export function WorkCard({ project }: WorkCardProps) {
   return (
     <Link
       href={`/work/${project.id}`}
-      className="group relative block p-8 transition-all duration-200 hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="group relative block work-card p-8 transition-all duration-200 hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       style={{
         backgroundColor: 'var(--card-bg)',
         borderColor: 'var(--card-border)',
@@ -53,7 +53,7 @@ export function WorkCard({ project }: WorkCardProps) {
       </h2>
 
       {/* Description */}
-      <p className="text-sm mb-5 line-clamp-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+      <p className="text-sm mb-5 line-clamp-3 leading-relaxed work-card-description" style={{ color: 'var(--text-secondary)' }}>
         {project.description}
       </p>
 
@@ -63,7 +63,7 @@ export function WorkCard({ project }: WorkCardProps) {
           {project.tech_stack.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2.5 py-1 transition-opacity group-hover:opacity-75"
+              className="work-tag text-xs px-2.5 py-1 transition-opacity group-hover:opacity-75"
               style={{
                 borderColor: 'var(--border)',
                 borderWidth: '1px',

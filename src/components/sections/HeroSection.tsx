@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pb-16 px-6 md:px-[120px] overflow-hidden">
+    <section className="hero relative min-h-screen flex flex-col justify-center pb-16 px-6 md:px-[120px] overflow-hidden">
       {/* Subtle network graph background - right side only */}
       <div className="absolute top-0 right-0 bottom-0 w-1/2 opacity-[0.03] pointer-events-none">
         <svg
@@ -54,7 +54,7 @@ export function HeroSection() {
           </div>
 
           {/* Name - serif, large */}
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight hero-h1">
             Matthew Raphael Nnamani
           </h1>
 
@@ -69,7 +69,7 @@ export function HeroSection() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 max-w-[640px]">
+          <div className="cta-row flex flex-col sm:flex-row gap-4 pt-4 max-w-[640px]">
             <Link
               href="/work"
               className="inline-flex items-center justify-center px-6 py-3 border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-sm font-medium"
@@ -104,7 +104,7 @@ export function HeroSection() {
             <p className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: 'var(--text-muted)' }}>
               Chains
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="chain-row flex flex-wrap gap-2">
               {[
                 'Ethereum',
                 'BSC',
