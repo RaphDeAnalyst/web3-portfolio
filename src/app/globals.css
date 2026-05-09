@@ -3,20 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 0%;
-  --border: 0 0% 90%;
+  --background: 0 0% 6%;
+  --foreground: 0 0% 93%;
+  --border: 0 0% 15%;
+  --accent: 43 62% 45%;
 }
 
 .dark {
-  --background: 0 0% 8%;
-  --foreground: 0 0% 100%;
-  --border: 0 0% 20%;
+  --background: 0 0% 6%;
+  --foreground: 0 0% 93%;
+  --border: 0 0% 15%;
+  --accent: 43 62% 45%;
 }
 
 @layer base {
+  html {
+    @apply bg-background text-foreground;
+  }
+
   body {
-    @apply bg-white dark:bg-black text-black dark:text-white;
+    @apply bg-background text-foreground;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' result='noise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-attachment: fixed;
   }
 }
 

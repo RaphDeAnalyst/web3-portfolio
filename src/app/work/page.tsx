@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { projectServiceSupabase, type Project } from '@/lib/project-service-supabase'
+import { WorkCard } from '@/components/sections/WorkCard'
 
 export const revalidate = 3600
 
@@ -31,50 +32,20 @@ export default async function WorkPage() {
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-24 pb-20 px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold">Work</h1>
+        <div className="mb-16">
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold mb-4">Work</h1>
+          <p className="text-lg opacity-75 max-w-2xl">
+            Investigations, research, and analytics — independently conducted and publicly documented.
+          </p>
         </div>
 
         {/* Project Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => (
-            <Link
-              key={project.id}
-              href={`/work/${project.id}`}
-              className="group block p-6 sm:p-8 border border-border rounded hover:border-foreground hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-all duration-300"
-            >
-              {/* Project Name */}
-              <h2 className="text-xl font-semibold mb-3 group-hover:opacity-70 transition-opacity">
-                {project.title}
-              </h2>
-
-              {/* Description */}
-              <p className="text-sm sm:text-base opacity-70 mb-4 line-clamp-3">
-                {project.description}
-              </p>
-
-              {/* Tags and Dune link */}
-              <div className="flex flex-wrap items-center gap-3 justify-between">
-                {project.tech_stack && project.tech_stack.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech_stack.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {project.duneUrl && (
-                  <span className="text-xs opacity-60">Dune ↗</span>
-                )}
-              </div>
-            </Link>
+            <WorkCard key={project.id} project={project} />
           ))}
         </div>
       </div>

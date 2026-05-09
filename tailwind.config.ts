@@ -9,19 +9,19 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'Georgia', 'serif'],
+        sans: ['var(--font-ibm-plex)', 'system-ui', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         border: 'hsl(var(--border))',
-        'accent-blue': '#0066FF',
-        'accent-blue-light': '#3385FF',
-        'cyber-500': '#00D9FF',
+        accent: 'hsl(var(--accent))',
       },
       animation: {
         'spin-slow': 'spin-slow 1.5s linear infinite',
         'delete-confirm': 'delete-confirm-appear 150ms ease-out',
+        'shimmer': 'shimmer 2s infinite',
       },
       keyframes: {
         'spin-slow': {
@@ -31,6 +31,10 @@ export default {
         'delete-confirm-appear': {
           'from': { opacity: '0', transform: 'scale(0.95)' },
           'to': { opacity: '1', transform: 'scale(1)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' },
         },
       },
     },
