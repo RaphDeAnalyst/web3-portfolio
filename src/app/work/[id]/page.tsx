@@ -8,6 +8,23 @@ import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import type { Project } from '@/lib/project-service-supabase'
 import type { BlogPostData } from '@/lib/blog-service-supabase'
 
+function getLinkLabel(url: string): string {
+  try {
+    const urlObj = new URL(url)
+    const hostname = urlObj.hostname.toLowerCase()
+
+    if (hostname.includes('dune.com')) return 'View on Dune'
+    if (hostname.includes('twitter.com') || hostname.includes('x.com')) return 'View on X'
+    if (hostname.includes('github.com')) return 'View on GitHub'
+    if (hostname.includes('etherscan.io') || hostname.includes('basescan.org') || hostname.includes('arbiscan.io')) return 'View on Block Explorer'
+    if (hostname.includes('linkedin.com')) return 'View on LinkedIn'
+
+    return 'View Link'
+  } catch {
+    return 'View Link'
+  }
+}
+
 export default function ProjectDetailPage({ params }: { params: { id: string } }) {
   const [project, setProject] = useState<Project | null>(null)
   const [blogPost, setBlogPost] = useState<BlogPostData | null>(null)
@@ -155,7 +172,7 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                 rel="noopener noreferrer"
                 className="text-base font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
               >
-                View on Dune ↗
+                {getLinkLabel(project.duneUrl)} ↗
               </a>
             )}
           </div>
