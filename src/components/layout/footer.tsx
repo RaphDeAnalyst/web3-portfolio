@@ -2,11 +2,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-border py-12 mt-20">
+    <footer className="py-12 mt-20" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6">
           {/* Copyright */}
-          <p className="text-sm opacity-60">
+          <p className="text-sm transition-colors" style={{ color: 'var(--text-muted)' }}>
             © {currentYear} Matthew Raphael
           </p>
 
@@ -16,7 +16,8 @@ export function Footer() {
               href="https://x.com/0x_note"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
             >
               X ↗
             </a>
@@ -24,7 +25,8 @@ export function Footer() {
               href="https://github.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
             >
               GitHub ↗
             </a>
@@ -32,7 +34,8 @@ export function Footer() {
               href="https://dune.com/notes0x"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
             >
               Dune ↗
             </a>
@@ -40,7 +43,8 @@ export function Footer() {
               href="https://linkedin.com/in/matthew-nnamani"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
             >
               LinkedIn ↗
             </a>

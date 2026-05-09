@@ -2,29 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Light mode (default) */
 :root {
-  --background: 0 0% 6%;
-  --foreground: 0 0% 93%;
-  --border: 0 0% 15%;
-  --accent: 43 62% 45%;
+  /* Backgrounds */
+  --bg-primary: #FAFAF8;
+  --bg-secondary: #F2F1EE;
+
+  /* Text */
+  --text-primary: #0D0D0D;
+  --text-secondary: #4A4A4A;
+  --text-muted: #888888;
+
+  /* Borders */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+
+  /* Accent */
+  --accent: #9E6B2E;
+
+  /* Cards */
+  --card-bg: #FFFFFF;
+  --card-border: rgba(0, 0, 0, 0.08);
+
+  /* Separators */
+  --separator: rgba(0, 0, 0, 0.08);
+  --stat-separator: rgba(0, 0, 0, 0.10);
+
+  /* Grain opacity */
+  --grain-opacity: 0.025;
 }
 
+/* Dark mode */
 .dark {
-  --background: 0 0% 6%;
-  --foreground: 0 0% 93%;
-  --border: 0 0% 15%;
-  --accent: 43 62% 45%;
+  /* Backgrounds */
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #111111;
+
+  /* Text */
+  --text-primary: #EBEBEB;
+  --text-secondary: #A0A0A0;
+  --text-muted: #555555;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Accent */
+  --accent: #C4933F;
+
+  /* Cards */
+  --card-bg: #141414;
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  /* Separators */
+  --separator: rgba(255, 255, 255, 0.06);
+  --stat-separator: rgba(255, 255, 255, 0.08);
+
+  /* Grain opacity */
+  --grain-opacity: 0.04;
 }
 
 @layer base {
   html {
-    @apply bg-background text-foreground;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0s, color 0s;
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     background-image:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' result='noise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' result='noise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='var(--grain-opacity)'/%3E%3C/svg%3E");
     background-attachment: fixed;
   }
 }

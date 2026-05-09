@@ -12,20 +12,33 @@ export function WorkCard({ project }: WorkCardProps) {
   return (
     <Link
       href={`/work/${project.id}`}
-      className="group relative block p-8 border border-border bg-background/50 hover:border-foreground/30 transition-all duration-200 hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="group relative block p-8 transition-all duration-200 hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      style={{
+        backgroundColor: 'var(--card-bg)',
+        borderColor: 'var(--card-border)',
+        borderWidth: '1px',
+      }}
+      onMouseEnter={(e) => {
+        const elem = e.currentTarget as HTMLElement
+        elem.style.borderColor = 'var(--border)'
+      }}
+      onMouseLeave={(e) => {
+        const elem = e.currentTarget as HTMLElement
+        elem.style.borderColor = 'var(--card-border)'
+      }}
     >
       {/* External link icon - top right */}
-      <div className="absolute top-6 right-6 opacity-40 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute top-6 right-6 transition-opacity duration-200" style={{ color: 'var(--text-secondary)', opacity: 0.4 }}>
         <ExternalLink className="w-4 h-4" />
       </div>
 
       {/* Title */}
-      <h2 className="font-serif text-xl font-bold mb-3 pr-8 group-hover:opacity-75 transition-opacity">
+      <h2 className="font-serif text-xl font-bold mb-3 pr-8 transition-opacity group-hover:opacity-75" style={{ color: 'var(--text-primary)' }}>
         {project.title}
       </h2>
 
       {/* Description */}
-      <p className="text-sm opacity-70 mb-5 line-clamp-3 leading-relaxed">
+      <p className="text-sm mb-5 line-clamp-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
         {project.description}
       </p>
 
@@ -35,7 +48,13 @@ export function WorkCard({ project }: WorkCardProps) {
           {project.tech_stack.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2.5 py-1 border border-border/50 opacity-60 group-hover:opacity-75 transition-opacity"
+              className="text-xs px-2.5 py-1 transition-opacity group-hover:opacity-75"
+              style={{
+                borderColor: 'var(--border)',
+                borderWidth: '1px',
+                color: 'var(--text-secondary)',
+                opacity: 0.6,
+              }}
             >
               {tag}
             </span>

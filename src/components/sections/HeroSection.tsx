@@ -59,12 +59,12 @@ export function HeroSection() {
           </h1>
 
           {/* Tagline */}
-          <p className="font-serif text-lg sm:text-xl md:text-2xl font-normal text-accent">
+          <p className="font-serif text-lg sm:text-xl md:text-2xl font-normal" style={{ color: 'var(--accent)' }}>
             Blockchain Intelligence Practitioner
           </p>
 
           {/* Description - brief */}
-          <p className="max-w-2xl text-base sm:text-lg opacity-75 leading-relaxed">
+          <p className="max-w-2xl text-base sm:text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             I investigate on-chain financial crime, trace fund flows across EVM chains, and produce AML-aligned intelligence.
           </p>
 
@@ -72,7 +72,19 @@ export function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
               href="/work"
-              className="inline-flex items-center justify-center px-6 py-3 border border-accent hover:bg-accent hover:text-background transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-sm font-medium"
+              className="inline-flex items-center justify-center px-6 py-3 border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-sm font-medium"
+              style={{
+                borderColor: 'var(--accent)',
+                color: 'var(--text-primary)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--bg-primary)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent'
+                e.currentTarget.style.color = 'var(--text-primary)'
+              }}
             >
               View work →
             </Link>
@@ -80,15 +92,16 @@ export function HeroSection() {
               href="https://paragraph.com/@notes0x"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center text-sm opacity-75 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent font-medium"
+              className="inline-flex items-center text-sm transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent font-medium hover:opacity-100"
+              style={{ color: 'var(--text-secondary)', opacity: 0.75 }}
             >
               Research ↗
             </a>
           </div>
 
           {/* Chains section */}
-          <div className="pt-12 border-t border-border">
-            <p className="text-xs font-mono uppercase tracking-wider opacity-60 mb-4">
+          <div className="pt-12" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
+            <p className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: 'var(--text-muted)' }}>
               Chains
             </p>
             <div className="flex flex-wrap gap-2">
@@ -104,7 +117,13 @@ export function HeroSection() {
               ].map((chain) => (
                 <span
                   key={chain}
-                  className="text-xs px-3 py-1.5 border border-border opacity-60 hover:opacity-100 transition-opacity"
+                  className="text-xs px-3 py-1.5 transition-opacity hover:opacity-100"
+                  style={{
+                    borderColor: 'var(--border)',
+                    borderWidth: '1px',
+                    color: 'var(--text-secondary)',
+                    opacity: 0.6,
+                  }}
                 >
                   {chain}
                 </span>
