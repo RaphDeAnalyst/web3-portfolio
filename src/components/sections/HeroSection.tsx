@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-16 px-6 lg:px-8 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col justify-center pb-16 px-6 md:px-[120px] overflow-hidden">
       {/* Subtle network graph background - right side only */}
       <div className="absolute top-0 right-0 bottom-0 w-1/2 opacity-[0.03] pointer-events-none">
         <svg
@@ -46,7 +46,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl relative z-10">
+      <div className="relative z-10">
         <div className="space-y-8">
           {/* Location label */}
           <div className="text-xs font-mono uppercase tracking-wider opacity-60 letter-spacing">
@@ -64,12 +64,12 @@ export function HeroSection() {
           </p>
 
           {/* Description - brief */}
-          <p className="max-w-2xl text-base sm:text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          <p className="max-w-[640px] text-base sm:text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             I investigate on-chain financial crime, trace fund flows across EVM chains, and produce AML-aligned intelligence.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 max-w-[640px]">
             <Link
               href="/work"
               className="inline-flex items-center justify-center px-6 py-3 border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-sm font-medium"
@@ -100,7 +100,7 @@ export function HeroSection() {
           </div>
 
           {/* Chains section */}
-          <div className="pt-12" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
+          <div className="pt-8" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
             <p className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: 'var(--text-muted)' }}>
               Chains
             </p>

@@ -101,9 +101,9 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-20 pb-12">
+      <div className="min-h-screen pt-20 pb-12" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center opacity-50 py-12">Loading...</p>
+          <p className="text-center py-12" style={{ color: 'var(--text-muted)' }}>Loading...</p>
         </div>
       </div>
     )
@@ -111,12 +111,12 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
 
   if (!project) {
     return (
-      <div className="min-h-screen pt-20 pb-12">
+      <div className="min-h-screen pt-20 pb-12" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/admin" className="text-sm opacity-60 hover:opacity-100 mb-4 inline-block">
+          <Link href="/admin" className="text-xs font-mono uppercase tracking-wider mb-4 inline-block transition-opacity" style={{ color: 'var(--text-muted)', opacity: 0.8 }}>
             ← Admin
           </Link>
-          <div className="mt-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-700 dark:text-red-300">
+          <div className="mt-8 p-4 rounded text-sm" style={{ backgroundColor: 'rgba(220, 38, 38, 0.1)', borderColor: 'rgba(220, 38, 38, 0.3)', borderWidth: '1px', color: 'rgba(220, 38, 38, 0.9)' }}>
             Project not found
           </div>
         </div>
@@ -141,30 +141,20 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-12">
+    <div className="min-h-screen pt-20 pb-12" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Toast Container */}
         <ToastContainer toast={toast} onDismiss={dismiss} />
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <Link href="/admin" className="text-sm opacity-60 hover:opacity-100 mb-4 inline-block">
-              ← Admin
-            </Link>
-            <h1 className="text-2xl font-bold">Edit Content: {project.title}</h1>
-            <p className="text-sm opacity-60 mt-2">
-              Write a blog-style write-up for this project. Add markdown, images, and more.
-            </p>
-          </div>
-          {!showEditor && (
-            <button
-              onClick={() => setShowEditor(true)}
-              className="px-6 py-3 h-11 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors font-medium whitespace-nowrap"
-            >
-              Edit Content
-            </button>
-          )}
+        <div className="mb-8">
+          <Link href="/admin" className="text-xs font-mono uppercase tracking-wider mb-6 inline-block transition-opacity" style={{ color: 'var(--text-muted)', opacity: 0.8 }}>
+            ← Admin
+          </Link>
+          <h1 className="text-3xl font-serif font-bold mb-3">Edit: {project.title}</h1>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            Write a blog-style extended write-up for this project. Add markdown, images, and more.
+          </p>
         </div>
 
         {/* Blog post editor */}
@@ -178,37 +168,65 @@ export default function ProjectEditorPage({ params }: { params: { id: string } }
         )}
 
         {!showEditor && linkedPost && (
-          <div className={`p-6 border rounded-lg ${
-            linkedPost.status === 'published'
-              ? 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10'
-              : 'border-yellow-200 dark:border-yellow-800 bg-yellow-50/50 dark:bg-yellow-900/10'
-          }`}>
+          <div className="p-6 rounded" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)', borderWidth: '0.5px' }}>
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-lg font-semibold mb-4">Current Content</h2>
                 <div className="space-y-2">
-                  <p className="text-sm text-foreground/70">
-                    <strong>Status:</strong> <span className={`font-medium ${
-                      linkedPost.status === 'published'
-                        ? 'text-green-700 dark:text-green-300'
-                        : 'text-yellow-700 dark:text-yellow-300'
-                    }`}>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                    <strong>Status:</strong> <span style={{ color: linkedPost.status === 'published' ? 'rgba(100, 200, 100, 0.9)' : 'rgba(200, 150, 50, 0.9)', fontWeight: 500 }}>
                       {linkedPost.status === 'published' ? '✓ Published' : '⚠ Draft (Hidden)'}
                     </span>
                   </p>
-                  <p className="text-sm text-foreground/70"><strong>Last Updated:</strong> {linkedPost.updatedAt ? new Date(linkedPost.updatedAt).toLocaleDateString() : 'Never'}</p>
-                  <p className="text-sm text-foreground/70"><strong>Title:</strong> {linkedPost.title}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}><strong>Last Updated:</strong> {linkedPost.updatedAt ? new Date(linkedPost.updatedAt).toLocaleDateString() : 'Never'}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}><strong>Title:</strong> {linkedPost.title}</p>
                   {linkedPost.content && (
-                    <p className="text-sm text-foreground/70"><strong>Content:</strong> {linkedPost.content.split('\n').length} lines, {linkedPost.content.split(/\s+/).length} words</p>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}><strong>Content:</strong> {linkedPost.content.split('\n').length} lines, {linkedPost.content.split(/\s+/).length} words</p>
                   )}
                 </div>
               </div>
             </div>
+            {!showEditor && (
+              <button
+                onClick={() => setShowEditor(true)}
+                className="mt-4 px-4 py-2 rounded text-sm font-medium transition-opacity"
+                style={{
+                  backgroundColor: 'var(--accent)',
+                  color: '#1a1a1a',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '0.88'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '1'
+                }}
+              >
+                Edit Content
+              </button>
+            )}
+          </div>
+        )}
+
+        {!showEditor && !linkedPost && (
+          <div className="text-center py-12">
+            <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>No content yet for this project.</p>
             <button
               onClick={() => setShowEditor(true)}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              className="px-5 py-2 rounded text-sm font-medium transition-all"
+              style={{
+                borderColor: 'var(--accent)',
+                borderWidth: '1px',
+                color: 'var(--accent)',
+                backgroundColor: 'transparent',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(196, 147, 63, 0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent'
+              }}
             >
-              Edit Content
+              + Add Content
             </button>
           </div>
         )}

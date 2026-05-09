@@ -24,7 +24,6 @@ export function DeleteConfirmButton({
     if (disabled) return
     setIsConfirming(true)
 
-    // Auto-reset after 4 seconds
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
       setIsConfirming(false)
@@ -47,7 +46,18 @@ export function DeleteConfirmButton({
       <button
         onClick={handleFirstClick}
         disabled={disabled}
-        className="px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:focus-visible:outline-red-400 font-medium transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        className="text-xs font-medium transition-opacity"
+        style={{
+          color: 'rgba(200, 50, 50, 0.7)',
+          opacity: disabled ? 0.5 : 1,
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = 'rgb(200, 50, 50)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = 'rgba(200, 50, 50, 0.7)'
+        }}
       >
         Delete
       </button>
@@ -55,16 +65,29 @@ export function DeleteConfirmButton({
   }
 
   return (
-    <div className="flex gap-2 items-center animate-delete-confirm">
+    <div className="flex gap-2 items-center">
       <button
         onClick={handleConfirm}
-        className="px-3 py-2 text-sm font-medium text-white bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:focus-visible:outline-red-700 transition-colors rounded"
+        className="text-xs font-medium px-2 py-1 rounded transition-all"
+        style={{
+          backgroundColor: 'rgba(200, 50, 50, 0.9)',
+          color: '#fff',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.opacity = '0.85'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.opacity = '1'
+        }}
       >
         Confirm delete?
       </button>
       <button
         onClick={handleCancel}
-        className="px-3 py-2 text-sm font-medium text-foreground hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
+        className="text-xs font-medium px-2 py-1 rounded transition-opacity"
+        style={{
+          color: 'var(--text-secondary)',
+        }}
       >
         Cancel
       </button>

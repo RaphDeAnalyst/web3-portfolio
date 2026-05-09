@@ -40,7 +40,9 @@
       "Bash(npx -y skills add alchaincyf/huashu-design --help)",
       "Bash(npx -y skills --help)",
       "Bash(npx -y skills add alchaincyf/huashu-design --agent claude-code --global -y)",
-      "Bash(openssl rand *)"
+      "Bash(openssl rand *)",
+      "Bash(curl -s http://localhost:3002/)",
+      "Bash(curl -s http://localhost:3002/work)"
     ],
     "deny": [],
     "ask": [],
