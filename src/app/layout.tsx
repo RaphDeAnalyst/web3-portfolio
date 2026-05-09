@@ -30,6 +30,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Matthew Raphael Nnamani | Blockchain Intelligence Practitioner",
   description: "Matthew Raphael Nnamani is a blockchain intelligence practitioner and on-chain investigator based in Lagos, Nigeria. Specialising in AML-aligned fund tracing, KYT, and financial crime investigations across EVM chains.",
+  icons: {
+    icon: [
+      { url: "/favicon_light.ico", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon_dark.ico", media: "(prefers-color-scheme: dark)" },
+    ],
+    apple: "/apple-touch-icon-dark.png",
+  },
   alternates: {
     canonical: "https://matthewraphael.xyz",
   },
