@@ -360,7 +360,19 @@ export default function AdminPage() {
             ← Back to site
           </Link>
           <h1 className="text-4xl font-serif font-bold mb-3">Admin</h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Manage your published work.</p>
+          <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Manage your published work.</p>
+          <div className="flex flex-wrap gap-3">
+            <span className="text-xs font-mono px-3 py-1.5" style={{ border: '1px solid var(--accent)', color: 'var(--accent)' }}>
+              Work &amp; Posts
+            </span>
+            <Link
+              href="/admin/dune"
+              className="text-xs font-mono px-3 py-1.5 transition-opacity hover:opacity-100"
+              style={{ border: '1px solid var(--border)', color: 'var(--text-secondary)', opacity: 0.7 }}
+            >
+              Dune Charts →
+            </Link>
+          </div>
         </div>
 
         {/* Toast Container */}
