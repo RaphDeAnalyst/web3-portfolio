@@ -80,6 +80,20 @@ export function Navbar() {
             >
               About
             </Link>
+            <Link
+              href="/dashboards"
+              className={`text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                pathname?.startsWith('/dashboards')
+                  ? 'border-b-2'
+                  : 'opacity-60 hover:opacity-100'
+              }`}
+              style={{
+                color: 'var(--text-primary)',
+                borderColor: pathname?.startsWith('/dashboards') ? 'var(--accent)' : 'transparent',
+              }}
+            >
+              Dashboards
+            </Link>
             <a
               href="https://paragraph.com/@notes0x"
               target="_blank"
@@ -95,7 +109,7 @@ export function Navbar() {
             {isMounted && (
               <button
                 onClick={toggleTheme}
-                className="theme-toggle w-8 h-8 rounded-full border flex items-center justify-center hover:transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="theme-toggle w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 style={{
                   borderColor: 'var(--border)',
                   color: 'var(--text-secondary)',
@@ -122,21 +136,39 @@ export function Navbar() {
           <div className="nav-links md:hidden flex items-center space-x-2">
             <Link
               href="/work"
-              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                isActive('/work') ? 'opacity-100' : 'opacity-60'
+              className={`text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                isActive('/work') ? 'border-b-2 opacity-100' : 'opacity-60 hover:opacity-100'
               }`}
-              style={{ color: 'var(--text-primary)' }}
+              style={{
+                color: 'var(--text-primary)',
+                borderColor: isActive('/work') ? 'var(--accent)' : 'transparent',
+              }}
             >
               Work
             </Link>
             <Link
               href="/about"
-              className={`text-sm transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                isActive('/about') ? 'opacity-100' : 'opacity-60'
+              className={`text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                isActive('/about') ? 'border-b-2 opacity-100' : 'opacity-60 hover:opacity-100'
               }`}
-              style={{ color: 'var(--text-primary)' }}
+              style={{
+                color: 'var(--text-primary)',
+                borderColor: isActive('/about') ? 'var(--accent)' : 'transparent',
+              }}
             >
               About
+            </Link>
+            <Link
+              href="/dashboards"
+              className={`text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                pathname?.startsWith('/dashboards') ? 'border-b-2 opacity-100' : 'opacity-60 hover:opacity-100'
+              }`}
+              style={{
+                color: 'var(--text-primary)',
+                borderColor: pathname?.startsWith('/dashboards') ? 'var(--accent)' : 'transparent',
+              }}
+            >
+              Dashboards
             </Link>
             <a
               href="https://paragraph.com/@notes0x"
@@ -153,7 +185,7 @@ export function Navbar() {
             {isMounted && (
               <button
                 onClick={toggleTheme}
-                className="w-8 h-8 rounded-full border flex items-center justify-center hover:transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ml-1"
+                className="w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ml-1"
                 style={{
                   borderColor: 'var(--border)',
                   color: 'var(--text-secondary)',

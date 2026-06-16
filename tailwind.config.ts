@@ -13,6 +13,8 @@ export default {
         sans: ['var(--font-ibm-plex)', 'system-ui', 'sans-serif'],
       },
       colors: {
+        foreground: 'var(--text-primary)',
+        background: 'var(--bg-primary)',
         'bg-primary': 'var(--bg-primary)',
         'bg-secondary': 'var(--bg-secondary)',
         'text-primary': 'var(--text-primary)',

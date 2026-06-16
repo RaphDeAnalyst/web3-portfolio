@@ -48,7 +48,8 @@
       "Bash(vercel domains *)",
       "Bash(vercel metrics *)",
       "Bash(grep -v \"^$\")",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ],
     "deny": [],
     "ask": [],

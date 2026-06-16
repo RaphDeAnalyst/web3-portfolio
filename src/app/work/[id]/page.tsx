@@ -2,7 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
 import { blogServiceSupabase } from '@/lib/blog-service-supabase'
+import { getChartsForProject, getChartsForBlog } from '@/lib/dune-cache-service'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
+import { DuneChartCard } from '@/components/dune/DuneChartCard'
 import type { Project } from '@/lib/project-service-supabase'
 import type { BlogPostData } from '@/lib/blog-service-supabase'
 import type { Metadata } from 'next'
@@ -60,6 +62,18 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load project'
   }
+
+  const [projectCharts, blogCharts] = await Promise.all([
+    project ? getChartsForProject(params.id).catch(() => []) : Promise.resolve([]),
+    blogPost?.id ? getChartsForBlog(blogPost.id).catch(() => []) : Promise.resolve([]),
+  ])
+  // merge, deduplicate by chart id
+  const seenIds = new Set<string>()
+  const charts = [...projectCharts, ...blogCharts].filter(c => {
+    if (seenIds.has(c.id)) return false
+    seenIds.add(c.id)
+    return true
+  })
 
   if (error || !project) {
     return (
@@ -138,7 +152,8 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 {(blogPost?.tags || project?.tech_stack || []).map((tag) => (
                   <span
                     key={tag}
-                    className="inline-block text-xs font-medium px-2 py-1 bg-foreground/10 rounded"
+                    className="inline-block text-xs font-medium px-2 py-1 rounded"
+                    style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}
                   >
                     {tag}
                   </span>
@@ -169,7 +184,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         </div>
 
         {/* Content */}
-        <div className="prose prose-invert max-w-none">
+        <div className="prose dark:prose-invert max-w-none">
           {blogPost && blogPost.content ? (
             <MarkdownRenderer content={blogPost.content} />
           ) : project?.file_url || project?.duneUrl ? (
@@ -184,6 +199,20 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             </div>
           )}
         </div>
+
+        {/* Dune charts linked to this project */}
+        {charts.length > 0 && (
+          <div className="mt-12 pt-8" style={{ borderTop: '1px solid var(--separator)' }}>
+            <p className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
+              On-Chain Data
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+              {charts.map(chart => (
+                <DuneChartCard key={chart.id} chart={chart} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

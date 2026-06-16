@@ -336,8 +336,8 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       // Blockquotes
       else if (line.startsWith('> ')) {
         elements.push(
-          <blockquote key={i} className="border-l-4 border-cyber-500 pl-4 py-2 my-4 bg-cyber-500/5 rounded-r-lg">
-            <p className="text-foreground/80 italic">{line.substring(2)}</p>
+          <blockquote key={i} className="border-l-4 border-accent pl-4 py-2 my-4 rounded-r-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+            <p className="italic" style={{ color: 'var(--text-secondary)' }}>{line.substring(2)}</p>
           </blockquote>
         )
       }
@@ -368,21 +368,19 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         formattedLine = formattedLine.replace(/\*(.*?)\*/g, '<em class="italic text-foreground/80">$1</em>')
         
         // Inline code
-        formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-cyber-500">$1</code>')
+        formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-accent">$1</code>')
         
         // YouTube videos - check for YouTube URLs (including Shorts)
         const youtubeMatch = line.trim().match(/^https?:\/\/(?:www\.)?(youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&].*)?/)
         if (youtubeMatch) {
           const videoId = youtubeMatch[2]
           const originalUrl = youtubeMatch[0]
-          // Add cache-busting parameter to force reload
-          const cacheBuster = Date.now()
 
           elements.push(
             <div key={i} className="my-8">
               <div className="relative w-full max-w-4xl mx-auto" style={{ paddingBottom: '56.25%' }}>
                 <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${videoId}?cb=${cacheBuster}`}
+                  src={`https://www.youtube-nocookie.com/embed/${videoId}`}
                   title="YouTube video"
                   className="absolute inset-0 w-full h-full rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg"
                   allowFullScreen
@@ -464,7 +462,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         }
         
         // Links
-        formattedLine = formattedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-cyber-500 hover:text-primary-500 underline transition-colors duration-200" target="_blank" rel="noopener noreferrer">$1</a>')
+        formattedLine = formattedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-accent underline transition-opacity duration-200 hover:opacity-80" target="_blank" rel="noopener noreferrer">$1</a>')
         
         elements.push(
           <p key={i} className="text-foreground/80 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedLine }} />
