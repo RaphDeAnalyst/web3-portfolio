@@ -12,6 +12,7 @@ export interface DuneChart {
   blog_id: string | null
   x_key: string | null
   y_keys: string[]
+  chart_colors: string[]
   is_static: boolean
   pinned_at: string | null
   pinned_note: string | null
@@ -46,6 +47,7 @@ export interface CreateDuneChartInput {
   blog_id?: string | null
   x_key?: string | null
   y_keys?: string[]
+  chart_colors?: string[]
   pinned_note?: string | null
   display_order?: number
   is_active?: boolean

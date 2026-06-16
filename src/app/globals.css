@@ -30,6 +30,13 @@
 
   /* Grain opacity */
   --grain-opacity: 0.025;
+
+  /* Chart series colors */
+  --chart-1: var(--accent);
+  --chart-2: #2B6CB0;
+  --chart-3: #298E81;
+  --chart-4: #663DAE;
+  --chart-emphasis: #C23D29;
 }
 
 /* Dark mode */
@@ -57,6 +64,13 @@
   /* Separators */
   --separator: rgba(255, 255, 255, 0.06);
   --stat-separator: rgba(255, 255, 255, 0.08);
+
+  /* Chart series colors */
+  --chart-1: var(--accent);
+  --chart-2: #63B3ED;
+  --chart-3: #53C6B6;
+  --chart-4: #9E81CF;
+  --chart-emphasis: #E26C5A;
 
   /* Grain opacity */
   --grain-opacity: 0.04;

@@ -17,14 +17,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
+import { useTheme } from 'next-themes'
 import type { ChartType } from '@/types/dune'
-
-// CSS-variable palette for multi-series charts
-const SERIES_COLORS = [
-  'var(--accent)',
-  'var(--text-secondary)',
-  'var(--border)',
-]
+import { resolveSeriesColors } from '@/lib/chartColors'
 
 interface DuneChartProps {
   chartType: ChartType
@@ -32,9 +27,13 @@ interface DuneChartProps {
   xKey: string
   yKeys: string[]
   pinnedNote?: string | null
+  chartColors?: string[]
 }
 
-export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote }: DuneChartProps) {
+export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColors = [] }: DuneChartProps) {
+  const { resolvedTheme } = useTheme()
+  const activeTheme = resolvedTheme === 'light' ? 'light' : 'dark'
+  const SERIES_COLORS = resolveSeriesColors(chartColors, activeTheme)
   if (!data || data.length === 0) {
     return (
       <div

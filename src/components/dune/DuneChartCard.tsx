@@ -33,6 +33,7 @@ export function DuneChartCard({ chart }: DuneChartCardProps) {
         xKey={chart.x_key ?? ''}
         yKeys={chart.y_keys ?? []}
         pinnedNote={chart.pinned_note}
+        chartColors={chart.chart_colors ?? []}
       />
 
       {chart.last_refreshed_at && (

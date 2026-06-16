@@ -8,6 +8,9 @@ import { ToastContainer } from '@/components/admin/toast-container'
 import { saveDuneChartAsAdmin } from '@/lib/actions/admin-dune-actions'
 import { projectServiceSupabase, type Project } from '@/lib/project-service-supabase'
 import type { DuneChart, ChartType, ChartMode } from '@/types/dune'
+import { CHART_PALETTE } from '@/lib/chartColors'
+
+const PALETTE_ENTRIES = Object.entries(CHART_PALETTE) as [string, { dark: string; light: string }][]
 
 const CHART_TYPES: ChartType[] = ['line', 'area', 'bar', 'pie']
 const CHART_MODES: ChartMode[] = ['snapshot', 'timeseries', 'static']
@@ -24,6 +27,7 @@ interface FormState {
   pinned_note: string
   display_order: string
   is_active: boolean
+  chart_colors: string[]
 }
 
 const DEFAULT_FORM: FormState = {
@@ -38,6 +42,7 @@ const DEFAULT_FORM: FormState = {
   pinned_note: '',
   display_order: '0',
   is_active: true,
+  chart_colors: [],
 }
 
 export default function DuneChartEditorPage({ params }: { params: { id: string } }) {
@@ -54,6 +59,24 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
   const set = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => setForm(prev => ({ ...prev, [field]: e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value }))
+
+  const updateColorSlot = (index: number, key: string) =>
+    setForm(prev => {
+      const next = [...prev.chart_colors]
+      while (next.length <= index) next.push('')
+      next[index] = key
+      return { ...prev, chart_colors: next }
+    })
+
+  const addColorSlot = () =>
+    setForm(prev => ({ ...prev, chart_colors: [...prev.chart_colors, ''] }))
+
+  const removeColorSlot = (index: number) =>
+    setForm(prev => {
+      const next = [...prev.chart_colors]
+      next.splice(index, 1)
+      return { ...prev, chart_colors: next }
+    })
 
   const loadData = useCallback(async () => {
     const [projs] = await Promise.all([
@@ -79,6 +102,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
             pinned_note: chart.pinned_note ?? '',
             display_order: String(chart.display_order),
             is_active: chart.is_active,
+            chart_colors: chart.chart_colors ?? [],
           })
           // Load available columns from cached data if it exists
           const cacheRow = (data.charts as (DuneChart & { cache?: { result_data: Record<string, unknown>[] } })[])
@@ -117,6 +141,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
       blog_id: null,
       x_key: form.x_key || null,
       y_keys: form.y_keys ? form.y_keys.split(',').map(s => s.trim()).filter(Boolean) : [],
+      chart_colors: form.chart_colors,
       pinned_note: form.pinned_note || null,
       display_order: parseInt(form.display_order, 10) || 0,
       is_active: form.is_active,
@@ -132,6 +157,11 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
       showError(result.error ?? 'Save failed')
     }
   }
+
+  const yKeysList = form.y_keys.split(',').map(s => s.trim()).filter(Boolean)
+  const colorSlots = form.chart_type === 'pie'
+    ? form.chart_colors
+    : Array.from({ length: Math.max(yKeysList.length, 1) }, (_, i) => form.chart_colors[i] ?? '')
 
   const fieldClass = "w-full text-sm p-2.5 font-mono"
   const fieldStyle = {
@@ -254,6 +284,75 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
                 placeholder="volume, transfers" className={fieldClass} style={fieldStyle} />
               <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Comma-separated column names</p>
             </div>
+          </div>
+
+          {/* Color swatch picker */}
+          <div>
+            <label className={labelClass} style={labelStyle}>Series colors</label>
+            <div className="space-y-2.5">
+              {colorSlots.map((selected, i) => {
+                const label = form.chart_type === 'pie'
+                  ? `Slice ${i + 1}`
+                  : (yKeysList[i] ?? `Series ${i + 1}`)
+                return (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="text-xs font-mono w-20 shrink-0 truncate" style={{ color: 'var(--text-muted)' }}>
+                      {label}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {PALETTE_ENTRIES.map(([name, hex]) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() => updateColorSlot(i, name)}
+                          title={name}
+                          style={{
+                            width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                            backgroundColor: hex.dark,
+                            border: selected === name ? '2px solid var(--text-primary)' : '2px solid transparent',
+                            boxShadow: selected === name ? '0 0 0 1px var(--card-bg)' : 'none',
+                          }}
+                        />
+                      ))}
+                      {selected && (
+                        <button
+                          type="button"
+                          onClick={() => updateColorSlot(i, '')}
+                          className="text-xs ml-1"
+                          title="Clear"
+                          style={{ color: 'var(--text-muted)' }}
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                    {form.chart_type === 'pie' && (
+                      <button
+                        type="button"
+                        onClick={() => removeColorSlot(i)}
+                        className="text-xs"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        remove
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+              {form.chart_type === 'pie' && (
+                <button
+                  type="button"
+                  onClick={addColorSlot}
+                  className="text-xs font-mono mt-1"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  + add slice
+                </button>
+              )}
+            </div>
+            <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+              Unset slots fall back to palette order. Swatches shown in dark preview.
+            </p>
           </div>
 
           <div>
