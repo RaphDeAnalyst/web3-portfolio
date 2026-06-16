@@ -49,6 +49,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
+  const [availableColumns, setAvailableColumns] = useState<string[]>([])
 
   const set = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -79,6 +80,12 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
             display_order: String(chart.display_order),
             is_active: chart.is_active,
           })
+          // Load available columns from cached data if it exists
+          const cacheRow = (data.charts as (DuneChart & { cache?: { result_data: Record<string, unknown>[] } })[])
+            .find(c => c.id === params.id)?.cache
+          if (cacheRow?.result_data?.length) {
+            setAvailableColumns(Object.keys(cacheRow.result_data[0]))
+          }
         }
       } catch {
         showError('Failed to load chart')
@@ -198,6 +205,41 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
               </p>
             </div>
           </div>
+
+          {/* Available columns from cached data */}
+          {availableColumns.length > 0 && (
+            <div className="p-3" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+              <p className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
+                Available columns from Dune result
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {availableColumns.map(col => (
+                  <button
+                    key={col}
+                    type="button"
+                    onClick={() => {
+                      if (!form.x_key) {
+                        setForm(prev => ({ ...prev, x_key: col }))
+                      } else {
+                        const existing = form.y_keys ? form.y_keys.split(',').map(s => s.trim()).filter(Boolean) : []
+                        if (!existing.includes(col)) {
+                          setForm(prev => ({ ...prev, y_keys: [...existing, col].join(', ') }))
+                        }
+                      }
+                    }}
+                    className="text-xs font-mono px-2 py-1 transition-opacity hover:opacity-100"
+                    style={{ border: '1px solid var(--accent)', color: 'var(--accent)', opacity: 0.8 }}
+                    title="Click to set as X key (if empty) or add to Y keys"
+                  >
+                    {col}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+                Click a column: sets X key first (if empty), then adds to Y keys
+              </p>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-4">
             <div>
