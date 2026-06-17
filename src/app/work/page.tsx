@@ -1,7 +1,6 @@
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { projectServiceSupabase, type Project } from '@/lib/project-service-supabase'
-import { WorkCard } from '@/components/sections/WorkCard'
+import { WorkRow } from '@/components/sections/WorkRow'
 
 export const revalidate = 300
 
@@ -32,22 +31,40 @@ export default async function WorkPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div style={{ minHeight: 'calc(100vh - 64px)', padding: '88px 32px 80px' }}>
+      <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+
         {/* Header */}
-        <div className="mb-16 page-header">
-          <h1 className="font-serif text-4xl sm:text-5xl font-bold mb-4 page-title">Work</h1>
-          <p className="text-lg opacity-75 max-w-2xl">
-            Investigations, research, and analytics — independently conducted and publicly documented.
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '8px' }}>
+          <h1
+            className="font-serif"
+            style={{ fontWeight: 700, fontSize: 'clamp(40px, 6vw, 64px)', margin: 0, color: 'var(--text-primary)', lineHeight: 1 }}
+          >
+            Work
+          </h1>
+          <p
+            style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase',
+              margin: '0 0 8px', color: 'var(--text-muted)',
+            }}
+          >
+            {projects.length.toString().padStart(2, '0')} Investigations · 2026
           </p>
         </div>
 
-        {/* Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 work-grid">
-          {projects.map((project) => (
-            <WorkCard key={project.id} project={project} />
+        <p style={{ fontSize: '17px', maxWidth: '620px', margin: '0 0 8px', color: 'var(--text-secondary)' }}>
+          Investigations, research, and analytics — independently conducted and publicly documented.
+        </p>
+
+        {/* Case ledger */}
+        <div style={{ marginTop: '32px' }}>
+          {projects.map((project, i) => (
+            <WorkRow key={project.id} project={project} index={i} />
           ))}
+          <div style={{ borderTop: '1px solid var(--separator)' }} />
         </div>
+
       </div>
     </div>
   )

@@ -13,17 +13,95 @@ function getLinkLabel(url: string): string {
   try {
     const urlObj = new URL(url)
     const hostname = urlObj.hostname.toLowerCase()
-
     if (hostname.includes('dune.com')) return 'View on Dune'
     if (hostname.includes('twitter.com') || hostname.includes('x.com')) return 'View on X'
     if (hostname.includes('github.com')) return 'View on GitHub'
     if (hostname.includes('etherscan.io') || hostname.includes('basescan.org') || hostname.includes('arbiscan.io')) return 'View on Block Explorer'
     if (hostname.includes('linkedin.com')) return 'View on LinkedIn'
-
     return 'View Link'
   } catch {
     return 'View Link'
   }
+}
+
+/** Deterministic seeded LCG node graph for case detail view */
+function buildDetailGraph(seed: number) {
+  let s = seed
+  const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280 }
+
+  const W = 880, H = 495, N = 30, pad = 28
+  const pts: [number, number][] = []
+  for (let i = 0; i < N; i++) {
+    pts.push([pad + rnd() * (W - 2 * pad), pad + rnd() * (H - 2 * pad)])
+  }
+
+  const order = pts.map((_, i) => i).sort((a, b) => pts[a][0] - pts[b][0])
+  const seen: Record<string, boolean> = {}
+  const edges: [number, number][] = []
+  const addEdge = (a: number, b: number) => {
+    if (a === b) return
+    const key = `${Math.min(a, b)}-${Math.max(a, b)}`
+    if (!seen[key]) { seen[key] = true; edges.push([a, b]) }
+  }
+  for (let k = 0; k < order.length - 1; k++) {
+    addEdge(order[k], order[k + 1])
+    if (k + 2 < order.length && rnd() < 0.45) addEdge(order[k], order[k + 2])
+  }
+
+  const flagged: Set<number> = new Set()
+  for (let i = 0; i < 5; i++) flagged.add(Math.floor(rnd() * N))
+
+  return { pts, edges, flagged, W, H }
+}
+
+function CaseGraphFigure({ seed, title }: { seed: number; title: string }) {
+  const { pts, edges, flagged, W, H } = buildDetailGraph(seed)
+  return (
+    <div
+      style={{
+        position: 'relative', width: '100%', aspectRatio: '16/9',
+        borderRadius: '2px', marginBottom: '14px',
+        background: 'var(--bg-secondary)', border: '1px solid var(--card-border)',
+        overflow: 'hidden', color: 'var(--text-secondary)',
+      }}
+    >
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        width="100%" height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        style={{ position: 'absolute', inset: 0, opacity: 0.65 }}
+      >
+        {edges.map(([a, b], i) => (
+          <line
+            key={`e${i}`}
+            x1={pts[a][0]} y1={pts[a][1]}
+            x2={pts[b][0]} y2={pts[b][1]}
+            stroke="currentColor" strokeWidth={0.7} strokeOpacity={0.55}
+          />
+        ))}
+        {pts.map((p, i) => (
+          flagged.has(i) ? (
+            <g key={`n${i}`}>
+              <circle cx={p[0]} cy={p[1]} r={9} fill="none" stroke="var(--accent)" strokeWidth={0.8} strokeOpacity={0.45} />
+              <circle cx={p[0]} cy={p[1]} r={4.5} fill="var(--accent)" className="gpulse" />
+            </g>
+          ) : (
+            <circle key={`n${i}`} cx={p[0]} cy={p[1]} r={2.4} fill="currentColor" />
+          )
+        ))}
+      </svg>
+      <span
+        style={{
+          position: 'absolute', bottom: '14px', left: '16px',
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: '11px', letterSpacing: '0.1em',
+          textTransform: 'uppercase', color: 'var(--text-muted)',
+        }}
+      >
+        Fig.1 — Address graph · {title}
+      </span>
+    </div>
+  )
 }
 
 export const revalidate = 300
@@ -36,9 +114,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   return {
     title: `${title} | Matthew Raphael Nnamani — On-Chain Investigations`,
     description,
-    alternates: {
-      canonical: `https://matthewraphael.xyz/work/${params.id}`,
-    },
+    alternates: { canonical: `https://matthewraphael.xyz/work/${params.id}` },
     openGraph: {
       title,
       description,
@@ -67,7 +143,6 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     project ? getChartsForProject(params.id).catch(() => []) : Promise.resolve([]),
     blogPost?.id ? getChartsForBlog(blogPost.id).catch(() => []) : Promise.resolve([]),
   ])
-  // merge, deduplicate by chart id
   const seenIds = new Set<string>()
   const charts = [...projectCharts, ...blogCharts].filter(c => {
     if (seenIds.has(c.id)) return false
@@ -77,12 +152,12 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
   if (error || !project) {
     return (
-      <div className="min-h-screen pt-20 pb-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/work" className="text-sm opacity-60 hover:opacity-100 mb-4 inline-block">
+      <div style={{ minHeight: 'calc(100vh - 64px)', padding: '72px 32px 64px' }}>
+        <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+          <Link href="/work" style={{ fontSize: '14px', opacity: 0.6, display: 'inline-block', marginBottom: '28px', color: 'var(--text-primary)', textDecoration: 'none' }}>
             ← Work
           </Link>
-          <div className="mt-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-700 dark:text-red-300">
+          <div style={{ marginTop: '32px', padding: '16px', background: 'rgba(226,108,90,0.1)', border: '1px solid rgba(226,108,90,0.3)', borderRadius: '2px', color: 'var(--error)', fontSize: '14px' }}>
             {error || 'Project not found'}
           </div>
         </div>
@@ -90,129 +165,167 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     )
   }
 
+  const title = blogPost?.title || project.title
+  const tags = blogPost?.tags || project.tech_stack || []
+  const hasFeaturedImage = !!blogPost?.featuredImage
+
+  // Use project index as seed for the graph (deterministic per project)
+  const graphSeed = params.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 5)
+
   return (
-    <div className="min-h-screen pt-20 pb-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back button */}
-        <Link href="/work" className="text-sm opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground mb-8 inline-block transition-opacity rounded">
+    <div style={{ minHeight: 'calc(100vh - 64px)', padding: '72px 32px 64px' }}>
+      <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+
+        {/* Back */}
+        <Link
+          href="/work"
+          className="link-fade"
+          style={{ fontSize: '14px', display: 'inline-block', marginBottom: '28px', color: 'var(--text-primary)', textDecoration: 'none' }}
+        >
           ← Work
         </Link>
 
-        {/* Project header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            {blogPost?.title || project.title}
-          </h1>
-
-          {/* Blog metadata */}
-          {blogPost && (
-            <div className="flex items-center gap-4 text-sm opacity-65 mb-4">
-              {blogPost.date && <span>{blogPost.date}</span>}
-              {blogPost.readTime && (
-                <>
-                  <span>•</span>
-                  <span>{blogPost.readTime}</span>
-                </>
-              )}
-              {blogPost.category && (
-                <>
-                  <span>•</span>
-                  <span>{blogPost.category}</span>
-                </>
-              )}
-            </div>
+        {/* Case meta row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+          {project.category && (
+            <span
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: 'var(--text-muted)',
+              }}
+            >
+              {project.category}
+            </span>
           )}
-
-          {/* Summary */}
-          {blogPost?.summary && (
-            <p className="text-lg opacity-75 mb-6">
-              {blogPost.summary}
-            </p>
+          {(blogPost?.date || blogPost?.readTime) && (
+            <>
+              <span style={{ width: '14px', height: '1px', background: 'var(--separator)', display: 'inline-block' }} />
+              <span
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '11px', letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: 'var(--text-muted)',
+                }}
+              >
+                {[blogPost.date, blogPost.readTime].filter(Boolean).join(' · ')}
+              </span>
+            </>
           )}
+        </div>
 
-          {/* Featured Image */}
-          {blogPost?.featuredImage && (
-            <div className="mb-8 rounded-lg overflow-hidden bg-gray-900">
-              <Image
-                src={blogPost.featuredImage}
-                alt={blogPost.title}
-                width={800}
-                height={450}
-                priority
-                className="w-full h-auto object-cover"
-                sizes="(max-width: 768px) 100vw, 800px"
-              />
-            </div>
-          )}
+        {/* Title */}
+        <h1
+          className="font-serif"
+          style={{
+            fontWeight: 700,
+            fontSize: 'clamp(32px, 5vw, 52px)',
+            lineHeight: 1.08, margin: '0 0 18px',
+            color: 'var(--text-primary)',
+          }}
+        >
+          {title}
+        </h1>
 
-          {/* Tags and Links */}
-          <div className="flex flex-wrap items-center gap-3">
-            {((blogPost?.tags?.length ?? 0) > 0 || (project?.tech_stack?.length ?? 0) > 0) && (
-              <div className="flex flex-wrap gap-2">
-                {(blogPost?.tags || project?.tech_stack || []).map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-block text-xs font-medium px-2 py-1 rounded"
-                    style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-            {project?.file_url && (
+        {/* Summary / lead */}
+        {(blogPost?.summary || project.description) && (
+          <p
+            style={{
+              fontSize: '19px', lineHeight: 1.6, opacity: 0.78,
+              margin: '0 0 28px', color: 'var(--text-primary)', maxWidth: '680px',
+            }}
+          >
+            {blogPost?.summary || project.description}
+          </p>
+        )}
+
+        {/* Featured image or node graph figure */}
+        {hasFeaturedImage ? (
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '2px', marginBottom: '14px', background: 'var(--bg-secondary)', overflow: 'hidden' }}>
+            <Image
+              src={blogPost!.featuredImage!}
+              alt={title}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 820px"
+            />
+          </div>
+        ) : (
+          <CaseGraphFigure seed={graphSeed} title={title} />
+        )}
+
+        {/* Tags + external links */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontSize: '12px', padding: '4px 10px',
+                  border: '1px solid var(--border)', borderRadius: '9999px',
+                  color: 'var(--text-secondary)', opacity: 0.7,
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <span style={{ marginLeft: 'auto', display: 'inline-flex', gap: '18px' }}>
+            {project.file_url && (
               <a
                 href={project.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
+                target="_blank" rel="noopener noreferrer"
+                className="link-fade"
+                style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text-primary)', textDecoration: 'none' }}
               >
                 PDF Report ↗
               </a>
             )}
-            {project?.duneUrl && (
+            {project.duneUrl && (
               <a
                 href={project.duneUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-medium opacity-60 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground transition-opacity rounded"
+                target="_blank" rel="noopener noreferrer"
+                className="link-fade"
+                style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text-primary)', textDecoration: 'none' }}
               >
                 {getLinkLabel(project.duneUrl)} ↗
               </a>
             )}
-          </div>
+          </span>
         </div>
 
-        {/* Content */}
-        <div className="prose dark:prose-invert max-w-none">
-          {blogPost && blogPost.content ? (
+        {/* Markdown body */}
+        {blogPost?.content ? (
+          <div style={{ marginTop: '40px' }} className="prose dark:prose-invert max-w-none">
             <MarkdownRenderer content={blogPost.content} />
-          ) : project?.file_url || project?.duneUrl ? (
-            <div className="py-12">
-              <p className="text-lg opacity-75 leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-          ) : (
-            <div className="text-center py-12 opacity-50">
-              <p>No write-up yet. Check back soon!</p>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : !project.file_url && !project.duneUrl ? (
+          <div style={{ textAlign: 'center', padding: '48px 0', opacity: 0.5 }}>
+            <p>No write-up yet. Check back soon.</p>
+          </div>
+        ) : null}
 
-        {/* Dune charts linked to this project */}
+        {/* On-Chain Data */}
         {charts.length > 0 && (
-          <div className="mt-12 pt-8" style={{ borderTop: '1px solid var(--separator)' }}>
-            <p className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
+          <div style={{ marginTop: '48px', paddingTop: '32px', borderTop: '1px solid var(--separator)' }}>
+            <p
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', textTransform: 'uppercase',
+                letterSpacing: '0.16em', margin: '0 0 24px', color: 'var(--text-muted)',
+              }}
+            >
               On-Chain Data
             </p>
-            <div className="grid grid-cols-1 gap-6">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {charts.map(chart => (
                 <DuneChartCard key={chart.id} chart={chart} />
               ))}
             </div>
           </div>
         )}
+
       </div>
     </div>
   )

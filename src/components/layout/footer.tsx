@@ -1,54 +1,45 @@
+'use client'
+
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="py-12 mt-20" style={{ borderTopColor: 'var(--separator)', borderTopWidth: '1px' }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 footer">
-          {/* Copyright */}
-          <p className="text-sm transition-colors" style={{ color: 'var(--text-muted)' }}>
-            © {currentYear} Matthew Raphael
-          </p>
-
-          {/* Social Links */}
-          <div className="foot-links flex gap-6 text-sm">
-            <a
-              href="https://x.com/0x_note"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
-            >
-              X ↗
-            </a>
-            <a
-              href="https://github.com/notes0x"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
-            >
-              GitHub ↗
-            </a>
-            <a
-              href="https://dune.com/notes0x"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
-            >
-              Dune ↗
-            </a>
-            <a
-              href="https://linkedin.com/in/matthew-nnamani"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{ color: 'var(--text-secondary)', opacity: 0.6 }}
-            >
-              LinkedIn ↗
-            </a>
-          </div>
+    <footer style={{ borderTop: '1px solid var(--separator)', padding: '48px 32px' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
+        <p style={{ fontSize: '14px', margin: 0, color: 'var(--text-muted)' }}>
+          © {currentYear} Matthew Raphael
+        </p>
+        <div style={{ display: 'flex', gap: '24px', fontSize: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <a href="https://x.com/0x_note" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--text-secondary)', opacity: 0.6, textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6' }}>
+            X ↗
+          </a>
+          <a href="https://github.com/notes0x" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--text-secondary)', opacity: 0.6, textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6' }}>
+            GitHub ↗
+          </a>
+          <a href="https://dune.com/notes0x" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--text-secondary)', opacity: 0.6, textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6' }}>
+            Dune ↗
+          </a>
+          <a href="https://linkedin.com/in/matthew-nnamani" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--text-secondary)', opacity: 0.6, textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6' }}>
+            LinkedIn ↗
+          </a>
+          <a href="/admin"
+            style={{ color: 'var(--text-muted)', opacity: 0.5, textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.5' }}>
+            Admin
+          </a>
         </div>
       </div>
     </footer>

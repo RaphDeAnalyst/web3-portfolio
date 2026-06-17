@@ -150,7 +150,7 @@ export class DunePlaceholderParser {
 
     // Generate HTML for all chart embeds with individual titles and descriptions
     const embedsHtml = chartEmbeds.map((chart, index) => {
-      const iframeId = `dune-embed-${dashboard_id}-${index}-${Date.now()}`
+      const iframeId = `dune-embed-${dashboard_id}-${index}`
       const chartTitle = chart.title || (chartEmbeds.length > 1 ? `${title} - Chart ${index + 1}` : title)
       const chartDescription = chart.description
 

@@ -188,7 +188,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       // Headers
       if (line.startsWith('# ')) {
         elements.push(
-          <h1 key={i} className="text-3xl font-bold text-foreground mb-6 text-gradient">
+          <h1 key={i} className="text-3xl font-bold text-foreground mb-6">
             {line.substring(2)}
           </h1>
         )
@@ -478,10 +478,8 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   }
 
   return (
-    <div className="prose prose-lg dark:prose-invert max-w-none">
-      <div className="space-y-1">
-        {parseMarkdown(content)}
-      </div>
+    <div className="space-y-1">
+      {parseMarkdown(content)}
     </div>
   )
 }

@@ -89,6 +89,54 @@
   }
 }
 
+/* Brand monogram — full wordmark shown by default, MR monogram on small screens */
+.brand-mono { display: none; }
+.brand-full { display: inline; }
+
+@media (max-width: 640px) {
+  .brand-full { display: none !important; }
+  .brand-mono { display: inline !important; }
+  .nav-inner { padding-left: 18px !important; padding-right: 18px !important; }
+  .nav-links { gap: 13px !important; }
+  .nav-links a { font-size: 13px !important; }
+}
+@media (max-width: 380px) {
+  .nav-links { gap: 11px !important; }
+  .nav-links a { font-size: 12px !important; }
+}
+
+/* Reusable hover-fade pattern — opacity 60%→100% on hover */
+.link-fade { opacity: 0.6; transition: opacity 0.15s; }
+.link-fade:hover { opacity: 1 !important; }
+
+/* Work ledger row hover */
+.work-ledger-row:hover { background: var(--bg-secondary) !important; }
+
+/* Node graph pulse animation for flagged addresses */
+@keyframes gpulse { 0%, 100% { opacity: 0.4 } 50% { opacity: 1 } }
+.gpulse { animation: gpulse 3s ease-in-out infinite; }
+
+/* Side rail — hide on narrow screens */
+@media (max-width: 900px) { .hero-rail { display: none !important; } }
+
+/* About two-column — collapse on tablet */
+@media (max-width: 860px) {
+  .about-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+  .about-aside { position: static !important; top: auto !important; }
+}
+
+/* Work ledger rows — reflow on mobile */
+@media (max-width: 768px) {
+  .work-ledger-row { grid-template-columns: 40px 1fr auto !important; gap: 16px !important; }
+  .work-ledger-graph { display: none !important; }
+}
+
+/* Dashboards — stat strip 4→2 cols, charts single col on mobile */
+@media (max-width: 768px) {
+  .dash-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .dash-grid { grid-template-columns: 1fr !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-spin-slow,
   .animate-delete-confirm {
