@@ -55,6 +55,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
   const [availableColumns, setAvailableColumns] = useState<string[]>([])
+  const [dataRowCount, setDataRowCount] = useState(0)
 
   const set = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -109,6 +110,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
             .find(c => c.id === params.id)?.cache
           if (cacheRow?.result_data?.length) {
             setAvailableColumns(Object.keys(cacheRow.result_data[0]))
+            setDataRowCount(cacheRow.result_data.length)
           }
         }
       } catch {
@@ -159,8 +161,9 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
   }
 
   const yKeysList = form.y_keys.split(',').map(s => s.trim()).filter(Boolean)
+  const pieSlotCount = Math.max(dataRowCount, form.chart_colors.length, 1)
   const colorSlots = form.chart_type === 'pie'
-    ? form.chart_colors
+    ? Array.from({ length: pieSlotCount }, (_, i) => form.chart_colors[i] ?? '')
     : Array.from({ length: Math.max(yKeysList.length, 1) }, (_, i) => form.chart_colors[i] ?? '')
 
   const fieldClass = "w-full text-sm p-2.5 font-mono"
@@ -273,16 +276,33 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelClass} style={labelStyle}>X axis key</label>
+              <label className={labelClass} style={labelStyle}>
+                {form.chart_type === 'pie' ? 'Category key' : 'X axis key'}
+              </label>
               <input type="text" value={form.x_key} onChange={set('x_key')}
-                placeholder="day" className={fieldClass} style={fieldStyle} />
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Column name for X axis</p>
+                placeholder={form.chart_type === 'pie' ? 'status' : 'day'} className={fieldClass} style={fieldStyle} />
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+                {form.chart_type === 'pie' ? 'Column whose values label each slice — one row = one slice' : 'Column name for X axis'}
+              </p>
             </div>
             <div>
-              <label className={labelClass} style={labelStyle}>Y axis keys</label>
+              <label className={labelClass} style={labelStyle}>
+                {form.chart_type === 'pie' ? 'Value key' : 'Y axis keys'}
+              </label>
               <input type="text" value={form.y_keys} onChange={set('y_keys')}
-                placeholder="volume, transfers" className={fieldClass} style={fieldStyle} />
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Comma-separated column names</p>
+                placeholder={form.chart_type === 'pie' ? 'total_txn' : 'volume, transfers'} className={fieldClass} style={fieldStyle} />
+              {form.chart_type === 'pie' ? (
+                <>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Single column — the numeric value for each slice</p>
+                  {yKeysList.length > 1 && (
+                    <p className="text-xs mt-1 font-mono" style={{ color: '#d97706' }}>
+                      ⚠ Pie charts use one value column. Only the first entry ("{yKeysList[0]}") will be used — remove the rest.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Comma-separated column names</p>
+              )}
             </div>
           </div>
 

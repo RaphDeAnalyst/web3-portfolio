@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import {
   LineChart,
   Line,
@@ -21,6 +22,28 @@ import { useTheme } from 'next-themes'
 import type { ChartType } from '@/types/dune'
 import { resolveSeriesColors } from '@/lib/chartColors'
 
+// Recharts YAxis defaults to width=60 regardless of tick content.
+// For charts with small values (e.g. max=155) that wastes ~30 px of left gutter;
+// for charts with 8-digit values it can be too narrow. Derive width from the
+// actual data so the axis never reserves more space than its labels need.
+function yAxisWidth(data: Record<string, unknown>[], keys: string[]): number {
+  let maxAbs = 0
+  let hasNeg = false
+  for (const row of data) {
+    for (const k of keys) {
+      const v = Number(row[k])
+      if (!isFinite(v)) continue
+      if (v < 0) hasNeg = true
+      if (Math.abs(v) > maxAbs) maxAbs = Math.abs(v)
+    }
+  }
+  // Recharts rounds tick values to nice numbers slightly above the data max,
+  // so the tick string length matches the data max string length in practice.
+  const chars = String(Math.round(maxAbs)).length + (hasNeg ? 1 : 0)
+  // ~7 px per char at 11 px sans-serif, +8 px internal padding
+  return Math.max(28, chars * 7 + 8)
+}
+
 interface DuneChartProps {
   chartType: ChartType
   data: Record<string, unknown>[]
@@ -34,6 +57,17 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
   const { resolvedTheme } = useTheme()
   const activeTheme = resolvedTheme === 'light' ? 'light' : 'dark'
   const SERIES_COLORS = resolveSeriesColors(chartColors, activeTheme)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    setContainerWidth(el.getBoundingClientRect().width)
+    const ro = new ResizeObserver(([entry]) => setContainerWidth(entry.contentRect.width))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
   if (!data || data.length === 0) {
     return (
       <div
@@ -65,6 +99,8 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
     color: 'var(--text-primary)',
   }
 
+  const yWidth = yAxisWidth(data, yKeys)
+
   const sharedProps = {
     data,
     margin: { top: 4, right: 16, left: 0, bottom: 4 },
@@ -72,18 +108,25 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
 
   const renderChart = () => {
     if (chartType === 'pie') {
+      const showPieLabels = containerWidth === 0 || containerWidth >= 500
+      // Recharts nameKey lookup is falsy-sensitive: boolean `false`, 0, or "" all
+      // cause it to fall back to the dataKey name as the legend label. Stringify
+      // the category column so every value is a non-empty string before recharts
+      // touches it.
+      const pieData = data.map(row => ({ ...row, [xKey]: String(row[xKey] ?? '') }))
       return (
         <PieChart>
           <Pie
-            data={data}
+            data={pieData}
             dataKey={yKeys[0] ?? 'value'}
             nameKey={xKey}
             cx="50%"
             cy="50%"
             outerRadius={100}
-            label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+            label={showPieLabels ? ({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : false}
+            labelLine={showPieLabels}
           >
-            {data.map((_, i) => (
+            {pieData.map((_, i) => (
               <Cell key={i} fill={SERIES_COLORS[i % SERIES_COLORS.length]} />
             ))}
           </Pie>
@@ -98,7 +141,7 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
         <BarChart {...sharedProps}>
           <CartesianGrid {...gridProps} />
           <XAxis dataKey={xKey} {...commonAxisProps} />
-          <YAxis {...commonAxisProps} />
+          <YAxis {...commonAxisProps} width={yWidth} />
           <Tooltip contentStyle={tooltipStyle} />
           {yKeys.length > 1 && (
             <Legend wrapperStyle={{ fontSize: '12px', color: 'var(--text-secondary)' }} />
@@ -123,7 +166,7 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
           </defs>
           <CartesianGrid {...gridProps} />
           <XAxis dataKey={xKey} {...commonAxisProps} />
-          <YAxis {...commonAxisProps} />
+          <YAxis {...commonAxisProps} width={yWidth} />
           <Tooltip contentStyle={tooltipStyle} />
           {yKeys.length > 1 && (
             <Legend wrapperStyle={{ fontSize: '12px', color: 'var(--text-secondary)' }} />
@@ -148,7 +191,7 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
       <LineChart {...sharedProps}>
         <CartesianGrid {...gridProps} />
         <XAxis dataKey={xKey} {...commonAxisProps} />
-        <YAxis {...commonAxisProps} />
+        <YAxis {...commonAxisProps} width={yWidth} />
         <Tooltip contentStyle={tooltipStyle} />
         {yKeys.length > 1 && (
           <Legend wrapperStyle={{ fontSize: '12px', color: 'var(--text-secondary)' }} />
@@ -169,7 +212,7 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
   }
 
   return (
-    <div>
+    <div ref={containerRef}>
       <ResponsiveContainer width="100%" height={260}>
         {renderChart()}
       </ResponsiveContainer>

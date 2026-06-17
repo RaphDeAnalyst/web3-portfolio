@@ -69,41 +69,40 @@ export default async function DashboardsPage() {
                   borderRadius: '2px', padding: '28px', marginBottom: '32px',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                      <span
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          fontSize: '10px', letterSpacing: '0.1em',
-                          textTransform: 'uppercase', color: 'var(--accent)',
-                        }}
-                      >
-                        Featured
-                      </span>
-                      <h3
-                        className="font-serif"
-                        style={{ fontWeight: 700, fontSize: '20px', margin: 0, color: 'var(--text-primary)' }}
-                      >
-                        {featured.title}
-                      </h3>
-                    </div>
-                    {featured.description && (
-                      <p style={{ fontSize: '13px', margin: 0, color: 'var(--text-secondary)' }}>
-                        {featured.description}
-                      </p>
-                    )}
-                  </div>
-                  <span
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.06em',
-                      padding: '3px 9px', border: '1px solid var(--border)',
-                      borderRadius: '9999px', color: 'var(--text-secondary)',
-                    }}
+                <div style={{ marginBottom: '18px' }}>
+                  <h3
+                    className="font-serif"
+                    style={{ fontWeight: 700, fontSize: '20px', margin: '0 0 4px', color: 'var(--text-primary)' }}
                   >
-                    {featured.mode || 'Snapshot'}
-                  </span>
+                    {featured.title}
+                  </h3>
+                  {featured.description && (
+                    <p style={{ fontSize: '13px', margin: 0, color: 'var(--text-secondary)' }}>
+                      {featured.description}
+                    </p>
+                  )}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px' }}>
+                    <span
+                      style={{
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.06em',
+                        padding: '3px 9px', border: '1px solid var(--accent)',
+                        borderRadius: '9999px', color: 'var(--accent)',
+                      }}
+                    >
+                      Featured
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.06em',
+                        padding: '3px 9px', border: '1px solid var(--border)',
+                        borderRadius: '9999px', color: 'var(--text-secondary)',
+                      }}
+                    >
+                      {featured.mode || 'Snapshot'}
+                    </span>
+                  </div>
                 </div>
                 <DuneChartCard chart={featured} titleHidden />
                 {featured.last_refreshed_at && (
