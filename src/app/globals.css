@@ -334,9 +334,10 @@ html, body {
 
 /* Tap targets — targeted rules only, avoid display overrides on generic a/button */
 @media (max-width: 768px) {
-  /* Nav links: adequate tap height, keep display:flex for centering within nav row */
+  /* Nav links: adequate tap height, keep display:flex for centering within nav row.
+     Horizontal padding removed — 8px × 4 links = 64px that caused overflow at 390px. */
   .nav-links a {
-    padding: 10px 8px;
+    padding: 10px 0;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
