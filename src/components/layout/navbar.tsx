@@ -45,7 +45,7 @@ export function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 w-full z-50"
+      className="site-nav sticky top-0 w-full z-50"
       style={{
         backgroundColor: 'var(--bg-primary)',
         borderBottom: '1px solid var(--separator)',
@@ -87,7 +87,7 @@ export function Navbar() {
               aria-label="Toggle theme"
               className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               style={{
-                width: '32px', height: '32px', borderRadius: '9999px',
+                width: '36px', height: '36px', borderRadius: '9999px',
                 border: '1px solid var(--border)', background: 'transparent',
                 color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
                 justifyContent: 'center', cursor: 'pointer', flexShrink: 0,

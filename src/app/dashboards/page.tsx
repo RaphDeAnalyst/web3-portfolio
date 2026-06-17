@@ -22,7 +22,7 @@ export default async function DashboardsPage() {
   const [featured, ...rest] = charts
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px)', padding: '88px 32px 80px' }}>
+    <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '88px 32px 80px' }}>
       <div style={{ maxWidth: '1152px', margin: '0 auto' }}>
 
         {/* Header */}

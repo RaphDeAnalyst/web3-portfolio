@@ -106,11 +106,11 @@ export function WorkRow({ project, index }: WorkRowProps) {
         <MiniGraph seed={seed} />
       </div>
 
-      {/* Title + meta + description */}
+      {/* Title + category + description + mobile tag row */}
       <div style={{ minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
           <h2
-            className="font-serif"
+            className="font-serif work-ledger-h2"
             style={{ fontWeight: 700, fontSize: '21px', margin: 0, color: 'var(--text-primary)' }}
           >
             {project.title}
@@ -130,15 +130,6 @@ export function WorkRow({ project, index }: WorkRowProps) {
         </div>
         <p
           style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: '11px', letterSpacing: '0.06em',
-            margin: '0 0 10px', color: 'var(--text-muted)', textTransform: 'uppercase',
-          }}
-        >
-          {project.tech_stack?.slice(0, 2).join(' · ')}
-        </p>
-        <p
-          style={{
             fontSize: '14px', lineHeight: 1.6, margin: 0,
             color: 'var(--text-secondary)', maxWidth: '560px',
             display: '-webkit-box', WebkitLineClamp: 2,
@@ -147,13 +138,41 @@ export function WorkRow({ project, index }: WorkRowProps) {
         >
           {project.description}
         </p>
+        {/* Mobile-only: PDF badge + tag pills below description (hidden at ≥641px via CSS) */}
+        <div className="work-ledger-mobile-meta">
+          {project.file_url && (
+            <span
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '10px', border: '1px solid var(--border)',
+                borderRadius: '2px', padding: '1px 6px', opacity: 0.55,
+                color: 'var(--text-secondary)',
+              }}
+            >
+              PDF
+            </span>
+          )}
+          {project.tech_stack?.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              style={{
+                fontSize: '11px', padding: '3px 9px',
+                border: '1px solid var(--border)', borderRadius: '9999px',
+                color: 'var(--text-secondary)', opacity: 0.6,
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Right: PDF badge + tags */}
+      {/* Right: PDF badge + ↗ + tags (tags hidden on mobile) */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-secondary)' }}>
           {project.file_url && (
             <span
+              className="work-ledger-pdf"
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: '10px', border: '1px solid var(--border)',
@@ -167,7 +186,10 @@ export function WorkRow({ project, index }: WorkRowProps) {
           <span style={{ fontSize: '16px', opacity: 0.4 }}>↗</span>
         </div>
         {project.tech_stack && project.tech_stack.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'flex-end', maxWidth: '220px' }}>
+          <div
+            className="work-ledger-tags"
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'flex-end', maxWidth: '220px' }}
+          >
             {project.tech_stack.slice(0, 3).map((tag) => (
               <span
                 key={tag}

@@ -31,8 +31,8 @@ export default async function WorkPage() {
   }
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px)', padding: '88px 32px 80px' }}>
-      <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+    <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '88px 32px 80px' }}>
+      <div style={{ maxWidth: '1152px', margin: '0 auto' }}>
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '8px' }}>

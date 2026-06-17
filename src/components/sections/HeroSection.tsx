@@ -68,7 +68,7 @@ export function HeroSection() {
       className="hero-ed"
       style={{
         position: 'relative',
-        minHeight: 'calc(100vh - 64px)',
+        minHeight: 'calc(100vh - 64px - var(--safe-area-top))',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

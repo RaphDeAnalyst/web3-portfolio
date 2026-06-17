@@ -152,7 +152,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
   if (error || !project) {
     return (
-      <div style={{ minHeight: 'calc(100vh - 64px)', padding: '72px 32px 64px' }}>
+      <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '72px 32px 64px' }}>
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           <Link href="/work" style={{ fontSize: '14px', opacity: 0.6, display: 'inline-block', marginBottom: '28px', color: 'var(--text-primary)', textDecoration: 'none' }}>
             ← Work
@@ -173,7 +173,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   const graphSeed = params.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 5)
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px)', padding: '72px 32px 64px' }}>
+    <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '72px 32px 64px' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Back */}

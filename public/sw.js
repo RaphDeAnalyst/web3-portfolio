@@ -1,17 +1,16 @@
 // Service Worker for Matthew Raphael's Web3 Portfolio
 // Provides offline functionality and caching strategies
 
-const CACHE_NAME = 'web3-portfolio-v1'
-const STATIC_CACHE = 'static-v1'
-const DYNAMIC_CACHE = 'dynamic-v1'
+const CACHE_NAME = 'web3-portfolio-v2'
+const STATIC_CACHE = 'static-v2'
+const DYNAMIC_CACHE = 'dynamic-v2'
 
 // Assets to cache on install
 const STATIC_ASSETS = [
   '/',
+  '/work',
   '/about',
-  '/portfolio',
-  '/blog',
-  '/contact',
+  '/dashboards',
   '/favicon.ico',
   '/site.webmanifest',
   '/apple-touch-icon-dark.png',

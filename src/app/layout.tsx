@@ -24,10 +24,15 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  viewportFit: "cover"
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
+  ],
 };
 
 export const metadata: Metadata = {
+  manifest: "/site.webmanifest",
   title: "Matthew Raphael Nnamani | Blockchain Intelligence Practitioner",
   description: "Matthew Raphael Nnamani is a blockchain intelligence practitioner and on-chain investigator based in Lagos, Nigeria. Specialising in AML-aligned fund tracing, KYT, and financial crime investigations across EVM chains.",
   icons: {

@@ -93,15 +93,17 @@
 .brand-mono { display: none; }
 .brand-full { display: inline; }
 
+/* 380–639px: MR monogram, 13px links, gap-4 (16px) */
 @media (max-width: 640px) {
   .brand-full { display: none !important; }
   .brand-mono { display: inline !important; }
   .nav-inner { padding-left: 18px !important; padding-right: 18px !important; }
-  .nav-links { gap: 13px !important; }
+  .nav-links { gap: 16px !important; }
   .nav-links a { font-size: 13px !important; }
 }
+/* <380px: same, 12px, gap-3 (12px) — runs tight, no hamburger */
 @media (max-width: 380px) {
-  .nav-links { gap: 11px !important; }
+  .nav-links { gap: 12px !important; }
   .nav-links a { font-size: 12px !important; }
 }
 
@@ -119,16 +121,31 @@
 /* Side rail — hide on narrow screens */
 @media (max-width: 900px) { .hero-rail { display: none !important; } }
 
-/* About two-column — collapse on tablet */
-@media (max-width: 860px) {
-  .about-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
-  .about-aside { position: static !important; top: auto !important; }
-}
 
-/* Work ledger rows — reflow on mobile */
+/* Work ledger rows — tablet portrait: hide mini-graph, keep right column with tags */
 @media (max-width: 768px) {
   .work-ledger-row { grid-template-columns: 40px 1fr auto !important; gap: 16px !important; }
   .work-ledger-graph { display: none !important; }
+  .work-ledger-h2 { font-size: 18px !important; }
+}
+
+/* Work ledger mobile-meta row: hidden by default, flex on mobile */
+.work-ledger-mobile-meta {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+/* Work ledger rows — mobile: vertical stack below 640px */
+@media (max-width: 640px) {
+  /* Right col stripped to ↗ only — strip PDF badge and tag pills */
+  .work-ledger-tags { display: none !important; }
+  .work-ledger-pdf { display: none !important; }
+  /* Show PDF + tags below description in content column instead */
+  .work-ledger-mobile-meta { display: flex !important; }
+  .work-ledger-h2 { font-size: 17px !important; }
 }
 
 /* Dashboards — stat strip 4→2 cols, charts single col on mobile */
@@ -144,11 +161,30 @@
   }
 }
 
+/* PWA standalone mode: pad navbar below device status bar / notch */
+/* Scoped to .site-nav (public header only) — avoids matching admin <nav> */
+@media (display-mode: standalone) {
+  .site-nav {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Safe-area offset for calc(100vh - 64px) wrappers in standalone PWA.
+   Resolves to 0px in browser tabs, env(safe-area-inset-top) in installed PWA. */
+:root {
+  --safe-area-top: 0px;
+}
+@media (display-mode: standalone) {
+  :root {
+    --safe-area-top: env(safe-area-inset-top);
+  }
+}
+
 /* Mobile Responsiveness — 360px to 1280px */
 
-/* Ensure no horizontal overflow */
+/* Prevent horizontal overflow without creating a BFC that traps vertical scroll */
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Hero Section — Mobile */
@@ -296,43 +332,21 @@ html, body {
   }
 }
 
-/* Minimum tap target sizes — ensure all interactive elements are 44px */
+/* Tap targets — targeted rules only, avoid display overrides on generic a/button */
 @media (max-width: 768px) {
-  button,
-  a {
+  /* Nav links: adequate tap height, keep display:flex for centering within nav row */
+  .nav-links a {
+    padding: 10px 8px;
     min-height: 44px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
   }
 
-  /* Theme toggle button */
+  /* Theme toggle: consistent size, flexShrink 0 so it never gets squeezed */
   .theme-toggle {
-    width: 44px;
-    height: 44px;
-  }
-
-  /* Nav links minimum touch target */
-  .nav-links a {
-    padding: 10px 8px;
-  }
-}
-
-/* Text size enforcement — never smaller than 11px on mobile */
-@media (max-width: 768px) {
-  body,
-  p,
-  span,
-  a,
-  button {
-    font-size: clamp(11px, 2.5vw, 16px);
-  }
-
-  .text-xs {
-    font-size: clamp(11px, 2.5vw, 12px);
-  }
-
-  .text-sm {
-    font-size: clamp(12px, 3vw, 14px);
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0;
   }
 }
 
