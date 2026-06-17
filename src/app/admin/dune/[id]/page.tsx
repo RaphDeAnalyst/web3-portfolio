@@ -296,7 +296,7 @@ export default function DuneChartEditorPage({ params }: { params: { id: string }
                   <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Single column — the numeric value for each slice</p>
                   {yKeysList.length > 1 && (
                     <p className="text-xs mt-1 font-mono" style={{ color: '#d97706' }}>
-                      ⚠ Pie charts use one value column. Only the first entry ("{yKeysList[0]}") will be used — remove the rest.
+                      ⚠ Pie charts use one value column. Only the first entry (&quot;{yKeysList[0]}&quot;) will be used — remove the rest.
                     </p>
                   )}
                 </>
