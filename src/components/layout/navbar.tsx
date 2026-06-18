@@ -75,7 +75,7 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap' }}
+            style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap', paddingBottom: '6px' }}
             aria-label="Read my research on Paragraph"
           >
             Research ↗
