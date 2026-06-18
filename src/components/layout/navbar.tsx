@@ -75,30 +75,32 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap', paddingBottom: '6px' }}
+            style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap', paddingTop: '6px', paddingBottom: '6px' }}
             aria-label="Read my research on Paragraph"
           >
             Research ↗
           </a>
-
-          {isMounted && (
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              style={{
-                width: '36px', height: '36px', borderRadius: '9999px',
-                border: '1px solid var(--border)', background: 'transparent',
-                color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-secondary)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
-            >
-              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
-            </button>
-          )}
         </div>
+
+        {/* Theme toggle — direct sibling of wordmark and nav-links so space-between
+            distributes equal gaps: [MR] ←gap→ [links] ←gap→ [toggle] */}
+        {isMounted && (
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            style={{
+              width: '36px', height: '36px', borderRadius: '9999px',
+              border: '1px solid var(--border)', background: 'transparent',
+              color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-secondary)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+          >
+            {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+          </button>
+        )}
       </div>
     </nav>
   )
@@ -111,7 +113,7 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
       className="hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       style={{
         position: 'relative', fontSize: '14px', color: 'var(--text-primary)',
-        opacity: active ? 1 : 0.6, textDecoration: 'none', paddingBottom: '6px',
+        opacity: active ? 1 : 0.6, textDecoration: 'none', paddingTop: '6px', paddingBottom: '6px',
       }}
     >
       {children}
