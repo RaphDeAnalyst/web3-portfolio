@@ -65,42 +65,42 @@ export function Navbar() {
           <span className="brand-mono">MR</span>
         </Link>
 
-        {/* Nav links — unified, no separate mobile version */}
-        <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-          <NavLink href="/work" active={!!workActive}>Work</NavLink>
-          <NavLink href="/about" active={!!aboutActive}>About</NavLink>
-          <NavLink href="/dashboards" active={!!dashActive}>Dashboards</NavLink>
-          <a
-            href="https://paragraph.com/@notes0x"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap', paddingTop: '6px', paddingBottom: '6px' }}
-            aria-label="Read my research on Paragraph"
-          >
-            Research ↗
-          </a>
-        </div>
+        {/* Right group: nav links + toggle — space-between pushes this whole block to the right */}
+        <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+          <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+            <NavLink href="/work" active={!!workActive}>Work</NavLink>
+            <NavLink href="/about" active={!!aboutActive}>About</NavLink>
+            <NavLink href="/dashboards" active={!!dashActive}>Dashboards</NavLink>
+            <a
+              href="https://paragraph.com/@notes0x"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-100 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{ fontSize: '14px', color: 'var(--text-primary)', opacity: 0.6, textDecoration: 'none', whiteSpace: 'nowrap', paddingTop: '6px', paddingBottom: '6px' }}
+              aria-label="Read my research on Paragraph"
+            >
+              Research ↗
+            </a>
+          </div>
 
-        {/* Theme toggle — direct sibling of wordmark and nav-links so space-between
-            distributes equal gaps: [MR] ←gap→ [links] ←gap→ [toggle] */}
-        {isMounted && (
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            style={{
-              width: '36px', height: '36px', borderRadius: '9999px',
-              border: '1px solid var(--border)', background: 'transparent',
-              color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-secondary)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
-          >
-            {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
-          </button>
-        )}
+          {isMounted && (
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              style={{
+                width: '36px', height: '36px', borderRadius: '9999px',
+                border: '1px solid var(--border)', background: 'transparent',
+                color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-secondary)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+            >
+              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   )
