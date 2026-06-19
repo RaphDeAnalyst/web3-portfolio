@@ -164,6 +164,25 @@ export function HeroSection() {
           >
             View work →
           </Link>
+          <Link
+            href="/services"
+            style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '13px 26px', border: '1px solid var(--accent)',
+              color: 'var(--text-primary)', fontSize: '14px', fontWeight: 500,
+              textDecoration: 'none', borderRadius: '2px', transition: 'all .15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'var(--accent)'
+              e.currentTarget.style.color = 'var(--bg-primary)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.color = 'var(--text-primary)'
+            }}
+          >
+            Work with me →
+          </Link>
           <a
             href="https://paragraph.com/@notes0x"
             target="_blank"

@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 const PRINCIPLES = [
   { num: '01', title: 'Assert only what the data supports.', note: 'CONFIRMED, PROBABLE, UNCONFIRMED — never collapsed into one.' },
   { num: '02', title: 'Slow movement beats no movement.', note: 'A logged blocker is progress. An abandoned thread is not.' },
@@ -160,6 +162,21 @@ export function AboutClient() {
                 {m}
               </span>
             ))}
+          </div>
+          <div style={{ marginTop: '20px' }}>
+            <Link
+              href="/methodology"
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', textTransform: 'uppercase',
+                letterSpacing: '0.12em', color: 'var(--accent)',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7' }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
+            >
+              View Full Methodology →
+            </Link>
           </div>
         </div>
 
