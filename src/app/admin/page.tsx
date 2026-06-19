@@ -26,6 +26,10 @@ interface FormData {
   blogTags: string
   blogFeaturedImage: string
   blogFeatured: boolean
+  investigationMandate: string
+  investigationMethodology: string
+  investigationFindings: string
+  investigationOutcome: string
 }
 
 export default function AdminPage() {
@@ -56,6 +60,10 @@ export default function AdminPage() {
     blogTags: '',
     blogFeaturedImage: '',
     blogFeatured: false,
+    investigationMandate: '',
+    investigationMethodology: '',
+    investigationFindings: '',
+    investigationOutcome: '',
   })
 
   const loadProjects = useCallback(async () => {
@@ -190,6 +198,13 @@ export default function AdminPage() {
         projectData.file_url = formData.fileUrl
       }
 
+      if (formData.type === 'Investigation') {
+        if (formData.investigationMandate) projectData.investigation_mandate = formData.investigationMandate
+        if (formData.investigationMethodology) projectData.investigation_methodology = formData.investigationMethodology
+        if (formData.investigationFindings) projectData.investigation_findings = formData.investigationFindings
+        if (formData.investigationOutcome) projectData.investigation_outcome = formData.investigationOutcome
+      }
+
       const result = await saveProjectAsAdmin(projectData)
       const projectId = result.projectId
 
@@ -246,6 +261,10 @@ export default function AdminPage() {
         blogTags: '',
         blogFeaturedImage: '',
         blogFeatured: false,
+        investigationMandate: '',
+        investigationMethodology: '',
+        investigationFindings: '',
+        investigationOutcome: '',
       })
       setShowForm(false)
       setShowContentSection(false)
@@ -600,9 +619,50 @@ export default function AdminPage() {
                   />
                 </div>
 
-                {/* Extended Write-up Section */}
+                {/* Content section — adapts to project type */}
 
-                {/* Extended Write-up Collapsible */}
+                {/* Investigation Brief — shown when type is Investigation */}
+                {formData.type === 'Investigation' && (
+                  <div style={{ borderTopColor: 'var(--card-border)', borderTopWidth: '0.5px', paddingTop: '1.5rem' }}>
+                    <p className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: 'var(--text-secondary)', letterSpacing: '0.12em' }}>
+                      Investigation Brief <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span>
+                    </p>
+                    <div className="space-y-4">
+                      {([
+                        { key: 'investigationMandate'     as const, label: 'Mandate',     rows: 3, hint: 'The question or mandate — what were you asked to find?' },
+                        { key: 'investigationMethodology' as const, label: 'Methodology', rows: 4, hint: 'Address clustering, graph traversal, exchange tracing…' },
+                        { key: 'investigationFindings'    as const, label: 'Findings',    rows: 5, hint: 'Key findings. Include addresses/tx hashes where relevant.' },
+                        { key: 'investigationOutcome'     as const, label: 'Outcome',     rows: 3, hint: 'What was established, at what confidence, within what timeframe.' },
+                      ]).map(({ key, label, rows, hint }) => (
+                        <div key={key}>
+                          <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: 'var(--accent)', letterSpacing: '0.12em' }}>
+                            {label}
+                          </label>
+                          <textarea
+                            rows={rows}
+                            value={formData[key]}
+                            onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                            placeholder={hint}
+                            className="w-full px-4 py-3 rounded text-sm resize-none transition-all"
+                            style={{
+                              backgroundColor: 'var(--bg-primary)',
+                              borderColor: 'var(--card-border)',
+                              borderWidth: '0.5px',
+                              color: 'var(--text-primary)',
+                              lineHeight: 1.6,
+                              fontFamily: 'inherit',
+                            }}
+                            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent)' }}
+                            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--card-border)' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Extended write-up — shown for Research and Analytics */}
+                {formData.type !== 'Investigation' && (
                 <div style={{ borderTopColor: 'var(--card-border)', borderTopWidth: '0.5px', paddingTop: '1.5rem' }}>
                   <button
                     type="button"
@@ -783,6 +843,7 @@ export default function AdminPage() {
                     </div>
                   )}
                 </div>
+                )}
 
               {/* Save Button */}
               <button

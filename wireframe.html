@@ -1,0 +1,116 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+.site{background:#0A0A0A;color:#EBEBEB;font-family:'IBM Plex Sans',sans-serif;padding:28px 32px}
+.lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#6b6b6b;text-transform:uppercase}
+.h{font-family:'Playfair Display',serif;font-weight:700;color:#EBEBEB;margin:6px 0 10px}
+.muted{color:#9a9a9a;font-size:13px;line-height:1.6}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,0.12);border-radius:999px;padding:5px 12px;font-size:12px;color:#9a9a9a}
+.frame{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.5rem}
+.bar{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--color-text-secondary);padding:7px 14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+</style>
+
+<h2 class="sr-only" style="position:absolute;left:-9999px;">Wireframes of five new or changed pages on the portfolio site: an expanded case study detail page, a new services page, a new methodology page, and a new credentials section added to the about page.</h2>
+
+<div class="frame">
+  <div class="bar">matthewraphael.xyz/work/kraken-thorchain — case study detail (expanded)</div>
+  <div class="site">
+    <div class="lbl">Case study</div>
+    <div class="h" style="font-size:26px;">Kraken → THORChain — $18.2M cross-chain fund flow</div>
+    <div class="muted" style="margin-bottom:18px;">Independent analysis · EVM + THORChain · 7-hop trace</div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-bottom:14px;">
+      <div class="lbl" style="color:#C4933F;margin-bottom:6px;">Mandate</div>
+      <div class="muted">Trace the destination of funds withdrawn from a labeled Kraken hot wallet across a cross-chain bridge.</div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-bottom:14px;">
+      <div class="lbl" style="color:#C4933F;margin-bottom:6px;">Methodology</div>
+      <div class="muted">Address clustering on source chain → bridge contract identification → destination-chain re-entry matched on timing and amount.</div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-bottom:14px;">
+      <div class="lbl" style="color:#C4933F;margin-bottom:6px;">Findings</div>
+      <div class="muted" style="font-family:'IBM Plex Mono',monospace;font-size:12px;">0xa3f1…9e2c → THORChain router → 0x7b4d…11ac (confirmed)</div>
+      <div class="muted" style="font-family:'IBM Plex Mono',monospace;font-size:12px;">Remaining 14% routed through unlabeled intermediary (probable)</div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-bottom:20px;">
+      <div class="lbl" style="color:#C4933F;margin-bottom:6px;">Outcome</div>
+      <div class="muted">86% of withdrawn funds attributed to a single counterparty cluster within 48 hours of withdrawal.</div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:12px 16px;">
+      <span class="muted" style="font-size:13px;">Sample intelligence report</span>
+      <span class="pill" style="border-color:#C4933F;color:#C4933F;"><i class="ti ti-download" style="font-size:14px;" aria-hidden="true"></i>Download PDF</span>
+    </div>
+  </div>
+</div>
+
+<div class="frame">
+  <div class="bar">matthewraphael.xyz/services — new page</div>
+  <div class="site">
+    <div class="h" style="font-size:30px;">Services</div>
+    <div class="muted" style="margin-bottom:18px;">Wallet screening, fund tracing, and AML-aligned investigation — engaged directly.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;">
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="margin-bottom:8px;">Quick report</div>
+        <div class="muted">Single wallet screening, 48hr turnaround.</div>
+      </div>
+      <div style="border:1px solid #C4933F;border-radius:4px;padding:14px;">
+        <div class="lbl" style="color:#C4933F;margin-bottom:8px;">Full investigation</div>
+        <div class="muted">Multi-hop trace with written brief.</div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="margin-bottom:8px;">Retainer</div>
+        <div class="muted">Ongoing monitoring, monthly.</div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;">
+      <div class="lbl" style="margin-bottom:10px;">Start an inquiry</div>
+      <div class="muted" style="margin-bottom:8px;">Wallet address or transaction hash</div>
+      <div style="border:1px solid rgba(255,255,255,0.12);border-radius:4px;height:30px;margin-bottom:12px;"></div>
+      <div class="muted" style="margin-bottom:8px;">What happened</div>
+      <div style="border:1px solid rgba(255,255,255,0.12);border-radius:4px;height:50px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="frame">
+  <div class="bar">matthewraphael.xyz/methodology — new page</div>
+  <div class="site">
+    <div class="h" style="font-size:30px;">Methodology</div>
+    <div class="muted" style="font-style:italic;margin-bottom:18px;">Assert only what the data supports.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="color:#C4933F;">Phase 1</div>
+        <div style="font-family:'IBM Plex Sans';font-weight:500;font-size:14px;margin:6px 0 4px;">Address clustering</div>
+        <div class="muted">Entity identification across labeled and heuristic clusters.</div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="color:#C4933F;">Phase 2</div>
+        <div style="font-family:'IBM Plex Sans';font-weight:500;font-size:14px;margin:6px 0 4px;">Graph traversal</div>
+        <div class="muted">Transaction-level hop tracing across chains.</div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="color:#C4933F;">Phase 3</div>
+        <div style="font-family:'IBM Plex Sans';font-weight:500;font-size:14px;margin:6px 0 4px;">Exchange / bridge tracing</div>
+        <div class="muted">Attribution at known on/off-ramps.</div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:14px;">
+        <div class="lbl" style="color:#C4933F;">Phase 4</div>
+        <div style="font-family:'IBM Plex Sans';font-weight:500;font-size:14px;margin:6px 0 4px;">Reporting</div>
+        <div class="muted">Confirmed / probable / unconfirmed brief.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="frame">
+  <div class="bar">matthewraphael.xyz/about — new section appended</div>
+  <div class="site">
+    <div class="lbl" style="margin-bottom:10px;">Verified</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span class="pill"><i class="ti ti-link" style="font-size:14px;" aria-hidden="true"></i>ENS</span>
+      <span class="pill"><i class="ti ti-brand-github" style="font-size:14px;" aria-hidden="true"></i>GitHub</span>
+      <span class="pill"><i class="ti ti-chart-bar" style="font-size:14px;" aria-hidden="true"></i>Dune profile</span>
+      <span class="pill"><i class="ti ti-certificate" style="font-size:14px;" aria-hidden="true"></i>CAMS</span>
+    </div>
+  </div>
+</div>

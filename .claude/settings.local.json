@@ -50,12 +50,21 @@
       "Bash(grep -v \"^$\")",
       "Bash(npx vitest *)",
       "mcp__plugin_playwright_playwright__browser_navigate",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(echo \"PID: $!\")",
+      "Read(//usr/bin/**)",
+      "Read(//usr/**)",
+      "mcp__supabase__list_projects",
+      "mcp__supabase__execute_sql"
     ],
     "deny": [],
     "ask": [],
     "additionalDirectories": [
       "C:\\Users\\matth\\OneDrive\\Desktop"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

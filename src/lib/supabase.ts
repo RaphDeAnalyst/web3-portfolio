@@ -64,6 +64,10 @@ export interface Project {
   challenges?: string
   learnings?: string
   file_url?: string
+  investigation_mandate?: string
+  investigation_methodology?: string
+  investigation_findings?: string
+  investigation_outcome?: string
   created_at: string
   updated_at: string
 }

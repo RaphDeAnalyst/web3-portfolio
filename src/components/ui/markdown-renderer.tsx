@@ -155,11 +155,24 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     const lines = text.split('\n')
     const groupedLines = groupGoogleDriveDocs(lines)
     const elements: ReactNode[] = []
-    
+    const paraLines: string[] = []
+
+    const flushPara = () => {
+      if (paraLines.length === 0) return
+      let text = paraLines.join(' ')
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+      text = text.replace(/\*(.*?)\*/g, '<em class="italic text-foreground/80">$1</em>')
+      text = text.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-accent">$1</code>')
+      text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-accent underline transition-opacity duration-200 hover:opacity-80" target="_blank" rel="noopener noreferrer">$1</a>')
+      elements.push(<p key={`p-${elements.length}`} style={{ fontSize: '17px', lineHeight: 1.7, margin: '0 0 16px', color: 'var(--text-secondary)' }} dangerouslySetInnerHTML={{ __html: text }} />)
+      paraLines.length = 0
+    }
+
     for (let i = 0; i < groupedLines.length; i++) {
       const item = groupedLines[i]
       
       if (item.type === 'document') {
+        flushPara()
         const doc = item.data[0]
         elements.push(
           <GoogleDriveDocument 
@@ -173,6 +186,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }
       
       if (item.type === 'group') {
+        flushPara()
         elements.push(
           <GoogleDriveDocumentGroup
             key={item.originalIndex}
@@ -187,26 +201,30 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       
       // Headers
       if (line.startsWith('# ')) {
+        flushPara()
         elements.push(
           <h1 key={i} className="text-3xl font-bold text-foreground mb-6">
             {line.substring(2)}
           </h1>
         )
       } else if (line.startsWith('## ')) {
+        flushPara()
         elements.push(
-          <h2 key={i} className="text-2xl font-bold text-foreground mb-4 mt-8">
+          <h2 key={i} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.14em', margin: '28px 0 10px', color: 'var(--accent)' }}>
             {line.substring(3)}
           </h2>
         )
       } else if (line.startsWith('### ')) {
+        flushPara()
         elements.push(
-          <h3 key={i} className="text-xl font-semibold text-foreground mb-3 mt-6">
+          <h3 key={i} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', margin: '20px 0 8px', color: 'var(--accent)' }}>
             {line.substring(4)}
           </h3>
         )
       }
       // Dune Analytics Placeholders
       else if (line.trim().match(/^\{\{embed_query:[a-zA-Z0-9_-]+\}\}$/)) {
+        flushPara()
         const match = line.trim().match(/^\{\{embed_query:([a-zA-Z0-9_-]+)\}\}$/)
         if (match) {
           const dashboardId = match[1]
@@ -316,6 +334,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }
       // Code blocks
       else if (line.startsWith('```')) {
+        flushPara()
         const codeLines = []
         i++ // Skip the opening ```
         while (i < lines.length && !lines[i].startsWith('```')) {
@@ -335,6 +354,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }
       // Blockquotes
       else if (line.startsWith('> ')) {
+        flushPara()
         elements.push(
           <blockquote key={i} className="border-l-4 border-accent pl-4 py-2 my-4 rounded-r-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="italic" style={{ color: 'var(--text-secondary)' }}>{line.substring(2)}</p>
@@ -343,6 +363,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }
       // Lists
       else if (line.startsWith('- ') || line.startsWith('* ')) {
+        flushPara()
         const listItems = [line.substring(2)]
         while (i + 1 < lines.length && (lines[i + 1].startsWith('- ') || lines[i + 1].startsWith('* '))) {
           i++
@@ -358,24 +379,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }
       // Regular paragraphs
       else if (line.trim()) {
-        // Handle inline formatting
-        let formattedLine = line
-        
-        // Bold
-        formattedLine = formattedLine.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
-        
-        // Italic
-        formattedLine = formattedLine.replace(/\*(.*?)\*/g, '<em class="italic text-foreground/80">$1</em>')
-        
-        // Inline code
-        formattedLine = formattedLine.replace(/`(.*?)`/g, '<code class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono text-accent">$1</code>')
-        
-        // YouTube videos - check for YouTube URLs (including Shorts)
+        // YouTube — flush buffer, emit embed
         const youtubeMatch = line.trim().match(/^https?:\/\/(?:www\.)?(youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&].*)?/)
         if (youtubeMatch) {
+          flushPara()
           const videoId = youtubeMatch[2]
           const originalUrl = youtubeMatch[0]
-
           elements.push(
             <div key={i} className="my-8">
               <div className="relative w-full max-w-4xl mx-auto" style={{ paddingBottom: '56.25%' }}>
@@ -386,11 +395,9 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                   allowFullScreen
                   loading="lazy"
                   onError={() => {
-                    // If iframe fails to load, this won't catch embedding restrictions
                     logger.warn(`YouTube iframe failed to load for video: ${videoId}`)
                   }}
                 />
-                {/* Fallback content - shown when embedding is disabled */}
                 <div
                   className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg opacity-0 hover:opacity-100 transition-opacity duration-300"
                   style={{ pointerEvents: 'none' }}
@@ -418,13 +425,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           continue
         }
 
-
-        // Images - check if the line contains image markdown
+        // Images — flush buffer, emit image
         const imageMatch = line.trim().match(/!\[([^\]]*)\]\(([^)]+)\)/)
         if (imageMatch) {
+          flushPara()
           const altText = imageMatch[1] || 'Image'
           const imageUrl = imageMatch[2]
-          
           elements.push(
             <div key={i} className="my-8 text-center">
               <div className="relative inline-block max-w-full">
@@ -433,11 +439,9 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                   alt={altText}
                   className="max-w-full h-auto rounded-xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg mx-auto transition-opacity duration-300"
                   loading="lazy"
-                  style={{ aspectRatio: '16 / 9' }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     target.style.display = 'none'
-                    // Create error placeholder
                     const errorDiv = document.createElement('div')
                     errorDiv.className = 'p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-800'
                     errorDiv.innerHTML = `
@@ -460,20 +464,16 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           )
           continue
         }
-        
-        // Links
-        formattedLine = formattedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-accent underline transition-opacity duration-200 hover:opacity-80" target="_blank" rel="noopener noreferrer">$1</a>')
-        
-        elements.push(
-          <p key={i} className="text-foreground/80 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedLine }} />
-        )
+
+        // Plain text — accumulate into paragraph buffer
+        paraLines.push(line)
       }
-      // Empty lines
+      // Blank lines separate paragraphs — flush the buffer
       else {
-        elements.push(<br key={i} />)
+        flushPara()
       }
     }
-    
+    flushPara()
     return elements
   }
 

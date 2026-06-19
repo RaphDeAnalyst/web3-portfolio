@@ -38,6 +38,10 @@ interface AdminProjectData {
   features?: string[]
   challenges?: string
   learnings?: string
+  investigation_mandate?: string
+  investigation_methodology?: string
+  investigation_findings?: string
+  investigation_outcome?: string
 }
 
 export async function saveProjectAsAdmin(projectData: AdminProjectData) {

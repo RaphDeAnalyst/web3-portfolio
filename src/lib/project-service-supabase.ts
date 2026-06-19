@@ -26,6 +26,11 @@ export interface Project {
   features?: string[]
   challenges?: string
   learnings?: string
+  investigationMandate?: string
+  investigationMethodology?: string
+  investigationFindings?: string
+  investigationOutcome?: string
+  created_at?: string
   links?: {
     github?: string
     demo?: string
@@ -59,6 +64,11 @@ export class ProjectServiceSupabase {
       ...(project.features && { features: project.features }),
       ...(project.challenges && { challenges: project.challenges }),
       ...(project.learnings && { learnings: project.learnings }),
+      investigationMandate: project.investigation_mandate,
+      investigationMethodology: project.investigation_methodology,
+      investigationFindings: project.investigation_findings,
+      investigationOutcome: project.investigation_outcome,
+      created_at: project.created_at,
       links: {
         github: project.github_url,
         demo: project.demo_url
@@ -84,7 +94,11 @@ export class ProjectServiceSupabase {
       metrics: project.metrics,
       features: project.features,
       challenges: project.challenges,
-      learnings: project.learnings
+      learnings: project.learnings,
+      ...(project.investigationMandate !== undefined && { investigation_mandate: project.investigationMandate }),
+      ...(project.investigationMethodology !== undefined && { investigation_methodology: project.investigationMethodology }),
+      ...(project.investigationFindings !== undefined && { investigation_findings: project.investigationFindings }),
+      ...(project.investigationOutcome !== undefined && { investigation_outcome: project.investigationOutcome }),
     }
   }
 

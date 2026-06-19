@@ -1,3 +1,4 @@
+import type { CSSProperties, ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { projectServiceSupabase } from '@/lib/project-service-supabase'
@@ -54,53 +55,47 @@ function buildDetailGraph(seed: number) {
   return { pts, edges, flagged, W, H }
 }
 
-function CaseGraphFigure({ seed, title }: { seed: number; title: string }) {
+function renderParagraphs(text: string, style: CSSProperties): ReactNode {
+  const chunks = text.split('\n').map(c => c.trim()).filter(Boolean)
+  if (chunks.length <= 1) return <p style={style}>{text.trim()}</p>
+  return (
+    <>
+      {chunks.map((para, i) => (
+        <p key={i} style={i < chunks.length - 1 ? { ...style, margin: '0 0 12px' } : style}>{para}</p>
+      ))}
+    </>
+  )
+}
+
+function AmbientDetailGraph({ seed }: { seed: number }) {
   const { pts, edges, flagged, W, H } = buildDetailGraph(seed)
   return (
-    <div
-      style={{
-        position: 'relative', width: '100%', aspectRatio: '16/9',
-        borderRadius: '2px', marginBottom: '14px',
-        background: 'var(--bg-secondary)', border: '1px solid var(--card-border)',
-        overflow: 'hidden', color: 'var(--text-secondary)',
-      }}
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid slice"
+      style={{ display: 'block' }}
     >
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        width="100%" height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        style={{ position: 'absolute', inset: 0, opacity: 0.65 }}
-      >
-        {edges.map(([a, b], i) => (
-          <line
-            key={`e${i}`}
-            x1={pts[a][0]} y1={pts[a][1]}
-            x2={pts[b][0]} y2={pts[b][1]}
-            stroke="currentColor" strokeWidth={0.7} strokeOpacity={0.55}
-          />
-        ))}
-        {pts.map((p, i) => (
-          flagged.has(i) ? (
-            <g key={`n${i}`}>
-              <circle cx={p[0]} cy={p[1]} r={9} fill="none" stroke="var(--accent)" strokeWidth={0.8} strokeOpacity={0.45} />
-              <circle cx={p[0]} cy={p[1]} r={4.5} fill="var(--accent)" className="gpulse" />
-            </g>
-          ) : (
-            <circle key={`n${i}`} cx={p[0]} cy={p[1]} r={2.4} fill="currentColor" />
-          )
-        ))}
-      </svg>
-      <span
-        style={{
-          position: 'absolute', bottom: '14px', left: '16px',
-          fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: '11px', letterSpacing: '0.1em',
-          textTransform: 'uppercase', color: 'var(--text-muted)',
-        }}
-      >
-        Fig.1 — Address graph · {title}
-      </span>
-    </div>
+      {edges.map(([a, b], i) => (
+        <line
+          key={`e${i}`}
+          x1={pts[a][0]} y1={pts[a][1]}
+          x2={pts[b][0]} y2={pts[b][1]}
+          stroke="currentColor" strokeWidth={0.6} strokeOpacity={0.7}
+        />
+      ))}
+      {pts.map((p, i) => (
+        flagged.has(i) ? (
+          <g key={`n${i}`}>
+            <circle cx={p[0]} cy={p[1]} r={8} fill="none" stroke="var(--accent)" strokeWidth={0.7} strokeOpacity={0.5} />
+            <circle cx={p[0]} cy={p[1]} r={3.5} fill="var(--accent)" fillOpacity={0.6} />
+          </g>
+        ) : (
+          <circle key={`n${i}`} cx={p[0]} cy={p[1]} r={2.4} fill="currentColor" />
+        )
+      ))}
+    </svg>
   )
 }
 
@@ -169,12 +164,38 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   const tags = blogPost?.tags || project.tech_stack || []
   const hasFeaturedImage = !!blogPost?.featuredImage
 
+  const investigationDate = project.category === 'Investigation' && project.created_at
+    ? new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    : null
+
+  const investigationReadTime = (() => {
+    if (project.category !== 'Investigation') return null
+    const text = [
+      project.investigationMandate,
+      project.investigationMethodology,
+      project.investigationFindings,
+      project.investigationOutcome,
+    ].filter(Boolean).join(' ')
+    if (!text.trim()) return null
+    return `${Math.max(1, Math.ceil(text.split(/\s+/).length / 200))} min read`
+  })()
+
   // Use project index as seed for the graph (deterministic per project)
   const graphSeed = params.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 5)
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '72px 32px 64px' }}>
-      <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+    <div style={{ minHeight: 'calc(100vh - 64px - var(--safe-area-top))', padding: '72px 32px 64px', position: 'relative', overflow: 'hidden' }}>
+      {/* Ambient address graph — background texture, theme-adaptive via currentColor */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute', top: 0, right: 0, bottom: 0, width: '60%',
+          opacity: 0.055, pointerEvents: 'none', color: 'var(--text-primary)',
+        }}
+      >
+        <AmbientDetailGraph seed={graphSeed} />
+      </div>
+      <div style={{ maxWidth: '820px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
         {/* Back */}
         <Link
@@ -198,19 +219,24 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               {project.category}
             </span>
           )}
-          {(blogPost?.date || blogPost?.readTime) && (
-            <>
-              <span style={{ width: '14px', height: '1px', background: 'var(--separator)', display: 'inline-block' }} />
-              <span
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: '11px', letterSpacing: '0.1em',
-                  textTransform: 'uppercase', color: 'var(--text-muted)',
-                }}
-              >
-                {[blogPost.date, blogPost.readTime].filter(Boolean).join(' · ')}
-              </span>
-            </>
+          {project.category === 'Investigation' ? (
+            (investigationDate || investigationReadTime) && (
+              <>
+                <span style={{ width: '14px', height: '1px', background: 'var(--separator)', display: 'inline-block' }} />
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                  {[investigationDate, investigationReadTime].filter(Boolean).join(' · ')}
+                </span>
+              </>
+            )
+          ) : (
+            (blogPost?.date || blogPost?.readTime) && (
+              <>
+                <span style={{ width: '14px', height: '1px', background: 'var(--separator)', display: 'inline-block' }} />
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                  {[blogPost.date, blogPost.readTime].filter(Boolean).join(' · ')}
+                </span>
+              </>
+            )
           )}
         </div>
 
@@ -228,19 +254,13 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         </h1>
 
         {/* Summary / lead */}
-        {(blogPost?.summary || project.description) && (
-          <p
-            style={{
-              fontSize: '19px', lineHeight: 1.6, opacity: 0.78,
-              margin: '0 0 28px', color: 'var(--text-primary)', maxWidth: '680px',
-            }}
-          >
-            {blogPost?.summary || project.description}
-          </p>
+        {(blogPost?.summary || project.description) && renderParagraphs(
+          blogPost?.summary || project.description!,
+          { fontSize: '19px', lineHeight: 1.6, opacity: 0.78, margin: '0 0 28px', color: 'var(--text-primary)' }
         )}
 
-        {/* Featured image or node graph figure */}
-        {hasFeaturedImage ? (
+        {/* Featured image */}
+        {hasFeaturedImage && (
           <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '2px', marginBottom: '14px', background: 'var(--bg-secondary)', overflow: 'hidden' }}>
             <Image
               src={blogPost!.featuredImage!}
@@ -251,8 +271,6 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               sizes="(max-width: 768px) 100vw, 820px"
             />
           </div>
-        ) : (
-          <CaseGraphFigure seed={graphSeed} title={title} />
         )}
 
         {/* Tags + external links */}
@@ -295,16 +313,53 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           </span>
         </div>
 
-        {/* Markdown body */}
-        {blogPost?.content ? (
-          <div style={{ marginTop: '40px' }} className="prose dark:prose-invert max-w-none">
-            <MarkdownRenderer content={blogPost.content} />
+        {/* Structured case study — Investigation type */}
+        {project.category === 'Investigation' ? (
+          <div style={{ marginTop: '40px' }}>
+            {([
+              { label: 'Mandate',     body: project.investigationMandate },
+              { label: 'Methodology', body: project.investigationMethodology },
+              { label: 'Findings',    body: project.investigationFindings },
+              { label: 'Outcome',     body: project.investigationOutcome },
+            ]).filter(s => s.body).map(({ label, body }) => (
+              <div
+                key={label}
+                style={{ borderTop: '1px solid var(--separator)', paddingTop: '20px', marginBottom: '28px' }}
+              >
+                <p
+                  style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '11px', textTransform: 'uppercase',
+                    letterSpacing: '0.14em', margin: '0 0 10px',
+                    color: 'var(--accent)',
+                  }}
+                >
+                  {label}
+                </p>
+                {renderParagraphs(body!, { fontSize: '17px', lineHeight: 1.7, margin: 0, color: 'var(--text-secondary)' })}
+              </div>
+            ))}
+            {!project.investigationMandate &&
+             !project.investigationMethodology &&
+             !project.investigationFindings &&
+             !project.investigationOutcome && (
+              <div style={{ textAlign: 'center', padding: '48px 0', opacity: 0.5 }}>
+                <p>No write-up yet. Check back soon.</p>
+              </div>
+            )}
           </div>
-        ) : !project.file_url && !project.duneUrl ? (
-          <div style={{ textAlign: 'center', padding: '48px 0', opacity: 0.5 }}>
-            <p>No write-up yet. Check back soon.</p>
-          </div>
-        ) : null}
+        ) : (
+          /* Research and Analytics — markdown body */
+          blogPost?.content ? (
+            <div style={{ marginTop: '40px' }}>
+              <MarkdownRenderer content={blogPost.content} />
+            </div>
+          ) : !project.file_url && !project.duneUrl ? (
+            <div style={{ textAlign: 'center', padding: '48px 0', opacity: 0.5 }}>
+              <p>No write-up yet. Check back soon.</p>
+            </div>
+          ) : null
+        )}
 
         {/* On-Chain Data */}
         {charts.length > 0 && (
