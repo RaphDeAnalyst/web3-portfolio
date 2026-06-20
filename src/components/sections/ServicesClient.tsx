@@ -29,6 +29,7 @@ const TIERS = [
 
 export function ServicesClient() {
   const [wallet, setWallet]       = useState('')
+  const [email, setEmail]         = useState('')
   const [details, setDetails]     = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending]     = useState(false)
@@ -42,7 +43,7 @@ export function ServicesClient() {
       const res = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet, details }),
+        body: JSON.stringify({ wallet, email, details }),
       })
       if (!res.ok) throw new Error()
       setSubmitted(true)
@@ -174,6 +175,35 @@ export function ServicesClient() {
                   value={wallet}
                   onChange={(e) => setWallet(e.target.value)}
                   placeholder="0x… or txhash"
+                  style={{
+                    width: '100%', padding: '10px 14px',
+                    background: 'var(--bg-secondary)',
+                    border: '1px solid var(--border)', borderRadius: '2px',
+                    fontSize: '14px', color: 'var(--text-primary)',
+                    outline: 'none', boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent)' }}
+                  onBlur={(e)  => { e.currentTarget.style.borderColor = 'var(--border)'  }}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  style={{
+                    display: 'block', fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '11px', textTransform: 'uppercase',
+                    letterSpacing: '0.1em', marginBottom: '8px', color: 'var(--text-muted)',
+                  }}
+                >
+                  Your Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
                   style={{
                     width: '100%', padding: '10px 14px',
                     background: 'var(--bg-secondary)',
