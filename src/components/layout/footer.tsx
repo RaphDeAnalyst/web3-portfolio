@@ -34,12 +34,6 @@ export function Footer() {
             onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6' }}>
             LinkedIn ↗
           </a>
-          <a href="/admin"
-            style={{ color: 'var(--text-muted)', opacity: 0.5, textDecoration: 'none' }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.5' }}>
-            Admin
-          </a>
         </div>
       </div>
     </footer>

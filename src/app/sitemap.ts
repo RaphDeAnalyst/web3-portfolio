@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let projectUrls: MetadataRoute.Sitemap = []
   try {
     const projects = await projectServiceSupabase.getAllProjects()
-    projectUrls = projects.map((project) => ({
+    projectUrls = projects.filter((project) => !!project.id).map((project) => ({
       url: `${baseUrl}/work/${project.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -38,6 +38,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/methodology`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/dashboards`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
   ]

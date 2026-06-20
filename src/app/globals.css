@@ -87,6 +87,10 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
   }
+
+  a:visited {
+    color: inherit;
+  }
 }
 
 /* Brand monogram — full wordmark shown by default, MR monogram on small screens */
