@@ -31,10 +31,26 @@ export function ServicesClient() {
   const [wallet, setWallet]       = useState('')
   const [details, setDetails]     = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending]     = useState(false)
+  const [error, setError]         = useState(false)
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setSending(true)
+    setError(false)
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wallet, details }),
+      })
+      if (!res.ok) throw new Error()
+      setSubmitted(true)
+    } catch {
+      setError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -181,24 +197,37 @@ export function ServicesClient() {
               <div>
                 <button
                   type="submit"
+                  disabled={sending}
                   style={{
                     display: 'inline-flex', alignItems: 'center',
                     padding: '13px 26px', border: '1px solid var(--accent)',
                     background: 'transparent', color: 'var(--text-primary)',
                     fontSize: '14px', fontWeight: 500,
-                    borderRadius: '2px', cursor: 'pointer', transition: 'all .15s',
+                    borderRadius: '2px', cursor: sending ? 'default' : 'pointer',
+                    transition: 'all .15s', opacity: sending ? 0.5 : 1,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent)'
-                    e.currentTarget.style.color = 'var(--bg-primary)'
+                    if (!sending) {
+                      e.currentTarget.style.backgroundColor = 'var(--accent)'
+                      e.currentTarget.style.color = 'var(--bg-primary)'
+                    }
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = 'transparent'
                     e.currentTarget.style.color = 'var(--text-primary)'
                   }}
                 >
-                  Send inquiry →
+                  {sending ? 'Sending…' : 'Send inquiry →'}
                 </button>
+                {error && (
+                  <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', margin: '12px 0 0', color: 'var(--text-muted)' }}>
+                    Something went wrong. Please email{' '}
+                    <a href="mailto:matthewraphael@matthewraphael.xyz" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+                      matthewraphael@matthewraphael.xyz
+                    </a>{' '}
+                    directly.
+                  </p>
+                )}
               </div>
             </form>
           )}
