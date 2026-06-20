@@ -142,7 +142,7 @@ export function DuneChart({ chartType, data, xKey, yKeys, pinnedNote, chartColor
           <CartesianGrid {...gridProps} />
           <XAxis dataKey={xKey} {...commonAxisProps} />
           <YAxis {...commonAxisProps} width={yWidth} />
-          <Tooltip contentStyle={tooltipStyle} />
+          <Tooltip cursor={false} contentStyle={tooltipStyle} />
           {yKeys.length > 1 && (
             <Legend wrapperStyle={{ fontSize: '12px', color: 'var(--text-secondary)' }} />
           )}
