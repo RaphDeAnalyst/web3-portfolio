@@ -1,66 +1,6 @@
 import Link from 'next/link'
 import type { Project } from '@/lib/project-service-supabase'
 
-/** Deterministic seeded LCG for reproducible node graphs */
-function mkGraph(seed: number, w = 120, h = 80, n = 9) {
-  let s = seed
-  const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280 }
-
-  const pad = 10
-  const pts: [number, number][] = []
-  for (let i = 0; i < n; i++) {
-    pts.push([pad + rnd() * (w - 2 * pad), pad + rnd() * (h - 2 * pad)])
-  }
-
-  const order = pts.map((_, i) => i).sort((a, b) => pts[a][0] - pts[b][0])
-  const seen: Record<string, boolean> = {}
-  const edges: [number, number][] = []
-  const addEdge = (a: number, b: number) => {
-    if (a === b) return
-    const key = `${Math.min(a, b)}-${Math.max(a, b)}`
-    if (!seen[key]) { seen[key] = true; edges.push([a, b]) }
-  }
-  for (let k = 0; k < order.length - 1; k++) {
-    addEdge(order[k], order[k + 1])
-    if (k + 2 < order.length && rnd() < 0.45) addEdge(order[k], order[k + 2])
-  }
-
-  const flaggedIdx = Math.floor(rnd() * n)
-
-  return { pts, edges, flaggedIdx, w, h }
-}
-
-function MiniGraph({ seed }: { seed: number }) {
-  const { pts, edges, flaggedIdx, w, h } = mkGraph(seed)
-  return (
-    <svg
-      viewBox={`0 0 ${w} ${h}`}
-      width="100%"
-      height="100%"
-      preserveAspectRatio="xMidYMid meet"
-      style={{ display: 'block' }}
-    >
-      {edges.map(([a, b], i) => (
-        <line
-          key={`e${i}`}
-          x1={pts[a][0]} y1={pts[a][1]}
-          x2={pts[b][0]} y2={pts[b][1]}
-          stroke="currentColor" strokeWidth={0.7} strokeOpacity={0.5}
-        />
-      ))}
-      {pts.map((p, i) => (
-        <circle
-          key={`n${i}`}
-          cx={p[0]} cy={p[1]}
-          r={i === flaggedIdx ? 3 : 2}
-          fill={i === flaggedIdx ? 'var(--accent)' : 'currentColor'}
-          opacity={i === flaggedIdx ? 0.9 : 0.7}
-        />
-      ))}
-    </svg>
-  )
-}
-
 interface WorkRowProps {
   project: Project
   index: number
@@ -68,7 +8,6 @@ interface WorkRowProps {
 
 export function WorkRow({ project, index }: WorkRowProps) {
   const serial = String(index + 1).padStart(2, '0')
-  const seed = (index * 37 + 11)
 
   return (
     <Link
@@ -76,7 +15,7 @@ export function WorkRow({ project, index }: WorkRowProps) {
       className="work-ledger-row group"
       style={{
         display: 'grid',
-        gridTemplateColumns: '56px 96px 1fr auto',
+        gridTemplateColumns: '56px 1fr auto',
         gap: '28px',
         alignItems: 'center',
         padding: '28px 12px',
@@ -92,19 +31,6 @@ export function WorkRow({ project, index }: WorkRowProps) {
       >
         {serial}
       </span>
-
-      {/* Mini graph thumbnail */}
-      <div
-        className="work-ledger-graph"
-        style={{
-          width: '96px', height: '64px',
-          border: '1px solid var(--border)', borderRadius: '2px',
-          background: 'var(--bg-secondary)', color: 'var(--text-secondary)',
-          overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}
-      >
-        <MiniGraph seed={seed} />
-      </div>
 
       {/* Title + category + description + mobile tag row */}
       <div style={{ minWidth: 0 }}>

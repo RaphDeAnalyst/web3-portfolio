@@ -125,7 +125,6 @@
 /* Work ledger rows — tablet portrait: hide mini-graph, keep right column with tags */
 @media (max-width: 768px) {
   .work-ledger-row { grid-template-columns: 40px 1fr auto !important; gap: 16px !important; }
-  .work-ledger-graph { display: none !important; }
   .work-ledger-h2 { font-size: 18px !important; }
 }
 

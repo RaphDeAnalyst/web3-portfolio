@@ -130,9 +130,31 @@ export function ServicesClient() {
           </p>
 
           {submitted ? (
-            <p style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-secondary)', textAlign: 'center', padding: '32px 0' }}>
-              Message received. I&apos;ll be in touch within 48 hours.
-            </p>
+            <div style={{ paddingTop: '8px' }}>
+              <p style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-secondary)', margin: '0 0 24px' }}>
+                Message received. I&apos;ll be in touch within 48 hours.
+              </p>
+              <Link
+                href="/work"
+                className="link-fade"
+                style={{ fontSize: '14px', display: 'block', marginBottom: '14px', color: 'var(--text-primary)', textDecoration: 'none' }}
+              >
+                ← Back to work
+              </Link>
+              <Link
+                href="/work"
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '11px', textTransform: 'uppercase',
+                  letterSpacing: '0.1em', color: 'var(--text-muted)',
+                  textDecoration: 'none', display: 'block',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7' }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
+              >
+                In the meantime, view my investigations →
+              </Link>
+            </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
